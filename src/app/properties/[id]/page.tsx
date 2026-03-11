@@ -20,6 +20,7 @@ import {
   Clock,
   MessageSquare,
   ArrowRight,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -76,6 +77,7 @@ export default function PropertyDetailPage() {
   const { toast } = useToast();
   const [property, setProperty] = useState<Property | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [contactForm, setContactForm] = useState({
     name: "",
@@ -106,6 +108,7 @@ export default function PropertyDetailPage() {
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
@@ -118,17 +121,21 @@ export default function PropertyDetailPage() {
 
       if (response.ok) {
         toast({
-          title: "Message Sent",
-          description: "Thank you! We'll call you soon.",
+          title: "Inquiry Sent Successfully",
+          description: "Thank you for your interest! We'll get back to you shortly.",
         });
         setContactForm({ name: "", phone: "", email: "", message: "" });
+      } else {
+        throw new Error("Failed to send");
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Could not send message. Please try again.",
+        title: "Submission Failed",
+        description: "Could not send inquiry. Please check your connection and try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -369,19 +376,55 @@ export default function PropertyDetailPage() {
             </div>
 
             {/* Sticky Sidebar Action Card */}
-            <div className="space-y-12">
+            <div className="space-y-8 sticky top-48">
+              {/* Agent Profile Card */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 shadow-luxury border-2 border-white sticky top-48"
+                className="bg-white rounded-[2rem] p-6 shadow-luxury border-2 border-white"
               >
-                <div className="flex items-center gap-4 mb-8 pb-8 border-b border-bhutan-gold/10">
-                  <div className="w-16 h-16 bg-bhutan-red/5 rounded-2xl flex items-center justify-center">
-                    <MessageSquare className="w-8 h-8 text-bhutan-red" />
+                <div className="flex items-center gap-5">
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden relative border-2 border-bhutan-gold/10">
+                    <img
+                      src="/image/dorji wangchuk.jpg"
+                      alt="Dorji Wangchuk"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-bhutan-gold text-[10px] font-bold uppercase tracking-widest mb-1">Local Agent</p>
+                    <h3 className="font-serif text-xl font-bold text-bhutan-dark">Dorji Wangchuk</h3>
+                    <p className="text-bhutan-dark/40 text-xs font-medium">General Manager (GM)</p>
+                  </div>
+                </div>
+
+                <div className="mt-6 pt-6 border-t border-bhutan-gold/10 space-y-3">
+                  <a
+                    href="https://wa.me/message/PKJFHGFCVTYPH1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 w-full py-3.5 bg-[#25D366] text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:shadow-lg transition-all transform hover:-translate-y-0.5"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Chat on WhatsApp
+                  </a>
+                </div>
+              </motion.div>
+
+              {/* Inquiry Form */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="bg-white rounded-[2rem] p-6 md:p-8 shadow-luxury border-2 border-white"
+              >
+                <div className="flex items-center gap-4 mb-6 pb-6 border-b border-bhutan-gold/10">
+                  <div className="w-12 h-12 bg-bhutan-red/5 rounded-xl flex items-center justify-center">
+                    <MessageSquare className="w-6 h-6 text-bhutan-red" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-2xl font-bold text-bhutan-dark">Send Message</h3>
-                    <p className="text-bhutan-dark/40 text-xs font-bold uppercase tracking-widest">To our local agent</p>
+                    <h3 className="font-serif text-xl font-bold text-bhutan-dark">Send Inquiry</h3>
+                    <p className="text-bhutan-dark/40 text-[9px] font-bold uppercase tracking-widest">Prompt Response Guaranteed</p>
                   </div>
                 </div>
 
@@ -437,10 +480,14 @@ export default function PropertyDetailPage() {
                       required
                     />
                   </div>
-                  <Button type="submit" className="w-full h-18 bg-bhutan-red hover:bg-bhutan-dark text-white rounded-[1.25rem] text-[10px] font-bold uppercase tracking-[0.3em] shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden relative group">
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full h-16 bg-bhutan-red hover:bg-bhutan-dark text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.3em] shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden relative group disabled:opacity-70"
+                  >
                     <span className="relative z-10 flex items-center gap-3">
-                      Send Inquiry Now
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-all" />
+                      {isSubmitting ? "Sending..." : "Send Inquiry Now"}
+                      {!isSubmitting && <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-all" />}
                     </span>
                   </Button>
                 </form>
