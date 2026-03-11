@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useSettings } from "@/context/SettingsContext";
 
 const districts = [
   "All Districts",
@@ -34,6 +35,7 @@ const priceRanges = [
 
 export function Hero() {
   const router = useRouter();
+  const { settings, isLoading } = useSettings();
   const [selectedDistrict, setSelectedDistrict] = useState("All Districts");
   const [selectedType, setSelectedType] = useState("All Types");
   const [propertyTypes, setPropertyTypes] = useState<string[]>(["All Types"]);
@@ -41,6 +43,25 @@ export function Hero() {
   const [isDistrictOpen, setIsDistrictOpen] = useState(false);
   const [isTypeOpen, setIsTypeOpen] = useState(false);
   const [isPriceOpen, setIsPriceOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const heroImages = (settings?.heroImages && settings.heroImages.length > 0)
+    ? settings.heroImages
+    : (settings?.heroImage
+      ? [settings.heroImage]
+      : [
+        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2674&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1483683393433-cced1fa02081?q=80&w=2670&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?q=80&w=2670&auto=format&fit=crop",
+      ]);
+
+  useEffect(() => {
+    if (heroImages.length <= 1) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 6000); // 6 seconds for a more relaxed feel
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
 
   useEffect(() => {
     fetch("/api/property-types")
@@ -81,19 +102,31 @@ export function Hero() {
 
   return (
     <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-      {/* Background with Parallax */}
+      {/* Background Slider with Parallax */}
       <motion.div
         style={{ y: backgroundY }}
         className="absolute inset-0 z-0 w-full h-[120%] -top-[10%]"
       >
-        <Image
-          src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2674&auto=format&fit=crop"
-          alt="Bhutan Mountains"
-          fill
-          className="object-cover object-center"
-          priority
-          sizes="100vw"
-        />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={heroImages[currentSlide]}
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <Image
+              src={heroImages[currentSlide]}
+              alt="Bhutan Mountains"
+              fill
+              className="object-cover object-center"
+              priority
+              sizes="100vw"
+            />
+          </motion.div>
+        </AnimatePresence>
+
         <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark via-bhutan-dark/60 to-bhutan-dark/20 z-10" />
         <div className="absolute inset-0 bg-thangka opacity-20 mix-blend-overlay z-10 pointer-events-none" />
       </motion.div>
@@ -137,7 +170,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full max-w-4xl mb-6 md:mb-10"
+          className="w-full max-w-4xl mb-6 md:mb-10 relative z-30"
         >
           {/* Desktop: Horizontal bar */}
           <div className="hidden md:flex bg-white/10 backdrop-blur-xl rounded-2xl p-2 border border-white/20 shadow-2xl gap-2">
@@ -261,7 +294,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-row items-center gap-3 md:gap-5 w-full max-w-md"
+          className="flex flex-row items-center gap-3 md:gap-5 w-full max-w-md relative z-10"
         >
           <Link href="/properties" className="flex-1">
             <button className="w-full px-4 md:px-8 py-3 md:py-4 bg-bhutan-red text-white font-bold rounded-full transition-all duration-500 hover:bg-red-800 shadow-lg flex items-center justify-center group relative overflow-hidden border border-bhutan-gold/30">

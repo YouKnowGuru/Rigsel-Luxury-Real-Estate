@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, X, Send, Heart, User, MapPin, CheckCircle } from "lucide-react";
+import { Star, X, Send, Heart, User, MapPin, CheckCircle, Image as ImageIcon, Upload, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -19,6 +19,8 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
     const [hoveredRating, setHoveredRating] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [formData, setFormData] = useState({
         name: "",
         role: "Happy Client",
@@ -26,18 +28,44 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
         content: "",
     });
 
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                toast({
+                    title: "File too large",
+                    description: "Please select an image smaller than 5MB.",
+                    variant: "destructive",
+                });
+                return;
+            }
+            setSelectedImage(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
 
         try {
+            const submitData = new FormData();
+            submitData.append("name", formData.name);
+            submitData.append("role", formData.role);
+            submitData.append("location", formData.location);
+            submitData.append("content", formData.content);
+            submitData.append("rating", rating.toString());
+            if (selectedImage) {
+                submitData.append("file", selectedImage);
+            }
+
             const response = await fetch("/api/reviews", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    ...formData,
-                    rating,
-                }),
+                body: submitData,
             });
 
             if (response.ok) {
@@ -51,12 +79,17 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                     setIsSubmitted(false);
                     setFormData({ name: "", role: "Happy Client", location: "Thimphu, Bhutan", content: "" });
                     setRating(5);
+                    setSelectedImage(null);
+                    setImagePreview(null);
                 }, 3000);
+            } else {
+                const data = await response.json();
+                throw new Error(data.error || "Failed to submit review");
             }
-        } catch (error) {
+        } catch (error: any) {
             toast({
                 title: "Error",
-                description: "Failed to submit review. Please try again.",
+                description: error.message || "Failed to submit review. Please try again.",
                 variant: "destructive",
             });
         } finally {
@@ -121,6 +154,29 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                                     </div>
 
                                     <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {/* Image Upload Area */}
+                                        <div className="md:col-span-2 flex flex-col items-center mb-4">
+                                            <div className="relative group">
+                                                <div className={`w-28 h-28 rounded-[2rem] overflow-hidden border-4 border-white shadow-xl bg-[#F9F7F2] flex items-center justify-center transition-transform duration-500 group-hover:scale-105 ${!imagePreview ? 'border-dashed border-bhutan-gold/30' : ''}`}>
+                                                    {imagePreview ? (
+                                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        <Camera className="w-10 h-10 text-bhutan-gold/30" />
+                                                    )}
+                                                </div>
+                                                <label className="absolute -bottom-2 -right-2 w-10 h-10 bg-bhutan-red rounded-xl flex items-center justify-center shadow-xl border-2 border-white cursor-pointer hover:bg-bhutan-dark transition-colors">
+                                                    <Upload className="w-5 h-5 text-white" />
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={handleImageChange}
+                                                        className="hidden"
+                                                    />
+                                                </label>
+                                            </div>
+                                            <p className="text-[9px] font-bold text-bhutan-dark/40 uppercase tracking-widest mt-4">Upload Your Photo</p>
+                                        </div>
+
                                         <div className="space-y-2">
                                             <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-widest ml-4">Full Name</label>
                                             <div className="relative">

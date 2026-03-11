@@ -10,6 +10,8 @@ interface SiteSettings {
     facebook: string;
     instagram: string;
     whatsapp: string;
+    heroImage?: string;
+    heroImages?: string[];
 }
 
 const DEFAULT_SETTINGS: SiteSettings = {
@@ -20,6 +22,12 @@ const DEFAULT_SETTINGS: SiteSettings = {
     facebook: "https://www.facebook.com/share/1b2Fk7oC9q/ 2",
     instagram: "https://tiktok.com/@phojaa95realestate",
     whatsapp: "+975 16 111 999",
+    heroImage: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2674&auto=format&fit=crop",
+    heroImages: [
+        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2674&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?q=80&w=2670&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?q=80&w=2670&auto=format&fit=crop",
+    ],
 };
 
 interface SettingsContextType {
@@ -36,7 +44,9 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         const fetchSettings = async () => {
             try {
-                const response = await fetch("/api/settings");
+                const response = await fetch(`/api/settings?t=${Date.now()}`, {
+                    cache: "no-store"
+                });
                 const data = await response.json();
                 if (data.success) {
                     setSettings(data.data);

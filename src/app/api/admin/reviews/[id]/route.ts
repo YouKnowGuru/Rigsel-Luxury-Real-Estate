@@ -6,9 +6,10 @@ import { verifyToken } from "@/lib/jwt";
 // PATCH /api/admin/reviews/[id] - Update review status (Approve/Reject)
 export async function PATCH(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const token = request.headers.get("authorization")?.split(" ")[1];
         if (!token || !verifyToken(token)) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
@@ -17,7 +18,7 @@ export async function PATCH(
         await connectDB();
         const body = await request.json();
 
-        const review = await Review.findByIdAndUpdate(params.id, body, {
+        const review = await Review.findByIdAndUpdate(id, body, {
             new: true,
             runValidators: true,
         });
@@ -38,16 +39,17 @@ export async function PATCH(
 // DELETE /api/admin/reviews/[id] - Delete a review
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        const { id } = await params;
         const token = request.headers.get("authorization")?.split(" ")[1];
         if (!token || !verifyToken(token)) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 
         await connectDB();
-        const review = await Review.findByIdAndDelete(params.id);
+        const review = await Review.findByIdAndDelete(id);
 
         if (!review) {
             return NextResponse.json({ success: false, error: "Review not found" }, { status: 404 });

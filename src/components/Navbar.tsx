@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, Home, Building2, Calculator, Info, Mail, Settings, Newspaper, Image as ImageIcon } from "lucide-react";
+import { Menu, X, Phone, Home, Building2, Calculator, Info, Mail, Settings, Newspaper, Image as ImageIcon, FileDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { useSettings } from "@/context/SettingsContext";
@@ -12,6 +12,7 @@ import { useSettings } from "@/context/SettingsContext";
 const navItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Properties", href: "/properties", icon: Building2 },
+  { name: "Downloads", href: "/downloads", icon: FileDown },
   { name: "Land Calculator", href: "/land-calculator", icon: Calculator },
   { name: "About", href: "/about", icon: Info },
   { name: "Contact", href: "/contact", icon: Mail },
@@ -62,7 +63,7 @@ export function Navbar() {
           <nav className="flex items-center justify-between w-full relative">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center group">
+            <Link href="/" className="flex items-center group shrink-0">
               <Logo
                 size="lg"
                 showText
@@ -72,13 +73,23 @@ export function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex flex-1 justify-center relative z-20">
-              <div className={cn("flex items-center gap-6 xl:gap-8 px-8 py-3 rounded-full transition-all duration-500", isScrolled ? "" : "bg-bhutan-dark/20 backdrop-blur-md border border-white/10 shadow-lg")}>
+            <div className="hidden lg:flex flex-1 justify-center relative z-20 px-4">
+              <div className={cn(
+                "flex items-center gap-3 xl:gap-6 px-4 xl:px-8 py-2.5 rounded-full transition-all duration-500",
+                isScrolled ? "" : "bg-bhutan-dark/20 backdrop-blur-md border border-white/10 shadow-lg"
+              )}>
                 {navItems.map((item) => (
-                  <Link key={item.name} href={item.href} className="group relative py-2">
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={cn(
+                      "group relative py-2",
+                      item.name === "Admin" && "hidden xl:block" // Hide Admin on smaller desktops to save space
+                    )}
+                  >
                     <span
                       className={cn(
-                        "text-[11px] xl:text-[12px] font-bold uppercase tracking-[0.15em] transition-colors duration-300 relative z-10",
+                        "text-[10px] xl:text-[12px] font-bold uppercase tracking-[0.1em] xl:tracking-[0.15em] transition-colors duration-300 relative z-10",
                         pathname === item.href
                           ? (isScrolled ? "text-bhutan-red" : "text-white")
                           : (isScrolled ? "text-bhutan-dark hover:text-bhutan-red" : "text-white/70 hover:text-white")
@@ -107,17 +118,17 @@ export function Navbar() {
             </div>
 
             {/* Right Section (Contact/Mobile) */}
-            <div className="flex items-center gap-6 relative z-10">
-              <div className="hidden md:flex items-center gap-3 group cursor-pointer pr-4 border-r border-white/20">
+            <div className="flex items-center gap-3 xl:gap-6 relative z-10">
+              <div className="hidden md:flex items-center gap-2 xl:gap-3 group cursor-pointer pr-2 xl:pr-4 border-r border-white/20">
                 <div className={cn(
-                  "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm",
+                  "w-8 h-8 xl:w-10 xl:h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm",
                   isScrolled ? "bg-bhutan-red/10 text-bhutan-red group-hover:bg-bhutan-red group-hover:text-white" : "bg-white/10 text-white group-hover:bg-white group-hover:text-bhutan-red"
                 )}>
-                  <Phone className="w-4 h-4" />
+                  <Phone className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
                 </div>
-                <div className="text-left hidden xl:block">
-                  <p className={cn("text-[9px] uppercase font-bold tracking-widest mb-0.5", isScrolled ? "text-bhutan-dark/50" : "text-white/60")}>Call Us</p>
-                  <p className={cn("text-xs font-bold font-serif tracking-widest", isScrolled ? "text-bhutan-dark" : "text-white")}>{settings.phone}</p>
+                <div className="text-left hidden lg:block">
+                  <p className={cn("text-[8px] uppercase font-bold tracking-widest mb-0.5", isScrolled ? "text-bhutan-dark/50" : "text-white/60")}>Call Us</p>
+                  <p className={cn("text-[10px] xl:text-xs font-bold font-serif tracking-widest", isScrolled ? "text-bhutan-dark" : "text-white")}>{settings.phone}</p>
                 </div>
               </div>
 

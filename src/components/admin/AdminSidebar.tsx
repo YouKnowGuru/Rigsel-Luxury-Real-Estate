@@ -20,6 +20,7 @@ import {
     ChevronLeft,
     Newspaper,
     Image as ImageIcon,
+    FileDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -33,6 +34,7 @@ const sidebarItems = [
     { name: "Reviews", href: "/admin/reviews", icon: Star },
     { name: "Blogs", href: "/admin/blogs", icon: Newspaper },
     { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
+    { name: "Downloads", href: "/admin/documents", icon: FileDown },
     { name: "Land Calculator", href: "/admin/land-calculator", icon: Calculator },
     { name: "Settings", href: "/admin/settings", icon: Settings },
 ];

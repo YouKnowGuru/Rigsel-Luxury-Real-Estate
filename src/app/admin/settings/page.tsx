@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Save, Globe, Phone, Mail, MapPin, Facebook, Instagram, MessageCircle, Lock, Loader2, Eye, EyeOff, Home } from "lucide-react";
+import { Save, Globe, Phone, Mail, MapPin, Facebook, Instagram, MessageCircle, Lock, Loader2, Eye, EyeOff, Home, Image as ImageIcon, Upload, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
@@ -16,6 +16,8 @@ interface SiteSettings {
     facebook: string;
     instagram: string;
     whatsapp: string;
+    heroImage?: string;
+    heroImages?: string[];
 }
 
 export default function SettingsPage() {
@@ -23,11 +25,13 @@ export default function SettingsPage() {
     const { toast } = useToast();
     const [mounted, setMounted] = useState(false);
     const [saving, setSaving] = useState(false);
+    const [uploading, setUploading] = useState(false);
     const [changingPw, setChangingPw] = useState(false);
     const [showPw, setShowPw] = useState({ current: false, new: false, confirm: false });
     const [settings, setSettings] = useState<SiteSettings>({
         siteName: "", phone: "", email: "", address: "",
-        facebook: "", instagram: "", whatsapp: "",
+        facebook: "", instagram: "", whatsapp: "", heroImage: "",
+        heroImages: [],
     });
     const [pwForm, setPwForm] = useState({ currentPassword: "", newPassword: "", confirmPassword: "" });
 
@@ -42,10 +46,58 @@ export default function SettingsPage() {
         try {
             const res = await fetch("/api/admin/settings", { headers: { Authorization: `Bearer ${token}` } });
             const data = await res.json();
-            if (data.success) setSettings(data.data);
+            if (data.success) {
+                setSettings({
+                    ...data.data,
+                    heroImages: data.data.heroImages || []
+                });
+            }
         } catch (e) {
             console.error(e);
         }
+    };
+
+    const handleHeroImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, isSlider = false) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploading(true);
+        try {
+            const token = localStorage.getItem("adminToken");
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                headers: { Authorization: `Bearer ${token}` },
+                body: formData,
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                if (isSlider) {
+                    setSettings({
+                        ...settings,
+                        heroImages: [...(settings.heroImages || []), data.url]
+                    });
+                    toast({ title: "Slide Added", description: "A new image has been added to your hero slider." });
+                } else {
+                    setSettings({ ...settings, heroImage: data.url });
+                    toast({ title: "Image Uploaded", description: "Main hero image has been updated." });
+                }
+            } else throw new Error(data.error);
+        } catch (error: any) {
+            toast({ title: "Upload Failed", description: error.message, variant: "destructive" });
+        } finally {
+            setUploading(false);
+        }
+    };
+
+    const handleRemoveHeroImage = (index: number) => {
+        const updatedImages = [...(settings.heroImages || [])];
+        updatedImages.splice(index, 1);
+        setSettings({ ...settings, heroImages: updatedImages });
+        toast({ title: "Slide Removed", description: "Image removed from your hero slider." });
     };
 
     const handleSaveSettings = async (e: React.FormEvent) => {
@@ -174,6 +226,84 @@ export default function SettingsPage() {
                                         onChange={(e) => setSettings({ ...settings, address: e.target.value })}
                                         placeholder="Norzin Lam, Thimphu, Bhutan" className={inputCls} />
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Hero Slider Images */}
+                        <div className="bg-white rounded-2xl p-6 border border-bhutan-gold/10 shadow-sm mb-5">
+                            <h2 className="font-bold text-bhutan-dark text-base mb-2 flex items-center gap-2">
+                                <ImageIcon className="w-4 h-4 text-bhutan-gold" /> Hero Slider Gallery
+                            </h2>
+                            <p className="text-[10px] text-bhutan-dark/40 uppercase tracking-widest mb-5 font-bold">Manage multiple slides for the home hero section</p>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {(settings.heroImages || []).map((img, idx) => (
+                                    <div key={idx} className="relative group overflow-hidden rounded-xl border border-bhutan-gold/10 aspect-[16/9] bg-[#F9F7F2]">
+                                        <img src={img} alt={`Slide ${idx + 1}`} className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-bhutan-dark/60 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center gap-2 backdrop-blur-sm">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleRemoveHeroImage(idx)}
+                                                className="h-9 px-4 bg-white text-bhutan-red rounded-lg font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-bhutan-red hover:text-white transition-all shadow-lg"
+                                            >
+                                                <Trash2 className="w-3.5 h-3.5" /> Remove Slide
+                                            </button>
+                                        </div>
+                                        <div className="absolute top-2 left-2 bg-bhutan-red/90 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm z-10">
+                                            Slide {idx + 1}
+                                        </div>
+                                    </div>
+                                ))}
+
+                                {/* Add Slide Button */}
+                                <label className="relative group cursor-pointer overflow-hidden rounded-xl border-2 border-dashed border-bhutan-gold/20 hover:border-bhutan-red/30 bg-[#F9F7F2] aspect-[16/9] flex flex-col items-center justify-center transition-all">
+                                    <input type="file" accept="image/*" onChange={(e) => handleHeroImageUpload(e, true)} className="hidden" />
+                                    {uploading ? (
+                                        <Loader2 className="w-8 h-8 animate-spin text-bhutan-red/40" />
+                                    ) : (
+                                        <>
+                                            <div className="w-10 h-10 bg-bhutan-gold/5 rounded-full flex items-center justify-center mb-2 group-hover:bg-bhutan-red/10 transition-colors">
+                                                <Upload className="w-5 h-5 text-bhutan-gold group-hover:text-bhutan-red" />
+                                            </div>
+                                            <p className="text-xs font-bold text-bhutan-dark/40 uppercase tracking-widest">Add New Slide</p>
+                                        </>
+                                    )}
+                                </label>
+                            </div>
+                        </div>
+
+                        {/* Single Hero Image (Fallback/Alternative) */}
+                        <div className="bg-white rounded-2xl p-6 border border-bhutan-gold/10 shadow-sm mb-5 opacity-60 hover:opacity-100 transition-opacity">
+                            <h2 className="font-bold text-bhutan-dark text-base mb-1 flex items-center gap-2">
+                                <ImageIcon className="w-4 h-4 text-gray-400" /> Default Hero Image
+                            </h2>
+                            <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-4">Fallback if slider is empty</p>
+                            <div className="relative group overflow-hidden rounded-xl border border-dashed border-bhutan-gold/20 bg-[#F9F7F2] aspect-[21/9]">
+                                {settings.heroImage ? (
+                                    <>
+                                        <img src={settings.heroImage} alt="Hero Preview" className="w-full h-full object-cover" />
+                                        <div className="absolute inset-0 bg-bhutan-dark/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                                            <label className="h-10 px-4 bg-white text-bhutan-dark rounded-xl font-bold text-xs uppercase tracking-widest flex items-center gap-2 cursor-pointer hover:bg-bhutan-red hover:text-white transition-all">
+                                                <Upload className="w-3.5 h-3.5" /> Replace
+                                                <input type="file" accept="image/*" onChange={(e) => handleHeroImageUpload(e, false)} className="hidden" />
+                                            </label>
+                                            <button
+                                                type="button"
+                                                onClick={() => setSettings({ ...settings, heroImage: "" })}
+                                                className="h-10 px-4 bg-white/20 text-white rounded-xl font-bold text-xs uppercase tracking-widest flex items-center gap-2 backdrop-blur-md hover:bg-red-500 transition-all"
+                                            >
+                                                <Trash2 className="w-3.5 h-3.5" /> Remove
+                                            </button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center">
+                                        <label className="h-9 px-5 bg-bhutan-red/10 text-bhutan-red rounded-lg font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 cursor-pointer hover:bg-bhutan-red hover:text-white transition-all">
+                                            <Upload className="w-3.5 h-3.5" /> Set Default Image
+                                            <input type="file" accept="image/*" onChange={(e) => handleHeroImageUpload(e, false)} className="hidden" />
+                                        </label>
+                                    </div>
+                                )}
                             </div>
                         </div>
 
