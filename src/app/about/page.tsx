@@ -52,6 +52,8 @@ const commitments = [
   "Building long term relationships with clients based on trust, honesty, and professional service.",
 ];
 
+import { TeamSection } from "@/sections/TeamSection";
+
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-[#F9F7F2]">
@@ -95,18 +97,19 @@ export default function AboutPage() {
       <section className="px-4 md:px-6 -mt-6 mb-16 md:mb-24">
         <div className="max-w-6xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative h-[180px] sm:h-[250px] md:h-[400px] rounded-xl md:rounded-3xl overflow-hidden shadow-xl"
+            className="relative h-[250px] sm:h-[400px] md:h-[550px] rounded-2xl md:rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white"
           >
             <NextImage
-              src="https://images.unsplash.com/photo-1541014741259-de529411b96a?w=1600"
-              alt="Bhutanese Landscape"
+              src="/image/about-hero.png"
+              alt="Phojaa Luxury Estate"
               fill
               className="object-cover"
+              priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark/30 to-transparent" />
           </motion.div>
         </div>
       </section>
@@ -274,87 +277,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-12 md:py-20 bg-white">
-        <div className="w-full max-w-5xl mx-auto px-4 md:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-8 md:mb-12"
-          >
-            <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
-              Our Leaders
-            </div>
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-bhutan-dark">
-              Meet the <span className="text-bhutan-red italic font-light">Team</span>
-            </h2>
-          </motion.div>
-
-          <div className="space-y-5 md:space-y-8">
-            {[
-              {
-                name: "Jigme Rabgay",
-                role: "Proprietor",
-                image: "/image/jime rabgay.jpg",
-                desc: "Jigme Rabgay is the founder and driving force behind Phojaa Real Estate. With a strong vision for connecting buyers and sellers, he brings extensive knowledge of the property market and a deep commitment to transparency and trust. He combines a solid background in construction with exposure to advanced architectural and interior design concepts from countries such as Australia, Vietnam, Singapore, and Thailand.",
-                quote: "Building trust, one property at a time, with fairness at the core of every deal.",
-              },
-              {
-                name: "Dorji Wangchuk",
-                role: "General Manager (GM)",
-                image: "/image/dorji wangchuk.jpg",
-                desc: "Dorji Wangchuk manages the daily operations of Phojaa Real Estate, ensuring smooth and efficient property transactions. With expertise in client relations and real estate management, he is dedicated to providing personalized support while maintaining the highest standards of professionalism.",
-                quote: "Turning property dreams into reality with clarity and care.",
-              },
-            ].map((member) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="flex flex-col lg:flex-row items-center gap-8 md:gap-12 bg-white/50 backdrop-blur-sm p-6 md:p-10 rounded-3xl md:rounded-[2rem] border border-bhutan-gold/10 hover:border-bhutan-gold/30 hover:shadow-2xl hover:shadow-bhutan-gold/5 transition-all duration-700 group relative overflow-hidden"
-              >
-                {/* Decorative Background Pattern */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-bhutan-gold/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-bhutan-red/5 transition-colors duration-700" />
-
-                <div className="w-40 h-40 sm:w-56 sm:h-56 md:w-72 md:h-72 flex-shrink-0 rounded-2xl md:rounded-3xl overflow-hidden relative ring-1 ring-bhutan-gold/20 ring-offset-4 ring-offset-[#F9F7F2] group-hover:ring-bhutan-red/30 transition-all duration-700">
-                  <NextImage
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                </div>
-
-                <div className="flex-1 text-center lg:text-left space-y-4 md:space-y-6 relative z-10">
-                  <div className="space-y-2">
-                    <p className="inline-block px-3 py-1 rounded-full bg-bhutan-gold/10 text-bhutan-gold-dark text-[10px] md:text-[11px] font-bold uppercase tracking-[0.25em]">
-                      {member.role}
-                    </p>
-                    <h3 className="font-serif text-2xl md:text-4xl font-bold text-bhutan-dark group-hover:text-bhutan-red transition-colors duration-500">
-                      {member.name}
-                    </h3>
-                    <div className="h-0.5 w-12 bg-bhutan-gold/30 mx-auto lg:mx-0 group-hover:w-24 group-hover:bg-bhutan-red/40 transition-all duration-500" />
-                  </div>
-
-                  <p className="text-bhutan-dark/70 text-sm md:text-lg leading-relaxed font-light max-w-2xl">
-                    {member.desc}
-                  </p>
-
-                  <div className="relative pt-4">
-                    <span className="absolute -top-2 -left-4 text-4xl md:text-6xl text-bhutan-gold/10 font-serif leading-none">&ldquo;</span>
-                    <p className="text-bhutan-red text-base md:text-xl italic font-serif font-medium pl-2">
-                      {member.quote}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TeamSection />
 
       {/* CTA */}
       <section className="py-12 md:py-20 px-4 md:px-6">

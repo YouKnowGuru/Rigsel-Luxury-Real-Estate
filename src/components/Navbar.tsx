@@ -63,9 +63,9 @@ export function Navbar() {
           <nav className="flex items-center justify-between w-full relative">
 
             {/* Logo */}
-            <Link href="/" className="flex items-center group shrink-0">
+            <Link href="/" className="flex items-center group shrink-0 mr-2 md:mr-4 max-w-[50%] lg:max-w-none">
               <Logo
-                size="lg"
+                size="md"
                 showText
                 dark={!isScrolled}
                 className="transition-all duration-500"
@@ -73,9 +73,9 @@ export function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex flex-1 justify-center relative z-20 px-4">
+            <div className="hidden lg:flex flex-1 justify-center relative z-20 px-2">
               <div className={cn(
-                "flex items-center gap-3 xl:gap-6 px-4 xl:px-8 py-2.5 rounded-full transition-all duration-500",
+                "flex items-center gap-1.5 xl:gap-5 px-3 xl:px-8 py-2.5 rounded-full transition-all duration-500",
                 isScrolled ? "" : "bg-bhutan-dark/20 backdrop-blur-md border border-white/10 shadow-lg"
               )}>
                 {navItems.map((item) => (
@@ -84,12 +84,12 @@ export function Navbar() {
                     href={item.href}
                     className={cn(
                       "group relative py-2",
-                      item.name === "Admin" && "hidden xl:block" // Hide Admin on smaller desktops to save space
+                      (item.name === "Admin" || item.name === "Gallery" || item.name === "Blogs") && "hidden xl:block" // Hide less critical items on smaller desktops
                     )}
                   >
                     <span
                       className={cn(
-                        "text-[10px] xl:text-[12px] font-bold uppercase tracking-[0.1em] xl:tracking-[0.15em] transition-colors duration-300 relative z-10",
+                        "text-[9px] xl:text-[11px] font-bold uppercase tracking-[0.05em] xl:tracking-[0.15em] transition-colors duration-300 relative z-10",
                         pathname === item.href
                           ? (isScrolled ? "text-bhutan-red" : "text-white")
                           : (isScrolled ? "text-bhutan-dark hover:text-bhutan-red" : "text-white/70 hover:text-white")
@@ -118,17 +118,17 @@ export function Navbar() {
             </div>
 
             {/* Right Section (Contact/Mobile) */}
-            <div className="flex items-center gap-3 xl:gap-6 relative z-10">
-              <div className="hidden md:flex items-center gap-2 xl:gap-3 group cursor-pointer pr-2 xl:pr-4 border-r border-white/20">
+            <div className="flex items-center gap-2 xl:gap-6 relative z-10 flex-shrink-0">
+              <div className="hidden md:flex items-center gap-1.5 xl:gap-3 group cursor-pointer pr-1 xl:pr-4 border-r border-white/20">
                 <div className={cn(
-                  "w-8 h-8 xl:w-10 xl:h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm",
+                  "w-7 h-7 xl:w-10 xl:h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm",
                   isScrolled ? "bg-bhutan-red/10 text-bhutan-red group-hover:bg-bhutan-red group-hover:text-white" : "bg-white/10 text-white group-hover:bg-white group-hover:text-bhutan-red"
                 )}>
-                  <Phone className="w-3.5 h-3.5 xl:w-4 xl:h-4" />
+                  <Phone className="w-3 h-3 xl:w-4 xl:h-4" />
                 </div>
                 <div className="text-left hidden lg:block">
-                  <p className={cn("text-[8px] uppercase font-bold tracking-widest mb-0.5", isScrolled ? "text-bhutan-dark/50" : "text-white/60")}>Call Us</p>
-                  <p className={cn("text-[10px] xl:text-xs font-bold font-serif tracking-widest", isScrolled ? "text-bhutan-dark" : "text-white")}>{settings.phone}</p>
+                  <p className={cn("text-[7px] uppercase font-bold tracking-widest mb-0.5", isScrolled ? "text-bhutan-dark/50" : "text-white/60")}>Call Us</p>
+                  <p className={cn("text-[9px] xl:text-xs font-bold font-serif tracking-widest", isScrolled ? "text-bhutan-dark" : "text-white")}>{settings.phone}</p>
                 </div>
               </div>
 

@@ -29,6 +29,7 @@ const companyLinks = [
   { name: "About Us", href: "/about" },
   { name: "Land Calculator", href: "/land-calculator" },
   { name: "Contact Us", href: "/contact" },
+  { name: "Terms & Conditions", href: "/terms" },
   { name: "Admin Login", href: "/admin" },
 ];
 
@@ -57,10 +58,10 @@ export function Footer() {
       <div className="absolute top-1 left-0 w-full h-px bg-bhutan-gold/30" />
 
       <div className="container-luxury relative z-10 w-full max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-12 gap-10 lg:gap-8 mb-20">
 
           {/* Brand & Mission */}
-          <div className="flex flex-col gap-6">
+          <div className="lg:col-span-4 flex flex-col gap-6">
             <Link href="/" className="flex items-center">
               <Logo size="lg" showText dark />
             </Link>
@@ -80,8 +81,22 @@ export function Footer() {
             </div>
           </div>
 
+          {/* Quick Links */}
+          <div className="lg:col-span-2">
+            <h3 className="text-bhutan-gold font-bold text-sm uppercase tracking-widest mb-8">Company</h3>
+            <ul className="flex flex-col gap-4">
+              {companyLinks.map((link) => (
+                <li key={link.name}>
+                  <Link href={link.href} className="text-white/40 hover:text-white transition-colors text-sm">
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Properties Links */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className="text-bhutan-gold font-bold text-sm uppercase tracking-widest mb-8">Properties</h3>
             <ul className="flex flex-col gap-4">
               {propertyLinks.map((link) => (
@@ -95,7 +110,7 @@ export function Footer() {
           </div>
 
           {/* Location Links */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className="text-bhutan-gold font-bold text-sm uppercase tracking-widest mb-8">Locations</h3>
             <ul className="flex flex-col gap-4">
               {locations.map((link) => (
@@ -109,7 +124,7 @@ export function Footer() {
           </div>
 
           {/* Contact Details */}
-          <div>
+          <div className="lg:col-span-2">
             <h3 className="text-bhutan-gold font-bold text-sm uppercase tracking-widest mb-8">Contact Us</h3>
             <ul className="flex flex-col gap-6">
               <li className="flex gap-4 items-start">

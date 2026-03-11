@@ -6,6 +6,7 @@ import { WhyChooseUs } from "@/sections/WhyChooseUs";
 import { InteractiveMap } from "@/sections/InteractiveMap";
 import { Testimonials } from "@/sections/Testimonials";
 import { ContactCTA } from "@/sections/ContactCTA";
+import { TeamSection } from "@/sections/TeamSection";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function Home() {
       <PropertyCategories />
       <LandCalculator />
       <WhyChooseUs />
+      <TeamSection />
       <InteractiveMap />
       <Testimonials />
       <ContactCTA />

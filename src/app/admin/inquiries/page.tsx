@@ -101,6 +101,36 @@ export default function InquiriesPage() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this inquiry? This action cannot be undone.")) return;
+
+    try {
+      const token = localStorage.getItem("adminToken");
+      const res = await fetch(`/api/contact/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      if (data.success) {
+        setInquiries(prev => prev.filter(inqu => inqu._id !== id));
+        toast({
+          title: "Success",
+          description: "Inquiry deleted successfully",
+        });
+      } else {
+        throw new Error(data.error || "Failed to delete inquiry");
+      }
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete inquiry",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-[#F9F7F2]/50">
       {/* Header Section */}
@@ -292,6 +322,13 @@ export default function InquiriesPage() {
                           >
                             <ChevronRight className="w-5 h-5" />
                           </Link>
+                          <button
+                            onClick={() => handleDelete(inquiry._id)}
+                            className="w-10 h-10 rounded-xl flex items-center justify-center bg-red-50 text-red-400 hover:bg-red-500 hover:text-white transition-all duration-300 shadow-sm"
+                            title="Delete Inquiry"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
                         </div>
                       </td>
                     </motion.tr>

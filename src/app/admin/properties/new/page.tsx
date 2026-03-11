@@ -10,9 +10,10 @@ import { useToast } from "@/hooks/use-toast";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
 const districts = [
-  "Thimphu", "Paro", "Punakha", "Phuntsholing", "Gelephu",
-  "Wangdue Phodrang", "Trongsa", "Bumthang", "Trashigang", "Mongar",
-  "Samdrup Jongkhar", "Other",
+  "Bumthang", "Chhukha", "Dagana", "Gasa", "Haa",
+  "Lhuentse", "Mongar", "Paro", "Pema Gatshel", "Punakha",
+  "Samdrup Jongkhar", "Samtse", "Sarpang", "Thimphu", "Trashigang",
+  "Trashi Yangtse", "Trongsa", "Tsirang", "Wangdue Phodrang", "Zhemgang"
 ];
 
 // Property types will be fetched from API
@@ -43,7 +44,7 @@ export default function NewPropertyPage() {
   const [formData, setFormData] = useState({
     title: "", price: "", location: "", district: "Thimphu",
     bedrooms: "", bathrooms: "", area: "", propertyType: "",
-    latitude: "", longitude: "", featured: false,
+    latitude: "", longitude: "", featured: false, loanAvailable: false,
   });
 
   useEffect(() => {
@@ -385,6 +386,15 @@ export default function NewPropertyPage() {
                   <div>
                     <span className="text-sm font-bold text-bhutan-dark uppercase tracking-widest">Featured</span>
                     <p className="text-xs text-bhutan-dark/40">Show on homepage highlights</p>
+                  </div>
+                </label>
+                <label className="flex items-center gap-3 p-3 bg-[#F9F7F2] rounded-xl cursor-pointer hover:bg-bhutan-gold/5 transition-colors border border-transparent hover:border-bhutan-gold/20">
+                  <input type="checkbox" checked={formData.loanAvailable}
+                    onChange={(e) => setFormData({ ...formData, loanAvailable: e.target.checked })}
+                    className="w-4 h-4 rounded text-bhutan-red focus:ring-bhutan-red cursor-pointer" />
+                  <div>
+                    <span className="text-sm font-bold text-bhutan-dark uppercase tracking-widest">Loan Option</span>
+                    <p className="text-xs text-bhutan-dark/40">Indicate if property has a loan option available</p>
                   </div>
                 </label>
               </div>

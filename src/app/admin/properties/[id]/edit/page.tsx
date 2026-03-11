@@ -18,15 +18,10 @@ import { useToast } from "@/hooks/use-toast";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 
 const districts = [
-    "Thimphu",
-    "Paro",
-    "Punakha",
-    "Phuntsholing",
-    "Gelephu",
-    "Wangdue Phodrang",
-    "Trongsa",
-    "Bumthang",
-    "Other",
+    "Bumthang", "Chhukha", "Dagana", "Gasa", "Haa",
+    "Lhuentse", "Mongar", "Paro", "Pema Gatshel", "Punakha",
+    "Samdrup Jongkhar", "Samtse", "Sarpang", "Thimphu", "Trashigang",
+    "Trashi Yangtse", "Trongsa", "Tsirang", "Wangdue Phodrang", "Zhemgang"
 ];
 
 // Property types fetched from API
@@ -69,6 +64,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
         bathrooms: "",
         area: "",
         featured: false,
+        loanAvailable: false,
         latitude: "",
         longitude: "",
     });
@@ -120,6 +116,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                     bathrooms: p.bathrooms?.toString() || "",
                     area: p.area?.toString() || "",
                     featured: p.featured || false,
+                    loanAvailable: p.loanAvailable || false,
                     latitude: p.latitude?.toString() || "",
                     longitude: p.longitude?.toString() || "",
                 });
@@ -553,6 +550,21 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                         checked={formData.featured}
                                         onChange={(e) =>
                                             setFormData({ ...formData, featured: e.target.checked })
+                                        }
+                                        className="w-5 h-5 rounded-lg border-bhutan-gold/20 text-bhutan-red focus:ring-bhutan-red cursor-pointer"
+                                    />
+                                </div>
+
+                                <div className="flex items-center justify-between p-4 bg-[#F9F7F2]/50 rounded-2xl border border-transparent hover:border-bhutan-gold/10 transition-all group">
+                                    <div className="flex items-center gap-3">
+                                        <span className="w-4 h-4 text-bhutan-gold">🏦</span>
+                                        <span className="text-xs font-bold uppercase tracking-[0.2em]">Loan Available</span>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.loanAvailable}
+                                        onChange={(e) =>
+                                            setFormData({ ...formData, loanAvailable: e.target.checked })
                                         }
                                         className="w-5 h-5 rounded-lg border-bhutan-gold/20 text-bhutan-red focus:ring-bhutan-red cursor-pointer"
                                     />

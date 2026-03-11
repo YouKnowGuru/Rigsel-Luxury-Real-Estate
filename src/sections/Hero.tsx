@@ -11,11 +11,26 @@ import { useSettings } from "@/context/SettingsContext";
 
 const districts = [
   "All Districts",
-  "Thimphu",
+  "Bumthang",
+  "Chhukha",
+  "Dagana",
+  "Gasa",
+  "Haa",
+  "Lhuentse",
+  "Mongar",
   "Paro",
+  "Pema Gatshel",
   "Punakha",
-  "Phuntsholing",
-  "Gelephu",
+  "Samdrup Jongkhar",
+  "Samtse",
+  "Sarpang",
+  "Thimphu",
+  "Trashigang",
+  "Trashi Yangtse",
+  "Trongsa",
+  "Tsirang",
+  "Wangdue Phodrang",
+  "Zhemgang",
 ];
 
 // propertyTypes will be fetched from API

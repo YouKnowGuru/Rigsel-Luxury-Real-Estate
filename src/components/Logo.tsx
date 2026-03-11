@@ -16,9 +16,9 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
     const { settings } = useSettings();
     const sizes = {
         sm: "w-8 h-8",
-        md: "w-9 h-9 md:w-10 md:h-10",
-        lg: "w-10 h-10 md:w-12 md:h-12",
-        xl: "w-12 h-12 md:w-16 md:h-16",
+        md: "w-10 h-10 md:w-12 md:h-12",
+        lg: "w-12 h-12 md:w-14 md:h-14",
+        xl: "w-14 h-14 md:w-20 md:h-20",
     };
 
     const firstWord = settings.siteName.split(" ")[0];
@@ -58,24 +58,24 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
             </motion.div>
 
             {showText && (
-                <div className="flex flex-col">
+                <div className="flex flex-col min-w-0">
                     <h1 className={cn(
-                        "font-serif font-bold leading-none tracking-tight whitespace-nowrap",
-                        size === "sm" ? "text-xs md:text-sm" :
-                            size === "md" ? "text-lg md:text-xl" :
-                                "text-xl md:text-3xl",
+                        "font-serif font-bold leading-[1.1] md:leading-[1.1] tracking-tight",
+                        size === "sm" ? "text-[11px] md:text-sm" :
+                            size === "md" ? "text-base md:text-xl" :
+                                "text-lg sm:text-2xl md:text-4xl lg:text-5xl",
                         dark ? "text-white" : "text-bhutan-dark"
                     )}>
                         {firstWord}
                         {otherWords && (
-                            <span className="text-bhutan-red ml-0.5">
+                            <span className="text-bhutan-red ml-1">
                                 {otherWords}
                             </span>
                         )}
                     </h1>
                     <p className={cn(
-                        "font-bold uppercase tracking-[0.1em] md:tracking-[0.2em]",
-                        size === "sm" ? "text-[7px] md:text-[8px]" : "text-[8px] md:text-[10px]",
+                        "font-bold uppercase tracking-[0.05em] sm:tracking-[0.1em] md:tracking-[0.2em] whitespace-nowrap",
+                        size === "sm" ? "text-[6px] md:text-[7px]" : "text-[7px] sm:text-[8px] md:text-[10px]",
                         dark ? "text-bhutan-gold" : "text-bhutan-red"
                     )}>
                         Bhutan Property

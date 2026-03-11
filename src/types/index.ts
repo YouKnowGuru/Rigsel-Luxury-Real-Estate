@@ -15,6 +15,7 @@ export interface Property {
   latitude: number;
   longitude: number;
   featured?: boolean;
+  loanAvailable?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -34,6 +35,7 @@ export interface PropertyFormData {
   latitude: number;
   longitude: number;
   featured?: boolean;
+  loanAvailable?: boolean;
 }
 
 // Contact Types
@@ -157,4 +159,26 @@ export interface DashboardStats {
   totalInquiries: number;
   recentListings: number;
   totalViews: number;
+}
+
+// Team Member Types
+export interface TeamMember {
+  _id: string;
+  name: string;
+  role: string;
+  image: string;
+  desc: string;
+  quote: string;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TeamMemberFormData {
+  name: string;
+  role: string;
+  image: string;
+  desc: string;
+  quote: string;
+  order: number;
 }

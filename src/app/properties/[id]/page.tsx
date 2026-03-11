@@ -324,9 +324,10 @@ export default function PropertyDetailPage() {
                   <h2 className="font-serif text-3xl font-bold text-bhutan-dark">About this property</h2>
                   <div className="h-px flex-1 bg-bhutan-gold/10" />
                 </div>
-                <p className="text-bhutan-dark/60 text-lg md:text-xl leading-relaxed italic font-light">
-                  "{displayProperty.description}"
-                </p>
+                <div
+                  className="text-bhutan-dark/60 text-lg md:text-xl leading-relaxed italic font-light prose prose-bhutan max-w-none prose-p:my-2"
+                  dangerouslySetInnerHTML={{ __html: displayProperty.description }}
+                />
               </div>
 
               {/* Features List */}

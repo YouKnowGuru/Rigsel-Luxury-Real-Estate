@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { SettingsProvider } from "@/context/SettingsContext";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 export const metadata: Metadata = {
   title: "Phojaa Real Estate | Trusted Properties in Bhutan",
@@ -125,6 +126,7 @@ export default function RootLayout({
           <Navbar />
           <main className="relative">{children}</main>
           <Footer />
+          <WhatsAppButton />
           <Toaster />
         </SettingsProvider>
       </body>

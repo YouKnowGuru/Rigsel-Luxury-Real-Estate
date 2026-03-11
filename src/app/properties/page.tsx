@@ -28,17 +28,10 @@ import { formatPrice, getPropertyTypeLabel, getDistrictLabel } from "@/lib/utils
 
 const districts = [
   "All Districts",
-  "Thimphu",
-  "Paro",
-  "Punakha",
-  "Phuntsholing",
-  "Gelephu",
-  "Wangdue",
-  "Trongsa",
-  "Bumthang",
-  "Trashigang",
-  "Mongar",
-  "Samdrup Jongkhar",
+  "Bumthang", "Chhukha", "Dagana", "Gasa", "Haa",
+  "Lhuentse", "Mongar", "Paro", "Pema Gatshel", "Punakha",
+  "Samdrup Jongkhar", "Samtse", "Sarpang", "Thimphu", "Trashigang",
+  "Trashi Yangtse", "Trongsa", "Tsirang", "Wangdue Phodrang", "Zhemgang"
 ];
 
 interface IPropertyType {
@@ -570,7 +563,7 @@ function PropertyCard({
               </div>
 
               <p className="text-bhutan-dark/40 text-lg leading-relaxed line-clamp-2 font-light italic">
-                "{property.description}"
+                "{property.description.replace(/<[^>]*>?/gm, '')}"
               </p>
 
               <div className="grid grid-cols-3 gap-8 py-8 border-y border-bhutan-gold/10">

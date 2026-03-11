@@ -15,6 +15,7 @@ export interface IProperty extends Document {
   latitude: number;
   longitude: number;
   featured: boolean;
+  loanAvailable: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -42,18 +43,26 @@ const PropertySchema: Schema = new Schema(
       required: [true, "District is required"],
       trim: true,
       enum: [
-        "Thimphu",
-        "Paro",
-        "Punakha",
-        "Phuntsholing",
-        "Gelephu",
-        "Wangdue Phodrang",
-        "Trongsa",
         "Bumthang",
-        "Trashigang",
+        "Chhukha",
+        "Dagana",
+        "Gasa",
+        "Haa",
+        "Lhuentse",
         "Mongar",
+        "Paro",
+        "Pema Gatshel",
+        "Punakha",
         "Samdrup Jongkhar",
-        "Other",
+        "Samtse",
+        "Sarpang",
+        "Thimphu",
+        "Trashigang",
+        "Trashi Yangtse",
+        "Trongsa",
+        "Tsirang",
+        "Wangdue Phodrang",
+        "Zhemgang",
       ],
     },
     bedrooms: {
@@ -108,6 +117,10 @@ const PropertySchema: Schema = new Schema(
       max: [180, "Invalid longitude"],
     },
     featured: {
+      type: Boolean,
+      default: false,
+    },
+    loanAvailable: {
       type: Boolean,
       default: false,
     },
