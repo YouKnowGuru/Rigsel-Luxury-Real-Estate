@@ -1,0 +1,344 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 40 30% 97%;
+  /* Soft Cream #F9F7F2 */
+  --foreground: 0 0% 10%;
+  /* Deep Charcoal #1A1A1A */
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 10%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 10%;
+  --primary: 0 100% 27%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 10%;
+  --muted: 0 0% 92%;
+  --muted-foreground: 0 0% 40%;
+  --accent: 43 74% 49%;
+  --accent-foreground: 0 0% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 90%;
+  --input: 0 0% 92%;
+  --ring: 0 100% 27%;
+  --radius: 1.5rem;
+  --font-sans: 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-admin: 'Outfit', sans-serif;
+}
+
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 100% 27%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 43 74% 49%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 100% 27%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-serif);
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+
+  /* Glassmorphism Refined for Light Theme */
+  .glass {
+    @apply bg-white/60 backdrop-blur-xl border border-white shadow-soft;
+  }
+
+  .glass-bhutan {
+    @apply bg-white/80 backdrop-blur-xl border border-bhutan-gold/10 shadow-luxury-gold;
+  }
+
+  .glass-dark {
+    @apply bg-bhutan-dark/90 backdrop-blur-2xl border border-white/5 shadow-2xl;
+  }
+
+  /* Luxury Button */
+  .btn-luxury {
+    @apply relative overflow-hidden bg-bhutan-red text-white font-medium px-8 py-4 rounded-full transition-all duration-500 hover:bg-bhutan-red-dark;
+  }
+
+  .btn-luxury:hover {
+    @apply shadow-luxury transform -translate-y-1;
+  }
+
+  .btn-luxury::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] transition-transform duration-1000;
+  }
+
+  .btn-luxury:hover::after {
+    @apply translate-x-[200%];
+  }
+
+  /* Bhutanese Thangka Background - subtle for light mode */
+  .bg-thangka {
+    background-image:
+      radial-gradient(circle at 2px 2px, rgba(212, 175, 55, 0.03) 1px, transparent 0);
+    background-size: 50px 50px;
+  }
+
+  /* Card Hover Effect */
+  .card-luxury {
+    @apply bg-white rounded-3xl overflow-hidden shadow-soft transition-all duration-500 hover:shadow-luxury-hover hover:-translate-y-3;
+  }
+
+  /* Section Padding */
+  .section-padding {
+    @apply py-24 md:py-32 lg:py-40;
+  }
+
+  /* Container */
+  .container-luxury {
+    @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-12;
+  }
+
+  /* Gradient Text */
+  .gradient-text-bhutan {
+    @apply bg-gradient-to-r from-bhutan-red via-bhutan-gold to-bhutan-saffron bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: shimmer 4s linear infinite;
+  }
+
+  /* Image Zoom on Hover */
+  .img-zoom {
+    @apply overflow-hidden;
+  }
+
+  .img-zoom img {
+    @apply transition-transform duration-1000 ease-out;
+  }
+
+  .img-zoom:hover img {
+    @apply scale-105;
+  }
+
+  /* Input Focus */
+  .input-luxury {
+    @apply w-full px-6 py-4 bg-white/50 backdrop-blur-sm border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-bhutan-gold/40 focus:border-bhutan-gold transition-all duration-300;
+  }
+
+  /* Shimmer Gold Effect */
+  .shimmer-gold {
+    @apply relative overflow-hidden;
+  }
+
+  .shimmer-gold::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-bhutan-gold/10 to-transparent translate-x-[-100%] animate-shimmer;
+  }
+
+  /* Text Shadow */
+  .text-shadow {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Parallax Container */
+  .parallax-container {
+    @apply relative overflow-hidden;
+  }
+
+  /* Map Container */
+  .map-container {
+    @apply w-full h-full min-h-[400px] rounded-2xl overflow-hidden shadow-elevated;
+  }
+
+  /* Leaflet Map Customization */
+  .leaflet-container {
+    @apply w-full h-full z-0;
+  }
+
+  .leaflet-popup-content-wrapper {
+    @apply rounded-xl shadow-elevated;
+  }
+
+  .leaflet-popup-content {
+    @apply m-0 p-0;
+  }
+
+  /* Swiper Customization */
+  .swiper-pagination-bullet {
+    @apply w-3 h-3 bg-white/50 transition-all duration-300;
+  }
+
+  .swiper-pagination-bullet-active {
+    @apply bg-bhutan-gold w-8;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    @apply w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg text-bhutan-red transition-all duration-300;
+  }
+
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    @apply bg-white shadow-xl scale-110;
+  }
+
+  .swiper-button-prev::after,
+  .swiper-button-next::after {
+    @apply text-lg font-bold;
+  }
+}
+
+@layer utilities {
+
+  /* Animation Delays */
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
+
+  /* Hide Scrollbar */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Perspective */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  /* Backface Hidden */
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  /* Will Change */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  /* GPU Acceleration */
+  .gpu-accelerate {
+    transform: translateZ(0);
+  }
+}
+
+/* Custom Leaflet Marker */
+.custom-marker {
+  @apply relative;
+}
+
+.custom-marker-icon {
+  @apply w-10 h-10 bg-gradient-to-br from-bhutan-red to-bhutan-gold rounded-full flex items-center justify-center shadow-lg border-2 border-white;
+}
+
+.custom-marker-icon::after {
+  content: '';
+  @apply absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-bhutan-red;
+}
+
+/* Admin Dashboard Styles */
+.admin-sidebar {
+  @apply fixed left-0 top-0 h-full w-64 bg-bhutan-dark border-r border-white/10 z-50;
+}
+
+.admin-content {
+  @apply ml-64 min-h-screen bg-gray-50;
+}
+
+/* Form Validation Styles */
+input:invalid:not(:placeholder-shown),
+textarea:invalid:not(:placeholder-shown) {
+  @apply border-red-500 focus:ring-red-500/50;
+}
+
+input:valid:not(:placeholder-shown),
+textarea:valid:not(:placeholder-shown) {
+  @apply border-green-500 focus:ring-green-500/50;
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+
+  .glass,
+  .glass-dark {
+    @apply bg-white border-black;
+  }
+}
