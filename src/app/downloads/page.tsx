@@ -10,10 +10,8 @@ import {
     ArrowRight,
     Loader2,
     Calendar,
-    ChevronRight
+    ChevronRight,
 } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 
 interface Document {
     _id: string;
@@ -47,7 +45,6 @@ export default function DownloadsPage() {
 
     return (
         <main className="min-h-screen bg-white">
-            <Navbar />
 
             {/* Hero Section */}
             <div className="relative pt-32 pb-20 bg-bhutan-dark overflow-hidden">
@@ -141,9 +138,7 @@ export default function DownloadsPage() {
                                         </div>
 
                                         <a
-                                            href={doc.fileUrl.replace("/upload/", "/upload/fl_attachment/")}
-                                            download={doc.title}
-                                            target="_blank"
+                                            href={`/api/download/${doc._id}`}
                                             className="w-full flex items-center justify-between bg-bhutan-dark hover:bg-bhutan-red text-white p-4 px-6 rounded-2xl transition-all group/btn shadow-lg hover:shadow-bhutan-red/20"
                                         >
                                             <span className="font-bold uppercase tracking-widest text-xs">Download File</span>
@@ -174,7 +169,6 @@ export default function DownloadsPage() {
                 </div>
             </section>
 
-            <Footer />
         </main>
     );
 }

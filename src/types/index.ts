@@ -16,6 +16,8 @@ export interface Property {
   longitude: number;
   featured?: boolean;
   loanAvailable?: boolean;
+  loanAmount?: number;
+  isSold?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -36,6 +38,8 @@ export interface PropertyFormData {
   longitude: number;
   featured?: boolean;
   loanAvailable?: boolean;
+  loanAmount?: number;
+  isSold?: boolean;
 }
 
 // Contact Types

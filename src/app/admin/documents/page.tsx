@@ -45,7 +45,9 @@ export default function DocumentManagement() {
         description: "",
         fileUrl: "",
         fileType: "",
-        fileSize: ""
+        fileSize: "",
+        fileContent: "", // Base64 for documents
+        contentType: ""
     });
 
     useEffect(() => {
@@ -78,6 +80,50 @@ export default function DocumentManagement() {
         if (!file) return;
 
         setUploading(true);
+        const fileName = file.name.toLowerCase();
+        const isPdf = file.type === "application/pdf" || fileName.endsWith(".pdf");
+        const isWord = file.type.includes("word") || fileName.endsWith(".doc") || fileName.endsWith(".docx");
+        const isExcel = file.type.includes("excel") || fileName.endsWith(".xls") || fileName.endsWith(".xlsx");
+        const isTxt = file.type.includes("text/plain") || fileName.endsWith(".txt") || fileName.endsWith(".csv");
+        const isDocument = isPdf || isWord || isExcel || isTxt;
+
+        console.log("[DocumentPage] Handling file upload:", {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            isDocument,
+            isPdf,
+            isTxt
+        });
+
+        if (isDocument) {
+            console.log("[DocumentPage] Detected document, reading as Base64...");
+            // For documents, read as Base64 and store in state (skip Cloudinary)
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64 = (reader.result as string).split(",")[1];
+                console.log("[DocumentPage] Base64 conversion complete. Bytes:", base64.length);
+                setFormData({
+                    ...formData,
+                    fileUrl: "", // No Cloudinary URL for DB storage
+                    fileContent: base64,
+                    contentType: file.type || (isPdf ? "application/pdf" : "application/octet-stream"),
+                    fileType: file.name.split(".").pop()?.toUpperCase() || "FILE",
+                    fileSize: (file.size / (1024 * 1024)).toFixed(2) + " MB"
+                });
+                setUploading(false);
+                toast({ title: "Document Processed", description: "File prepared for database storage." });
+            };
+            reader.onerror = (err) => {
+                console.error("[DocumentPage] FileReader error:", err);
+                setUploading(false);
+                toast({ title: "Read Failed", description: "Could not read document file", variant: "destructive" });
+            };
+            reader.readAsDataURL(file);
+            return;
+        }
+
+        console.log("[DocumentPage] Detected image, uploading to Cloudinary...");
         try {
             const token = localStorage.getItem("adminToken");
             const fd = new FormData();
@@ -90,16 +136,20 @@ export default function DocumentManagement() {
             });
 
             const data = await res.json();
+            console.log("[DocumentPage] Cloudinary response:", data);
             if (data.success) {
                 setFormData({
                     ...formData,
                     fileUrl: data.url,
-                    fileType: file.type.split("/")[1]?.toUpperCase() || "FILE",
+                    fileContent: "", // Not needed for Cloudinary files
+                    contentType: file.type,
+                    fileType: file.type.split("/")[1]?.toUpperCase() || "IMAGE",
                     fileSize: (file.size / (1024 * 1024)).toFixed(2) + " MB"
                 });
-                toast({ title: "File Uploaded", description: "Metadata extracted successfully." });
+                toast({ title: "Image Uploaded", description: "Stored on Cloudinary successfully." });
             } else throw new Error(data.error);
         } catch (error: any) {
+            console.error("[DocumentPage] Cloudinary upload failed:", error);
             toast({ title: "Upload Failed", description: error.message, variant: "destructive" });
         } finally {
             setUploading(false);
@@ -127,8 +177,15 @@ export default function DocumentManagement() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!formData.fileUrl) {
-            toast({ title: "Error", description: "Please upload a file first", variant: "destructive" });
+        console.log("[DocumentSubmit] Starting submission...", { 
+            title: formData.title, 
+            hasUrl: !!formData.fileUrl, 
+            hasContent: !!formData.fileContent,
+            contentType: formData.contentType 
+        });
+
+        if (!formData.fileUrl && !formData.fileContent) {
+            toast({ title: "Error", description: "Please upload a file or document first", variant: "destructive" });
             return;
         }
 
@@ -146,11 +203,15 @@ export default function DocumentManagement() {
             if (data.success) {
                 setDocuments([data.data, ...documents]);
                 setShowUploadModal(false);
-                setFormData({ title: "", description: "", fileUrl: "", fileType: "", fileSize: "" });
+                setFormData({ title: "", description: "", fileUrl: "", fileType: "", fileSize: "", fileContent: "", contentType: "" });
                 toast({ title: "Success", description: "Document published live." });
+            } else {
+                console.error("[DocumentSubmit] Server error:", data.error);
+                throw new Error(data.error || "Failed to save");
             }
-        } catch (error) {
-            toast({ title: "Error", description: "Failed to save document metadata", variant: "destructive" });
+        } catch (error: any) {
+            console.error("[DocumentSubmit] Submission failed:", error);
+            toast({ title: "Error", description: error.message || "Failed to save document", variant: "destructive" });
         }
     };
 
@@ -228,9 +289,8 @@ export default function DocumentManagement() {
                                     <span className="mt-1">{doc.fileType} • {doc.fileSize}</span>
                                 </div>
                                 <a
-                                    href={doc.fileUrl.replace("/upload/", "/upload/fl_attachment/")}
+                                    href={`/api/download/${doc._id}`}
                                     download={doc.title}
-                                    target="_blank"
                                     className="text-bhutan-gold hover:text-bhutan-red transition-colors flex items-center gap-1"
                                 >
                                     <Download className="w-3 h-3" /> View & Download
@@ -294,10 +354,12 @@ export default function DocumentManagement() {
                                             />
                                             {uploading ? (
                                                 <Loader2 className="w-8 h-8 animate-spin text-bhutan-red" />
-                                            ) : formData.fileUrl ? (
+                                            ) : (formData.fileUrl || formData.fileContent) ? (
                                                 <>
                                                     <FileText className="w-10 h-10 text-bhutan-gold mb-2" />
-                                                    <p className="text-sm font-bold text-bhutan-gold truncate max-w-[200px]">File Selected</p>
+                                                    <p className="text-sm font-bold text-bhutan-gold truncate max-w-[200px]">
+                                                        {formData.fileContent ? "Document Ready" : "Image Ready"}
+                                                    </p>
                                                     <p className="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-widest click to change">Click to change</p>
                                                 </>
                                             ) : (
@@ -337,7 +399,7 @@ export default function DocumentManagement() {
                                 <Button
                                     className="w-full h-12 bg-bhutan-dark hover:bg-bhutan-red text-white font-bold rounded-xl transition-all shadow-xl shadow-bhutan-dark/10"
                                     type="submit"
-                                    disabled={loading || uploading || !formData.fileUrl}
+                                    disabled={loading || uploading || (!formData.fileUrl && !formData.fileContent)}
                                 >
                                     Publish Document
                                 </Button>

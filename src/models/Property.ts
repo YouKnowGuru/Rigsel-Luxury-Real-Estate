@@ -16,6 +16,8 @@ export interface IProperty extends Document {
   longitude: number;
   featured: boolean;
   loanAvailable: boolean;
+  loanAmount: number;
+  isSold: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -121,6 +123,14 @@ const PropertySchema: Schema = new Schema(
       default: false,
     },
     loanAvailable: {
+      type: Boolean,
+      default: false,
+    },
+    loanAmount: {
+      type: Number,
+      default: 0,
+    },
+    isSold: {
       type: Boolean,
       default: false,
     },

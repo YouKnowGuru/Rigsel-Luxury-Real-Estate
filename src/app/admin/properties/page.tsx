@@ -97,25 +97,24 @@ export default function AdminProperties() {
     }
   };
 
-  const filteredProperties = properties.filter(
-    (property) => {
-      const matchesSearch = property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        property.location.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesType = selectedType === "all" || property.propertyType === selectedType;
-      return matchesSearch && matchesType;
-    }
-  );
+  const filteredProperties = properties.filter((property) => {
+    const matchesSearch =
+      property.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      property.location.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesType =
+      selectedType === "all" || property.propertyType === selectedType;
+    return matchesSearch && matchesType;
+  });
 
   const getAreaLabel = (typeSlug: string) => {
-    const type = propertyTypes.find(t => t.slug === typeSlug);
+    const type = propertyTypes.find((t) => t.slug === typeSlug);
     if (!type || !type.areaLabel) return "m²";
-    // extract unit from label like "Area (m²)" -> "m²"
     const match = type.areaLabel.match(/\(([^)]+)\)/);
     return match ? match[1] : type.areaLabel;
   };
 
   const getTypeName = (slug: string) => {
-    return propertyTypes.find(t => t.slug === slug)?.name || slug;
+    return propertyTypes.find((t) => t.slug === slug)?.name || slug;
   };
 
   if (isLoading) {
@@ -139,14 +138,17 @@ export default function AdminProperties() {
             className="flex items-center gap-2 mb-2"
           >
             <div className="w-0.5 h-6 bg-bhutan-red rounded-full" />
-            <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">Inventory</p>
+            <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">
+              Inventory
+            </p>
           </motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-3xl md:text-4xl font-bold text-bhutan-dark leading-tight"
           >
-            Property <span className="text-bhutan-gold italic font-light">Listings</span>
+            Property{" "}
+            <span className="text-bhutan-gold italic font-light">Listings</span>
           </motion.h2>
         </div>
 
@@ -180,131 +182,123 @@ export default function AdminProperties() {
           className="h-12 md:h-14 px-5 bg-white rounded-xl border border-white shadow-luxury text-sm font-bold uppercase tracking-wider text-bhutan-dark/60 focus:outline-none focus:ring-2 focus:ring-bhutan-red/10 appearance-none cursor-pointer min-w-[180px]"
         >
           <option value="all">All Property Types</option>
-          {propertyTypes.map(t => (
-            <option key={t._id} value={t.slug}>{t.name}</option>
+          {propertyTypes.map((t) => (
+            <option key={t._id} value={t.slug}>
+              {t.name}
+            </option>
           ))}
         </select>
         <button className="h-12 md:h-14 px-6 bg-white rounded-xl border border-white shadow-luxury text-bhutan-dark/40 hover:text-bhutan-red transition-all flex items-center gap-2.5 hover:border-bhutan-red/10 w-full md:w-auto justify-center group shrink-0">
           <Filter className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
-          <span className="text-xs font-bold uppercase tracking-wider">Refine</span>
+          <span className="text-xs font-bold uppercase tracking-wider">
+            Refine
+          </span>
         </button>
       </div>
 
-      {/* Main Table Content */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white/80 backdrop-blur-xl rounded-[1.5rem] md:rounded-[2rem] shadow-luxury border border-white overflow-hidden relative z-10"
-      >
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-[#F9F7F2]/50 border-b border-bhutan-gold/5">
-                <th className="px-6 py-4 text-left text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
-                  Asset Details
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
-                  Dzongkhag
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
-                  Investment Value
-                </th>
-                <th className="px-6 py-4 text-left text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
-                  Status
-                </th>
-                <th className="px-6 py-4 text-right text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
-                  Protocol
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-bhutan-gold/5">
-              {filteredProperties.map((property, idx) => (
-                <motion.tr
-                  key={property._id}
-                  initial={{ opacity: 0, x: -5 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 * idx }}
-                  className="hover:bg-[#F9F7F2]/30 transition-colors group"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl overflow-hidden shadow-lg border border-white group-hover:scale-105 transition-transform duration-500 shrink-0">
-                        <img
-                          src={property.images[0]}
-                          alt={property.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <h4 className="text-base font-bold text-bhutan-dark truncate leading-tight group-hover:text-bhutan-red transition-colors">
-                          {property.title}
-                        </h4>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-bhutan-dark/30 font-bold uppercase tracking-wider bg-[#F9F7F2] px-2 py-0.5 rounded">
-                            {getTypeName(property.propertyType)}
-                          </span>
-                          <span className="text-xs text-bhutan-dark/30 font-bold uppercase tracking-wider">
-                            {property.area} {getAreaLabel(property.propertyType)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-sm italic text-bhutan-dark/60">
-                    {property.location}
-                  </td>
-                  <td className="px-6 py-4">
-                    <p className="text-base font-bold text-bhutan-dark">
-                      Nu. {property.price?.toLocaleString()}
-                    </p>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className={cn(
-                        "px-3 py-1 rounded-full text-sm font-bold uppercase tracking-wider border transition-all",
-                        property.featured
-                          ? "bg-bhutan-red text-white border-bhutan-red/5 shadow-md shadow-bhutan-red/5"
-                          : "bg-white text-bhutan-dark/30 border-black/5"
-                      )}
-                    >
-                      {property.featured ? "Featured" : "Active"}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <Link href={`/properties/${property._id}`}>
-                        <button className="w-9 h-9 rounded-lg bg-white border border-black/5 flex items-center justify-center text-bhutan-dark/20 hover:bg-bhutan-dark hover:text-white transition-all duration-300 shadow-sm">
-                          <Eye className="w-4 h-4" />
-                        </button>
-                      </Link>
-                      <Link href={`/admin/properties/${property._id}/edit`}>
-                        <button className="w-9 h-9 rounded-lg bg-white border border-black/5 flex items-center justify-center text-bhutan-gold/30 hover:bg-bhutan-gold hover:text-white transition-all duration-300 shadow-sm">
-                          <Edit className="w-4 h-4" />
-                        </button>
-                      </Link>
-                      <button
-                        onClick={() => handleDelete(property._id)}
-                        className="w-9 h-9 rounded-lg bg-white border border-black/5 flex items-center justify-center text-bhutan-red/30 hover:bg-bhutan-red hover:text-white transition-all duration-300 shadow-sm"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
+      {/* Property Cards */}
+      <div className="space-y-4 relative z-10">
         {filteredProperties.length === 0 && (
-          <div className="text-center py-20">
+          <div className="text-center py-20 bg-white/80 backdrop-blur-xl rounded-2xl shadow-luxury border border-white">
             <div className="w-16 h-16 bg-[#F9F7F2] rounded-full flex items-center justify-center mx-auto mb-4">
-              <Building2 className="w-8 h-8 text-bhutan-dark/5" />
+              <Building2 className="w-8 h-8 text-bhutan-dark/10" />
             </div>
-            <p className="text-bhutan-dark/20 text-[8px] font-bold uppercase tracking-[0.3em]">No Assets Found</p>
+            <p className="text-bhutan-dark/20 text-xs font-bold uppercase tracking-[0.3em]">
+              No Assets Found
+            </p>
           </div>
         )}
-      </motion.div>
+
+        {filteredProperties.map((property, idx) => (
+          <motion.div
+            key={property._id}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 * idx }}
+            className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-luxury border border-white overflow-hidden hover:shadow-xl transition-all duration-500 group"
+          >
+            <div className="flex flex-col md:flex-row">
+              {/* Image */}
+              <div className="w-full md:w-48 h-40 md:h-auto shrink-0 overflow-hidden relative">
+                <img
+                  src={property.images?.[0] || "/placeholder.jpg"}
+                  alt={property.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+                {property.isSold && (
+                  <div className="absolute top-3 left-3 px-3 py-1 bg-bhutan-dark text-white text-[10px] font-black uppercase tracking-widest rounded-lg shadow-lg">
+                    Sold
+                  </div>
+                )}
+                {property.featured && !property.isSold && (
+                  <div className="absolute top-3 left-3 px-3 py-1 bg-bhutan-red text-white text-[10px] font-black uppercase tracking-widest rounded-lg shadow-lg">
+                    Featured
+                  </div>
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 p-5 md:p-6 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="text-lg font-bold text-bhutan-dark truncate group-hover:text-bhutan-red transition-colors">
+                        {property.title}
+                      </h3>
+                      <p className="text-sm italic text-bhutan-dark/50 mt-0.5">
+                        {property.location}
+                      </p>
+                    </div>
+                    <p className="text-lg font-bold text-bhutan-dark shrink-0">
+                      Nu. {property.price?.toLocaleString()}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-2 mt-2">
+                    <span className="text-xs text-bhutan-dark/40 font-bold uppercase tracking-wider bg-[#F9F7F2] px-2 py-1 rounded-md">
+                      {getTypeName(property.propertyType)}
+                    </span>
+                    <span className="text-xs text-bhutan-dark/40 font-bold uppercase tracking-wider bg-[#F9F7F2] px-2 py-1 rounded-md">
+                      {property.area} {getAreaLabel(property.propertyType)}
+                    </span>
+                    {property.loanAvailable && (
+                      <span className="text-xs text-bhutan-gold font-bold uppercase tracking-wider bg-bhutan-gold/10 px-2 py-1 rounded-md border border-bhutan-gold/20">
+                        Loan Available
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-3 mt-4 pt-4 border-t border-bhutan-gold/10">
+                  <Link
+                    href={`/admin/properties/${property._id}/edit`}
+                    className="flex-1"
+                  >
+                    <button className="w-full h-11 px-5 rounded-xl bg-bhutan-gold text-white flex items-center justify-center gap-2 hover:bg-bhutan-dark transition-all duration-300 shadow-lg shadow-bhutan-gold/20 group/edit">
+                      <Edit className="w-4 h-4 group-hover/edit:rotate-12 transition-transform" />
+                      <span className="text-xs font-black uppercase tracking-widest">
+                        Edit Property
+                      </span>
+                    </button>
+                  </Link>
+                  <Link href={`/properties/${property._id}`}>
+                    <button className="h-11 w-11 rounded-xl bg-white border border-black/10 flex items-center justify-center text-bhutan-dark/40 hover:bg-bhutan-dark hover:text-white transition-all duration-300">
+                      <Eye className="w-4 h-4" />
+                    </button>
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(property._id)}
+                    className="h-11 w-11 rounded-xl bg-white border border-black/10 flex items-center justify-center text-bhutan-red/40 hover:bg-bhutan-red hover:text-white transition-all duration-300"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }

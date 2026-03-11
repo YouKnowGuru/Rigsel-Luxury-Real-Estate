@@ -236,7 +236,6 @@ export default function PropertyDetailPage() {
                 </SwiperSlide>
               ))}
             </Swiper>
-
             {/* Price Badge Overlay */}
             <div className="absolute bottom-12 left-12 z-20">
               <motion.div
@@ -251,6 +250,19 @@ export default function PropertyDetailPage() {
                 </p>
               </motion.div>
             </div>
+
+            {/* Sold Badge Overlay */}
+            {displayProperty.isSold && (
+              <div className="absolute inset-0 bg-bhutan-dark/40 backdrop-blur-[2px] z-10 flex items-center justify-center p-4">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-bhutan-red text-white px-8 md:px-12 py-3 md:py-4 rounded-3xl md:rounded-[2rem] shadow-2xl border-4 md:border-8 border-white text-xl md:text-4xl font-black uppercase tracking-[0.3em] rotate-[-5deg]"
+                >
+                  Sold Out
+                </motion.div>
+              </div>
+            )}
 
             {/* Type Badge Overlay */}
             <div className="absolute top-8 left-8 z-20 flex gap-4">
@@ -317,6 +329,24 @@ export default function PropertyDetailPage() {
                   <p className="text-[8px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Size (m²)</p>
                 </div>
               </div>
+
+              {displayProperty.loanAvailable && displayProperty.loanAmount !== undefined && displayProperty.loanAmount > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-bhutan-gold/5 border border-bhutan-gold/20 rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
+                >
+                  <div className="space-y-2 text-center md:text-left">
+                    <p className="text-bhutan-gold font-bold text-xs uppercase tracking-[0.3em]">Financial Assistance</p>
+                    <h3 className="text-2xl font-serif font-bold text-bhutan-dark">Loan Support Available</h3>
+                  </div>
+                  <div className="bg-white px-8 py-4 rounded-2xl shadow-sm border border-bhutan-gold/10 text-center">
+                    <p className="text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest mb-1">Loan Amount</p>
+                    <p className="text-2xl font-serif font-bold text-bhutan-red">Nu. {displayProperty.loanAmount.toLocaleString("en-IN")}</p>
+                  </div>
+                </motion.div>
+              )}
 
               {/* Description Section */}
               <div className="space-y-8">

@@ -64,9 +64,11 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
         bathrooms: "",
         area: "",
         featured: false,
-        loanAvailable: false,
         latitude: "",
         longitude: "",
+        loanAvailable: false,
+        loanAmount: "",
+        isSold: false,
     });
     const [description, setDescription] = useState("");
     const [uploadingImages, setUploadingImages] = useState(false);
@@ -117,6 +119,8 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                     area: p.area?.toString() || "",
                     featured: p.featured || false,
                     loanAvailable: p.loanAvailable || false,
+                    loanAmount: p.loanAmount?.toString() || "",
+                    isSold: p.isSold || false,
                     latitude: p.latitude?.toString() || "",
                     longitude: p.longitude?.toString() || "",
                 });
@@ -207,6 +211,8 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                     area: Number(formData.area),
                     latitude: Number(formData.latitude),
                     longitude: Number(formData.longitude),
+                    loanAmount: Number(formData.loanAmount) || 0,
+                    isSold: formData.isSold,
                     features: selectedFeatures,
                     images,
                 }),
@@ -565,6 +571,38 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                         checked={formData.loanAvailable}
                                         onChange={(e) =>
                                             setFormData({ ...formData, loanAvailable: e.target.checked })
+                                        }
+                                        className="w-5 h-5 rounded-lg border-bhutan-gold/20 text-bhutan-red focus:ring-bhutan-red cursor-pointer"
+                                    />
+                                </div>
+
+                                {formData.loanAvailable && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        className="space-y-1.5"
+                                    >
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/30 mb-1">Loan Amount (Nu.)</label>
+                                        <Input
+                                            type="number"
+                                            value={formData.loanAmount}
+                                            onChange={(e) => setFormData({ ...formData, loanAmount: e.target.value })}
+                                            placeholder="e.g. 5000000"
+                                            className="h-10 bg-white/50 border-white text-base rounded-lg"
+                                        />
+                                    </motion.div>
+                                )}
+
+                                <div className="flex items-center justify-between p-4 bg-[#F9F7F2]/50 rounded-2xl border border-transparent hover:border-bhutan-gold/10 transition-all group">
+                                    <div className="flex items-center gap-3">
+                                        <span className="w-4 h-4 text-emerald-500">✓</span>
+                                        <span className="text-xs font-bold uppercase tracking-[0.2em]">Mark as Sold</span>
+                                    </div>
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.isSold}
+                                        onChange={(e) =>
+                                            setFormData({ ...formData, isSold: e.target.checked })
                                         }
                                         className="w-5 h-5 rounded-lg border-bhutan-gold/20 text-bhutan-red focus:ring-bhutan-red cursor-pointer"
                                     />

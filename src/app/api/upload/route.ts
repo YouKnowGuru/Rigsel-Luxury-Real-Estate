@@ -42,22 +42,51 @@ export async function POST(request: NextRequest) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
+        const fileName = file.name.toLowerCase();
+        const fileExt = fileName.split(".").pop() || "";
+        const isPdf = file.type === "application/pdf" || fileExt === "pdf";
+        const isDocument = isPdf || ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "csv"].includes(fileExt);
+        const isImage = !isDocument && (file.type.startsWith("image/") || /\.(jpg|jpeg|png|webp|avif|gif|bmp|tiff)$/.test(fileName));
+
+        // For documents/PDFs use 'raw' — this is the ONLY way to preserve the original file
+        // 'image' and 'auto' cause Cloudinary to rasterize PDFs
+        const finalResourceType = isDocument ? "raw" : (isImage ? "image" : "raw");
+
+        console.log(`[Upload] File: ${file.name}, Type: ${file.type}, Extension: ${fileExt}, isPdf: ${isPdf}, isDocument: ${isDocument}, isImage: ${isImage}, resourceType: ${finalResourceType}`);
+
         // Upload to Cloudinary
         const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
+            const uploadOptions: any = {
+                folder: "phojaa-realestate",
+                resource_type: finalResourceType,
+            };
+
+            // For raw/document uploads, set explicit public_id with extension
+            if (isDocument) {
+                const baseName = file.name.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9_-]/g, "_");
+                uploadOptions.public_id = `${baseName}_${Date.now()}.${fileExt}`;
+            }
+
+            // Only apply image transformations for actual images (not documents)
+            if (isImage) {
+                uploadOptions.transformation = [
+                    { width: 1200, height: 900, crop: "limit" },
+                    { quality: "auto" },
+                    { fetch_format: "auto" },
+                ];
+            }
+
             cloudinary.uploader
                 .upload_stream(
-                    {
-                        folder: "phojaa-realestate",
-                        resource_type: "image",
-                        transformation: [
-                            { width: 1200, height: 900, crop: "limit" },
-                            { quality: "auto" },
-                            { fetch_format: "auto" },
-                        ],
-                    },
+                    uploadOptions,
                     (error, result) => {
-                        if (error) reject(error);
-                        else resolve(result as { secure_url: string });
+                        if (error) {
+                            console.error("[Upload] Cloudinary error:", error);
+                            reject(error);
+                        } else {
+                            console.log(`[Upload] Success: ${(result as any)?.secure_url}`);
+                            resolve(result as { secure_url: string });
+                        }
                     }
                 )
                 .end(buffer);

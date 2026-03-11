@@ -45,6 +45,7 @@ export default function NewPropertyPage() {
     title: "", price: "", location: "", district: "Thimphu",
     bedrooms: "", bathrooms: "", area: "", propertyType: "",
     latitude: "", longitude: "", featured: false, loanAvailable: false,
+    loanAmount: "", isSold: false,
   });
 
   useEffect(() => {
@@ -158,6 +159,8 @@ export default function NewPropertyPage() {
           latitude: Number(formData.latitude) || 27.4712,
           longitude: Number(formData.longitude) || 89.6339,
           images,
+          loanAmount: Number(formData.loanAmount) || 0,
+          isSold: formData.isSold,
           features: selectedFeatures,
           description,
         }),
@@ -395,6 +398,33 @@ export default function NewPropertyPage() {
                   <div>
                     <span className="text-sm font-bold text-bhutan-dark uppercase tracking-widest">Loan Option</span>
                     <p className="text-xs text-bhutan-dark/40">Indicate if property has a loan option available</p>
+                  </div>
+                </label>
+
+                {formData.loanAvailable && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="space-y-1.5"
+                  >
+                    <label className={labelCls}>Loan Amount (Nu.)</label>
+                    <Input
+                      type="number"
+                      value={formData.loanAmount}
+                      onChange={(e) => setFormData({ ...formData, loanAmount: e.target.value })}
+                      placeholder="e.g. 5000000"
+                      className={inputCls}
+                    />
+                  </motion.div>
+                )}
+
+                <label className="flex items-center gap-3 p-3 bg-[#F9F7F2] rounded-xl cursor-pointer hover:bg-bhutan-gold/5 transition-colors border border-transparent hover:border-bhutan-gold/20">
+                  <input type="checkbox" checked={formData.isSold}
+                    onChange={(e) => setFormData({ ...formData, isSold: e.target.checked })}
+                    className="w-4 h-4 rounded text-bhutan-red focus:ring-bhutan-red cursor-pointer" />
+                  <div>
+                    <span className="text-sm font-bold text-bhutan-dark uppercase tracking-widest">Mark as Sold</span>
+                    <p className="text-xs text-bhutan-dark/40">Displays "SOLD" badge in frontend</p>
                   </div>
                 </label>
               </div>

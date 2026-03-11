@@ -129,7 +129,12 @@ function PropertyCard({ property }: { property: Property }) {
         </button>
 
         {/* Price Tag Overlay */}
-        <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4">
+        <div className="absolute bottom-3 left-3 md:bottom-4 md:left-4 flex flex-col gap-2">
+          {property.isSold && (
+            <div className="px-3 py-1 bg-bhutan-red text-white font-bold text-[10px] md:text-xs rounded-lg shadow-lg uppercase tracking-widest w-fit animate-pulse">
+              Sold Out
+            </div>
+          )}
           <div className="px-3 py-1.5 md:px-5 md:py-2.5 bg-white/95 backdrop-blur-md text-bhutan-gold font-serif font-bold text-sm md:text-lg rounded-lg md:rounded-xl shadow-lg border border-bhutan-gold/20 flex items-center shadow-[0_4px_15px_rgba(244,196,48,0.2)]">
             {formatPrice(property.price)}
           </div>
@@ -141,10 +146,17 @@ function PropertyCard({ property }: { property: Property }) {
           {property.title}
         </h3>
 
-        <div className="flex items-center gap-2 text-gray-500 mb-6 pb-6 border-b border-gray-100">
+        <div className="flex items-center gap-2 text-gray-500 mb-4 pb-4 border-b border-gray-100">
           <MapPin className="w-4 h-4 text-bhutan-gold" />
           <span className="text-sm tracking-wide truncate">{property.location}</span>
         </div>
+
+        {property.loanAvailable && property.loanAmount !== undefined && property.loanAmount > 0 && (
+          <div className="mb-4 px-4 py-2 bg-bhutan-gold/5 rounded-xl border border-bhutan-gold/10 flex items-center justify-between">
+            <span className="text-[10px] font-bold text-bhutan-gold uppercase tracking-widest">Loan Option</span>
+            <span className="text-xs font-bold text-bhutan-dark">Nu. {property.loanAmount.toLocaleString("en-IN")}</span>
+          </div>
+        )}
 
         {/* Stats Grid */}
         <div className="grid grid-cols-3 gap-1 md:gap-2 mb-8">
