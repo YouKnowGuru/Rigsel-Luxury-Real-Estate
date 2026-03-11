@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useSettings } from "@/context/SettingsContext";
 
 interface LogoProps {
     className?: string;
@@ -12,6 +13,7 @@ interface LogoProps {
 }
 
 export function Logo({ className, size = "md", showText = false, dark = false }: LogoProps) {
+    const { settings } = useSettings();
     const sizes = {
         sm: "w-8 h-8",
         md: "w-10 h-10",
@@ -59,7 +61,10 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
                         size === "sm" ? "text-sm" : size === "md" ? "text-lg" : "text-2xl",
                         dark ? "text-white" : "text-bhutan-dark"
                     )}>
-                        Phojaa<span className="text-bhutan-red ml-0.5">Real Estate</span>
+                        {settings.siteName.split(" ")[0]}
+                        <span className="text-bhutan-red ml-0.5">
+                            {settings.siteName.split(" ").slice(1).join(" ")}
+                        </span>
                     </h1>
                     <p className={cn(
                         "font-bold uppercase tracking-[0.2em]",

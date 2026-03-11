@@ -3,6 +3,7 @@ import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
+import { SettingsProvider } from "@/context/SettingsContext";
 
 export const metadata: Metadata = {
   title: "Phojaa Real Estate | Trusted Properties in Bhutan",
@@ -120,10 +121,12 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-white antialiased" suppressHydrationWarning>
-        <Navbar />
-        <main className="relative">{children}</main>
-        <Footer />
-        <Toaster />
+        <SettingsProvider>
+          <Navbar />
+          <main className="relative">{children}</main>
+          <Footer />
+          <Toaster />
+        </SettingsProvider>
       </body>
     </html>
   );

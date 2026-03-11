@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Home, Building2, Calculator, Info, Mail, Settings, Newspaper, Image as ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
+import { useSettings } from "@/context/SettingsContext";
 
 const navItems = [
   { name: "Home", href: "/", icon: Home },
@@ -22,6 +23,7 @@ const navItems = [
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { settings } = useSettings();
   const pathname = usePathname();
   const isAdminPage = pathname.startsWith("/admin");
 
@@ -115,7 +117,7 @@ export function Navbar() {
                 </div>
                 <div className="text-left hidden xl:block">
                   <p className={cn("text-[9px] uppercase font-bold tracking-widest mb-0.5", isScrolled ? "text-bhutan-dark/50" : "text-white/60")}>Call Us</p>
-                  <p className={cn("text-xs font-bold font-serif tracking-widest", isScrolled ? "text-bhutan-dark" : "text-white")}>1611 1999</p>
+                  <p className={cn("text-xs font-bold font-serif tracking-widest", isScrolled ? "text-bhutan-dark" : "text-white")}>{settings.phone}</p>
                 </div>
               </div>
 
@@ -178,7 +180,7 @@ export function Navbar() {
                   <Phone className="w-5 h-5" />
                 </div>
                 <p className="text-[10px] text-bhutan-gold/80 font-bold uppercase tracking-widest relative z-10 mb-1">Call Us Immediately</p>
-                <p className="text-xl text-white font-serif font-bold tracking-widest relative z-10">+975 1611 1999</p>
+                <p className="text-xl text-white font-serif font-bold tracking-widest relative z-10">{settings.phone}</p>
               </div>
             </div>
           </motion.div>
