@@ -2,15 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight, Quote, Heart, Loader2 } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Quote, Heart, Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Testimonial } from "@/types";
+import { ReviewForm } from "@/components/ReviewForm";
 
 export function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -119,7 +121,7 @@ export function Testimonials() {
                       ))}
                     </div>
 
-                    <blockquote className="text-lg md:text-2xl lg:text-3xl text-bhutan-dark font-serif font-bold italic mb-8 md:mb-16 leading-relaxed md:leading-tight max-w-4xl px-4 md:px-0">
+                    <blockquote className="text-xl md:text-3xl lg:text-4xl text-bhutan-dark font-serif font-bold italic mb-8 md:mb-16 leading-relaxed md:leading-tight max-w-4xl px-4 md:px-0">
                       "{testimonials[currentIndex].content}"
                     </blockquote>
                     <div className="flex flex-col items-center">
@@ -183,8 +185,30 @@ export function Testimonials() {
               </div>
             </div>
           </div>
+
+          {/* Share Your Story Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="mt-24 text-center"
+          >
+            <p className="text-bhutan-dark/40 text-[10px] font-bold uppercase tracking-[0.3em] mb-6">Have your own experience to share?</p>
+            <Button
+              onClick={() => setIsReviewFormOpen(true)}
+              className="h-16 px-10 bg-bhutan-dark text-white rounded-2xl hover:bg-bhutan-red transition-all duration-500 group shadow-2xl"
+            >
+              <Plus className="w-5 h-5 mr-3 group-hover:rotate-90 transition-transform duration-500" />
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Share Your Story</span>
+            </Button>
+          </motion.div>
         </div>
       </div>
+
+      <ReviewForm
+        isOpen={isReviewFormOpen}
+        onClose={() => setIsReviewFormOpen(false)}
+      />
     </section>
   );
 }
