@@ -91,7 +91,10 @@ export interface Testimonial {
   role: string;
   content: string;
   avatar: string;
+  location: string;
   rating: number;
+  isApproved?: boolean;
+  createdAt: string;
 }
 
 // Category Types

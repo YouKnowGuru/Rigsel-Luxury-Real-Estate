@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+    Star,
     LayoutDashboard,
     Building2,
     MessageSquare,
@@ -29,6 +30,7 @@ const sidebarItems = [
     { name: "Properties", href: "/admin/properties", icon: Building2 },
     { name: "Add Property", href: "/admin/properties/new", icon: Plus },
     { name: "Messages", href: "/admin/inquiries", icon: MessageSquare, badgeKey: "unread" },
+    { name: "Reviews", href: "/admin/reviews", icon: Star },
     { name: "Blogs", href: "/admin/blogs", icon: Newspaper },
     { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
     { name: "Land Calculator", href: "/admin/land-calculator", icon: Calculator },

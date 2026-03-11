@@ -1,63 +1,57 @@
-"use client";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight, Quote, Heart } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Quote, Heart, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const testimonials = [
-  {
-    id: 1,
-    name: "Karma Dorji",
-    role: "Happy Father",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150",
-    content:
-      "Phojaa helped us find a beautiful home in Thimphu. The team was very kind and helped us with everything. We are very happy with our new house!",
-    rating: 5,
-    location: "Thimphu",
-  },
-  {
-    id: 2,
-    name: "Pema Wangmo",
-    role: "Local Shop Owner",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150",
-    content:
-      "I was looking for a good place for my shop. Phojaa found the perfect spot in Paro. They are very honest and professional. I trust them completely.",
-    rating: 5,
-    location: "Paro",
-  },
-  {
-    id: 3,
-    name: "Tandin Tshering",
-    role: "Retired Teacher",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150",
-    content:
-      "This was my first time buying a house. I had many questions, and the team explained everything in simple words. Now my family has a wonderful home.",
-    rating: 5,
-    location: "Punakha",
-  },
-  {
-    id: 4,
-    name: "Sonam Choden",
-    role: "Wife & Mother",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150",
-    content:
-      "Great service! They understood exactly what I needed for my business. The whole process was very smooth and easy. Thank you to the whole team.",
-    rating: 5,
-    location: "Phuntsholing",
-  },
-];
+import { Testimonial } from "@/types";
 
 export function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch("/api/reviews");
+        const data = await response.json();
+        if (data.success) {
+          setTestimonials(data.data);
+        } else {
+          setError(data.error || "Failed to fetch reviews");
+        }
+      } catch (err) {
+        setError("An error occurred while fetching reviews");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchReviews();
+  }, []);
 
   const nextTestimonial = () => {
+    if (testimonials.length <= 1) return;
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   };
 
   const prevTestimonial = () => {
+    if (testimonials.length <= 1) return;
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
+
+  if (isLoading) {
+    return (
+      <div className="py-24 flex flex-col items-center justify-center bg-white min-h-[400px]">
+        <Loader2 className="w-12 h-12 text-bhutan-red animate-spin mb-4" />
+        <p className="text-bhutan-dark/40 font-serif italic text-lg text-center px-6">Loading stories of happiness...</p>
+      </div>
+    );
+  }
+
+  if (error || testimonials.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-24 md:py-32 bg-white relative overflow-hidden">
