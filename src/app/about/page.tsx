@@ -310,29 +310,45 @@ export default function AboutPage() {
             ].map((member) => (
               <motion.div
                 key={member.name}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="flex flex-col sm:flex-row items-center gap-5 md:gap-8 bg-[#F9F7F2] p-4 md:p-8 rounded-xl md:rounded-2xl border border-bhutan-gold/10 hover:shadow-lg transition-all group"
+                className="flex flex-col lg:flex-row items-center gap-8 md:gap-12 bg-white/50 backdrop-blur-sm p-6 md:p-10 rounded-3xl md:rounded-[2rem] border border-bhutan-gold/10 hover:border-bhutan-gold/30 hover:shadow-2xl hover:shadow-bhutan-gold/5 transition-all duration-700 group relative overflow-hidden"
               >
-                <div className="w-28 h-28 md:w-44 md:h-44 flex-shrink-0 rounded-xl md:rounded-2xl overflow-hidden relative">
+                {/* Decorative Background Pattern */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-bhutan-gold/5 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-bhutan-red/5 transition-colors duration-700" />
+
+                <div className="w-40 h-40 sm:w-56 sm:h-56 md:w-72 md:h-72 flex-shrink-0 rounded-2xl md:rounded-3xl overflow-hidden relative ring-1 ring-bhutan-gold/20 ring-offset-4 ring-offset-[#F9F7F2] group-hover:ring-bhutan-red/30 transition-all duration-700">
                   <NextImage
                     src={member.image}
                     alt={member.name}
                     fill
-                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 </div>
-                <div className="flex-1 text-center sm:text-left space-y-2 md:space-y-3">
-                  <p className="text-bhutan-gold text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em]">{member.role}</p>
-                  <h3 className="font-serif text-lg md:text-2xl font-bold text-bhutan-dark">{member.name}</h3>
-                  <div className="h-px w-10 bg-bhutan-gold/20 mx-auto sm:mx-0" />
-                  <p className="text-bhutan-dark/60 text-xs md:text-sm leading-relaxed font-light">
+
+                <div className="flex-1 text-center lg:text-left space-y-4 md:space-y-6 relative z-10">
+                  <div className="space-y-2">
+                    <p className="inline-block px-3 py-1 rounded-full bg-bhutan-gold/10 text-bhutan-gold-dark text-[10px] md:text-[11px] font-bold uppercase tracking-[0.25em]">
+                      {member.role}
+                    </p>
+                    <h3 className="font-serif text-2xl md:text-4xl font-bold text-bhutan-dark group-hover:text-bhutan-red transition-colors duration-500">
+                      {member.name}
+                    </h3>
+                    <div className="h-0.5 w-12 bg-bhutan-gold/30 mx-auto lg:mx-0 group-hover:w-24 group-hover:bg-bhutan-red/40 transition-all duration-500" />
+                  </div>
+
+                  <p className="text-bhutan-dark/70 text-sm md:text-lg leading-relaxed font-light max-w-2xl">
                     {member.desc}
                   </p>
-                  <p className="text-bhutan-red text-sm md:text-base italic font-serif font-semibold pt-1">
-                    &ldquo;{member.quote}&rdquo;
-                  </p>
+
+                  <div className="relative pt-4">
+                    <span className="absolute -top-2 -left-4 text-4xl md:text-6xl text-bhutan-gold/10 font-serif leading-none">&ldquo;</span>
+                    <p className="text-bhutan-red text-base md:text-xl italic font-serif font-medium pl-2">
+                      {member.quote}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             ))}
