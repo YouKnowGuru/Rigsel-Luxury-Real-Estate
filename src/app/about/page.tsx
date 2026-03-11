@@ -296,14 +296,14 @@ export default function AboutPage() {
               {
                 name: "Jigme Rabgay",
                 role: "Proprietor",
-                image: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=600",
+                image: "/image/jime rabgay.jpg",
                 desc: "Jigme Rabgay is the founder and driving force behind Phojaa Real Estate. With a strong vision for connecting buyers and sellers, he brings extensive knowledge of the property market and a deep commitment to transparency and trust. He combines a solid background in construction with exposure to advanced architectural and interior design concepts from countries such as Australia, Vietnam, Singapore, and Thailand.",
                 quote: "Building trust, one property at a time, with fairness at the core of every deal.",
               },
               {
                 name: "Dorji Wangchuk",
                 role: "General Manager (GM)",
-                image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600",
+                image: "/image/dorji wangchuk.jpg",
                 desc: "Dorji Wangchuk manages the daily operations of Phojaa Real Estate, ensuring smooth and efficient property transactions. With expertise in client relations and real estate management, he is dedicated to providing personalized support while maintaining the highest standards of professionalism.",
                 quote: "Turning property dreams into reality with clarity and care.",
               },
@@ -315,11 +315,12 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 className="flex flex-col sm:flex-row items-center gap-5 md:gap-8 bg-[#F9F7F2] p-4 md:p-8 rounded-xl md:rounded-2xl border border-bhutan-gold/10 hover:shadow-lg transition-all group"
               >
-                <div className="w-28 h-28 md:w-44 md:h-44 flex-shrink-0 rounded-xl md:rounded-2xl overflow-hidden">
-                  <img
+                <div className="w-28 h-28 md:w-44 md:h-44 flex-shrink-0 rounded-xl md:rounded-2xl overflow-hidden relative">
+                  <NextImage
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    fill
+                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                   />
                 </div>
                 <div className="flex-1 text-center sm:text-left space-y-2 md:space-y-3">
