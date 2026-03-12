@@ -24,7 +24,6 @@ const districts = [
   "Samdrup Jongkhar",
   "Samtse",
   "Sarpang",
-  "Thimphu",
   "Trashigang",
   "Trashi Yangtse",
   "Trongsa",

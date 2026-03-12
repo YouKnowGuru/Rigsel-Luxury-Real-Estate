@@ -16,14 +16,6 @@ const LeafletMap = dynamic(() => import("./LeafletMap"), {
 
 const locations = [
   {
-    id: "thimphu",
-    name: "Thimphu",
-    lat: 27.4712,
-    lng: 89.6339,
-    properties: 245,
-    description: "Capital city with modern amenities",
-  },
-  {
     id: "paro",
     name: "Paro",
     lat: 27.4289,

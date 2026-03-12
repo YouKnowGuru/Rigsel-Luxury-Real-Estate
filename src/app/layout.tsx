@@ -110,8 +110,8 @@ export default function RootLayout({
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "Main Street",
-                addressLocality: "Thimphu",
-                addressRegion: "Thimphu",
+                addressLocality: "Paro",
+                addressRegion: "Paro",
                 addressCountry: "BT",
               },
               telephone: "+975-16111999",

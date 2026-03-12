@@ -34,7 +34,6 @@ const companyLinks = [
 ];
 
 const locations = [
-  { name: "Thimphu", href: "/properties?district=Thimphu" },
   { name: "Paro", href: "/properties?district=Paro" },
   { name: "Punakha", href: "/properties?district=Punakha" },
   { name: "Phuntsholing", href: "/properties?district=Phuntsholing" },

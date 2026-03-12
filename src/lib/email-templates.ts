@@ -97,7 +97,7 @@ export const getUserAutoReplyEmail = (name: string) => `
         </div>
         <div class="footer">
             <p>&copy; ${new Date().getFullYear()} Phojaa Real Estate. All rights reserved.</p>
-            <p>Thimphu, Kingdom of <span class="bhutan-accent">Bhutan</span></p>
+            <p>Paro, Kingdom of <span class="bhutan-accent">Bhutan</span></p>
         </div>
     </div>
 </body>

@@ -23,8 +23,8 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Visit Us",
-    content: "Thimphu, Bhutan",
-    subContent: "Near City Center",
+    content: "Paro, Bhutan",
+    subContent: "Below Revenue and Customs Office (RRCO), Taju",
   },
   {
     icon: Phone,
@@ -310,7 +310,7 @@ export default function ContactPage() {
               scrolling="no"
               marginHeight={0}
               marginWidth={0}
-              src="https://maps.google.com/maps?q=Thimphu,Bhutan&z=15&output=embed"
+              src="https://maps.google.com/maps?q=Paro,Bhutan&z=15&output=embed"
               className="grayscale-[0.6] group-hover:grayscale-0 transition-all duration-2000"
             />
             {/* Overlay Map Label */}
@@ -321,7 +321,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="font-serif text-2xl font-bold italic">Our Home</h4>
-                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Thimphu, Bhutan</p>
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Paro, Bhutan</p>
                 </div>
               </div>
             </div>

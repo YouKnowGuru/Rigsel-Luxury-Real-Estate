@@ -18,7 +18,7 @@ const DEFAULT_SETTINGS: SiteSettings = {
     siteName: "Phojaa95Real Estate",
     phone: "+975 16 111 999",
     email: "phojaa95realestate@gmail.com",
-    address: "Norzin Lam, Thimphu, Bhutan",
+    address: "Paro Bhutan, Below Revenue and Customs Office (RRCO), Taju",
     facebook: "https://www.facebook.com/share/1b2Fk7oC9q/ 2",
     instagram: "https://tiktok.com/@phojaa95realestate",
     whatsapp: "+975 16 111 999",
