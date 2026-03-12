@@ -48,8 +48,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const hashed = await bcrypt.hash(newPassword, 12);
-        admin.password = hashed;
+        admin.password = newPassword;
         await admin.save();
 
         return NextResponse.json({ success: true, message: "Password updated successfully" });
