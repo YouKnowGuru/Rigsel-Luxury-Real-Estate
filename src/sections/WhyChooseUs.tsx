@@ -39,7 +39,7 @@ const features = [
 
 export function WhyChooseUs() {
   return (
-    <section className="section-padding bg-gray-50 relative overflow-hidden">
+    <section className="section-padding bg-gray-50 dark:bg-[#0C0D0F] relative overflow-hidden">
       {/* Decorative Gold Line */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-bhutan-gold/20 to-transparent" />
 
@@ -52,7 +52,7 @@ export function WhyChooseUs() {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="inline-block px-6 py-2 rounded-full bg-bhutan-red/5 border border-bhutan-red/10 text-bhutan-red text-xs font-bold uppercase tracking-widest mb-6"
+            className="inline-block px-6 py-2 rounded-full bg-bhutan-red/5 dark:bg-bhutan-red/10 border border-bhutan-red/10 text-bhutan-red text-xs font-bold uppercase tracking-widest mb-6"
           >
             Why Choose Phojaa
           </motion.div>
@@ -62,7 +62,7 @@ export function WhyChooseUs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.1 }}
-            className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-bhutan-dark mb-4 md:mb-6"
+            className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-bhutan-dark dark:text-white mb-4 md:mb-6"
           >
             We Help You Find <br />
             <span className="text-bhutan-red italic font-light">Your Dream Home</span>
@@ -73,7 +73,7 @@ export function WhyChooseUs() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-bhutan-dark/60 max-w-2xl mx-auto text-lg"
+            className="text-bhutan-dark/60 dark:text-white/50 max-w-2xl mx-auto text-lg"
           >
             Buying property is an important journey. We make it easy, safe, and exciting for everyone in Bhutan.
           </motion.p>
@@ -88,7 +88,7 @@ export function WhyChooseUs() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group bg-white p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border border-bhutan-gold/10 hover:border-bhutan-gold/40 shadow-sm hover:shadow-2xl transition-all duration-500 relative overflow-hidden"
+              className="group bg-white dark:bg-[#1B1E23] p-6 md:p-8 rounded-[1.5rem] md:rounded-[2rem] border border-bhutan-gold/10 hover:border-bhutan-gold/40 shadow-sm dark:shadow-lg dark:shadow-black/20 hover:shadow-2xl transition-all duration-500 relative overflow-hidden"
             >
               {/* Pattern Background Hover */}
               <div className="absolute inset-0 bg-thangka opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 pointer-events-none" />
@@ -98,11 +98,11 @@ export function WhyChooseUs() {
                   <feature.icon className="w-6 h-6 md:w-8 md:h-8 text-bhutan-red group-hover:text-white transition-colors" />
                 </div>
 
-                <h3 className="font-serif text-xl md:text-2xl font-bold text-bhutan-dark mb-4 group-hover:text-bhutan-red transition-colors">
+                <h3 className="font-serif text-xl md:text-2xl font-bold text-bhutan-dark dark:text-white mb-4 group-hover:text-bhutan-red transition-colors">
                   {feature.title}
                 </h3>
 
-                <p className="text-bhutan-dark/60 leading-relaxed mb-6">
+                <p className="text-bhutan-dark/60 dark:text-white/50 leading-relaxed mb-6">
                   {feature.description}
                 </p>
 

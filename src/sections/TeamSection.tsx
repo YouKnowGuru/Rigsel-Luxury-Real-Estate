@@ -53,9 +53,9 @@ export function TeamSection() {
     }, []);
 
     return (
-        <section className="py-12 md:py-24 bg-white relative overflow-hidden">
+        <section className="py-12 md:py-24 bg-white dark:bg-[#111214] relative overflow-hidden">
             {/* Decorative background */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-[#F9F7F2]/30 -skew-x-12 transform translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-1/3 h-full bg-[#F9F7F2]/30 dark:bg-white/[0.02] -skew-x-12 transform translate-x-1/2" />
 
             <div className="w-full max-w-6xl mx-auto px-4 md:px-6 relative z-10">
                 <motion.div
@@ -64,10 +64,10 @@ export function TeamSection() {
                     viewport={{ once: true }}
                     className="text-center mb-12 md:mb-20"
                 >
-                    <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
+                    <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 dark:bg-bhutan-red/15 border border-bhutan-red/20 text-bhutan-red text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
                         Our Leaders
                     </div>
-                    <h2 className="font-serif text-3xl md:text-5xl font-bold text-bhutan-dark mb-4">
+                    <h2 className="font-serif text-3xl md:text-5xl font-bold text-bhutan-dark dark:text-white mb-4">
                         Meet the <span className="text-bhutan-red italic font-light">Team</span>
                     </h2>
                     <div className="w-24 h-1 bg-bhutan-gold/30 mx-auto rounded-full" />
@@ -81,10 +81,10 @@ export function TeamSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: idx * 0.1 }}
-                            className="flex flex-col lg:flex-row items-center gap-8 md:gap-16 bg-white/50 backdrop-blur-sm p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-bhutan-gold/10 hover:border-bhutan-gold/40 hover:shadow-2xl hover:shadow-bhutan-gold/5 transition-all duration-700 group relative overflow-hidden"
+                            className="flex flex-col lg:flex-row items-center gap-8 md:gap-16 bg-white/50 dark:bg-white/5 backdrop-blur-sm p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-bhutan-gold/10 hover:border-bhutan-gold/40 hover:shadow-2xl hover:shadow-bhutan-gold/5 transition-all duration-700 group relative overflow-hidden"
                         >
                             {/* Image Column */}
-                            <div className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 flex-shrink-0 rounded-3xl overflow-hidden relative ring-1 ring-bhutan-gold/20 ring-offset-8 ring-offset-[#F9F7F2] group-hover:ring-bhutan-red/30 transition-all duration-700 shadow-xl">
+                            <div className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 flex-shrink-0 rounded-3xl overflow-hidden relative ring-1 ring-bhutan-gold/20 ring-offset-8 ring-offset-[#F9F7F2] dark:ring-offset-[#111214] group-hover:ring-bhutan-red/30 transition-all duration-700 shadow-xl">
                                 <NextImage
                                     src={member.image}
                                     alt={member.name}
@@ -103,12 +103,12 @@ export function TeamSection() {
                                             {member.role}
                                         </p>
                                     </div>
-                                    <h3 className="font-serif text-3xl md:text-5xl font-bold text-bhutan-dark group-hover:text-bhutan-red transition-colors duration-500 tracking-tight">
+                                    <h3 className="font-serif text-3xl md:text-5xl font-bold text-bhutan-dark dark:text-white group-hover:text-bhutan-red transition-colors duration-500 tracking-tight">
                                         {member.name}
                                     </h3>
                                 </div>
 
-                                <p className="text-bhutan-dark/70 text-base md:text-xl leading-relaxed font-light max-w-2xl">
+                                <p className="text-bhutan-dark/70 dark:text-white/60 text-base md:text-xl leading-relaxed font-light max-w-2xl">
                                     {member.desc}
                                 </p>
 

@@ -45,7 +45,7 @@ const categories = [
 
 export function PropertyCategories() {
   return (
-    <section className="section-padding bg-white relative overflow-hidden">
+    <section className="section-padding bg-white dark:bg-[#111214] relative overflow-hidden">
       {/* Decorative Divider */}
       <div className="absolute top-0 left-0 right-0 flex justify-center py-4">
         <span className="text-bhutan-gold/40 tracking-widest text-lg font-serif">────────── ✦ ──────────</span>
@@ -59,7 +59,7 @@ export function PropertyCategories() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark mb-4"
+            className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark dark:text-white mb-4"
           >
             Browse By Property Type
           </motion.h2>
@@ -81,7 +81,7 @@ export function PropertyCategories() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative group overflow-hidden rounded-2xl md:rounded-[2rem] shadow-soft hover:shadow-2xl transition-all duration-500 bg-white"
+              className="relative group overflow-hidden rounded-2xl md:rounded-[2rem] shadow-soft dark:shadow-lg dark:shadow-black/20 hover:shadow-2xl transition-all duration-500 bg-white dark:bg-[#1B1E23]"
             >
               <Link href={`/properties?type=${category.id}`} className="block w-full h-40 md:h-64 lg:h-80 relative">
                 {/* Background Image */}

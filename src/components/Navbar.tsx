@@ -8,6 +8,7 @@ import { Menu, X, Phone, Home, Building2, Calculator, Info, Mail, Settings, News
 import { cn } from "@/lib/utils";
 import { Logo } from "./Logo";
 import { useSettings } from "@/context/SettingsContext";
+import { ThemeToggle } from "./ThemeToggle";
 
 const navItems = [
   { name: "Home", href: "/", icon: Home },
@@ -52,7 +53,7 @@ export function Navbar() {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
           isScrolled
-            ? "bg-white shadow-md border-b-2 border-bhutan-gold/80 py-4"
+            ? "bg-white dark:bg-[#1A1C1E] shadow-md dark:shadow-xl dark:shadow-black/20 border-b-2 border-bhutan-gold/80 py-4"
             : "bg-white/10 backdrop-blur-md border-b border-white/20 py-6"
         )}
       >
@@ -84,7 +85,7 @@ export function Navbar() {
                     href={item.href}
                     className={cn(
                       "group relative py-2",
-                      (item.name === "Admin" || item.name === "Gallery" || item.name === "Blogs") && "hidden xl:block" // Hide less critical items on smaller desktops
+                      (item.name === "Admin" || item.name === "Gallery" || item.name === "Blogs") && "hidden xl:block"
                     )}
                   >
                     <span
@@ -92,7 +93,7 @@ export function Navbar() {
                         "text-[9px] xl:text-[11px] font-bold uppercase tracking-[0.05em] xl:tracking-[0.15em] transition-colors duration-300 relative z-10",
                         pathname === item.href
                           ? (isScrolled ? "text-bhutan-red" : "text-white")
-                          : (isScrolled ? "text-bhutan-dark hover:text-bhutan-red" : "text-white/70 hover:text-white")
+                          : (isScrolled ? "text-bhutan-dark dark:text-white/80 hover:text-bhutan-red dark:hover:text-bhutan-red" : "text-white/70 hover:text-white")
                       )}
                     >
                       {item.name}
@@ -117,9 +118,9 @@ export function Navbar() {
               </div>
             </div>
 
-            {/* Right Section (Contact/Mobile) */}
+            {/* Right Section (Contact/Theme/Mobile) */}
             <div className="flex items-center gap-2 xl:gap-6 relative z-10 flex-shrink-0">
-              <div className="hidden md:flex items-center gap-1.5 xl:gap-3 group cursor-pointer pr-1 xl:pr-4 border-r border-white/20">
+              <div className="hidden md:flex items-center gap-1.5 xl:gap-3 group cursor-pointer pr-1 xl:pr-4 border-r border-white/20 dark:border-white/10">
                 <div className={cn(
                   "w-7 h-7 xl:w-10 xl:h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm",
                   isScrolled ? "bg-bhutan-red/10 text-bhutan-red group-hover:bg-bhutan-red group-hover:text-white" : "bg-white/10 text-white group-hover:bg-white group-hover:text-bhutan-red"
@@ -127,10 +128,13 @@ export function Navbar() {
                   <Phone className="w-3 h-3 xl:w-4 xl:h-4" />
                 </div>
                 <div className="text-left hidden lg:block">
-                  <p className={cn("text-[7px] uppercase font-bold tracking-widest mb-0.5", isScrolled ? "text-bhutan-dark/50" : "text-white/60")}>Call Us</p>
-                  <p className={cn("text-[9px] xl:text-xs font-bold font-serif tracking-widest", isScrolled ? "text-bhutan-dark" : "text-white")}>{settings.phone}</p>
+                  <p className={cn("text-[7px] uppercase font-bold tracking-widest mb-0.5", isScrolled ? "text-bhutan-dark/50 dark:text-white/40" : "text-white/60")}>Call Us</p>
+                  <p className={cn("text-[9px] xl:text-xs font-bold font-serif tracking-widest", isScrolled ? "text-bhutan-dark dark:text-white" : "text-white")}>{settings.phone}</p>
                 </div>
               </div>
+
+              {/* Theme Toggle */}
+              <ThemeToggle isScrolled={isScrolled} />
 
               {/* Mobile Toggle */}
               <button
@@ -138,7 +142,7 @@ export function Navbar() {
                 className={cn(
                   "lg:hidden w-10 h-10 rounded-lg flex items-center justify-center border transition-colors shadow-sm relative z-50",
                   isScrolled
-                    ? "bg-gray-50 text-bhutan-dark border-gray-200 hover:bg-gray-100"
+                    ? "bg-gray-50 dark:bg-white/10 text-bhutan-dark dark:text-white border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/20"
                     : "bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-md"
                 )}
                 aria-label="Toggle Menu"
@@ -158,10 +162,10 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="fixed inset-x-0 top-16 md:top-20 z-[45] bg-white border-b-4 border-bhutan-gold shadow-2xl lg:hidden overflow-hidden origin-top"
+            className="fixed inset-x-0 top-16 md:top-20 z-[45] bg-white dark:bg-[#1A1C1E] border-b-4 border-bhutan-gold shadow-2xl lg:hidden overflow-hidden origin-top"
           >
             <div className="p-6 overflow-y-auto max-h-[calc(100vh-70px)] bg-thangka bg-[length:50px_50px]">
-              <div className="space-y-1 bg-white/95 backdrop-blur-md rounded-2xl p-4 shadow-soft border border-gray-100">
+              <div className="space-y-1 bg-white/95 dark:bg-white/5 backdrop-blur-md rounded-2xl p-4 shadow-soft border border-gray-100 dark:border-white/10">
                 {navItems.map((item, i) => (
                   <motion.div
                     key={item.name}
@@ -175,7 +179,7 @@ export function Navbar() {
                         "flex items-center gap-4 p-4 rounded-xl text-sm uppercase tracking-widest font-bold transition-all duration-300",
                         pathname === item.href
                           ? "bg-bhutan-red/5 text-bhutan-red border border-bhutan-red/10 shadow-sm"
-                          : "text-bhutan-dark hover:bg-gray-50 hover:pl-6"
+                          : "text-bhutan-dark dark:text-white/80 hover:bg-gray-50 dark:hover:bg-white/5 hover:pl-6"
                       )}
                     >
                       <item.icon className="w-5 h-5" />

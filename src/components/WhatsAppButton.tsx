@@ -28,9 +28,9 @@ export function WhatsAppButton() {
                 </div>
 
                 {/* Tooltip */}
-                <div className="absolute bottom-full right-0 mb-4 px-4 py-2 bg-bhutan-dark text-white text-[10px] font-bold uppercase tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap shadow-xl transform translate-y-2 group-hover:translate-y-0">
+                <div className="absolute bottom-full right-0 mb-4 px-4 py-2 bg-bhutan-dark dark:bg-card text-white dark:text-foreground text-[10px] font-bold uppercase tracking-widest rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap shadow-xl transform translate-y-2 group-hover:translate-y-0 border border-white/5 dark:border-white/10">
                     Chat with Us
-                    <div className="absolute top-full right-6 border-8 border-transparent border-t-bhutan-dark" />
+                    <div className="absolute top-full right-6 border-8 border-transparent border-t-bhutan-dark dark:border-t-card" />
                 </div>
             </div>
         </motion.a>

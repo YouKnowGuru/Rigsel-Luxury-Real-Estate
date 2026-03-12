@@ -39,7 +39,7 @@ export default function BlogListingPage() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#F9F7F2] font-outfit pt-32 pb-20">
+        <div className="min-h-screen bg-[#F9F7F2] dark:bg-background font-outfit pt-32 pb-20">
             <div className="fixed inset-0 bg-thangka opacity-[0.01] pointer-events-none" />
 
             <div className="container-luxury mx-auto px-6 lg:px-10 relative z-10">
@@ -57,7 +57,7 @@ export default function BlogListingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-6xl font-bold text-bhutan-dark mb-6 leading-tight"
+                        className="text-4xl md:text-6xl font-bold text-bhutan-dark dark:text-foreground mb-6 leading-tight"
                     >
                         Real Estate <span className="text-bhutan-gold italic font-light">Perspectives</span> in Bhutan
                     </motion.h1>
@@ -65,7 +65,7 @@ export default function BlogListingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-lg text-bhutan-dark/60 leading-relaxed"
+                        className="text-lg text-bhutan-dark/60 dark:text-muted-foreground leading-relaxed"
                     >
                         Expert advice, market trends, and luxury living inspiration from the heart of the Dragon Kingdom.
                     </motion.p>
@@ -75,7 +75,7 @@ export default function BlogListingPage() {
                 {isLoading ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {[1, 2, 3].map((i) => (
-                            <div key={i} className="animate-pulse bg-white rounded-[2rem] aspect-[4/5] shadow-luxury" />
+                             <div key={i} className="animate-pulse bg-white dark:bg-card rounded-[2rem] aspect-[4/5] shadow-luxury" />
                         ))}
                     </div>
                 ) : (
@@ -87,7 +87,7 @@ export default function BlogListingPage() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.1 }}
-                                className="group bg-white rounded-[2.5rem] overflow-hidden shadow-luxury border border-white hover:border-bhutan-gold/20 transition-all duration-500 flex flex-col h-full"
+                                className="group bg-white dark:bg-card rounded-[2.5rem] overflow-hidden shadow-luxury border border-white dark:border-white/10 hover:border-bhutan-gold/20 transition-all duration-500 flex flex-col h-full"
                             >
                                 <Link href={`/blog/${blog.slug}`} className="relative block aspect-[4/3] overflow-hidden">
                                     <img
@@ -118,12 +118,12 @@ export default function BlogListingPage() {
                                     </div>
 
                                     <Link href={`/blog/${blog.slug}`}>
-                                        <h2 className="text-2xl font-bold text-bhutan-dark mb-4 group-hover:text-bhutan-red transition-colors leading-snug">
+                                        <h2 className="text-2xl font-bold text-bhutan-dark dark:text-foreground mb-4 group-hover:text-bhutan-red transition-colors leading-snug">
                                             {blog.title}
                                         </h2>
                                     </Link>
 
-                                    <p className="text-bhutan-dark/50 text-base mb-8 line-clamp-3 leading-relaxed">
+                                    <p className="text-bhutan-dark/50 dark:text-muted-foreground/50 text-base mb-8 line-clamp-3 leading-relaxed">
                                         {blog.content.replace(/<[^>]*>/g, '').substring(0, 150)}...
                                     </p>
 
@@ -149,7 +149,7 @@ export default function BlogListingPage() {
                 {!isLoading && blogs.length === 0 && (
                     <div className="text-center py-40">
                         <Newspaper className="w-20 h-20 text-bhutan-gold/10 mx-auto mb-6" />
-                        <p className="text-xl text-bhutan-dark/30 font-bold uppercase tracking-[0.2em]">Our stories are being penned...</p>
+                        <p className="text-xl text-bhutan-dark/30 dark:text-muted-foreground/30 font-bold uppercase tracking-[0.2em]">Our stories are being penned...</p>
                     </div>
                 )}
             </div>

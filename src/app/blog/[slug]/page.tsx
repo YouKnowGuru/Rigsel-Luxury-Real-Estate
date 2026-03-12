@@ -44,7 +44,7 @@ export default function BlogDetailPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-[#F9F7F2] flex items-center justify-center">
+            <div className="min-h-screen bg-[#F9F7F2] dark:bg-background flex items-center justify-center">
                 <div className="w-10 h-10 border-4 border-bhutan-red border-t-transparent rounded-full animate-spin" />
             </div>
         );
@@ -53,7 +53,7 @@ export default function BlogDetailPage() {
     if (!blog) return null;
 
     return (
-        <div className="min-h-screen bg-white font-outfit pt-32 pb-20">
+        <div className="min-h-screen bg-white dark:bg-background font-outfit pt-32 pb-20">
             <div className="fixed inset-0 bg-thangka opacity-[0.01] pointer-events-none" />
 
             {/* Hero Section */}
@@ -77,7 +77,7 @@ export default function BlogDetailPage() {
                                 {tag}
                             </span>
                         ))}
-                        <div className="flex items-center gap-2 text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-[0.2em] ml-2">
+                        <div className="flex items-center gap-2 text-[10px] font-bold text-bhutan-dark/30 dark:text-muted-foreground/30 uppercase tracking-[0.2em] ml-2">
                             <Clock className="w-3.5 h-3.5" />
                             5 min read
                         </div>
@@ -87,7 +87,7 @@ export default function BlogDetailPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-6xl font-bold text-bhutan-dark mb-10 leading-tight"
+                        className="text-4xl md:text-6xl font-bold text-bhutan-dark dark:text-foreground mb-10 leading-tight"
                     >
                         {blog.title}
                     </motion.h1>
@@ -96,20 +96,20 @@ export default function BlogDetailPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="flex items-center justify-between py-6 border-y border-bhutan-gold/10"
+                        className="flex items-center justify-between py-6 border-y border-bhutan-gold/10 dark:border-white/10"
                     >
                         <div className="flex items-center gap-4">
                             <div className="w-12 h-12 rounded-full bg-bhutan-gold/20 flex items-center justify-center text-bhutan-gold font-bold text-lg">
                                 {blog.author[0]}
                             </div>
                             <div>
-                                <p className="text-sm font-bold text-bhutan-dark uppercase tracking-widest">{blog.author}</p>
+                                <p className="text-sm font-bold text-bhutan-dark dark:text-foreground uppercase tracking-widest">{blog.author}</p>
                                 <p className="text-xs text-bhutan-dark/40 font-medium">{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
                             </div>
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <button className="w-10 h-10 rounded-full border border-bhutan-gold/10 flex items-center justify-center text-bhutan-dark/30 hover:bg-bhutan-red hover:text-white hover:border-bhutan-red transition-all">
+                            <button className="w-10 h-10 rounded-full border border-bhutan-gold/10 dark:border-white/10 flex items-center justify-center text-bhutan-dark/30 dark:text-muted-foreground/30 hover:bg-bhutan-red hover:text-white hover:border-bhutan-red transition-all">
                                 <Share2 className="w-4 h-4" />
                             </button>
                         </div>
@@ -122,7 +122,7 @@ export default function BlogDetailPage() {
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="aspect-[21/9] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white"
+                    className="aspect-[21/9] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white dark:border-white/10"
                 >
                     <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover" />
                 </motion.div>
@@ -132,16 +132,16 @@ export default function BlogDetailPage() {
             <div className="container-luxury mx-auto px-6 lg:px-10 relative z-10">
                 <div className="max-w-3xl mx-auto">
                     <article
-                        className="prose prose-xl prose-bhutan max-w-none text-bhutan-dark/80 font-medium leading-[1.8]
-              prose-headings:text-bhutan-dark prose-headings:font-bold
+                        className="prose prose-xl prose-bhutan dark:prose-invert max-w-none text-bhutan-dark/80 dark:text-muted-foreground font-medium leading-[1.8]
+              prose-headings:text-bhutan-dark dark:prose-headings:text-foreground prose-headings:font-bold
               prose-p:mb-8 prose-img:rounded-3xl prose-img:shadow-xl prose-img:my-12
-              prose-strong:text-bhutan-dark prose-strong:font-bold
-              prose-blockquote:border-l-4 prose-blockquote:border-bhutan-red prose-blockquote:bg-[#F9F7F2] prose-blockquote:p-8 prose-blockquote:rounded-3xl prose-blockquote:italic
+              prose-strong:text-bhutan-dark dark:prose-strong:text-foreground prose-strong:font-bold
+              prose-blockquote:border-l-4 prose-blockquote:border-bhutan-red prose-blockquote:bg-[#F9F7F2] dark:prose-blockquote:bg-white/[0.02] prose-blockquote:p-8 prose-blockquote:rounded-3xl prose-blockquote:italic
             "
                         dangerouslySetInnerHTML={{ __html: blog.content }}
                     />
 
-                    <div className="mt-20 pt-10 border-t border-bhutan-gold/10 flex flex-wrap gap-4 items-center justify-between">
+                    <div className="mt-20 pt-10 border-t border-bhutan-gold/10 dark:border-white/10 flex flex-wrap gap-4 items-center justify-between">
                         <div className="flex flex-wrap gap-2">
                             {blog.tags.map(tag => (
                                 <span key={tag} className="text-xs font-bold text-bhutan-gold bg-bhutan-gold/5 px-4 py-2 rounded-xl">#{tag}</span>
@@ -149,10 +149,10 @@ export default function BlogDetailPage() {
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <span className="text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-[0.2em]">Share post</span>
+                            <span className="text-[10px] font-bold text-bhutan-dark/30 dark:text-muted-foreground/30 uppercase tracking-[0.2em]">Share post</span>
                             <div className="flex gap-2">
                                 {[Facebook, Twitter, LinkIcon].map((Icon, i) => (
-                                    <button key={i} className="w-9 h-9 rounded-full bg-[#F9F7F2] flex items-center justify-center text-bhutan-dark/40 hover:bg-bhutan-dark hover:text-white transition-all">
+                                    <button key={i} className="w-9 h-9 rounded-full bg-[#F9F7F2] dark:bg-card flex items-center justify-center text-bhutan-dark/40 dark:text-muted-foreground/40 hover:bg-bhutan-dark hover:text-white transition-all">
                                         <Icon className="w-4 h-4" />
                                     </button>
                                 ))}

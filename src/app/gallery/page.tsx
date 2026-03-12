@@ -40,7 +40,7 @@ export default function GalleryListingPage() {
     );
 
     return (
-        <div className="min-h-screen bg-bhutan-dark font-outfit pt-32 pb-20 overflow-hidden">
+        <div className="min-h-screen bg-[#F9F7F2] dark:bg-bhutan-dark font-outfit pt-32 pb-20 overflow-hidden">
             {/* Decorative Elements */}
             <div className="fixed top-0 left-0 w-full h-full bg-thangka opacity-[0.03] pointer-events-none" />
             <div className="fixed -top-[20%] -right-[10%] w-[60%] aspect-square bg-bhutan-red/10 blur-[150px] rounded-full pointer-events-none" />
@@ -52,7 +52,7 @@ export default function GalleryListingPage() {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="inline-flex items-center gap-3 mb-6 bg-white/5 backdrop-blur-md px-6 py-2 rounded-full border border-white/10"
+                        className="inline-flex items-center gap-3 mb-6 bg-white/5 dark:bg-white/5 backdrop-blur-md px-6 py-2 rounded-full border border-bhutan-gold/10 dark:border-white/10"
                     >
                         <div className="w-1 h-1 bg-bhutan-gold rounded-full animate-ping" />
                         <span className="text-bhutan-gold font-bold text-[10px] uppercase tracking-[0.5em]">Digital Portfolio</span>
@@ -61,7 +61,7 @@ export default function GalleryListingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight"
+                        className="text-5xl md:text-7xl font-bold text-bhutan-dark dark:text-white mb-8 leading-tight"
                     >
                         Visualizing <span className="text-bhutan-gold italic font-light">Excellence</span>
                     </motion.h1>
@@ -69,7 +69,7 @@ export default function GalleryListingPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="text-lg text-white/50 max-w-2xl mx-auto leading-relaxed"
+                        className="text-lg text-bhutan-dark/50 dark:text-white/50 max-w-2xl mx-auto leading-relaxed"
                     >
                         A curated collection of architectural marvels and luxury living spaces across the Himalayan kingdom.
                     </motion.p>
@@ -88,7 +88,7 @@ export default function GalleryListingPage() {
                                 "px-8 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 border",
                                 selectedCategory === cat
                                     ? "bg-bhutan-gold text-bhutan-dark border-bhutan-gold shadow-2xl shadow-bhutan-gold/20 scale-105"
-                                    : "bg-white/5 text-white/40 border-white/5 hover:border-white/20 hover:text-white"
+                                    : "bg-white/50 dark:bg-white/5 text-bhutan-dark/40 dark:text-white/40 border-bhutan-gold/10 dark:border-white/5 hover:border-bhutan-gold/30 dark:hover:border-white/20 hover:text-bhutan-dark dark:hover:text-white"
                             )}
                         >
                             {cat}
@@ -116,7 +116,7 @@ export default function GalleryListingPage() {
                                     exit={{ opacity: 0, scale: 0.9, y: 20 }}
                                     transition={{ delay: idx * 0.05 }}
                                     onClick={() => setSelectedImage(item)}
-                                    className="group relative aspect-[3/4] bg-white/5 rounded-[2.5rem] overflow-hidden cursor-pointer border border-white/5 hover:border-bhutan-gold/30 transition-all duration-700"
+                                    className="group relative aspect-[3/4] bg-white dark:bg-white/5 rounded-[2.5rem] overflow-hidden cursor-pointer border border-bhutan-gold/5 dark:border-white/5 hover:border-bhutan-gold/30 transition-all duration-700 shadow-sm"
                                 >
                                     <img
                                         src={item.image}
@@ -142,10 +142,10 @@ export default function GalleryListingPage() {
 
                 {!isLoading && filteredItems.length === 0 && (
                     <div className="text-center py-40">
-                        <div className="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-8 border border-white/10">
-                            <ImageIcon className="w-8 h-8 text-white/20" />
+                        <div className="w-20 h-20 rounded-full bg-bhutan-gold/5 dark:bg-white/5 flex items-center justify-center mx-auto mb-8 border border-bhutan-gold/10 dark:border-white/10">
+                            <ImageIcon className="w-8 h-8 text-bhutan-gold/20 dark:text-white/20" />
                         </div>
-                        <p className="text-2xl text-white/20 font-light italic">No visual assets found in this category.</p>
+                        <p className="text-2xl text-bhutan-dark/20 dark:text-white/20 font-light italic">No visual assets found in this category.</p>
                     </div>
                 )}
             </div>

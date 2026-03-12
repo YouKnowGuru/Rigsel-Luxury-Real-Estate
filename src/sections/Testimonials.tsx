@@ -46,9 +46,9 @@ export function Testimonials() {
 
   if (isLoading) {
     return (
-      <div className="py-24 flex flex-col items-center justify-center bg-white min-h-[400px]">
+      <div className="py-24 flex flex-col items-center justify-center bg-white dark:bg-[#111214] min-h-[400px]">
         <Loader2 className="w-12 h-12 text-bhutan-red animate-spin mb-4" />
-        <p className="text-bhutan-dark/40 font-serif italic text-lg text-center px-6">Loading stories of happiness...</p>
+        <p className="text-bhutan-dark/40 dark:text-white/40 font-serif italic text-lg text-center px-6">Loading stories of happiness...</p>
       </div>
     );
   }
@@ -58,10 +58,10 @@ export function Testimonials() {
   }
 
   return (
-    <section className="py-24 md:py-32 bg-white relative overflow-hidden">
+    <section className="py-24 md:py-32 bg-white dark:bg-[#111214] relative overflow-hidden">
       {/* Background Decorative Element */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-[#F9F7F2] -skew-x-12 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-1/3 h-full bg-[#F9F7F2] -skew-x-12 -translate-x-1/2" />
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-[#F9F7F2] dark:bg-[#1B1E23] -skew-x-12 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-1/3 h-full bg-[#F9F7F2] dark:bg-[#1B1E23] -skew-x-12 -translate-x-1/2" />
 
       <div className="container-luxury relative z-10 w-full max-w-7xl mx-auto px-6">
 
@@ -71,7 +71,7 @@ export function Testimonials() {
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="inline-block px-6 py-2 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[10px] font-bold uppercase tracking-[0.4em] mb-6 shadow-sm"
+            className="inline-block px-6 py-2 rounded-full bg-bhutan-red/10 dark:bg-bhutan-red/15 border border-bhutan-red/20 text-bhutan-red text-[10px] font-bold uppercase tracking-[0.4em] mb-6 shadow-sm"
           >
             Heartfelt Stories
           </motion.div>
@@ -80,11 +80,11 @@ export function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-bhutan-dark mb-6"
+            className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-bhutan-dark dark:text-white mb-6"
           >
             Happy <span className="text-bhutan-red italic font-light">Families</span>
           </motion.h2>
-          <p className="text-bhutan-dark/60 max-w-2xl mx-auto text-xl font-light leading-relaxed">
+          <p className="text-bhutan-dark/60 dark:text-white/50 max-w-2xl mx-auto text-xl font-light leading-relaxed">
             See why people across Bhutan trust us to help them find their perfect home.
           </p>
         </div>
@@ -98,7 +98,7 @@ export function Testimonials() {
                 <Quote className="w-40 h-40 text-bhutan-gold/10 -rotate-12" />
               </div>
 
-              <div className="bg-[#F9F7F2] rounded-[2rem] md:rounded-[4rem] p-8 md:p-24 shadow-2xl border-4 border-white relative overflow-hidden group">
+              <div className="bg-[#F9F7F2] dark:bg-[#1B1E23] rounded-[2rem] md:rounded-[4rem] p-8 md:p-24 shadow-2xl border-4 border-white dark:border-white/5 relative overflow-hidden group">
                 {/* Pattern Background */}
                 <div className="absolute inset-0 bg-thangka opacity-[0.04] pointer-events-none group-hover:opacity-[0.06] transition-opacity duration-1000" />
 
@@ -122,7 +122,7 @@ export function Testimonials() {
                         ))}
                       </div>
 
-                      <blockquote className="text-xl md:text-3xl lg:text-4xl text-bhutan-dark font-serif font-bold italic mb-8 md:mb-16 leading-relaxed md:leading-tight max-w-4xl px-4 md:px-0">
+                      <blockquote className="text-xl md:text-3xl lg:text-4xl text-bhutan-dark dark:text-white font-serif font-bold italic mb-8 md:mb-16 leading-relaxed md:leading-tight max-w-4xl px-4 md:px-0">
                         "{testimonials[currentIndex].content}"
                       </blockquote>
                       <div className="flex flex-col items-center">
@@ -140,7 +140,7 @@ export function Testimonials() {
                           </div>
                         </div>
 
-                        <h4 className="text-2xl font-serif font-bold text-bhutan-dark mb-1">
+                        <h4 className="text-2xl font-serif font-bold text-bhutan-dark dark:text-white mb-1">
                           {testimonials[currentIndex].name}
                         </h4>
                         <div className="flex items-center gap-4">
@@ -148,7 +148,7 @@ export function Testimonials() {
                             {testimonials[currentIndex].role}
                           </span>
                           <div className="w-1.5 h-1.5 rounded-full bg-bhutan-gold/40" />
-                          <span className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.3em]">
+                          <span className="text-[10px] font-bold text-bhutan-dark/40 dark:text-white/40 uppercase tracking-[0.3em]">
                             {testimonials[currentIndex].location}
                           </span>
                         </div>
@@ -173,13 +173,13 @@ export function Testimonials() {
                 <div className="flex gap-6">
                   <button
                     onClick={prevTestimonial}
-                    className="w-16 h-16 rounded-2xl bg-white border-2 border-[#F9F7F2] flex items-center justify-center text-bhutan-dark hover:bg-bhutan-red hover:text-white hover:border-bhutan-red transition-all duration-500 shadow-xl group"
+                    className="w-16 h-16 rounded-2xl bg-white dark:bg-[#1B1E23] border-2 border-[#F9F7F2] dark:border-white/10 flex items-center justify-center text-bhutan-dark dark:text-white hover:bg-bhutan-red hover:text-white hover:border-bhutan-red transition-all duration-500 shadow-xl group"
                   >
                     <ChevronLeft className="w-8 h-8 group-hover:-translate-x-1 transition-transform" />
                   </button>
                   <button
                     onClick={nextTestimonial}
-                    className="w-16 h-16 rounded-2xl bg-white border-2 border-[#F9F7F2] flex items-center justify-center text-bhutan-dark hover:bg-bhutan-red hover:text-white hover:border-bhutan-red transition-all duration-500 shadow-xl group"
+                    className="w-16 h-16 rounded-2xl bg-white dark:bg-[#1B1E23] border-2 border-[#F9F7F2] dark:border-white/10 flex items-center justify-center text-bhutan-dark dark:text-white hover:bg-bhutan-red hover:text-white hover:border-bhutan-red transition-all duration-500 shadow-xl group"
                   >
                     <ChevronRight className="w-8 h-8 group-hover:translate-x-1 transition-transform" />
                   </button>
@@ -189,8 +189,8 @@ export function Testimonials() {
           ) : (
             <div className="text-center py-20 bg-[#F9F7F2] rounded-[3rem] border-2 border-dashed border-bhutan-gold/20">
               <Heart className="w-16 h-16 text-bhutan-red/20 mx-auto mb-6" />
-              <h3 className="text-2xl font-serif font-bold text-bhutan-dark mb-4 italic">No stories yet</h3>
-              <p className="text-bhutan-dark/50 max-w-md mx-auto mb-10">We haven't shared your happiness stories yet. Be the very first to share your legacy with us!</p>
+              <h3 className="text-2xl font-serif font-bold text-bhutan-dark dark:text-white mb-4 italic">No stories yet</h3>
+              <p className="text-bhutan-dark/50 dark:text-white/40 max-w-md mx-auto mb-10">We haven't shared your happiness stories yet. Be the very first to share your legacy with us!</p>
             </div>
           )}
 
@@ -201,7 +201,7 @@ export function Testimonials() {
             viewport={{ once: true }}
             className="mt-24 text-center"
           >
-            <p className="text-bhutan-dark/40 text-[10px] font-bold uppercase tracking-[0.3em] mb-6">Have your own experience to share?</p>
+            <p className="text-bhutan-dark/40 dark:text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] mb-6">Have your own experience to share?</p>
             <Button
               onClick={() => setIsReviewFormOpen(true)}
               className="h-16 px-10 bg-bhutan-dark text-white rounded-2xl hover:bg-bhutan-red transition-all duration-500 group shadow-2xl"

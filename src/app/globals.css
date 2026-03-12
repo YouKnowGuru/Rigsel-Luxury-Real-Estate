@@ -30,28 +30,56 @@
   --font-sans: 'Outfit', 'Inter', system-ui, sans-serif;
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-admin: 'Outfit', sans-serif;
+
+  /* Theme-aware surface colors */
+  --surface-primary: 0 0% 100%;
+  --surface-secondary: 40 30% 97%;
+  --surface-elevated: 0 0% 100%;
+  --text-primary: 0 0% 10%;
+  --text-secondary: 0 0% 40%;
+  --text-tertiary: 0 0% 60%;
 }
 
 .dark {
-  --background: 0 0% 3.9%;
-  --foreground: 0 0% 98%;
-  --card: 0 0% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --popover: 0 0% 3.9%;
-  --popover-foreground: 0 0% 98%;
+  --background: 220 15% 8%;
+  /* Deep dark gray #121417 */
+  --foreground: 210 20% 92%;
+  /* Soft white #E8ECF0 */
+  --card: 220 12% 12%;
+  /* Card surface #1B1E23 */
+  --card-foreground: 210 20% 92%;
+  --popover: 220 12% 12%;
+  --popover-foreground: 210 20% 92%;
   --primary: 0 100% 27%;
   --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 14.9%;
-  --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 14.9%;
-  --muted-foreground: 0 0% 63.9%;
+  --secondary: 220 10% 16%;
+  --secondary-foreground: 210 20% 92%;
+  --muted: 220 10% 18%;
+  --muted-foreground: 210 10% 60%;
   --accent: 43 74% 49%;
-  --accent-foreground: 0 0% 98%;
+  --accent-foreground: 210 20% 92%;
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 14.9%;
-  --input: 0 0% 14.9%;
+  --border: 220 10% 18%;
+  --input: 220 12% 15%;
   --ring: 0 100% 27%;
+
+  /* Theme-aware surface colors */
+  --surface-primary: 220 12% 12%;
+  --surface-secondary: 220 15% 8%;
+  --surface-elevated: 220 10% 16%;
+  --text-primary: 210 20% 92%;
+  --text-secondary: 210 10% 60%;
+  --text-tertiary: 210 8% 45%;
+}
+
+/* Smooth theme transition */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease, box-shadow 0.3s ease !important;
+  transition-delay: 0s !important;
 }
 
 @layer base {
@@ -81,13 +109,13 @@
 
 @layer components {
 
-  /* Glassmorphism Refined for Light Theme */
+  /* Glassmorphism Refined — theme aware */
   .glass {
-    @apply bg-white/60 backdrop-blur-xl border border-white shadow-soft;
+    @apply bg-white/60 backdrop-blur-xl border border-white shadow-soft dark:bg-white/5 dark:border-white/10 dark:shadow-none;
   }
 
   .glass-bhutan {
-    @apply bg-white/80 backdrop-blur-xl border border-bhutan-gold/10 shadow-luxury-gold;
+    @apply bg-white/80 backdrop-blur-xl border border-bhutan-gold/10 shadow-luxury-gold dark:bg-white/5 dark:border-bhutan-gold/10;
   }
 
   .glass-dark {
@@ -119,9 +147,9 @@
     background-size: 50px 50px;
   }
 
-  /* Card Hover Effect */
+  /* Card Hover Effect — theme aware */
   .card-luxury {
-    @apply bg-white rounded-3xl overflow-hidden shadow-soft transition-all duration-500 hover:shadow-luxury-hover hover:-translate-y-3;
+    @apply bg-white rounded-3xl overflow-hidden shadow-soft transition-all duration-500 hover:shadow-luxury-hover hover:-translate-y-3 dark:bg-[hsl(220,12%,12%)] dark:shadow-lg dark:hover:shadow-2xl;
   }
 
   /* Section Padding */
@@ -154,9 +182,9 @@
     @apply scale-105;
   }
 
-  /* Input Focus */
+  /* Input Focus — theme aware */
   .input-luxury {
-    @apply w-full px-6 py-4 bg-white/50 backdrop-blur-sm border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-bhutan-gold/40 focus:border-bhutan-gold transition-all duration-300;
+    @apply w-full px-6 py-4 bg-white/50 backdrop-blur-sm border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-bhutan-gold/40 focus:border-bhutan-gold transition-all duration-300 dark:bg-white/5 dark:border-white/10 dark:text-white dark:placeholder-white/40;
   }
 
   /* Shimmer Gold Effect */
@@ -208,12 +236,12 @@
 
   .swiper-button-prev,
   .swiper-button-next {
-    @apply w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg text-bhutan-red transition-all duration-300;
+    @apply w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg text-bhutan-red transition-all duration-300 dark:bg-white/10 dark:text-white;
   }
 
   .swiper-button-prev:hover,
   .swiper-button-next:hover {
-    @apply bg-white shadow-xl scale-110;
+    @apply bg-white shadow-xl scale-110 dark:bg-white/20;
   }
 
   .swiper-button-prev::after,
@@ -339,6 +367,6 @@ textarea:valid:not(:placeholder-shown) {
 
   .glass,
   .glass-dark {
-    @apply bg-white border-black;
+    @apply bg-white border-black dark:bg-black dark:border-white;
   }
 }

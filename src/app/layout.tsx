@@ -4,6 +4,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { SettingsProvider } from "@/context/SettingsContext";
+import { ThemeProvider } from "@/context/ThemeProvider";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 
 export const metadata: Metadata = {
@@ -86,6 +87,13 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
 
+        {/* Inline script to prevent flash of unstyled theme */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})();`,
+          }}
+        />
+
         {/* Schema.org Structured Data */}
         <script
           type="application/ld+json"
@@ -121,14 +129,16 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen bg-white antialiased" suppressHydrationWarning>
-        <SettingsProvider>
-          <Navbar />
-          <main className="relative">{children}</main>
-          <Footer />
-          <WhatsAppButton />
-          <Toaster />
-        </SettingsProvider>
+      <body className="min-h-screen bg-background antialiased" suppressHydrationWarning>
+        <ThemeProvider>
+          <SettingsProvider>
+            <Navbar />
+            <main className="relative">{children}</main>
+            <Footer />
+            <WhatsAppButton />
+            <Toaster />
+          </SettingsProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

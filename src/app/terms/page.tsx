@@ -38,7 +38,7 @@ const sections = [
 
 export default function TermsPage() {
     return (
-        <div className="min-h-screen bg-[#F9F7F2] pt-28 pb-20">
+        <div className="min-h-screen bg-[#F9F7F2] dark:bg-background pt-28 pb-20">
             <div className="absolute inset-0 bg-thangka opacity-[0.02] pointer-events-none" />
 
             <div className="max-w-4xl mx-auto px-4 relative z-10">
@@ -50,10 +50,10 @@ export default function TermsPage() {
                     <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[10px] font-bold uppercase tracking-[0.3em] mb-6">
                         Legal Information
                     </div>
-                    <h1 className="font-serif text-3xl md:text-5xl font-bold text-bhutan-dark mb-6">
+                    <h1 className="font-serif text-3xl md:text-5xl font-bold text-bhutan-dark dark:text-foreground mb-6">
                         Terms & <span className="text-bhutan-red italic font-light">Conditions</span>
                     </h1>
-                    <p className="text-bhutan-dark/50 font-light max-w-2xl mx-auto italic">
+                    <p className="text-bhutan-dark/50 dark:text-muted-foreground font-light max-w-2xl mx-auto italic">
                         Last updated: March 11, 2026. Please read these rules and regulations carefully before using our services.
                     </p>
                 </motion.div>
@@ -66,17 +66,17 @@ export default function TermsPage() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: idx * 0.1 }}
-                            className="bg-white rounded-2xl p-6 md:p-8 border border-bhutan-gold/10 hover:border-bhutan-red/20 transition-all shadow-sm group"
+                             className="bg-white dark:bg-card rounded-2xl p-6 md:p-8 border border-bhutan-gold/10 dark:border-white/5 hover:border-bhutan-red/20 transition-all shadow-sm group"
                         >
                             <div className="flex items-start gap-6">
                                 <div className="w-12 h-12 rounded-xl bg-bhutan-red/5 flex items-center justify-center flex-shrink-0 group-hover:bg-bhutan-red transition-colors duration-500">
                                     <section.icon className="w-6 h-6 text-bhutan-red group-hover:text-white transition-colors" />
                                 </div>
                                 <div className="flex-1">
-                                    <h2 className="font-serif text-xl font-bold text-bhutan-dark mb-3 group-hover:text-bhutan-red transition-colors">
+                                    <h2 className="font-serif text-xl font-bold text-bhutan-dark dark:text-foreground mb-3 group-hover:text-bhutan-red transition-colors">
                                         {section.title}
                                     </h2>
-                                    <p className="text-bhutan-dark/70 leading-relaxed font-light">
+                                    <p className="text-bhutan-dark/70 dark:text-muted-foreground leading-relaxed font-light">
                                         {section.content}
                                     </p>
                                 </div>

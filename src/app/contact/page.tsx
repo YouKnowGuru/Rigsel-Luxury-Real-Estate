@@ -102,7 +102,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F9F7F2] pb-32">
+    <div className="min-h-screen bg-[#F9F7F2] dark:bg-background pb-32">
       {/* Hero Section */}
       <section className="relative pt-40 pb-24 md:pt-56 md:pb-40 overflow-hidden">
         {/* Background Motifs */}
@@ -119,11 +119,11 @@ export default function ContactPage() {
             <div className="inline-block px-6 py-2 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[10px] font-bold uppercase tracking-[0.4em] mb-10 shadow-sm">
               Connect With Us
             </div>
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-bhutan-dark mb-6 md:mb-8 leading-[1.15]">
+            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-bhutan-dark dark:text-foreground mb-6 md:mb-8 leading-[1.15]">
               Talk to <br />
               <span className="text-bhutan-red italic font-light">Our Family</span>
             </h1>
-            <p className="text-bhutan-dark/70 text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed italic">
+            <p className="text-bhutan-dark/70 dark:text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed italic">
               "We are here to help you find your legacy. Ask us anything, we are ready to listen."
             </p>
           </motion.div>
@@ -144,18 +144,18 @@ export default function ContactPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-[2.5rem] p-8 shadow-xl border border-bhutan-gold/10 group hover:border-bhutan-red/20 transition-all duration-500"
+                  className="bg-white dark:bg-card rounded-[2.5rem] p-8 shadow-xl border border-bhutan-gold/10 group hover:border-bhutan-red/20 transition-all duration-500"
                 >
                   <div className="flex items-center gap-6">
-                    <div className="w-16 h-16 bg-[#F9F7F2] rounded-2xl flex items-center justify-center group-hover:bg-bhutan-red group-hover:text-white transition-all duration-500 border border-bhutan-gold/10">
+                    <div className="w-16 h-16 bg-[#F9F7F2] dark:bg-background rounded-2xl flex items-center justify-center group-hover:bg-bhutan-red group-hover:text-white transition-all duration-500 border border-bhutan-gold/10">
                       <info.icon className="w-7 h-7" />
                     </div>
                     <div>
-                      <h3 className="font-serif text-xl font-bold text-bhutan-dark mb-1">
+                      <h3 className="font-serif text-xl font-bold text-bhutan-dark dark:text-foreground mb-1">
                         {info.title}
                       </h3>
-                      <p className="text-bhutan-dark/80 font-medium font-serif">{info.content}</p>
-                      <p className="text-bhutan-dark/40 text-[9px] font-bold uppercase tracking-widest">{info.subContent}</p>
+                       <p className="text-bhutan-dark/80 dark:text-foreground/80 font-medium font-serif">{info.content}</p>
+                       <p className="text-bhutan-dark/40 dark:text-muted-foreground/40 text-[9px] font-bold uppercase tracking-widest">{info.subContent}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -185,7 +185,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="lg:col-span-8 bg-white/40 backdrop-blur-3xl rounded-[2rem] md:rounded-[4rem] p-8 md:p-16 lg:p-20 shadow-3xl border-4 border-white overflow-hidden relative"
+              className="lg:col-span-8 bg-white/40 dark:bg-card/40 backdrop-blur-3xl rounded-[2rem] md:rounded-[4rem] p-8 md:p-16 lg:p-20 shadow-3xl border-4 border-white dark:border-white/10 overflow-hidden relative"
             >
               <div className="absolute inset-0 bg-thangka opacity-[0.02] pointer-events-none" />
 
@@ -195,10 +195,10 @@ export default function ContactPage() {
                     <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-bhutan-red" />
                   </div>
                   <div>
-                    <h2 className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark">
+                    <h2 className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark dark:text-foreground">
                       Message Us
                     </h2>
-                    <p className="text-bhutan-dark/50 text-[10px] font-bold uppercase tracking-[0.2em]">We respond very fast</p>
+                    <p className="text-bhutan-dark/50 dark:text-muted-foreground/50 text-[10px] font-bold uppercase tracking-[0.2em]">We respond very fast</p>
                   </div>
                 </div>
 
@@ -209,10 +209,10 @@ export default function ContactPage() {
                     className="bg-bhutan-red/5 rounded-[3rem] p-20 text-center border-2 border-bhutan-red/10"
                   >
                     <CheckCircle className="w-24 h-24 text-bhutan-red mx-auto mb-8" />
-                    <h3 className="text-4xl font-serif font-bold text-bhutan-dark mb-4 tracking-tight">
+                    <h3 className="text-4xl font-serif font-bold text-bhutan-dark dark:text-foreground mb-4 tracking-tight">
                       Thank You
                     </h3>
-                    <p className="text-bhutan-dark/60 text-xl font-light italic">
+                    <p className="text-bhutan-dark/60 dark:text-muted-foreground/60 text-xl font-light italic">
                       "We have received your message. One of our experts will call you very soon."
                     </p>
                   </motion.div>
@@ -220,19 +220,19 @@ export default function ContactPage() {
                   <form onSubmit={handleSubmit} className="space-y-8 md:space-y-12">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                       <div className="space-y-3">
-                        <label className="text-[10px] font-bold text-bhutan-dark/60 uppercase tracking-[0.3em] ml-6">Your Full Name</label>
+                        <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">Your Full Name</label>
                         <Input
                           placeholder="Karma Dorji"
                           value={formData.name}
                           onChange={(e) =>
                             setFormData({ ...formData, name: e.target.value })
                           }
-                          className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 shadow-lg text-base md:text-lg font-serif"
+                          className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif"
                           required
                         />
                       </div>
                       <div className="space-y-3">
-                        <label className="text-[10px] font-bold text-bhutan-dark/60 uppercase tracking-[0.3em] ml-6">Phone Number</label>
+                        <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">Phone Number</label>
                         <Input
                           type="tel"
                           placeholder="17XXXXXX"
@@ -240,13 +240,13 @@ export default function ContactPage() {
                           onChange={(e) =>
                             setFormData({ ...formData, phone: e.target.value })
                           }
-                          className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 shadow-lg text-base md:text-lg font-serif"
+                          className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif"
                           required
                         />
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-bhutan-dark/60 uppercase tracking-[0.3em] ml-6">Email Address</label>
+                      <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">Email Address</label>
                       <Input
                         type="email"
                         placeholder="yourname@email.bt"
@@ -254,24 +254,24 @@ export default function ContactPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
-                        className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 shadow-lg text-base md:text-lg font-serif"
+                        className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif"
                         required
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-bhutan-dark/60 uppercase tracking-[0.3em] ml-6">How can we help you?</label>
+                      <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">How can we help you?</label>
                       <Input
                         placeholder="I want to buy a beautiful land..."
                         value={formData.subject}
                         onChange={(e) =>
                           setFormData({ ...formData, subject: e.target.value })
                         }
-                        className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 shadow-lg text-base md:text-lg font-serif"
+                        className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif"
                         required
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-bhutan-dark/60 uppercase tracking-[0.3em] ml-6">Message Details</label>
+                      <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">Message Details</label>
                       <Textarea
                         placeholder="Tell us more about what you are looking for..."
                         rows={6}
@@ -279,7 +279,7 @@ export default function ContactPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, message: e.target.value })
                         }
-                        className="rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 shadow-lg text-base md:text-lg font-serif resize-none italic"
+                        className="rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif resize-none italic"
                         required
                       />
                     </div>
@@ -302,7 +302,7 @@ export default function ContactPage() {
       {/* Modern Interactive Map Section */}
       <section className="py-24 px-6 md:py-32">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white rounded-[4rem] overflow-hidden border-8 border-white shadow-3xl group relative h-[600px]">
+          <div className="bg-white dark:bg-card rounded-[4rem] overflow-hidden border-8 border-white dark:border-white/10 shadow-3xl group relative h-[600px]">
             <iframe
               width="100%"
               height="100%"
@@ -331,7 +331,7 @@ export default function ContactPage() {
 
       {/* Social Connection Footer CTA */}
       <section className="py-24 text-center px-6">
-        <h3 className="font-serif text-4xl md:text-5xl font-bold text-bhutan-dark mb-12 italic">
+        <h3 className="font-serif text-4xl md:text-5xl font-bold text-bhutan-dark dark:text-foreground mb-12 italic">
           Join our <span className="text-bhutan-red">Community</span>
         </h3>
         <div className="flex flex-wrap justify-center gap-8">

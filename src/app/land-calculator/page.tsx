@@ -94,9 +94,9 @@ export default function LandCalculatorPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F9F7F2]">
+    <div className="min-h-screen bg-[#F9F7F2] dark:bg-background">
       {/* Hero */}
-      <section className="relative pt-28 pb-8 md:pt-36 md:pb-12 overflow-hidden bg-white">
+      <section className="relative pt-28 pb-8 md:pt-36 md:pb-12 overflow-hidden bg-white dark:bg-background">
         <div className="absolute inset-0 bg-thangka opacity-[0.02] pointer-events-none" />
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-bhutan-gold/5 rounded-full blur-[120px]" />
 
@@ -111,10 +111,10 @@ export default function LandCalculatorPage() {
               <Calculator className="w-3 h-3" />
               Precision Tools
             </div>
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-bhutan-dark mb-3 md:mb-4 leading-tight">
+            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4 leading-tight">
               Land <span className="text-bhutan-red italic font-light">Calculator</span>
             </h1>
-            <p className="text-bhutan-dark/50 text-base md:text-lg max-w-lg mx-auto font-light">
+            <p className="text-bhutan-dark/50 dark:text-muted-foreground text-base md:text-lg max-w-lg mx-auto font-light">
               Convert land measurements with precision. Calibrated for Bhutanese property standards.
             </p>
           </motion.div>
@@ -130,10 +130,10 @@ export default function LandCalculatorPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 shadow-sm"
+               className="bg-white dark:bg-card rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 dark:border-white/5 shadow-sm"
             >
               <div className="flex items-center justify-between mb-5 md:mb-8">
-                <h2 className="font-serif text-lg md:text-xl font-bold text-bhutan-dark">
+                <h2 className="font-serif text-lg md:text-xl font-bold text-bhutan-dark dark:text-foreground">
                   Unit Converter
                 </h2>
                 <button
@@ -158,10 +158,10 @@ export default function LandCalculatorPage() {
                         placeholder="0.00"
                         value={item.value}
                         onChange={(e) => item.handler(e.target.value)}
-                        className={`h-11 md:h-12 rounded-lg md:rounded-xl pl-10 md:pl-12 pr-14 bg-[#F9F7F2] border-bhutan-gold/10 focus:ring-bhutan-red/20 focus:border-bhutan-red text-sm md:text-base font-serif ${activeField === item.field ? "border-bhutan-red/40 bg-bhutan-red/[0.02]" : ""
+                        className={`h-11 md:h-12 rounded-lg md:rounded-xl pl-10 md:pl-12 pr-14 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 focus:ring-bhutan-red/20 focus:border-bhutan-red text-sm md:text-base font-serif ${activeField === item.field ? "border-bhutan-red/40 bg-bhutan-red/[0.02]" : ""
                           }`}
                       />
-                      <span className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-bhutan-dark/20 text-[10px] md:text-xs font-bold">
+                      <span className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-bhutan-dark/20 dark:text-muted-foreground/20 text-[10px] md:text-xs font-bold">
                         {item.unit}
                       </span>
                     </div>
@@ -183,21 +183,21 @@ export default function LandCalculatorPage() {
               transition={{ delay: 0.1 }}
               className="space-y-5 md:space-y-6"
             >
-              <div className="bg-white rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 shadow-sm">
+              <div className="bg-white dark:bg-card rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 dark:border-white/5 shadow-sm">
                 <div className="flex items-center gap-3 mb-5 md:mb-8">
                   <div className="w-9 h-9 md:w-11 md:h-11 bg-bhutan-gold/10 rounded-xl flex items-center justify-center">
                     <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-bhutan-gold" />
                   </div>
-                  <h2 className="font-serif text-lg md:text-xl font-bold text-bhutan-dark">
+                  <h2 className="font-serif text-lg md:text-xl font-bold text-bhutan-dark dark:text-foreground">
                     Price Estimator
                   </h2>
                 </div>
 
                 {/* Area Summary */}
-                <div className="p-4 md:p-5 bg-[#F9F7F2] rounded-xl border border-dashed border-bhutan-gold/20 mb-5 md:mb-6">
+                <div className="p-4 md:p-5 bg-[#F9F7F2] dark:bg-background rounded-xl border border-dashed border-bhutan-gold/20 dark:border-white/10 mb-5 md:mb-6">
                   <p className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/35 uppercase tracking-widest mb-2">Total Area</p>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-xl md:text-2xl font-serif font-bold text-bhutan-dark">
+                    <span className="text-xl md:text-2xl font-serif font-bold text-bhutan-dark dark:text-foreground">
                       {decimals ? parseFloat(decimals).toFixed(4) : "0.0000"}
                     </span>
                     <span className="text-bhutan-red text-xs italic font-serif">decimals</span>
@@ -219,7 +219,7 @@ export default function LandCalculatorPage() {
                       placeholder="Market rate..."
                       value={pricePerDecimal}
                       onChange={(e) => setPricePerDecimal(e.target.value)}
-                      className="h-11 md:h-12 rounded-lg md:rounded-xl pl-10 md:pl-12 bg-[#F9F7F2] border-bhutan-gold/10 focus:ring-bhutan-red/20 focus:border-bhutan-red font-serif text-sm md:text-base"
+                      className="h-11 md:h-12 rounded-lg md:rounded-xl pl-10 md:pl-12 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 focus:ring-bhutan-red/20 focus:border-bhutan-red font-serif text-sm md:text-base"
                     />
                   </div>
                 </div>
@@ -248,13 +248,13 @@ export default function LandCalculatorPage() {
               </div>
 
               {/* Info Card */}
-              <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 border border-bhutan-gold/10">
+               <div className="bg-white dark:bg-card rounded-xl md:rounded-2xl p-4 md:p-6 border border-bhutan-gold/10 dark:border-white/5">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 md:w-10 md:h-10 bg-bhutan-dark rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0">
                     <Info className="w-4 h-4 md:w-5 md:h-5 text-bhutan-gold" />
                   </div>
                   <div>
-                    <h4 className="font-serif text-sm md:text-base font-bold text-bhutan-dark mb-1">Heritage Units</h4>
+                    <h4 className="font-serif text-sm md:text-base font-bold text-bhutan-dark dark:text-foreground mb-1">Heritage Units</h4>
                     <p className="text-bhutan-dark/50 text-xs md:text-sm font-light leading-relaxed">
                       In Bhutan, land is measured in <span className="text-bhutan-red font-medium italic">decimals</span>.
                       1 decimal = 435.6 ft². A full acre = 100 decimals.
@@ -268,7 +268,7 @@ export default function LandCalculatorPage() {
       </section>
 
       {/* Reference Table */}
-      <section className="py-10 md:py-16 bg-white">
+      <section className="py-10 md:py-16 bg-white dark:bg-background">
         <div className="w-full max-w-5xl mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -279,7 +279,7 @@ export default function LandCalculatorPage() {
             <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
               Reference Table
             </div>
-            <h2 className="font-serif text-xl md:text-3xl font-bold text-bhutan-dark">
+            <h2 className="font-serif text-xl md:text-3xl font-bold text-bhutan-dark dark:text-foreground">
               Standard <span className="text-bhutan-red italic font-light">Conversions</span>
             </h2>
           </motion.div>
@@ -301,7 +301,7 @@ export default function LandCalculatorPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.04 }}
-                className="bg-[#F9F7F2] rounded-lg md:rounded-xl p-3 md:p-5 border border-bhutan-gold/10 hover:border-bhutan-gold/25 hover:shadow-sm transition-all text-center"
+                className="bg-[#F9F7F2] dark:bg-card rounded-lg md:rounded-xl p-3 md:p-5 border border-bhutan-gold/10 dark:border-white/5 hover:border-bhutan-gold/25 dark:hover:border-white/20 hover:shadow-sm transition-all text-center"
               >
                 <p className="text-bhutan-dark/30 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mb-1">{conv.from}</p>
                 <p className="text-bhutan-gold font-serif text-sm md:text-base font-bold">≈ {conv.to}</p>

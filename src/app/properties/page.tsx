@@ -195,7 +195,7 @@ function PropertiesContent() {
   const displayProperties = properties.length > 0 ? properties : fallbackProperties;
 
   return (
-    <div className="min-h-screen bg-[#F9F7F2] pt-20">
+    <div className="min-h-screen bg-[#F9F7F2] dark:bg-[#0C0D0F] pt-20">
       <div className="fixed inset-0 bg-thangka opacity-[0.02] pointer-events-none z-0" />
 
       <div className="container-luxury relative z-10 py-12 w-full max-w-7xl mx-auto px-4">
@@ -211,10 +211,10 @@ function PropertiesContent() {
               Our Best Homes
             </span>
           </div>
-          <h1 className="font-serif text-4xl md:text-5xl font-bold text-bhutan-dark mb-4">
+          <h1 className="font-serif text-4xl md:text-5xl font-bold text-bhutan-dark dark:text-white mb-4">
             All <span className="text-bhutan-red italic font-light">Properties</span>
           </h1>
-          <p className="text-bhutan-dark/40 text-lg font-light">
+          <p className="text-bhutan-dark/40 dark:text-white/40 text-lg font-light">
             We have {displayProperties.length} beautiful homes and land for you.
           </p>
         </motion.div>
@@ -224,7 +224,7 @@ function PropertiesContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/80 backdrop-blur-xl rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl p-4 md:p-8 mb-12 border border-bhutan-gold/10 sticky top-[72px] md:top-24 z-30 group"
+          className="bg-white/80 dark:bg-[#1B1E23]/90 backdrop-blur-xl rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl dark:shadow-black/30 p-4 md:p-8 mb-12 border border-bhutan-gold/10 dark:border-white/5 sticky top-[72px] md:top-24 z-30 group"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-bhutan-gold/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
 
@@ -235,7 +235,7 @@ function PropertiesContent() {
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-bhutan-gold group-focus-within/search:text-bhutan-red transition-colors" />
                 <Input
                   placeholder="Where do you want to live?..."
-                  className="h-14 md:h-16 pl-14 pr-6 rounded-xl md:rounded-2xl bg-[#F9F7F2] border-bhutan-gold/20 focus:ring-bhutan-red/20 focus:border-bhutan-red text-bhutan-dark placeholder:text-bhutan-dark/20 font-serif"
+                  className="h-14 md:h-16 pl-14 pr-6 rounded-xl md:rounded-2xl bg-[#F9F7F2] dark:bg-white/5 border-bhutan-gold/20 dark:border-white/10 focus:ring-bhutan-red/20 focus:border-bhutan-red text-bhutan-dark dark:text-white placeholder:text-bhutan-dark/20 dark:placeholder:text-white/30 font-serif"
                   value={filters.location}
                   onChange={(e) =>
                     setFilters({ ...filters, location: e.target.value })
@@ -254,7 +254,7 @@ function PropertiesContent() {
                   onChange={(e) =>
                     setFilters({ ...filters, district: e.target.value })
                   }
-                  className="h-14 md:h-16 pl-12 pr-10 bg-[#F9F7F2] border border-bhutan-gold/20 rounded-xl md:rounded-2xl focus:ring-bhutan-red/20 focus:border-bhutan-red outline-none text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/60 appearance-none min-w-full md:min-w-[160px] cursor-pointer hover:bg-white transition-all shadow-sm"
+                  className="h-14 md:h-16 pl-12 pr-10 bg-[#F9F7F2] dark:bg-white/5 border border-bhutan-gold/20 dark:border-white/10 rounded-xl md:rounded-2xl focus:ring-bhutan-red/20 focus:border-bhutan-red outline-none text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/60 dark:text-white/60 appearance-none min-w-full md:min-w-[160px] cursor-pointer hover:bg-white dark:hover:bg-white/10 transition-all shadow-sm"
                 >
                   {districts.map((district) => (
                     <option key={district} value={district === "All Districts" ? "" : district} className="font-sans">
@@ -273,7 +273,7 @@ function PropertiesContent() {
                   onChange={(e) =>
                     setFilters({ ...filters, propertyType: e.target.value })
                   }
-                  className="h-14 md:h-16 pl-12 pr-10 bg-[#F9F7F2] border border-bhutan-gold/20 rounded-xl md:rounded-2xl focus:ring-bhutan-red/20 focus:border-bhutan-red outline-none text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/60 appearance-none min-w-full md:min-w-[160px] cursor-pointer hover:bg-white transition-all shadow-sm"
+                  className="h-14 md:h-16 pl-12 pr-10 bg-[#F9F7F2] dark:bg-white/5 border border-bhutan-gold/20 dark:border-white/10 rounded-xl md:rounded-2xl focus:ring-bhutan-red/20 focus:border-bhutan-red outline-none text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/60 dark:text-white/60 appearance-none min-w-full md:min-w-[160px] cursor-pointer hover:bg-white dark:hover:bg-white/10 transition-all shadow-sm"
                 >
                   <option value="">All Types</option>
                   {propertyTypes.map((type) => (
@@ -286,7 +286,7 @@ function PropertiesContent() {
               </div>
 
               {/* Advanced Toggle */}
-              <div className="flex items-center justify-between sm:justify-start w-full sm:w-auto gap-2 p-1.5 bg-[#F9F7F2] rounded-2xl border border-bhutan-gold/20">
+              <div className="flex items-center justify-between sm:justify-start w-full sm:w-auto gap-2 p-1.5 bg-[#F9F7F2] dark:bg-white/5 rounded-2xl border border-bhutan-gold/20 dark:border-white/10">
                 <Button
                   variant="ghost"
                   size="icon"
@@ -335,7 +335,7 @@ function PropertiesContent() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                   {/* Price Range */}
                   <div className="space-y-4">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] ml-2">Price Range</label>
+                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-white/40 uppercase tracking-[0.2em] ml-2">Price Range</label>
                     <div className="relative group/select">
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-bhutan-gold pointer-events-none">Nu</span>
                       <select
@@ -347,7 +347,7 @@ function PropertiesContent() {
                             maxPrice: range.max,
                           });
                         }}
-                        className="h-14 w-full pl-12 pr-10 bg-[#F9F7F2] border border-bhutan-gold/20 rounded-2xl focus:ring-bhutan-red/20 focus:border-bhutan-red outline-none text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/60 appearance-none cursor-pointer hover:bg-white transition-all shadow-sm"
+                        className="h-14 w-full pl-12 pr-10 bg-[#F9F7F2] dark:bg-white/5 border border-bhutan-gold/20 dark:border-white/10 rounded-2xl focus:ring-bhutan-red/20 focus:border-bhutan-red outline-none text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/60 dark:text-white/60 appearance-none cursor-pointer hover:bg-white dark:hover:bg-white/10 transition-all shadow-sm"
                       >
                         {priceRanges.map((range, index) => (
                           <option key={range.label} value={index}>
@@ -361,7 +361,7 @@ function PropertiesContent() {
 
                   {/* Bedrooms */}
                   <div className="space-y-4">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] ml-2">Bedrooms</label>
+                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-white/40 uppercase tracking-[0.2em] ml-2">Bedrooms</label>
                     <div className="flex gap-2">
                       {bedroomOptions.map((option) => (
                         <button
@@ -369,7 +369,7 @@ function PropertiesContent() {
                           onClick={() => setFilters({ ...filters, bedrooms: option.value })}
                           className={`flex-1 h-14 rounded-2xl text-[10px] font-bold uppercase tracking-tighter transition-all duration-300 border ${filters.bedrooms === option.value
                             ? "bg-bhutan-dark text-white border-bhutan-dark shadow-lg"
-                            : "bg-[#F9F7F2] text-bhutan-dark/40 border-bhutan-gold/20 hover:border-bhutan-red hover:text-bhutan-red"
+                            : "bg-[#F9F7F2] dark:bg-white/5 text-bhutan-dark/40 dark:text-white/40 border-bhutan-gold/20 dark:border-white/10 hover:border-bhutan-red hover:text-bhutan-red"
                             }`}
                         >
                           {option.label}
@@ -416,12 +416,12 @@ function PropertiesContent() {
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={i}
-                className="bg-white rounded-[2.5rem] overflow-hidden shadow-xl animate-pulse"
+                className="bg-white dark:bg-[#1B1E23] rounded-[2.5rem] overflow-hidden shadow-xl animate-pulse"
               >
-                <div className="h-72 bg-gray-200" />
+                <div className="h-72 bg-gray-200 dark:bg-white/10" />
                 <div className="p-8 space-y-4">
-                  <div className="h-6 bg-gray-100 rounded w-3/4" />
-                  <div className="h-4 bg-gray-100 rounded w-1/2" />
+                  <div className="h-6 bg-gray-100 dark:bg-white/5 rounded w-3/4" />
+                  <div className="h-4 bg-gray-100 dark:bg-white/5 rounded w-1/2" />
                 </div>
               </div>
             ))}
@@ -453,14 +453,14 @@ function PropertiesContent() {
 
         {/* Empty State */}
         {!isLoading && displayProperties.length === 0 && (
-          <div className="text-center py-24 bg-white rounded-[3rem] border border-bhutan-gold/10 shadow-xl">
-            <div className="w-24 h-24 bg-[#F9F7F2] rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="text-center py-24 bg-white dark:bg-[#1B1E23] rounded-[3rem] border border-bhutan-gold/10 dark:border-white/5 shadow-xl">
+            <div className="w-24 h-24 bg-[#F9F7F2] dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
               <Search className="w-12 h-12 text-bhutan-gold/40" />
             </div>
-            <h3 className="text-3xl font-serif font-bold text-bhutan-dark mb-4">
+            <h3 className="text-3xl font-serif font-bold text-bhutan-dark dark:text-white mb-4">
               None Found
             </h3>
-            <p className="text-bhutan-dark/40 mb-8 max-w-md mx-auto font-light">
+            <p className="text-bhutan-dark/40 dark:text-white/40 mb-8 max-w-md mx-auto font-light">
               We couldn't find any properties matching your search. Please try changing your filters.
             </p>
             <Button onClick={() => setFilters({})} className="bg-bhutan-red hover:bg-bhutan-dark text-white rounded-2xl px-12 h-16 text-[10px] font-bold uppercase tracking-widest shadow-xl transition-all">
@@ -476,7 +476,7 @@ function PropertiesContent() {
 export default function PropertiesPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#F9F7F2] flex items-center justify-center">
+      <div className="min-h-screen bg-[#F9F7F2] dark:bg-[#0C0D0F] flex items-center justify-center">
         <div className="w-12 h-12 border-4 border-bhutan-red border-t-transparent rounded-full animate-spin"></div>
       </div>
     }>
@@ -504,7 +504,7 @@ function PropertyCard({
         initial={{ opacity: 0, x: -20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
-        className="group bg-white rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 border border-bhutan-gold/10 hover:border-bhutan-gold/30"
+        className="group bg-white dark:bg-[#1B1E23] rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 border border-bhutan-gold/10 dark:border-white/5 hover:border-bhutan-gold/30"
       >
         <div className="flex flex-col md:flex-row h-full">
           {/* Image */}
@@ -546,53 +546,53 @@ function PropertyCard({
                       {typeName}
                     </span>
                     <div className="w-1.5 h-1.5 rounded-full bg-bhutan-gold/20" />
-                    <span className="text-[10px] font-medium text-bhutan-dark/40 uppercase tracking-[0.2em]">
+                    <span className="text-[10px] font-medium text-bhutan-dark/40 dark:text-white/40 uppercase tracking-[0.2em]">
                       Ref: {property._id.toString().slice(-6).toUpperCase()}
                     </span>
                   </div>
-                  <h3 className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark group-hover:text-bhutan-red transition-colors duration-500">
+                  <h3 className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark dark:text-white group-hover:text-bhutan-red transition-colors duration-500">
                     {property.title}
                   </h3>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 text-bhutan-dark/60 bg-[#F9F7F2] p-4 rounded-2xl w-fit">
+              <div className="flex items-center gap-4 text-bhutan-dark/60 dark:text-white/50 bg-[#F9F7F2] dark:bg-white/5 p-4 rounded-2xl w-fit">
                 <MapPin className="w-5 h-5 text-bhutan-gold" />
                 <span className="text-sm font-medium">{property.location}</span>
               </div>
 
-              <p className="text-bhutan-dark/40 text-lg leading-relaxed line-clamp-2 font-light italic">
+              <p className="text-bhutan-dark/40 dark:text-white/40 text-lg leading-relaxed line-clamp-2 font-light italic">
                 "{property.description.replace(/<[^>]*>?/gm, '')}"
               </p>
 
-              <div className="grid grid-cols-3 gap-8 py-8 border-y border-bhutan-gold/10">
+              <div className="grid grid-cols-3 gap-8 py-8 border-y border-bhutan-gold/10 dark:border-white/10">
                 <div className="space-y-2">
                   <div className="flex items-center gap-3 text-bhutan-gold/40">
                     <Bed className="w-5 h-5" />
                     <span className="text-[10px] font-bold uppercase tracking-widest">Beds</span>
                   </div>
-                  <p className="text-2xl font-serif font-bold text-bhutan-dark">{property.bedrooms}</p>
+                  <p className="text-2xl font-serif font-bold text-bhutan-dark dark:text-white">{property.bedrooms}</p>
                 </div>
                 <div className="space-y-2 border-x border-bhutan-gold/10 px-8">
                   <div className="flex items-center gap-3 text-bhutan-gold/40">
                     <Bath className="w-5 h-5" />
                     <span className="text-[10px] font-bold uppercase tracking-widest">Baths</span>
                   </div>
-                  <p className="text-2xl font-serif font-bold text-bhutan-dark">{property.bathrooms}</p>
+                  <p className="text-2xl font-serif font-bold text-bhutan-dark dark:text-white">{property.bathrooms}</p>
                 </div>
                 <div className="space-y-2 pl-8">
                   <div className="flex items-center gap-3 text-bhutan-gold/40">
                     <Maximize className="w-5 h-5" />
                     <span className="text-[10px] font-bold uppercase tracking-widest">Size</span>
                   </div>
-                  <p className="text-2xl font-serif font-bold text-bhutan-dark">{property.area} <span className="text-[10px] text-bhutan-dark/40">{areaUnit}</span></p>
+                  <p className="text-2xl font-serif font-bold text-bhutan-dark dark:text-white">{property.area} <span className="text-[10px] text-bhutan-dark/40">{areaUnit}</span></p>
                 </div>
               </div>
             </div>
 
             <div className="flex items-center justify-between mt-12">
               <div className="space-y-1">
-                <span className="text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Price</span>
+                <span className="text-[10px] font-bold text-bhutan-dark/30 dark:text-white/30 uppercase tracking-widest">Price</span>
                 <p className="text-4xl font-serif font-bold text-bhutan-red">
                   {formatPrice(property.price)}
                 </p>
@@ -615,7 +615,7 @@ function PropertyCard({
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="group bg-white rounded-xl md:rounded-[2rem] overflow-hidden shadow-md hover:shadow-xl transition-all duration-500 hover:-translate-y-1 border border-gray-100"
+      className="group bg-white dark:bg-[#1B1E23] rounded-xl md:rounded-[2rem] overflow-hidden shadow-md dark:shadow-lg dark:shadow-black/20 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 border border-gray-100 dark:border-white/5"
     >
       {/* Image */}
       <div className="relative h-32 sm:h-44 md:h-56 overflow-hidden">
@@ -656,31 +656,31 @@ function PropertyCard({
       <div className="p-2.5 sm:p-3 md:p-6">
         <div className="flex items-center gap-1 mb-1 md:mb-2">
           <MapPin className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-bhutan-gold flex-shrink-0" />
-          <span className="text-[8px] md:text-[10px] text-gray-400 uppercase tracking-wider truncate">{property.location}</span>
+          <span className="text-[8px] md:text-[10px] text-gray-400 dark:text-white/40 uppercase tracking-wider truncate">{property.location}</span>
         </div>
 
-        <h3 className="font-serif text-xs sm:text-sm md:text-lg font-bold text-bhutan-dark group-hover:text-bhutan-red transition-colors line-clamp-1 mb-2 md:mb-4">
+        <h3 className="font-serif text-xs sm:text-sm md:text-lg font-bold text-bhutan-dark dark:text-white group-hover:text-bhutan-red transition-colors line-clamp-1 mb-2 md:mb-4">
           {property.title}
         </h3>
 
-        <div className="flex items-center justify-between pt-2 md:pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-between pt-2 md:pt-4 border-t border-gray-100 dark:border-white/10">
           <div className="flex items-center gap-2 md:gap-4">
             <div className="flex items-center gap-1">
               <Bed className="w-3 h-3 md:w-4 md:h-4 text-bhutan-gold/40" />
-              <span className="text-[9px] md:text-xs font-bold text-gray-500">{property.bedrooms}</span>
+              <span className="text-[9px] md:text-xs font-bold text-gray-500 dark:text-white/50">{property.bedrooms}</span>
             </div>
             <div className="flex items-center gap-1">
               <Bath className="w-3 h-3 md:w-4 md:h-4 text-bhutan-gold/40" />
-              <span className="text-[9px] md:text-xs font-bold text-gray-500">{property.bathrooms}</span>
+              <span className="text-[9px] md:text-xs font-bold text-gray-500 dark:text-white/50">{property.bathrooms}</span>
             </div>
             <div className="hidden sm:flex items-center gap-1">
               <Maximize className="w-3 h-3 md:w-4 md:h-4 text-bhutan-gold/40" />
-              <span className="text-[9px] md:text-xs font-bold text-gray-500">{property.area}<span className="text-[7px] ml-0.5">{areaUnit}</span></span>
+              <span className="text-[9px] md:text-xs font-bold text-gray-500 dark:text-white/50">{property.area}<span className="text-[7px] ml-0.5">{areaUnit}</span></span>
             </div>
           </div>
 
           <Link href={`/properties/${property._id}`}>
-            <button className="w-7 h-7 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gray-50 text-bhutan-red flex items-center justify-center hover:bg-bhutan-red hover:text-white transition-all group/arrow">
+            <button className="w-7 h-7 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-gray-50 dark:bg-white/5 text-bhutan-red flex items-center justify-center hover:bg-bhutan-red hover:text-white transition-all group/arrow">
               <ArrowRight className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-0.5 transition-transform" />
             </button>
           </Link>

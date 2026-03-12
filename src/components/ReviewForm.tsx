@@ -113,7 +113,7 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-3xl overflow-hidden relative border-4 border-white"
+                        className="bg-white dark:bg-card w-full max-w-2xl rounded-[2.5rem] shadow-3xl overflow-hidden relative border-4 border-white dark:border-card"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="absolute inset-0 bg-thangka opacity-[0.03] pointer-events-none" />
@@ -121,7 +121,7 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                         {/* Close Button */}
                         <button
                             onClick={onClose}
-                            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-bhutan-gold/10 flex items-center justify-center text-bhutan-dark hover:bg-bhutan-red hover:text-white transition-all z-20"
+                            className="absolute top-6 right-6 w-10 h-10 rounded-full bg-bhutan-gold/10 dark:bg-white/10 flex items-center justify-center text-bhutan-dark dark:text-foreground hover:bg-bhutan-red hover:text-white transition-all z-20"
                         >
                             <X className="w-5 h-5" />
                         </button>
@@ -133,11 +133,11 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                                     animate={{ opacity: 1, y: 0 }}
                                     className="text-center py-12"
                                 >
-                                    <div className="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-8">
+                                    <div className="w-24 h-24 bg-green-50 dark:bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-8">
                                         <CheckCircle className="w-12 h-12 text-green-500" />
                                     </div>
-                                    <h3 className="text-3xl font-serif font-bold text-bhutan-dark mb-4">Story Shared!</h3>
-                                    <p className="text-bhutan-dark/60 italic">
+                                    <h3 className="text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground mb-4">Story Shared!</h3>
+                                    <p className="text-bhutan-dark/60 dark:text-muted-foreground italic">
                                         "Thank you for being part of our journey. We will review and publish your testimonial soon."
                                     </p>
                                 </motion.div>
@@ -148,7 +148,7 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                                             <Heart className="w-6 h-6 text-bhutan-red fill-bhutan-red" />
                                         </div>
                                         <div>
-                                            <h2 className="text-3xl md:text-4xl font-serif font-bold text-bhutan-dark">Share Your Story</h2>
+                                            <h2 className="text-3xl md:text-4xl font-serif font-bold text-bhutan-dark dark:text-foreground">Share Your Story</h2>
                                             <p className="text-[12px] uppercase font-bold tracking-widest text-bhutan-red">We value your happiness</p>
                                         </div>
                                     </div>
@@ -157,14 +157,14 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                                         {/* Image Upload Area */}
                                         <div className="md:col-span-2 flex flex-col items-center mb-4">
                                             <div className="relative group">
-                                                <div className={`w-28 h-28 rounded-[2rem] overflow-hidden border-4 border-white shadow-xl bg-[#F9F7F2] flex items-center justify-center transition-transform duration-500 group-hover:scale-105 ${!imagePreview ? 'border-dashed border-bhutan-gold/30' : ''}`}>
+                                                <div className={`w-28 h-28 rounded-[2rem] overflow-hidden border-4 border-white dark:border-card shadow-xl bg-[#F9F7F2] dark:bg-background flex items-center justify-center transition-transform duration-500 group-hover:scale-105 ${!imagePreview ? 'border-dashed border-bhutan-gold/30 dark:border-white/10' : ''}`}>
                                                     {imagePreview ? (
                                                         <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                                                     ) : (
                                                         <Camera className="w-10 h-10 text-bhutan-gold/30" />
                                                     )}
                                                 </div>
-                                                <label className="absolute -bottom-2 -right-2 w-10 h-10 bg-bhutan-red rounded-xl flex items-center justify-center shadow-xl border-2 border-white cursor-pointer hover:bg-bhutan-dark transition-colors">
+                                                <label className="absolute -bottom-2 -right-2 w-10 h-10 bg-bhutan-red rounded-xl flex items-center justify-center shadow-xl border-2 border-white dark:border-card cursor-pointer hover:bg-bhutan-dark transition-colors">
                                                     <Upload className="w-5 h-5 text-white" />
                                                     <input
                                                         type="file"
@@ -174,39 +174,39 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                                                     />
                                                 </label>
                                             </div>
-                                            <p className="text-[9px] font-bold text-bhutan-dark/40 uppercase tracking-widest mt-4">Upload Your Photo</p>
+                                             <p className="text-[9px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-widest mt-4">Upload Your Photo</p>
                                         </div>
 
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-widest ml-4">Full Name</label>
+                                             <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-widest ml-4">Full Name</label>
                                             <div className="relative">
                                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-bhutan-gold" />
                                                 <Input
                                                     value={formData.name}
                                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                                     placeholder="Tashi Namgay"
-                                                    className="pl-12 h-14 bg-[#F9F7F2] border-bhutan-gold/10 rounded-xl focus:ring-bhutan-red/20 focus:border-bhutan-red"
+                                                     className="pl-12 h-14 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 rounded-xl focus:ring-bhutan-red/20 focus:border-bhutan-red dark:text-foreground"
                                                     required
                                                 />
                                             </div>
                                         </div>
 
                                         <div className="space-y-2">
-                                            <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-widest ml-4">Location</label>
+                                             <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-widest ml-4">Location</label>
                                             <div className="relative">
                                                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-bhutan-gold" />
                                                 <Input
                                                     value={formData.location}
                                                     onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                                     placeholder="Thimphu, Bhutan"
-                                                    className="pl-12 h-14 bg-[#F9F7F2] border-bhutan-gold/10 rounded-xl focus:ring-bhutan-red/20 focus:border-bhutan-red"
+                                                     className="pl-12 h-14 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 rounded-xl focus:ring-bhutan-red/20 focus:border-bhutan-red dark:text-foreground"
                                                     required
                                                 />
                                             </div>
                                         </div>
 
-                                        <div className="md:col-span-2 space-y-2">
-                                            <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-widest ml-4 flex justify-between">
+                                         <div className="md:col-span-2 space-y-2">
+                                            <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-widest ml-4 flex justify-between">
                                                 <span>Your Experience</span>
                                                 <span className="text-bhutan-red lowercase tracking-normal">({formData.content.length}/500)</span>
                                             </label>
@@ -214,14 +214,14 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                                                 value={formData.content}
                                                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                                                 placeholder="Describe your journey with us..."
-                                                className="min-h-[120px] bg-[#F9F7F2] border-bhutan-gold/10 rounded-2xl p-4 focus:ring-bhutan-red/20 focus:border-bhutan-red resize-none italic"
+                                                 className="min-h-[120px] bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 rounded-2xl p-4 focus:ring-bhutan-red/20 focus:border-bhutan-red dark:text-foreground resize-none italic"
                                                 maxLength={500}
                                                 required
                                             />
                                         </div>
 
-                                        <div className="md:col-span-2 flex flex-col items-center py-4 bg-[#F9F7F2]/50 rounded-2xl border border-dashed border-bhutan-gold/20">
-                                            <p className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-widest mb-3">Overall Rating</p>
+                                         <div className="md:col-span-2 flex flex-col items-center py-4 bg-[#F9F7F2]/50 dark:bg-white/[0.02] rounded-2xl border border-dashed border-bhutan-gold/20 dark:border-white/10">
+                                             <p className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-widest mb-3">Overall Rating</p>
                                             <div className="flex gap-2">
                                                 {[1, 2, 3, 4, 5].map((star) => (
                                                     <button
@@ -235,7 +235,7 @@ export function ReviewForm({ isOpen, onClose }: ReviewFormProps) {
                                                         <Star
                                                             className={`w-8 h-8 transition-colors ${star <= (hoveredRating || rating)
                                                                 ? "fill-bhutan-gold text-bhutan-gold scale-110"
-                                                                : "text-bhutan-dark/10"
+                                                                : "text-bhutan-dark/10 dark:text-white/10"
                                                                 }`}
                                                         />
                                                     </button>

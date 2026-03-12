@@ -42,7 +42,7 @@ export function FeaturedProperties() {
   const displayProperties = properties;
 
   return (
-    <section className="section-padding bg-gray-50 relative overflow-hidden">
+    <section className="section-padding bg-gray-50 dark:bg-[#0C0D0F] relative overflow-hidden">
       {/* Decorative Top Border */}
       <div className="absolute top-0 left-0 right-0 flex justify-center py-4">
         <span className="text-bhutan-gold/40 tracking-widest text-lg font-serif">────────── ✦ ──────────</span>
@@ -55,7 +55,7 @@ export function FeaturedProperties() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark mb-4"
+            className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark dark:text-white mb-4"
           >
             Featured Properties
           </motion.h2>
@@ -71,12 +71,12 @@ export function FeaturedProperties() {
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-[2rem] overflow-hidden shadow-soft animate-pulse">
-                <div className="h-48 md:h-64 bg-gray-200" />
+              <div key={i} className="bg-white dark:bg-[#1B1E23] rounded-[2rem] overflow-hidden shadow-soft animate-pulse">
+                <div className="h-48 md:h-64 bg-gray-200 dark:bg-white/10" />
                 <div className="p-4 md:p-6 space-y-4">
-                  <div className="h-6 md:h-8 bg-gray-200 rounded w-1/3" />
-                  <div className="h-4 md:h-6 bg-gray-200 rounded w-3/4" />
-                  <div className="h-3 md:h-4 bg-gray-200 rounded w-1/2" />
+                  <div className="h-6 md:h-8 bg-gray-200 dark:bg-white/10 rounded w-1/3" />
+                  <div className="h-4 md:h-6 bg-gray-200 dark:bg-white/10 rounded w-3/4" />
+                  <div className="h-3 md:h-4 bg-gray-200 dark:bg-white/10 rounded w-1/2" />
                 </div>
               </div>
             ))}
@@ -105,7 +105,7 @@ function PropertyCard({ property }: { property: Property }) {
   const [isLiked, setIsLiked] = useState(false);
 
   return (
-    <div className="bg-white rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-soft hover:shadow-[0_20px_50px_-15px_rgba(244,196,48,0.3)] hover:-translate-y-2 transition-all duration-500 group flex flex-col h-full border border-gray-100 relative">
+    <div className="bg-white dark:bg-[#1B1E23] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-soft dark:shadow-lg dark:shadow-black/20 hover:shadow-[0_20px_50px_-15px_rgba(244,196,48,0.3)] hover:-translate-y-2 transition-all duration-500 group flex flex-col h-full border border-gray-100 dark:border-white/5 relative">
       <div className="relative h-48 md:h-64 overflow-hidden">
         <Image
           src={property.images[0] || "/placeholder-property.jpg"}
@@ -142,19 +142,19 @@ function PropertyCard({ property }: { property: Property }) {
       </div>
 
       <div className="p-4 md:p-6 flex-grow flex flex-col">
-        <h3 className="font-serif text-lg md:text-xl font-bold text-bhutan-dark mb-1 md:mb-2 group-hover:text-bhutan-red transition-colors duration-300 line-clamp-1">
+        <h3 className="font-serif text-lg md:text-xl font-bold text-bhutan-dark dark:text-white mb-1 md:mb-2 group-hover:text-bhutan-red transition-colors duration-300 line-clamp-1">
           {property.title}
         </h3>
 
-        <div className="flex items-center gap-2 text-gray-500 mb-4 pb-4 border-b border-gray-100">
+        <div className="flex items-center gap-2 text-gray-500 dark:text-white/50 mb-4 pb-4 border-b border-gray-100 dark:border-white/10">
           <MapPin className="w-4 h-4 text-bhutan-gold" />
           <span className="text-sm tracking-wide truncate">{property.location}</span>
         </div>
 
         {property.loanAvailable && property.loanAmount !== undefined && property.loanAmount > 0 && (
-          <div className="mb-4 px-4 py-2 bg-bhutan-gold/5 rounded-xl border border-bhutan-gold/10 flex items-center justify-between">
+          <div className="mb-4 px-4 py-2 bg-bhutan-gold/5 dark:bg-bhutan-gold/10 rounded-xl border border-bhutan-gold/10 flex items-center justify-between">
             <span className="text-[10px] font-bold text-bhutan-gold uppercase tracking-widest">Loan Option</span>
-            <span className="text-xs font-bold text-bhutan-dark">Nu. {property.loanAmount.toLocaleString("en-IN")}</span>
+            <span className="text-xs font-bold text-bhutan-dark dark:text-white">Nu. {property.loanAmount.toLocaleString("en-IN")}</span>
           </div>
         )}
 
@@ -165,9 +165,9 @@ function PropertyCard({ property }: { property: Property }) {
             { icon: Bath, label: property.bathrooms, text: "Baths" },
             { icon: Maximize, label: property.area, text: "sqft" },
           ].map((item, i) => (
-            <div key={i} className="flex flex-col items-center gap-1 border-r border-gray-100 last:border-0">
-              <span className="text-sm md:text-base font-bold text-bhutan-dark">{item.label}</span>
-              <span className="text-[9px] md:text-[10px] text-gray-400 uppercase font-bold tracking-widest">{item.text}</span>
+            <div key={i} className="flex flex-col items-center gap-1 border-r border-gray-100 dark:border-white/10 last:border-0">
+              <span className="text-sm md:text-base font-bold text-bhutan-dark dark:text-white">{item.label}</span>
+              <span className="text-[9px] md:text-[10px] text-gray-400 dark:text-white/40 uppercase font-bold tracking-widest">{item.text}</span>
             </div>
           ))}
         </div>

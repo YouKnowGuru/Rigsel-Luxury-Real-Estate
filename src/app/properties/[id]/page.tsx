@@ -160,7 +160,7 @@ export default function PropertyDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F9F7F2] pt-32 pb-20">
+      <div className="min-h-screen bg-[#F9F7F2] dark:bg-background pt-32 pb-20">
         <div className="container-luxury max-w-7xl mx-auto px-6">
           <div className="h-[600px] bg-white/50 rounded-[3rem] animate-pulse mb-12 shadow-sm" />
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -177,11 +177,11 @@ export default function PropertyDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F7F2] pb-32">
+    <div className="min-h-screen bg-[#F9F7F2] dark:bg-background pb-32">
       {/* Navigation Top Bar (Floating Style) */}
       <div className="fixed top-24 sm:top-28 left-0 right-0 z-40 px-3 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl sm:rounded-3xl p-2 sm:p-4 shadow-xl flex items-center justify-between">
+          <div className="bg-white/80 dark:bg-card/80 backdrop-blur-xl border border-white/40 dark:border-white/10 rounded-2xl sm:rounded-3xl p-2 sm:p-4 shadow-xl flex items-center justify-between">
             <Link
               href="/properties"
               className="flex items-center gap-1.5 sm:gap-3 px-3 sm:px-6 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl text-bhutan-dark/60 hover:text-bhutan-red hover:bg-bhutan-red/5 transition-all duration-500 font-medium"
@@ -192,7 +192,7 @@ export default function PropertyDetailPage() {
             <div className="flex items-center gap-2 sm:gap-3">
               <button
                 onClick={handleShare}
-                className="w-9 h-9 sm:w-12 h-12 flex items-center justify-center rounded-xl sm:rounded-2xl bg-white border border-bhutan-gold/10 text-bhutan-dark/60 hover:text-bhutan-gold hover:border-bhutan-gold/30 transition-all duration-500 shadow-sm"
+                className="w-9 h-9 sm:w-12 h-12 flex items-center justify-center rounded-xl sm:rounded-2xl bg-white dark:bg-card border border-bhutan-gold/10 dark:border-white/10 text-bhutan-dark/60 dark:text-foreground/60 hover:text-bhutan-gold hover:border-bhutan-gold/30 transition-all duration-500 shadow-sm"
               >
                 <Share2 className="w-4 h-4 sm:w-5 h-5" />
               </button>
@@ -216,7 +216,7 @@ export default function PropertyDetailPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative rounded-[3.5rem] overflow-hidden shadow-2xl border-8 border-white"
+            className="relative rounded-[3.5rem] overflow-hidden shadow-2xl border-8 border-white dark:border-card"
           >
             <Swiper
               modules={[Navigation, Pagination, Autoplay, EffectFade]}
@@ -245,7 +245,7 @@ export default function PropertyDetailPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="bg-white/90 backdrop-blur-xl rounded-lg md:rounded-2xl p-2 sm:p-3 md:p-5 shadow-2xl border border-white/50"
+                className="bg-white/90 dark:bg-card/90 backdrop-blur-xl rounded-lg md:rounded-2xl p-2 sm:p-3 md:p-5 shadow-2xl border border-white/50 dark:border-white/10"
               >
                 <p className="text-bhutan-dark/40 text-[7px] md:text-[9px] font-bold uppercase tracking-[0.3em] mb-0.5 md:mb-1 text-center">Price</p>
                 <p className="text-lg sm:text-xl md:text-3xl font-sans font-bold text-bhutan-red text-center">
@@ -299,36 +299,36 @@ export default function PropertyDetailPage() {
                   <div className="h-0.5 w-12 bg-bhutan-gold/30 rounded-full" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.5em]">{displayProperty.district} District</span>
                 </div>
-                <h1 className="font-serif text-2xl sm:text-3xl md:text-6xl font-bold text-bhutan-dark leading-tight break-words">
+                <h1 className="font-serif text-2xl sm:text-3xl md:text-6xl font-bold text-bhutan-dark dark:text-foreground leading-tight break-words">
                   {displayProperty.title}
                 </h1>
-                <div className="flex items-center gap-3 text-bhutan-dark/60 text-lg bg-white/50 w-fit px-6 py-3 rounded-2xl border border-bhutan-gold/10">
+                <div className="flex items-center gap-3 text-bhutan-dark/60 dark:text-muted-foreground text-lg bg-white/50 dark:bg-card/50 w-fit px-6 py-3 rounded-2xl border border-bhutan-gold/10 dark:border-white/5">
                   <MapPin className="w-6 h-6 text-bhutan-gold" />
                   <span className="font-medium italic">{displayProperty.location}</span>
                 </div>
               </motion.div>
 
               {/* Quick Spec Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 md:gap-8 p-4 sm:p-6 md:p-12 bg-white rounded-[1.5rem] md:rounded-[3rem] shadow-sm border border-bhutan-gold/10">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 md:gap-8 p-4 sm:p-6 md:p-12 bg-white dark:bg-card rounded-[1.5rem] md:rounded-[3rem] shadow-sm border border-bhutan-gold/10 dark:border-white/5">
                 <div className="space-y-1 md:space-y-3 text-center">
                   <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
                     <Bed className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
-                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.bedrooms}</p>
+                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground leading-none pt-2">{displayProperty.bedrooms}</p>
                   <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Bedrooms</p>
                 </div>
                 <div className="space-y-1 md:space-y-3 text-center md:border-x border-bhutan-gold/10 px-1 md:px-8 border-l border-bhutan-gold/10">
                   <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
                     <Bath className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
-                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.bathrooms}</p>
+                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground leading-none pt-2">{displayProperty.bathrooms}</p>
                   <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Baths</p>
                 </div>
                 <div className="space-y-1 md:space-y-3 text-center col-span-2 md:col-span-1 border-t md:border-t-0 pt-4 md:pt-0 mt-2 md:mt-0 border-bhutan-gold/10">
                   <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
                     <Maximize className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
-                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.area}</p>
+                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground leading-none pt-2">{displayProperty.area}</p>
                   <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Area</p>
                 </div>
 
@@ -339,7 +339,7 @@ export default function PropertyDetailPage() {
                       <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
                         <Home className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                       </div>
-                      <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{spec.value}</p>
+                      <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground leading-none pt-2">{spec.value}</p>
                       <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">{spec.label}</p>
                     </div>
                   ))
@@ -351,13 +351,13 @@ export default function PropertyDetailPage() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="bg-bhutan-gold/5 border border-bhutan-gold/20 rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
+                  className="bg-bhutan-gold/5 dark:bg-white/[0.02] border border-bhutan-gold/20 dark:border-white/10 rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
                 >
                   <div className="space-y-2 text-center md:text-left">
                     <p className="text-bhutan-gold font-bold text-xs uppercase tracking-[0.3em]">Financial Assistance</p>
                     <h3 className="text-2xl font-serif font-bold text-bhutan-dark">Loan Support Available</h3>
                   </div>
-                  <div className="bg-white px-8 py-4 rounded-2xl shadow-sm border border-bhutan-gold/10 text-center">
+                  <div className="bg-white dark:bg-card px-8 py-4 rounded-2xl shadow-sm border border-bhutan-gold/10 dark:border-white/5 text-center">
                     <p className="text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest mb-1">Loan Amount</p>
                     <p className="text-2xl font-serif font-bold text-bhutan-red">Nu. {displayProperty.loanAmount.toLocaleString("en-IN")}</p>
                   </div>
@@ -367,7 +367,7 @@ export default function PropertyDetailPage() {
               {/* Description Section */}
               <div className="space-y-8">
                 <div className="flex items-center gap-6">
-                  <h2 className="font-serif text-3xl font-bold text-bhutan-dark">About this property</h2>
+                  <h2 className="font-serif text-3xl font-bold text-bhutan-dark dark:text-foreground">About this property</h2>
                   <div className="h-px flex-1 bg-bhutan-gold/10" />
                 </div>
                 <div
@@ -377,7 +377,7 @@ export default function PropertyDetailPage() {
                         setDescriptionImageUrl((target as HTMLImageElement).src);
                     }
                   }}
-                  className="text-bhutan-dark/80 text-base md:text-lg leading-relaxed font-normal prose prose-bhutan max-w-none prose-p:my-4 w-full overflow-hidden break-words [&_img]:max-w-full [&_img]:cursor-pointer [&_img]:rounded-xl [&_iframe]:max-w-full [&_table]:max-w-full [&_*]:break-words"
+                  className="text-bhutan-dark/80 dark:text-muted-foreground text-base md:text-lg leading-relaxed font-normal prose prose-bhutan dark:prose-invert max-w-none prose-p:my-4 w-full overflow-hidden break-words [&_img]:max-w-full [&_img]:cursor-pointer [&_img]:rounded-xl [&_iframe]:max-w-full [&_table]:max-w-full [&_*]:break-words"
                   dangerouslySetInnerHTML={{ __html: displayProperty.description }}
                 />
               </div>
@@ -385,7 +385,7 @@ export default function PropertyDetailPage() {
               {/* Features List */}
               <div className="space-y-8">
                 <div className="flex items-center gap-6">
-                  <h2 className="font-serif text-3xl font-bold text-bhutan-dark">Property Highlights</h2>
+                  <h2 className="font-serif text-3xl font-bold text-bhutan-dark dark:text-foreground">Property Highlights</h2>
                   <div className="h-px flex-1 bg-bhutan-gold/10" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
@@ -396,12 +396,12 @@ export default function PropertyDetailPage() {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-4 bg-white p-5 rounded-2xl border border-white shadow-sm hover:border-bhutan-gold/20 transition-all duration-500"
+                       className="flex items-center gap-4 bg-white dark:bg-card p-5 rounded-2xl border border-white dark:border-white/5 shadow-sm hover:border-bhutan-gold/20 transition-all duration-500"
                     >
                       <div className="w-10 h-10 bg-bhutan-gold/10 rounded-xl flex items-center justify-center flex-shrink-0">
                         <Check className="w-5 h-5 text-bhutan-gold" />
                       </div>
-                      <span className="text-bhutan-dark/70 font-medium text-lg">{feature}</span>
+                       <span className="text-bhutan-dark/70 dark:text-muted-foreground font-medium text-lg">{feature}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -410,10 +410,10 @@ export default function PropertyDetailPage() {
               {/* Location Map (Themed) */}
               <div className="space-y-8">
                 <div className="flex items-center gap-6">
-                  <h2 className="font-serif text-3xl font-bold text-bhutan-dark">Our Location</h2>
+                  <h2 className="font-serif text-3xl font-bold text-bhutan-dark dark:text-foreground">Our Location</h2>
                   <div className="h-px flex-1 bg-bhutan-gold/10" />
                 </div>
-                <div className="rounded-[2.5rem] overflow-hidden border-8 border-white shadow-xl h-[450px]">
+                <div className="rounded-[2.5rem] overflow-hidden border-8 border-white dark:border-card shadow-xl h-[450px]">
                   <iframe
                     width="100%"
                     height="100%"
@@ -434,7 +434,7 @@ export default function PropertyDetailPage() {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white rounded-[2rem] p-6 shadow-luxury border-2 border-white"
+                className="bg-white dark:bg-card rounded-[2rem] p-6 shadow-luxury border-2 border-white dark:border-white/10"
               >
                 <div className="flex items-center gap-5">
                   <div className="w-20 h-20 rounded-2xl overflow-hidden relative border-2 border-bhutan-gold/10">
@@ -446,7 +446,7 @@ export default function PropertyDetailPage() {
                   </div>
                   <div className="flex-1">
                     <p className="text-bhutan-gold text-[10px] font-bold uppercase tracking-widest mb-1">Local Agent</p>
-                    <h3 className="font-serif text-xl font-bold text-bhutan-dark">Dorji Wangchuk</h3>
+                    <h3 className="font-serif text-xl font-bold text-bhutan-dark dark:text-foreground">Dorji Wangchuk</h3>
                     <p className="text-bhutan-dark/40 text-xs font-medium">General Manager (GM)</p>
                   </div>
                 </div>
@@ -469,33 +469,33 @@ export default function PropertyDetailPage() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="bg-white rounded-[2rem] p-6 md:p-8 shadow-luxury border-2 border-white"
+                className="bg-white dark:bg-card rounded-[2rem] p-6 md:p-8 shadow-luxury border-2 border-white dark:border-white/10"
               >
                 <div className="flex items-center gap-4 mb-6 pb-6 border-b border-bhutan-gold/10">
                   <div className="w-12 h-12 bg-bhutan-red/5 rounded-xl flex items-center justify-center">
                     <MessageSquare className="w-6 h-6 text-bhutan-red" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl font-bold text-bhutan-dark">Send Inquiry</h3>
+                    <h3 className="font-serif text-xl font-bold text-bhutan-dark dark:text-foreground">Send Inquiry</h3>
                     <p className="text-bhutan-dark/40 text-[9px] font-bold uppercase tracking-widest">Prompt Response Guaranteed</p>
                   </div>
                 </div>
 
                 <form onSubmit={handleContactSubmit} className="space-y-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] ml-2">Your Name</label>
+                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] ml-2">Your Name</label>
                     <Input
                       placeholder="Please enter your name"
                       value={contactForm.name}
                       onChange={(e) =>
                         setContactForm({ ...contactForm, name: e.target.value })
                       }
-                      className="h-16 bg-[#F9F7F2] border-bhutan-gold/10 rounded-2xl px-6 font-medium focus:ring-bhutan-red focus:border-bhutan-red transition-all"
+                      className="h-16 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 rounded-2xl px-6 font-medium focus:ring-bhutan-red focus:border-bhutan-red transition-all"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] ml-2">Phone Number</label>
+                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] ml-2">Phone Number</label>
                     <Input
                       type="tel"
                       placeholder="Enter phone with code"
@@ -503,12 +503,12 @@ export default function PropertyDetailPage() {
                       onChange={(e) =>
                         setContactForm({ ...contactForm, phone: e.target.value })
                       }
-                      className="h-16 bg-[#F9F7F2] border-bhutan-gold/10 rounded-2xl px-6 font-medium focus:ring-bhutan-red focus:border-bhutan-red transition-all"
+                      className="h-16 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 rounded-2xl px-6 font-medium focus:ring-bhutan-red focus:border-bhutan-red transition-all"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] ml-2">Email Address</label>
+                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] ml-2">Email Address</label>
                     <Input
                       type="email"
                       placeholder="yourname@gmail.com"
@@ -516,12 +516,12 @@ export default function PropertyDetailPage() {
                       onChange={(e) =>
                         setContactForm({ ...contactForm, email: e.target.value })
                       }
-                      className="h-16 bg-[#F9F7F2] border-bhutan-gold/10 rounded-2xl px-6 font-medium focus:ring-bhutan-red focus:border-bhutan-red transition-all"
+                      className="h-16 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 rounded-2xl px-6 font-medium focus:ring-bhutan-red focus:border-bhutan-red transition-all"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] ml-2">Your Message</label>
+                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] ml-2">Your Message</label>
                     <Textarea
                       placeholder="How can we help you?"
                       value={contactForm.message}
@@ -529,7 +529,7 @@ export default function PropertyDetailPage() {
                         setContactForm({ ...contactForm, message: e.target.value })
                       }
                       rows={5}
-                      className="bg-[#F9F7F2] border-bhutan-gold/10 rounded-2xl p-6 font-medium focus:ring-bhutan-red focus:border-bhutan-red transition-all resize-none"
+                      className="bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 rounded-2xl p-6 font-medium focus:ring-bhutan-red focus:border-bhutan-red transition-all resize-none"
                       required
                     />
                   </div>
@@ -550,7 +550,7 @@ export default function PropertyDetailPage() {
                   <div className="space-y-4">
                     <a
                       href="tel:+97516111999"
-                      className="flex items-center justify-center gap-4 py-4 rounded-2xl bg-[#F9F7F2] hover:bg-bhutan-gold/10 text-bhutan-dark transition-all duration-500 font-bold border border-bhutan-gold/5"
+                      className="flex items-center justify-center gap-4 py-4 rounded-2xl bg-[#F9F7F2] dark:bg-background hover:bg-bhutan-gold/10 text-bhutan-dark dark:text-foreground transition-all duration-500 font-bold border border-bhutan-gold/5 dark:border-white/5"
                     >
                       <Phone className="w-5 h-5 text-bhutan-red" />
                       <span>+975 1611 1999</span>

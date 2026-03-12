@@ -56,9 +56,9 @@ import { TeamSection } from "@/sections/TeamSection";
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#F9F7F2]">
+    <div className="min-h-screen bg-[#F9F7F2] dark:bg-background">
       {/* Hero Section */}
-      <section className="relative pt-28 pb-16 md:pt-40 md:pb-24 overflow-hidden bg-white">
+      <section className="relative pt-28 pb-16 md:pt-40 md:pb-24 overflow-hidden bg-white dark:bg-card">
         <div className="absolute inset-0 bg-thangka opacity-[0.02] pointer-events-none" />
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-bhutan-gold/5 rounded-full blur-[120px]" />
 
@@ -78,7 +78,7 @@ export default function AboutPage() {
             <p className="text-bhutan-red text-lg md:text-xl italic font-light tracking-wide mb-6 md:mb-10">
               Transparency. Reliability. Excellence.
             </p>
-            <div className="text-bhutan-dark/70 text-base md:text-lg leading-relaxed max-w-3xl mx-auto font-light space-y-3 text-left bg-[#F9F7F2] p-5 md:p-8 rounded-xl md:rounded-2xl border border-bhutan-gold/10">
+            <div className="text-bhutan-dark/70 dark:text-muted-foreground text-base md:text-lg leading-relaxed max-w-3xl mx-auto font-light space-y-3 text-left bg-[#F9F7F2] dark:bg-background p-5 md:p-8 rounded-xl md:rounded-2xl border border-bhutan-gold/10">
               <p>
                 Phojaa Real Estate is a trusted real estate service dedicated to connecting property buyers and sellers in a transparent and reliable way. We focus on helping clients find suitable land and property while ensuring that every transaction is clear, fair, and properly guided.
               </p>
@@ -115,7 +115,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-12 md:py-20 bg-white">
+      <section className="py-12 md:py-20 bg-white dark:bg-card">
         <div className="w-full max-w-6xl mx-auto px-4 md:px-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-8">
             {/* Mission */}
@@ -123,12 +123,12 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-[#F9F7F2] rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 group hover:border-bhutan-red/20 transition-all duration-500"
+              className="bg-[#F9F7F2] dark:bg-background rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 group hover:border-bhutan-red/20 transition-all duration-500"
             >
               <div className="w-10 h-10 md:w-14 md:h-14 bg-bhutan-red/10 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-bhutan-red transition-colors duration-500">
                 <Target className="w-5 h-5 md:w-7 md:h-7 text-bhutan-red group-hover:text-white transition-colors" />
               </div>
-              <h2 className="font-serif text-xl md:text-2xl font-bold text-bhutan-dark mb-3 md:mb-4">
+              <h2 className="font-serif text-xl md:text-2xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4">
                 Our Mission
               </h2>
               <p className="text-bhutan-dark/60 text-base md:text-lg font-light leading-relaxed">
@@ -142,12 +142,12 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="bg-[#F9F7F2] rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 group hover:border-bhutan-gold/30 transition-all duration-500"
+              className="bg-[#F9F7F2] dark:bg-background rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 group hover:border-bhutan-gold/30 transition-all duration-500"
             >
               <div className="w-10 h-10 md:w-14 md:h-14 bg-bhutan-gold/10 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-bhutan-gold transition-colors duration-500">
                 <Eye className="w-5 h-5 md:w-7 md:h-7 text-bhutan-gold group-hover:text-white transition-colors" />
               </div>
-              <h2 className="font-serif text-xl md:text-2xl font-bold text-bhutan-dark mb-3 md:mb-4">
+              <h2 className="font-serif text-xl md:text-2xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4">
                 Our Vision
               </h2>
               <p className="text-bhutan-dark/60 text-base md:text-lg font-light leading-relaxed">
@@ -159,7 +159,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Values */}
-      <section className="py-12 md:py-20 bg-[#F9F7F2]">
+      <section className="py-12 md:py-20 bg-[#F9F7F2] dark:bg-background">
         <div className="w-full max-w-6xl mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -170,7 +170,7 @@ export default function AboutPage() {
             <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-gold/10 border border-bhutan-gold/20 text-bhutan-gold-dark text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
               What We Stand For
             </div>
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-bhutan-dark">
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-bhutan-dark dark:text-foreground">
               Our <span className="text-bhutan-red italic font-light">Values</span>
             </h2>
           </motion.div>
@@ -183,12 +183,12 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.08 }}
-                className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 border border-bhutan-gold/10 hover:border-bhutan-red/20 hover:shadow-md transition-all group text-center"
+                className="bg-white dark:bg-card rounded-xl md:rounded-2xl p-4 md:p-6 border border-bhutan-gold/10 hover:border-bhutan-red/20 hover:shadow-md transition-all group text-center"
               >
                 <div className="w-10 h-10 md:w-12 md:h-12 bg-bhutan-red/5 rounded-xl flex items-center justify-center mx-auto mb-3 md:mb-4 group-hover:bg-bhutan-red transition-colors duration-500">
                   <item.icon className="w-4 h-4 md:w-5 md:h-5 text-bhutan-red group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="font-serif text-sm md:text-lg font-bold text-bhutan-dark mb-1 md:mb-2">{item.title}</h3>
+                <h3 className="font-serif text-sm md:text-lg font-bold text-bhutan-dark dark:text-foreground mb-1 md:mb-2">{item.title}</h3>
                 <p className="text-bhutan-dark/50 text-[10px] md:text-sm font-light leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
@@ -197,7 +197,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Commitment */}
-      <section className="py-12 md:py-20 bg-white">
+      <section className="py-12 md:py-20 bg-white dark:bg-card">
         <div className="w-full max-w-4xl mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -208,7 +208,7 @@ export default function AboutPage() {
             <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
               Our Commitment
             </div>
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-bhutan-dark mb-3">
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-bhutan-dark dark:text-foreground mb-3">
               What We <span className="text-bhutan-red italic font-light">Do</span>
             </h2>
             <p className="text-bhutan-dark/50 text-sm md:text-base font-light max-w-2xl mx-auto">
@@ -224,7 +224,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.08 }}
-                className="flex items-start gap-3 md:gap-4 bg-[#F9F7F2] p-3.5 md:p-5 rounded-xl md:rounded-2xl border border-bhutan-gold/10 hover:border-bhutan-gold/25 hover:shadow-sm transition-all"
+                className="flex items-start gap-3 md:gap-4 bg-[#F9F7F2] dark:bg-background p-3.5 md:p-5 rounded-xl md:rounded-2xl border border-bhutan-gold/10 hover:border-bhutan-gold/25 hover:shadow-sm transition-all"
               >
                 <div className="flex-shrink-0 w-7 h-7 md:w-9 md:h-9 bg-bhutan-red/10 rounded-full flex items-center justify-center">
                   <span className="text-bhutan-red font-serif font-bold text-xs md:text-sm">{index + 1}</span>
@@ -239,7 +239,7 @@ export default function AboutPage() {
       </section>
 
       {/* Journey Timeline */}
-      <section className="py-12 md:py-20 bg-[#F9F7F2]">
+      <section className="py-12 md:py-20 bg-[#F9F7F2] dark:bg-background">
         <div className="w-full max-w-5xl mx-auto px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
@@ -250,7 +250,7 @@ export default function AboutPage() {
             <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-gold/10 border border-bhutan-gold/20 text-bhutan-gold-dark text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
               Our Journey
             </div>
-            <h2 className="font-serif text-2xl md:text-3xl font-bold text-bhutan-dark">
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-bhutan-dark dark:text-foreground">
               How We <span className="text-bhutan-gold italic font-light">Grew</span>
             </h2>
           </motion.div>
@@ -263,7 +263,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 border border-bhutan-gold/10 hover:border-bhutan-red/20 hover:shadow-md transition-all group text-center"
+                className="bg-white dark:bg-card rounded-xl md:rounded-2xl p-4 md:p-6 border border-bhutan-gold/10 hover:border-bhutan-red/20 hover:shadow-md transition-all group text-center"
               >
                 <span className="text-2xl md:text-4xl font-serif font-black text-bhutan-gold/15 group-hover:text-bhutan-red/20 transition-colors block mb-2 md:mb-3">
                   {milestone.year}
