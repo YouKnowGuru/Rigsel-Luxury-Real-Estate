@@ -179,29 +179,29 @@ export default function PropertyDetailPage() {
   return (
     <div className="min-h-screen bg-[#F9F7F2] pb-32">
       {/* Navigation Top Bar (Floating Style) */}
-      <div className="fixed top-24 left-0 right-0 z-40 px-6">
+      <div className="fixed top-24 sm:top-28 left-0 right-0 z-40 px-3 sm:px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-white/70 backdrop-blur-xl border border-white/40 rounded-3xl p-4 shadow-xl flex items-center justify-between">
+          <div className="bg-white/80 backdrop-blur-xl border border-white/40 rounded-2xl sm:rounded-3xl p-2 sm:p-4 shadow-xl flex items-center justify-between">
             <Link
               href="/properties"
-              className="flex items-center gap-3 px-6 py-2.5 rounded-2xl text-bhutan-dark/60 hover:text-bhutan-red hover:bg-bhutan-red/5 transition-all duration-500 font-medium"
+              className="flex items-center gap-1.5 sm:gap-3 px-3 sm:px-6 py-1.5 sm:py-2.5 rounded-xl sm:rounded-2xl text-bhutan-dark/60 hover:text-bhutan-red hover:bg-bhutan-red/5 transition-all duration-500 font-medium"
             >
-              <ArrowLeft className="w-5 h-5" />
-              <span className="text-sm">Back to List</span>
+              <ArrowLeft className="w-4 h-4 sm:w-5 h-5" />
+              <span className="text-xs sm:text-sm">Back to List</span>
             </Link>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <button
                 onClick={handleShare}
-                className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-bhutan-gold/10 text-bhutan-dark/60 hover:text-bhutan-gold hover:border-bhutan-gold/30 transition-all duration-500 shadow-sm"
+                className="w-9 h-9 sm:w-12 h-12 flex items-center justify-center rounded-xl sm:rounded-2xl bg-white border border-bhutan-gold/10 text-bhutan-dark/60 hover:text-bhutan-gold hover:border-bhutan-gold/30 transition-all duration-500 shadow-sm"
               >
-                <Share2 className="w-5 h-5" />
+                <Share2 className="w-4 h-4 sm:w-5 h-5" />
               </button>
               <button
                 onClick={() => setIsLiked(!isLiked)}
-                className="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-bhutan-gold/10 transition-all duration-500 shadow-sm"
+                className="w-9 h-9 sm:w-12 h-12 flex items-center justify-center rounded-xl sm:rounded-2xl bg-white border border-bhutan-gold/10 transition-all duration-500 shadow-sm"
               >
                 <Heart
-                  className={`w-5 h-5 ${isLiked ? "fill-bhutan-red text-bhutan-red" : "text-bhutan-dark/30"
+                  className={`w-4 h-4 sm:w-5 h-5 ${isLiked ? "fill-bhutan-red text-bhutan-red" : "text-bhutan-dark/30"
                     }`}
                 />
               </button>
