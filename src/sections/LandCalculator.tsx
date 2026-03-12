@@ -45,7 +45,7 @@ export function LandCalculator() {
   ].filter((r) => r.show);
 
   return (
-    <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-white dark:bg-background relative overflow-hidden">
       {/* Subtle background */}
       <div className="absolute inset-0 bg-thangka opacity-[0.02] pointer-events-none" />
       <div className="absolute -top-40 -right-40 w-80 h-80 bg-bhutan-gold/5 rounded-full blur-[100px]" />
@@ -67,11 +67,11 @@ export function LandCalculator() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-bhutan-dark mb-3 md:mb-4"
+            className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4"
           >
             Land Area <span className="text-bhutan-red italic font-light">Calculator</span>
           </motion.h2>
-          <p className="text-bhutan-dark/50 max-w-lg mx-auto text-sm md:text-base font-light">
+          <p className="text-bhutan-dark/50 dark:text-muted-foreground max-w-lg mx-auto text-sm md:text-base font-light">
             Convert land measurements instantly between Bhutanese and international units.
           </p>
         </div>
@@ -84,10 +84,10 @@ export function LandCalculator() {
           transition={{ delay: 0.2 }}
           className="max-w-3xl mx-auto"
         >
-          <div className="bg-[#F9F7F2] rounded-2xl md:rounded-3xl p-5 md:p-10 border border-bhutan-gold/10 shadow-lg">
+          <div className="bg-[#F9F7F2] dark:bg-card rounded-2xl md:rounded-3xl p-5 md:p-10 border border-bhutan-gold/10 dark:border-white/5 shadow-lg">
             {/* Unit Selector */}
             <div className="mb-6 md:mb-8">
-              <label className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] mb-3 block pl-1">
+              <label className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] mb-3 block pl-1">
                 Convert From
               </label>
               <div className="flex gap-2 md:gap-3">
@@ -96,8 +96,8 @@ export function LandCalculator() {
                     key={unit.value}
                     onClick={() => setFromUnit(unit.value as "decimal" | "sqft" | "sqm")}
                     className={`flex-1 py-2.5 md:py-3.5 rounded-xl md:rounded-2xl text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 border ${fromUnit === unit.value
-                      ? "bg-bhutan-dark text-white border-bhutan-dark shadow-lg"
-                      : "bg-white text-bhutan-dark/50 border-bhutan-gold/15 hover:border-bhutan-red hover:text-bhutan-red"
+                      ? "bg-bhutan-dark dark:bg-bhutan-red text-white border-bhutan-dark dark:border-bhutan-red shadow-lg"
+                      : "bg-white dark:bg-background text-bhutan-dark/50 dark:text-muted-foreground/50 border-bhutan-gold/15 dark:border-white/10 hover:border-bhutan-red hover:text-bhutan-red"
                       }`}
                   >
                     {unit.label}
@@ -108,7 +108,7 @@ export function LandCalculator() {
 
             {/* Input */}
             <div className="mb-6 md:mb-8">
-              <label className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] mb-3 block pl-1">
+              <label className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] mb-3 block pl-1">
                 Enter Value
               </label>
               <div className="relative">
@@ -118,7 +118,7 @@ export function LandCalculator() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Enter amount..."
-                  className="w-full bg-white pl-11 md:pl-14 pr-4 py-3.5 md:py-5 rounded-xl md:rounded-2xl text-base md:text-xl font-serif font-bold text-bhutan-dark outline-none border border-bhutan-gold/15 focus:border-bhutan-red/40 focus:ring-2 focus:ring-bhutan-red/10 transition-all placeholder:text-bhutan-dark/20 placeholder:font-light placeholder:text-sm"
+                  className="w-full bg-white dark:bg-background pl-11 md:pl-14 pr-4 py-3.5 md:py-5 rounded-xl md:rounded-2xl text-base md:text-xl font-serif font-bold text-bhutan-dark dark:text-foreground outline-none border border-bhutan-gold/15 dark:border-white/10 focus:border-bhutan-red/40 focus:ring-2 focus:ring-bhutan-red/10 transition-all placeholder:text-bhutan-dark/20 dark:placeholder:text-white/20 placeholder:font-light placeholder:text-sm"
                 />
                 {inputValue && (
                   <button
@@ -133,11 +133,11 @@ export function LandCalculator() {
 
             {/* Divider with icon */}
             <div className="flex items-center gap-3 mb-6 md:mb-8">
-              <div className="flex-1 h-px bg-bhutan-gold/10" />
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-bhutan-red/10 flex items-center justify-center">
+              <div className="flex-1 h-px bg-bhutan-gold/10 dark:bg-white/10" />
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-bhutan-red/10 dark:bg-bhutan-red/20 flex items-center justify-center">
                 <ArrowRightLeft className="w-3.5 h-3.5 md:w-4 md:h-4 text-bhutan-red" />
               </div>
-              <div className="flex-1 h-px bg-bhutan-gold/10" />
+              <div className="flex-1 h-px bg-bhutan-gold/10 dark:bg-white/10" />
             </div>
 
             {/* Results Grid */}
@@ -153,7 +153,7 @@ export function LandCalculator() {
                   <p className="text-[8px] md:text-[9px] font-bold text-bhutan-dark/30 uppercase tracking-[0.2em] mb-1 md:mb-2">
                     {result.label}
                   </p>
-                  <p className="text-sm sm:text-base md:text-2xl font-serif font-bold text-bhutan-dark group-hover:text-bhutan-red transition-colors truncate">
+                  <p className="text-sm sm:text-base md:text-2xl font-serif font-bold text-bhutan-dark dark:text-foreground group-hover:text-bhutan-red transition-colors truncate">
                     {result.value}
                   </p>
                 </motion.div>
@@ -170,7 +170,7 @@ export function LandCalculator() {
             ].map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-[#F9F7F2] border border-bhutan-gold/10 text-bhutan-dark/50"
+                className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-[#F9F7F2] dark:bg-card border border-bhutan-gold/10 dark:border-white/5 text-bhutan-dark/50 dark:text-muted-foreground/50"
               >
                 <item.icon className="w-3 h-3 md:w-3.5 md:h-3.5" />
                 <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider">{item.text}</span>

@@ -127,7 +127,7 @@ export function Testimonials() {
                       </blockquote>
                       <div className="flex flex-col items-center">
                         <div className="relative mb-4 md:mb-6">
-                          <div className="w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border-4 border-white shadow-2xl group-hover:scale-105 transition-transform duration-700">
+                          <div className="w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border-4 border-white dark:border-white/10 shadow-2xl group-hover:scale-105 transition-transform duration-700">
                             <img
                               src={testimonials[currentIndex].avatar || "/image/user-placeholder.jpg"}
                               alt={testimonials[currentIndex].name}
@@ -135,7 +135,7 @@ export function Testimonials() {
                             />
                           </div>
                           {/* Little Heart Badge */}
-                          <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-bhutan-red rounded-xl flex items-center justify-center shadow-xl border-2 border-white">
+                          <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-bhutan-red rounded-xl flex items-center justify-center shadow-xl border-2 border-white dark:border-[#1B1E23]">
                             <Heart className="w-5 h-5 text-white fill-white" />
                           </div>
                         </div>
@@ -165,7 +165,7 @@ export function Testimonials() {
                     <button
                       key={i}
                       onClick={() => setCurrentIndex(i)}
-                      className={`h-2 rounded-full transition-all duration-700 ${i === currentIndex ? "bg-bhutan-red w-16" : "bg-bhutan-gold/20 w-4 hover:bg-bhutan-gold/40"
+                      className={`h-2 rounded-full transition-all duration-700 ${i === currentIndex ? "bg-bhutan-red w-16" : "bg-bhutan-gold/20 dark:bg-white/10 w-4 hover:bg-bhutan-gold/40 dark:hover:bg-white/20"
                         }`}
                     />
                   ))}
@@ -189,8 +189,8 @@ export function Testimonials() {
           ) : (
             <div className="text-center py-20 bg-[#F9F7F2] rounded-[3rem] border-2 border-dashed border-bhutan-gold/20">
               <Heart className="w-16 h-16 text-bhutan-red/20 mx-auto mb-6" />
-              <h3 className="text-2xl font-serif font-bold text-bhutan-dark dark:text-white mb-4 italic">No stories yet</h3>
-              <p className="text-bhutan-dark/50 dark:text-white/40 max-w-md mx-auto mb-10">We haven't shared your happiness stories yet. Be the very first to share your legacy with us!</p>
+              <h3 className="text-2xl font-serif font-bold text-bhutan-dark dark:text-foreground mb-4 italic">No stories yet</h3>
+              <p className="text-bhutan-dark/50 dark:text-muted-foreground max-w-md mx-auto mb-10">We haven't shared your happiness stories yet. Be the very first to share your legacy with us!</p>
             </div>
           )}
 

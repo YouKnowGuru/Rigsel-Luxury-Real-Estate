@@ -128,10 +128,10 @@ export default function AboutPage() {
               <div className="w-10 h-10 md:w-14 md:h-14 bg-bhutan-red/10 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-bhutan-red transition-colors duration-500">
                 <Target className="w-5 h-5 md:w-7 md:h-7 text-bhutan-red group-hover:text-white transition-colors" />
               </div>
-              <h2 className="font-serif text-xl md:text-2xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4">
+              <h2 className="font-serif text-2xl md:text-3xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4">
                 Our Mission
               </h2>
-              <p className="text-bhutan-dark/60 text-base md:text-lg font-light leading-relaxed">
+              <p className="text-bhutan-dark/70 dark:text-muted-foreground text-lg md:text-xl font-light leading-relaxed">
                 To connect buyers and sellers through transparency, reliability, and excellence in real estate services, ensuring smooth transactions and building trust in every deal.
               </p>
             </motion.div>
@@ -147,10 +147,10 @@ export default function AboutPage() {
               <div className="w-10 h-10 md:w-14 md:h-14 bg-bhutan-gold/10 rounded-xl md:rounded-2xl flex items-center justify-center mb-4 md:mb-6 group-hover:bg-bhutan-gold transition-colors duration-500">
                 <Eye className="w-5 h-5 md:w-7 md:h-7 text-bhutan-gold group-hover:text-white transition-colors" />
               </div>
-              <h2 className="font-serif text-xl md:text-2xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4">
+              <h2 className="font-serif text-2xl md:text-3xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4">
                 Our Vision
               </h2>
-              <p className="text-bhutan-dark/60 text-base md:text-lg font-light leading-relaxed">
+              <p className="text-bhutan-dark/70 dark:text-muted-foreground text-lg md:text-xl font-light leading-relaxed">
                 To be a trusted real estate company that connects buyers and sellers, helping people find the right property while building strong communities and lasting value.
               </p>
             </motion.div>
@@ -188,8 +188,8 @@ export default function AboutPage() {
                 <div className="w-10 h-10 md:w-12 md:h-12 bg-bhutan-red/5 rounded-xl flex items-center justify-center mx-auto mb-3 md:mb-4 group-hover:bg-bhutan-red transition-colors duration-500">
                   <item.icon className="w-4 h-4 md:w-5 md:h-5 text-bhutan-red group-hover:text-white transition-colors" />
                 </div>
-                <h3 className="font-serif text-sm md:text-lg font-bold text-bhutan-dark dark:text-foreground mb-1 md:mb-2">{item.title}</h3>
-                <p className="text-bhutan-dark/50 text-[10px] md:text-sm font-light leading-relaxed">{item.desc}</p>
+                <h3 className="font-serif text-base md:text-xl font-bold text-bhutan-dark dark:text-foreground mb-1 md:mb-2">{item.title}</h3>
+                <p className="text-bhutan-dark/70 dark:text-muted-foreground text-xs md:text-base font-light leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -265,10 +265,10 @@ export default function AboutPage() {
                 transition={{ delay: index * 0.1 }}
                 className="bg-white dark:bg-card rounded-xl md:rounded-2xl p-4 md:p-6 border border-bhutan-gold/10 hover:border-bhutan-red/20 hover:shadow-md transition-all group text-center"
               >
-                <span className="text-2xl md:text-4xl font-serif font-black text-bhutan-gold/15 group-hover:text-bhutan-red/20 transition-colors block mb-2 md:mb-3">
+                <span className="text-3xl md:text-5xl font-serif font-black text-bhutan-gold/25 dark:text-white/10 group-hover:text-bhutan-red/30 transition-colors block mb-2 md:mb-3">
                   {milestone.year}
                 </span>
-                <p className="text-bhutan-dark/70 text-[11px] md:text-sm font-medium leading-relaxed">
+                <p className="text-bhutan-dark/80 dark:text-muted-foreground text-xs md:text-base font-medium leading-relaxed">
                   {milestone.event}
                 </p>
               </motion.div>
