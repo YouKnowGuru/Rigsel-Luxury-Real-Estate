@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Search, MapPin, Home, DollarSign, ChevronDown } from "lucide-react";
+import { Search, MapPin, Home, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -109,10 +109,14 @@ export function Hero() {
     router.push(`/properties?${params.toString()}`);
   };
 
+  const NuIcon = ({ className }: { className?: string }) => (
+    <span className={cn("text-[10px] font-bold leading-none", className)}>Nu</span>
+  );
+
   const dropdowns = [
     { label: "Location", value: selectedDistrict, icon: MapPin, open: isDistrictOpen, setOpen: (v: boolean) => { setIsDistrictOpen(v); setIsTypeOpen(false); setIsPriceOpen(false); }, data: districts, setter: setSelectedDistrict },
     { label: "Type", value: selectedType, icon: Home, open: isTypeOpen, setOpen: (v: boolean) => { setIsTypeOpen(v); setIsDistrictOpen(false); setIsPriceOpen(false); }, data: propertyTypes, setter: setSelectedType },
-    { label: "Price", value: selectedPrice.label, icon: DollarSign, open: isPriceOpen, setOpen: (v: boolean) => { setIsPriceOpen(v); setIsDistrictOpen(false); setIsTypeOpen(false); }, data: priceRanges, setter: setSelectedPrice, isPrice: true },
+    { label: "Price", value: selectedPrice.label, icon: NuIcon, open: isPriceOpen, setOpen: (v: boolean) => { setIsPriceOpen(v); setIsDistrictOpen(false); setIsTypeOpen(false); }, data: priceRanges, setter: setSelectedPrice, isPrice: true },
   ];
 
   return (

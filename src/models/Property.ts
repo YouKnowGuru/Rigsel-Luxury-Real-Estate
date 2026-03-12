@@ -11,6 +11,7 @@ export interface IProperty extends Document {
   propertyType: string;
   description: string;
   features: string[];
+  specifications: { label: string; value: string }[];
   images: string[];
   latitude: number;
   longitude: number;
@@ -96,6 +97,12 @@ const PropertySchema: Schema = new Schema(
       type: [String],
       default: [],
     },
+    specifications: [
+      {
+        label: { type: String, required: true },
+        value: { type: String, required: true },
+      },
+    ],
     images: {
       type: [String],
       required: [true, "At least one image is required"],

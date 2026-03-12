@@ -30,7 +30,7 @@ const PropertyTypeSchema: Schema = new Schema(
         },
         areaLabel: {
             type: String,
-            default: "Area (m²)",
+            default: "Area (Decimals)",
         },
     },
     {

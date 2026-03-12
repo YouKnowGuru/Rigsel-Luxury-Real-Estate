@@ -108,7 +108,7 @@ export default function AdminProperties() {
 
   const getAreaLabel = (typeSlug: string) => {
     const type = propertyTypes.find((t) => t.slug === typeSlug);
-    if (!type || !type.areaLabel) return "m²";
+    if (!type || !type.areaLabel) return "Decimals";
     const match = type.areaLabel.match(/\(([^)]+)\)/);
     return match ? match[1] : type.areaLabel;
   };

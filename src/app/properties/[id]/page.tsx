@@ -329,8 +329,21 @@ export default function PropertyDetailPage() {
                     <Maximize className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
                   <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.area}</p>
-                  <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Size (m²)</p>
+                  <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Area</p>
                 </div>
+
+                {/* Custom Specifications */}
+                {displayProperty.specifications && displayProperty.specifications.length > 0 &&
+                  displayProperty.specifications.map((spec, index) => (
+                    <div key={index} className="space-y-1 md:space-y-3 text-center">
+                      <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
+                        <Home className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
+                      </div>
+                      <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{spec.value}</p>
+                      <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">{spec.label}</p>
+                    </div>
+                  ))
+                }
               </div>
 
               {displayProperty.loanAvailable && displayProperty.loanAmount !== undefined && displayProperty.loanAmount > 0 && (

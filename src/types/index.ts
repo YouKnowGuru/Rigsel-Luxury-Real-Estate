@@ -11,6 +11,7 @@ export interface Property {
   propertyType: "house" | "apartment" | "land" | "commercial" | "villa";
   description: string;
   features: string[];
+  specifications?: { label: string; value: string }[];
   images: string[];
   latitude: number;
   longitude: number;
@@ -33,6 +34,7 @@ export interface PropertyFormData {
   propertyType: "house" | "apartment" | "land" | "commercial" | "villa";
   description: string;
   features: string[];
+  specifications?: { label: string; value: string }[];
   images: string[];
   latitude: number;
   longitude: number;

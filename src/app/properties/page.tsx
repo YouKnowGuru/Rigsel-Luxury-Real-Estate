@@ -18,7 +18,6 @@ import {
   List as ListIcon,
   Heart,
   ArrowRight,
-  DollarSign,
   RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -128,7 +127,7 @@ function PropertiesContent() {
 
   const getAreaUnit = (typeSlug: string) => {
     const type = propertyTypes.find(t => t.slug === typeSlug);
-    if (!type) return "m²";
+    if (!type) return "Decimals";
     const match = type.areaLabel.match(/\(([^)]+)\)/);
     return match ? match[1] : type.areaLabel;
   };
@@ -338,7 +337,7 @@ function PropertiesContent() {
                   <div className="space-y-4">
                     <label className="text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] ml-2">Price Range</label>
                     <div className="relative group/select">
-                      <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-bhutan-gold pointer-events-none" />
+                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-bhutan-gold pointer-events-none">Nu</span>
                       <select
                         onChange={(e) => {
                           const range = priceRanges[parseInt(e.target.value)];

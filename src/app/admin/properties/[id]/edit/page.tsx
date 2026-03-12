@@ -70,6 +70,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
         loanAmount: "",
         isSold: false,
     });
+    const [specifications, setSpecifications] = useState<{ label: string; value: string }[]>([]);
     const [description, setDescription] = useState("");
     const [uploadingImages, setUploadingImages] = useState(false);
     const [propertyTypes, setPropertyTypes] = useState<IPropertyType[]>([]);
@@ -124,6 +125,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                     latitude: p.latitude?.toString() || "",
                     longitude: p.longitude?.toString() || "",
                 });
+                setSpecifications(p.specifications || []);
                 setDescription(p.description || "");
                 setImages(p.images || []);
                 setSelectedFeatures(p.features || []);
@@ -191,6 +193,20 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
         }
     };
 
+    const addSpecification = () => {
+        setSpecifications([...specifications, { label: "", value: "" }]);
+    };
+
+    const updateSpecification = (index: number, field: "label" | "value", val: string) => {
+        const updated = [...specifications];
+        updated[index][field] = val;
+        setSpecifications(updated);
+    };
+
+    const removeSpecification = (index: number) => {
+        setSpecifications(specifications.filter((_, i) => i !== index));
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -214,6 +230,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                     loanAmount: Number(formData.loanAmount) || 0,
                     isSold: formData.isSold,
                     features: selectedFeatures,
+                    specifications: specifications.filter(s => s.label && s.value),
                     images,
                 }),
             });
@@ -390,50 +407,101 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                     </select>
                                 </div>
 
-                                {/* Specifications */}
-                                <div className={`grid ${showBedBath ? 'grid-cols-3' : 'grid-cols-1'} gap-4 md:col-span-2`}>
-                                    {showBedBath && (
-                                        <>
-                                            <div>
-                                                <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-1.5 text-center">
-                                                    Bedrooms
-                                                </label>
-                                                <Input
-                                                    type="number"
-                                                    value={formData.bedrooms}
-                                                    onChange={(e) =>
-                                                        setFormData({ ...formData, bedrooms: e.target.value })
-                                                    }
-                                                    className="h-10 text-center bg-white/50 border-white text-base rounded-lg"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-1.5 text-center">
-                                                    Baths
-                                                </label>
-                                                <Input
-                                                    type="number"
-                                                    value={formData.bathrooms}
-                                                    onChange={(e) =>
-                                                        setFormData({ ...formData, bathrooms: e.target.value })
-                                                    }
-                                                    className="h-10 text-center bg-white/50 border-white text-base rounded-lg"
-                                                />
-                                            </div>
-                                        </>
-                                    )}
-                                    <div className={showBedBath ? "" : "md:col-span-1"}>
-                                        <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-1.5 text-center">
-                                            {currentType?.areaLabel || "Area (m²)"}
+                                 <div className={`grid ${showBedBath ? 'grid-cols-3' : 'grid-cols-1'} gap-4 md:col-span-2`}>
+                                     {showBedBath && (
+                                         <>
+                                             <div>
+                                                 <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-1.5 text-center">
+                                                     Bedrooms
+                                                 </label>
+                                                 <Input
+                                                     type="number"
+                                                     value={formData.bedrooms}
+                                                     onChange={(e) =>
+                                                         setFormData({ ...formData, bedrooms: e.target.value })
+                                                     }
+                                                     className="h-10 text-center bg-white/50 border-white text-base rounded-lg"
+                                                 />
+                                             </div>
+                                             <div>
+                                                 <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-1.5 text-center">
+                                                     Baths
+                                                 </label>
+                                                 <Input
+                                                     type="number"
+                                                     value={formData.bathrooms}
+                                                     onChange={(e) =>
+                                                         setFormData({ ...formData, bathrooms: e.target.value })
+                                                     }
+                                                     className="h-10 text-center bg-white/50 border-white text-base rounded-lg"
+                                                 />
+                                             </div>
+                                         </>
+                                     )}
+                                     <div className={showBedBath ? "" : "md:col-span-1"}>
+                                         <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-1.5 text-center">
+                                             {currentType?.areaLabel || "Area (m²)"}
+                                         </label>
+                                         <Input
+                                             type="number"
+                                             step="any"
+                                             value={formData.area}
+                                             onChange={(e) =>
+                                                 setFormData({ ...formData, area: e.target.value })
+                                             }
+                                             className="h-10 text-center bg-white/50 border-white text-base rounded-lg"
+                                         />
+                                     </div>
+                                 </div>
+
+                                {/* Custom Specifications */}
+                                <div className="md:col-span-2 bg-[#F9F7F2]/50 p-6 rounded-2xl border border-bhutan-gold/10">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <label className="block text-sm uppercase tracking-widest font-bold text-bhutan-dark/40 mb-0">
+                                            Property Specifications
                                         </label>
-                                        <Input
-                                            type="number"
-                                            value={formData.area}
-                                            onChange={(e) =>
-                                                setFormData({ ...formData, area: e.target.value })
-                                            }
-                                            className="h-10 text-center bg-white/50 border-white text-base rounded-lg"
-                                        />
+                                        <button
+                                            type="button"
+                                            onClick={addSpecification}
+                                            className="text-[10px] font-bold text-bhutan-red hover:text-bhutan-dark transition-colors uppercase tracking-widest flex items-center gap-1.5 px-3 py-1.5 bg-bhutan-red/5 rounded-lg border border-bhutan-red/10"
+                                        >
+                                            <Plus className="w-3 h-3" /> Add Spec
+                                        </button>
+                                    </div>
+                                    <div className="space-y-3">
+                                        {specifications.length === 0 ? (
+                                            <p className="text-bhutan-dark/30 text-[10px] italic text-center py-4 bg-white/50 rounded-xl border border-dashed border-bhutan-gold/15">
+                                                No custom specifications. Add items like "Storey", "Living Room", etc.
+                                            </p>
+                                        ) : (
+                                            specifications.map((spec, index) => (
+                                                <div key={index} className="flex gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
+                                                    <div className="flex-1">
+                                                        <Input
+                                                            value={spec.label}
+                                                            onChange={(e) => updateSpecification(index, "label", e.target.value)}
+                                                            placeholder="Label (e.g. Story)"
+                                                            className="h-10 bg-white/50 border-white text-sm rounded-lg"
+                                                        />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <Input
+                                                            value={spec.value}
+                                                            onChange={(e) => updateSpecification(index, "value", e.target.value)}
+                                                            placeholder="Value (e.g. 2)"
+                                                            className="h-10 bg-white/50 border-white text-sm rounded-lg"
+                                                        />
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeSpecification(index)}
+                                                        className="w-10 h-10 flex items-center justify-center text-bhutan-dark/20 hover:text-bhutan-red transition-colors"
+                                                    >
+                                                        <X className="w-4 h-4" />
+                                                    </button>
+                                                </div>
+                                            ))
+                                        )}
                                     </div>
                                 </div>
 

@@ -26,7 +26,7 @@ export default function PropertyTypesPage() {
     // New Type Form
     const [newName, setNewName] = useState("");
     const [newRequires, setNewRequires] = useState(true);
-    const [newAreaLabel, setNewAreaLabel] = useState("Area (m²)");
+    const [newAreaLabel, setNewAreaLabel] = useState("Area (Decimals)");
 
     // Edit Form
     const [editName, setEditName] = useState("");
@@ -74,7 +74,7 @@ export default function PropertyTypesPage() {
                 setTypes([...types, data.data]);
                 setNewName("");
                 setNewRequires(true);
-                setNewAreaLabel("Area (m²)");
+                setNewAreaLabel("Area (Decimals)");
                 toast({ title: "Success", description: "Property type added" });
             } else {
                 throw new Error(data.error);

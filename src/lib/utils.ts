@@ -13,7 +13,7 @@ export function formatPrice(price: number): string {
 // Format area with unit
 export function formatArea(area: number, unit: string = "sqm"): string {
   const units: Record<string, string> = {
-    sqm: "m²",
+    sqm: "Decimals",
     sqft: "ft²",
     decimal: "decimal",
     acre: "acre",

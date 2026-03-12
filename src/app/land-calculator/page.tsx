@@ -10,7 +10,6 @@ import {
   RotateCcw,
   TrendingUp,
   Ruler,
-  DollarSign,
   ArrowRight,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -214,7 +213,7 @@ export default function LandCalculatorPage() {
                     Price per Decimal (Nu.)
                   </label>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-bhutan-gold/50" />
+                    <span className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-[10px] md:text-xs font-bold text-bhutan-gold/50">Nu</span>
                     <Input
                       type="number"
                       placeholder="Market rate..."

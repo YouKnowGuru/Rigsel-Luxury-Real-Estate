@@ -11,11 +11,11 @@ export async function GET() {
         // Seed defaults if empty
         if (types.length === 0) {
             const defaults = [
-                { name: "House", slug: "house", requiresBedBath: true, areaLabel: "Area (m²)" },
-                { name: "Apartment", slug: "apartment", requiresBedBath: true, areaLabel: "Area (sq.ft)" },
+                { name: "House", slug: "house", requiresBedBath: true, areaLabel: "Area (Decimals)" },
+                { name: "Apartment", slug: "apartment", requiresBedBath: true, areaLabel: "Area (Decimals)" },
                 { name: "Land", slug: "land", requiresBedBath: false, areaLabel: "Area (Decimals)" },
-                { name: "Commercial", slug: "commercial", requiresBedBath: false, areaLabel: "Area (sq.ft)" },
-                { name: "Villa", slug: "villa", requiresBedBath: true, areaLabel: "Area (m²)" },
+                { name: "Commercial", slug: "commercial", requiresBedBath: false, areaLabel: "Area (Decimals)" },
+                { name: "Villa", slug: "villa", requiresBedBath: true, areaLabel: "Area (Decimals)" },
             ];
             await PropertyType.insertMany(defaults);
             types = await PropertyType.find({}).sort({ name: 1 });

@@ -108,7 +108,7 @@ export default function RootLayout({
               },
               telephone: "+975-16111999",
               email: "phojaa95realestate@gmail.com",
-              priceRange: "$$$",
+              priceRange: "Nu.",
               areaServed: {
                 "@type": "Country",
                 name: "Bhutan",
