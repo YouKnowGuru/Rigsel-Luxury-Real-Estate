@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
         if (!token) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
-        const decoded = verifyToken(token);
+        const decoded = await verifyToken(token);
         if (!decoded) {
             return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
         }
@@ -50,7 +50,7 @@ export async function PUT(request: NextRequest) {
         if (!token) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
-        const decoded = verifyToken(token);
+        const decoded = await verifyToken(token);
         if (!decoded) {
             return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
         }

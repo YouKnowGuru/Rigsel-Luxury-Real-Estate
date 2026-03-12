@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 
-        const decoded = verifyToken(token) as unknown as { userId: string } | null;
+        const decoded = await verifyToken(token) as unknown as { userId: string } | null;
         if (!decoded) {
             return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
         }

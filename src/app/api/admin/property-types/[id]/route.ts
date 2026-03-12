@@ -10,7 +10,8 @@ export async function PATCH(
     try {
         const { id } = await params;
         const token = request.headers.get("authorization")?.split(" ")[1];
-        if (!token || !verifyToken(token)) {
+        const decoded = token ? await verifyToken(token) : null;
+        if (!token || !decoded) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 
@@ -30,7 +31,8 @@ export async function DELETE(
     try {
         const { id } = await params;
         const token = request.headers.get("authorization")?.split(" ")[1];
-        if (!token || !verifyToken(token)) {
+        const decoded = token ? await verifyToken(token) : null;
+        if (!token || !decoded) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 

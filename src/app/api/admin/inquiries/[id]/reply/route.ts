@@ -14,7 +14,7 @@ export async function POST(
     const token = request.headers.get("authorization")?.split(" ")[1];
     if (!token) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
 
     await connectDB();

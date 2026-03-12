@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
     try {
         const token = request.headers.get("authorization")?.split(" ")[1];
         if (!token) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
-        const decoded = verifyToken(token);
+        const decoded = await verifyToken(token);
         if (!decoded) return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
 
         await connectDB();
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
         
-        const decoded = verifyToken(token);
+        const decoded = await verifyToken(token);
         if (!decoded) {
             console.warn("[AdminDocumentsAPI] Invalid token");
             return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
