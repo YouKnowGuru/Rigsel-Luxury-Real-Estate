@@ -91,8 +91,8 @@ export default function NewBlogPage() {
         }
     };
 
-    const inputCls = "h-11 bg-white border-bhutan-gold/15 focus:border-bhutan-red/30 focus:ring-bhutan-red/10 rounded-xl text-bhutan-dark text-base";
-    const labelCls = "block text-xs font-bold uppercase tracking-widest text-bhutan-dark/40 mb-1.5";
+    const inputCls = "h-11 bg-white border-bhutan-gold/20 focus:border-bhutan-red/40 focus:ring-bhutan-red/10 rounded-xl text-bhutan-dark text-base font-medium";
+    const labelCls = "block text-sm font-bold uppercase tracking-widest text-bhutan-dark/70 mb-1.5";
 
     return (
         <div className="p-4 md:p-6 lg:p-8 max-w-[1200px] mx-auto">
@@ -106,7 +106,7 @@ export default function NewBlogPage() {
                 <div>
                     <div className="flex items-center gap-2 mb-0.5">
                         <div className="w-0.5 h-4 bg-bhutan-red rounded-full" />
-                        <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">New Post</p>
+                        <p className="text-bhutan-red font-bold text-sm uppercase tracking-[0.3em]">New Post</p>
                     </div>
                     <h1 className="text-3xl font-bold text-bhutan-dark">Write Blog</h1>
                 </div>

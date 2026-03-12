@@ -123,7 +123,7 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
                                 </h1>
                                 <div className="flex items-center gap-1.5 mt-0.5">
                                     <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                                    <p className="text-white/40 text-xs font-bold uppercase tracking-[0.2em]">Active</p>
+                                    <p className="text-white/60 text-sm font-bold uppercase tracking-[0.2em]">Active</p>
                                 </div>
                             </div>
                         )}
@@ -144,7 +144,7 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
                 {/* Navigation */}
                 <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto scrollbar-none">
                     {!collapsed && (
-                        <p className="text-white/20 text-xs font-bold uppercase tracking-[0.3em] px-3 mb-3">
+                        <p className="text-white/40 text-sm font-bold uppercase tracking-[0.3em] px-3 mb-3">
                             Navigation
                         </p>
                     )}
@@ -213,7 +213,7 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
                     </button>
 
                     {!collapsed && (
-                        <p className="text-white/10 text-xs font-bold uppercase tracking-[0.3em] text-center mt-3">
+                        <p className="text-white/20 text-sm font-bold uppercase tracking-[0.3em] text-center mt-3">
                             Phojaa v2.0 Admin
                         </p>
                     )}

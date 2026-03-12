@@ -196,9 +196,9 @@ export default function NewPropertyPage() {
     }
   };
 
-  const inputCls = "h-11 bg-white border-bhutan-gold/15 focus:border-bhutan-red/30 focus:ring-bhutan-red/10 rounded-xl text-bhutan-dark text-base";
-  const selectCls = "w-full h-11 px-3 bg-white border border-bhutan-gold/15 rounded-xl focus:outline-none focus:ring-2 focus:ring-bhutan-red/10 text-base text-bhutan-dark appearance-none cursor-pointer";
-  const labelCls = "block text-xs font-bold uppercase tracking-widest text-bhutan-dark/40 mb-1.5";
+  const inputCls = "h-11 bg-white border-bhutan-gold/20 focus:border-bhutan-red/40 focus:ring-bhutan-red/10 rounded-xl text-bhutan-dark text-base font-medium";
+  const selectCls = "w-full h-11 px-3 bg-white border border-bhutan-gold/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-bhutan-red/10 text-base text-bhutan-dark appearance-none cursor-pointer font-medium";
+  const labelCls = "block text-sm font-bold uppercase tracking-widest text-bhutan-dark/70 mb-1.5";
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">

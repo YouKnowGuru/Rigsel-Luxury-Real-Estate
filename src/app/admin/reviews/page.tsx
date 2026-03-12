@@ -114,8 +114,8 @@ export default function AdminReviewsPage() {
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-serif font-bold text-bhutan-dark">Review Management</h1>
-                    <p className="text-bhutan-dark/50">Moderate and approve customer testimonials</p>
+                    <h1 className="text-4xl font-serif font-bold text-bhutan-dark">Review Management</h1>
+                    <p className="text-bhutan-dark/70 text-lg font-medium">Moderate and approve customer testimonials</p>
                 </div>
 
                 <div className="flex items-center gap-2 bg-white p-1.5 rounded-2xl border border-bhutan-gold/10 shadow-sm">
@@ -180,18 +180,18 @@ export default function AdminReviewsPage() {
                                             )}
                                         </div>
                                         <div>
-                                            <h4 className="font-serif font-bold text-bhutan-dark">{review.name}</h4>
-                                            <p className="text-bhutan-red text-[10px] font-bold uppercase tracking-widest">{review.role}</p>
+                                            <h4 className="font-serif font-bold text-xl text-bhutan-dark">{review.name}</h4>
+                                            <p className="text-bhutan-red text-xs font-bold uppercase tracking-widest">{review.role}</p>
                                         </div>
                                     </div>
 
                                     <div className="space-y-2">
-                                        <div className="flex items-center gap-2 text-bhutan-dark/50 text-xs">
-                                            <MapPin className="w-3.5 h-3.5" />
+                                        <div className="flex items-center gap-2 text-bhutan-dark/70 text-sm font-medium">
+                                            <MapPin className="w-4 h-4" />
                                             {review.location}
                                         </div>
-                                        <div className="flex items-center gap-2 text-bhutan-dark/50 text-xs">
-                                            <Clock className="w-3.5 h-3.5" />
+                                        <div className="flex items-center gap-2 text-bhutan-dark/70 text-sm font-medium">
+                                            <Clock className="w-4 h-4" />
                                             {new Date(review.createdAt).toLocaleDateString()}
                                         </div>
                                     </div>
@@ -209,8 +209,8 @@ export default function AdminReviewsPage() {
 
                                 {/* Content */}
                                 <div className="flex-1 space-y-4">
-                                    <div className="p-5 bg-[#F9F7F2] rounded-2xl text-bhutan-dark/70 italic text-sm leading-relaxed relative">
-                                        <Quote className="absolute -top-3 -left-3 w-8 h-8 text-bhutan-gold/10" />
+                                    <div className="p-6 bg-[#F9F7F2] rounded-2xl text-bhutan-dark/80 italic text-base leading-relaxed relative font-medium shadow-inner">
+                                        <Quote className="absolute -top-3 -left-3 w-8 h-8 text-bhutan-gold/20" />
                                         "{review.content}"
                                     </div>
                                 </div>

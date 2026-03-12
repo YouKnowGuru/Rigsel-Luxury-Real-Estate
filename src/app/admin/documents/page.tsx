@@ -228,7 +228,7 @@ export default function DocumentManagement() {
                     <h1 className="text-3xl font-bold text-bhutan-dark flex items-center gap-3">
                         <FileDown className="text-bhutan-red" /> Document Management
                     </h1>
-                    <p className="text-gray-500 mt-1">Manage files, brochures, and public documents.</p>
+                    <p className="text-gray-600 mt-1 font-medium">Manage files, brochures, and public documents.</p>
                 </div>
                 <Button
                     onClick={() => setShowUploadModal(true)}
@@ -255,7 +255,7 @@ export default function DocumentManagement() {
             {loading ? (
                 <div className="flex flex-col items-center justify-center py-20">
                     <Loader2 className="w-10 h-10 animate-spin text-bhutan-red mb-4" />
-                    <p className="text-gray-400 font-medium">Loading your documents...</p>
+                    <p className="text-gray-600 font-bold text-sm uppercase tracking-widest">Loading your documents...</p>
                 </div>
             ) : filteredDocuments.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -281,9 +281,9 @@ export default function DocumentManagement() {
                                 </div>
                             </div>
                             <h3 className="font-bold text-bhutan-dark text-lg mb-1">{doc.title}</h3>
-                            <p className="text-gray-500 text-sm line-clamp-2 min-h-[40px] mb-4">{doc.description}</p>
+                            <p className="text-gray-600 text-base font-medium line-clamp-2 min-h-[48px] mb-4">{doc.description}</p>
 
-                            <div className="flex items-center justify-between pt-4 border-t border-gray-50 text-[10px] uppercase tracking-widest font-bold text-gray-400">
+                             <div className="flex items-center justify-between pt-4 border-t border-gray-100 text-[11px] uppercase tracking-widest font-bold text-gray-500">
                                 <div className="flex flex-col">
                                     <span className="flex items-center gap-1.5"><Calendar className="w-3 h-3" /> {new Date(doc.createdAt).toLocaleDateString()}</span>
                                     <span className="mt-1">{doc.fileType} • {doc.fileSize}</span>
@@ -304,8 +304,8 @@ export default function DocumentManagement() {
                     <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center mx-auto mb-4 border border-gray-100">
                         <FileDown className="w-8 h-8 text-gray-300" />
                     </div>
-                    <h3 className="text-xl font-bold text-bhutan-dark mb-2">No documents found</h3>
-                    <p className="text-gray-400 mb-6 max-w-xs mx-auto">Start by uploading your first document to make it available for download.</p>
+                    <h3 className="text-2xl font-bold text-bhutan-dark mb-2">No documents found</h3>
+                    <p className="text-gray-600 mb-6 max-w-xs mx-auto font-medium">Start by uploading your first document to make it available for download.</p>
                 </div>
             )}
 
@@ -360,7 +360,7 @@ export default function DocumentManagement() {
                                                     <p className="text-sm font-bold text-bhutan-gold truncate max-w-[200px]">
                                                         {formData.fileContent ? "Document Ready" : "Image Ready"}
                                                     </p>
-                                                    <p className="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-widest click to change">Click to change</p>
+                                                    <p className="text-xs text-gray-500 mt-1 uppercase font-bold tracking-widest">Click to change</p>
                                                 </>
                                             ) : (
                                                 <>
@@ -368,31 +368,31 @@ export default function DocumentManagement() {
                                                         <Plus className="w-6 h-6" />
                                                     </div>
                                                     <p className="text-sm font-bold text-bhutan-dark">Click to upload document</p>
-                                                    <p className="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-widest">PDF, DOC, JPG up to 10MB</p>
+                                                    <p className="text-xs text-gray-500 mt-1 uppercase font-bold tracking-widest">PDF, DOC, JPG up to 10MB</p>
                                                 </>
                                             )}
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Document Title</label>
+                                        <label className="block text-sm font-bold uppercase tracking-widest text-gray-600 mb-2 font-serif">Document Title</label>
                                         <Input
                                             placeholder="e.g., Property Purchase Agreement"
                                             required
                                             value={formData.title}
                                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                            className="h-12 border-gray-100 bg-gray-50 focus:ring-bhutan-red/10 focus:border-bhutan-red/30 rounded-xl"
+                                            className="h-12 border-gray-200 bg-gray-50 focus:ring-bhutan-red/10 focus:border-bhutan-red/30 rounded-xl text-base font-medium placeholder:text-gray-400"
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Description</label>
+                                        <label className="block text-sm font-bold uppercase tracking-widest text-gray-600 mb-2 font-serif">Description</label>
                                         <Textarea
                                             placeholder="Provide a brief context for this document..."
                                             required
                                             rows={3}
                                             value={formData.description}
                                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                            className="border-gray-100 bg-gray-50 focus:ring-bhutan-red/10 focus:border-bhutan-red/30 rounded-xl resize-none"
+                                            className="border-gray-200 bg-gray-50 focus:ring-bhutan-red/10 focus:border-bhutan-red/30 rounded-xl resize-none text-base font-medium placeholder:text-gray-400"
                                         />
                                     </div>
                                 </div>

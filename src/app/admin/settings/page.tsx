@@ -153,8 +153,8 @@ export default function SettingsPage() {
 
     if (!mounted) return null;
 
-    const inputCls = "h-11 bg-[#F9F7F2] border-bhutan-gold/15 focus:border-bhutan-red/30 focus:ring-bhutan-red/10 rounded-xl text-bhutan-dark text-base";
-    const labelCls = "block text-xs font-bold uppercase tracking-widest text-bhutan-dark/40 mb-1.5";
+    const inputCls = "h-11 bg-[#F9F7F2] border-bhutan-gold/20 focus:border-bhutan-red/40 focus:ring-bhutan-red/10 rounded-xl text-bhutan-dark text-base font-medium";
+    const labelCls = "block text-sm font-bold uppercase tracking-widest text-bhutan-dark/70 mb-1.5";
 
     return (
         <div className="p-4 md:p-6 lg:p-8 max-w-[1200px] mx-auto">
@@ -163,7 +163,7 @@ export default function SettingsPage() {
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <div className="w-0.5 h-4 bg-bhutan-red rounded-full" />
-                        <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">Configuration</p>
+                        <p className="text-bhutan-red font-bold text-sm uppercase tracking-[0.3em]">Configuration</p>
                     </div>
                     <h1 className="text-3xl font-bold text-bhutan-dark">Admin Settings</h1>
                 </div>
@@ -184,8 +184,8 @@ export default function SettingsPage() {
                         <div className="bg-white rounded-2xl p-6 border border-bhutan-gold/10 shadow-sm mb-5 relative overflow-hidden">
                             {!settings.siteName && (
                                 <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-10 flex items-center justify-center">
-                                    <div className="flex items-center gap-2 text-bhutan-dark/40 font-bold uppercase tracking-widest text-xs">
-                                        <Loader2 className="w-4 h-4 animate-spin text-bhutan-red" />
+                                    <div className="flex items-center gap-2 text-bhutan-dark/60 font-bold uppercase tracking-widest text-sm">
+                                        <Loader2 className="w-5 h-5 animate-spin text-bhutan-red" />
                                         Fetching Settings...
                                     </div>
                                 </div>
@@ -234,7 +234,7 @@ export default function SettingsPage() {
                             <h2 className="font-bold text-bhutan-dark text-base mb-2 flex items-center gap-2">
                                 <ImageIcon className="w-4 h-4 text-bhutan-gold" /> Hero Slider Gallery
                             </h2>
-                            <p className="text-[10px] text-bhutan-dark/40 uppercase tracking-widest mb-5 font-bold">Manage multiple slides for the home hero section</p>
+                            <p className="text-xs text-bhutan-dark/60 uppercase tracking-widest mb-5 font-bold">Manage multiple slides for the home hero section</p>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {(settings.heroImages || []).map((img, idx) => (
@@ -249,7 +249,7 @@ export default function SettingsPage() {
                                                 <Trash2 className="w-3.5 h-3.5" /> Remove Slide
                                             </button>
                                         </div>
-                                        <div className="absolute top-2 left-2 bg-bhutan-red/90 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm z-10">
+                                        <div className="absolute top-2 left-2 bg-bhutan-red/90 text-white text-xs font-bold px-2.5 py-1 rounded shadow-sm z-10">
                                             Slide {idx + 1}
                                         </div>
                                     </div>
@@ -277,7 +277,7 @@ export default function SettingsPage() {
                             <h2 className="font-bold text-bhutan-dark text-base mb-1 flex items-center gap-2">
                                 <ImageIcon className="w-4 h-4 text-gray-400" /> Default Hero Image
                             </h2>
-                            <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-4">Fallback if slider is empty</p>
+                            <p className="text-xs text-gray-500 uppercase tracking-widest mb-4 font-medium">Fallback if slider is empty</p>
                             <div className="relative group overflow-hidden rounded-xl border border-dashed border-bhutan-gold/20 bg-[#F9F7F2] aspect-[21/9]">
                                 {settings.heroImage ? (
                                     <>
@@ -298,7 +298,7 @@ export default function SettingsPage() {
                                     </>
                                 ) : (
                                     <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center">
-                                        <label className="h-9 px-5 bg-bhutan-red/10 text-bhutan-red rounded-lg font-bold text-[10px] uppercase tracking-widest flex items-center gap-2 cursor-pointer hover:bg-bhutan-red hover:text-white transition-all">
+                                        <label className="h-9 px-5 bg-bhutan-red/10 text-bhutan-red rounded-lg font-bold text-xs uppercase tracking-widest flex items-center gap-2 cursor-pointer hover:bg-bhutan-red hover:text-white transition-all">
                                             <Upload className="w-3.5 h-3.5" /> Set Default Image
                                             <input type="file" accept="image/*" onChange={(e) => handleHeroImageUpload(e, false)} className="hidden" />
                                         </label>
@@ -352,7 +352,7 @@ export default function SettingsPage() {
                                     const keys = { current: "currentPassword", new: "newPassword", confirm: "confirmPassword" } as const;
                                     return (
                                         <div key={field}>
-                                            <label className="block text-[10px] font-bold uppercase tracking-widest text-white/40 mb-1.5">{labels[field]}</label>
+                                            <label className="block text-xs font-bold uppercase tracking-widest text-white/70 mb-1.5 font-serif">{labels[field]}</label>
                                             <div className="relative">
                                                 <Input
                                                     type={showPw[field] ? "text" : "password"}

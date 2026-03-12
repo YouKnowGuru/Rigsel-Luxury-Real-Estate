@@ -75,7 +75,7 @@ function StatCard({
         </div>
       </div>
       <p className="text-4xl font-bold text-bhutan-dark mb-1">{animated.toLocaleString()}</p>
-      <p className="text-sm text-bhutan-dark/40 font-bold uppercase tracking-widest">{name}</p>
+      <p className="text-sm text-bhutan-dark/60 font-bold uppercase tracking-widest">{name}</p>
     </motion.div>
   );
 }
@@ -139,7 +139,7 @@ export default function AdminDashboard() {
             transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
             className="w-10 h-10 border-4 border-bhutan-red/20 border-t-bhutan-red rounded-full"
           />
-          <p className="text-bhutan-dark/40 text-xs uppercase tracking-widest font-bold">Loading…</p>
+          <p className="text-bhutan-dark/60 text-sm uppercase tracking-widest font-bold">Loading…</p>
         </div>
       </div>
     );
@@ -191,7 +191,7 @@ export default function AdminDashboard() {
             className="flex items-center gap-2 mb-1"
           >
             <div className="w-0.5 h-5 bg-bhutan-red rounded-full" />
-            <p className="text-bhutan-red font-bold text-[10px] uppercase tracking-[0.3em]">Overview</p>
+            <p className="text-bhutan-red font-bold text-sm uppercase tracking-[0.3em]">Overview</p>
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 10 }}
@@ -203,7 +203,7 @@ export default function AdminDashboard() {
         </div>
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
           <Link href="/admin/properties/new">
-            <button className="h-11 px-5 bg-bhutan-red text-white text-xs font-bold uppercase tracking-wider rounded-xl hover:bg-bhutan-dark transition-all duration-300 shadow-lg shadow-bhutan-red/20 flex items-center gap-2.5 group">
+            <button className="h-11 px-5 bg-bhutan-red text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-bhutan-dark transition-all duration-300 shadow-lg shadow-bhutan-red/20 flex items-center gap-2.5 group">
               <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
               Add Property
             </button>
@@ -223,7 +223,7 @@ export default function AdminDashboard() {
             You have <span className="font-bold text-bhutan-dark">{stats?.unreadInquiries}</span> unread{" "}
             {(stats?.unreadInquiries ?? 0) === 1 ? "inquiry" : "inquiries"}.
           </p>
-          <Link href="/admin/inquiries" className="ml-auto text-xs font-bold text-bhutan-red hover:underline">
+          <Link href="/admin/inquiries" className="ml-auto text-sm font-bold text-bhutan-red hover:underline">
             View All →
           </Link>
         </motion.div>
@@ -247,7 +247,7 @@ export default function AdminDashboard() {
         >
           <div className="mb-5">
             <h3 className="font-bold text-bhutan-dark text-base">Properties Added</h3>
-            <p className="text-xs text-bhutan-dark/40 mt-0.5 uppercase tracking-wider">Last 12 months</p>
+            <p className="text-sm text-bhutan-dark/60 mt-0.5 uppercase tracking-wider font-medium">Last 12 months</p>
           </div>
           <ResponsiveContainer width="100%" height={220}>
             <AreaChart data={chartData} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
@@ -275,7 +275,7 @@ export default function AdminDashboard() {
         >
           <div className="mb-5">
             <h3 className="font-bold text-bhutan-dark text-base">Inquiries Received</h3>
-            <p className="text-xs text-bhutan-dark/40 mt-0.5 uppercase tracking-wider">Last 12 months</p>
+            <p className="text-sm text-bhutan-dark/60 mt-0.5 uppercase tracking-wider font-medium">Last 12 months</p>
           </div>
           <ResponsiveContainer width="100%" height={220}>
             <AreaChart data={chartData} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
@@ -308,7 +308,7 @@ export default function AdminDashboard() {
             <div>
               <h3 className="font-bold text-bhutan-dark text-base">Recent Inquiries</h3>
               <p className="text-sm text-bhutan-dark/40 mt-0.5 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" /> Latest messages
+                <Clock className="w-3.5 h-3.5" /> Latest communications
               </p>
             </div>
             <Link href="/admin/inquiries" className="text-sm font-bold text-bhutan-red hover:underline flex items-center gap-1">
@@ -319,7 +319,7 @@ export default function AdminDashboard() {
             {(stats?.recentInquiries ?? []).length === 0 ? (
               <div className="py-12 text-center">
                 <MessageSquare className="w-8 h-8 text-bhutan-dark/10 mx-auto mb-2" />
-                <p className="text-xs text-bhutan-dark/30 uppercase tracking-wider">No inquiries yet</p>
+                <p className="text-sm text-bhutan-dark/50 uppercase tracking-wider font-medium">No inquiries yet</p>
               </div>
             ) : (
               stats?.recentInquiries.map((inquiry, i) => (
@@ -348,7 +348,7 @@ export default function AdminDashboard() {
                     </div>
                     <p className="text-sm text-bhutan-dark/50 truncate italic">"{inquiry.message}"</p>
                   </div>
-                  <span className="text-xs text-bhutan-dark/30 font-bold uppercase tracking-widest shrink-0">
+                  <span className="text-xs text-bhutan-dark/60 font-bold uppercase tracking-widest shrink-0">
                     {formatDate(inquiry.createdAt)}
                   </span>
                 </motion.div>
@@ -366,13 +366,13 @@ export default function AdminDashboard() {
         >
           <div className="p-5 border-b border-white/5">
             <h3 className="font-bold text-white text-sm">Recent Properties</h3>
-            <p className="text-xs text-bhutan-gold/50 mt-0.5">Newest listings</p>
+            <p className="text-sm text-bhutan-gold/70 mt-0.5 font-medium">Newest listings</p>
           </div>
           <div className="divide-y divide-white/5">
             {(stats?.recentProperties ?? []).length === 0 ? (
               <div className="py-12 text-center">
                 <Building2 className="w-8 h-8 text-white/10 mx-auto mb-2" />
-                <p className="text-xs text-white/20 uppercase tracking-wider">No properties yet</p>
+                <p className="text-sm text-white/40 uppercase tracking-wider font-medium">No properties yet</p>
               </div>
             ) : (
               stats?.recentProperties.map((property, i) => (

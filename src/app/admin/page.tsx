@@ -80,7 +80,7 @@ export default function AdminLoginPage() {
             Phojaa <span className="text-bhutan-gold italic font-light">Workspace</span>
           </h1>
           <div className="h-px w-20 bg-bhutan-gold/30 mx-auto" />
-          <p className="text-white/40 text-xs font-bold uppercase tracking-[0.4em] mt-6">Secure Access Portal</p>
+          <p className="text-white/60 text-sm font-bold uppercase tracking-[0.4em] mt-6">Secure Access Portal</p>
         </div>
 
         {/* Luxury Glass Login Card */}
@@ -99,7 +99,7 @@ export default function AdminLoginPage() {
 
             <form onSubmit={handleSubmit} className="space-y-8 md:space-y-10">
               <div className="space-y-3 md:space-y-4">
-                <label className="text-xs font-bold text-white/60 uppercase tracking-[0.3em] ml-6 font-serif">
+                <label className="text-sm font-bold text-white/80 uppercase tracking-[0.3em] ml-6 font-serif">
                   Your Identity
                 </label>
                 <div className="relative">
@@ -118,7 +118,7 @@ export default function AdminLoginPage() {
               </div>
 
               <div className="space-y-3 md:space-y-4">
-                <label className="text-xs font-bold text-white/60 uppercase tracking-[0.3em] ml-6 font-serif">
+                <label className="text-sm font-bold text-white/80 uppercase tracking-[0.3em] ml-6 font-serif">
                   Access Key
                 </label>
                 <div className="relative">

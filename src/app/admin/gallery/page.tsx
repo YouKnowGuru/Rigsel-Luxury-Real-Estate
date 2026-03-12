@@ -120,7 +120,7 @@ export default function GalleryPage() {
                 <div>
                     <div className="flex items-center gap-2 mb-2">
                         <div className="w-0.5 h-6 bg-bhutan-red rounded-full" />
-                        <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">Visual Assets</p>
+                        <p className="text-bhutan-red font-bold text-sm uppercase tracking-[0.3em]">Visual Assets</p>
                     </div>
                     <h2 className="text-3xl md:text-5xl font-bold text-bhutan-dark leading-tight">
                         Photo <span className="text-bhutan-gold italic font-light">Gallery</span>
@@ -129,7 +129,7 @@ export default function GalleryPage() {
 
                 <button
                     onClick={() => setIsUploadModalOpen(true)}
-                    className="h-12 md:h-14 px-8 bg-bhutan-dark text-white text-[10px] font-bold uppercase tracking-[0.3em] rounded-2xl hover:bg-bhutan-red transition-all duration-500 shadow-xl flex items-center gap-3 group"
+                    className="h-12 md:h-14 px-8 bg-bhutan-dark text-white text-xs font-bold uppercase tracking-[0.3em] rounded-2xl hover:bg-bhutan-red transition-all duration-500 shadow-xl flex items-center gap-3 group"
                 >
                     <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                     Add To Gallery
@@ -142,9 +142,9 @@ export default function GalleryPage() {
                     <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
-                        className={`px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border ${selectedCategory === cat
+                        className={`px-5 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all border ${selectedCategory === cat
                                 ? "bg-bhutan-red text-white border-bhutan-red shadow-lg shadow-bhutan-red/20"
-                                : "bg-white text-bhutan-dark/40 border-white hover:border-bhutan-red/20 hover:text-bhutan-red"
+                                : "bg-white text-bhutan-dark/60 border-white hover:border-bhutan-red/20 hover:text-bhutan-red font-medium"
                             }`}
                     >
                         {cat}
@@ -174,7 +174,7 @@ export default function GalleryPage() {
                             >
                                 <img src={item.image} alt={item.title || "Gallery"} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark/90 via-bhutan-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                                    <p className="text-bhutan-gold text-[10px] font-bold uppercase tracking-[0.2em] mb-1">{item.category}</p>
+                                    <p className="text-bhutan-gold text-xs font-bold uppercase tracking-[0.2em] mb-1">{item.category}</p>
                                     <h4 className="text-white font-bold text-lg mb-4">{item.title || "Gallery Image"}</h4>
                                     <div className="flex gap-2">
                                         <button
@@ -238,7 +238,7 @@ export default function GalleryPage() {
                                                         <div className="w-14 h-14 rounded-2xl bg-bhutan-gold/10 flex items-center justify-center mb-4">
                                                             <Upload className="w-6 h-6 text-bhutan-gold" />
                                                         </div>
-                                                        <p className="text-bhutan-dark/60 font-bold text-xs uppercase tracking-widest">Select Image</p>
+                                                        <p className="text-bhutan-dark/70 font-bold text-sm uppercase tracking-widest">Select Image</p>
                                                     </>
                                                 )}
                                             </div>
@@ -247,7 +247,7 @@ export default function GalleryPage() {
                                     </label>
 
                                     <div>
-                                        <label className="block text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] mb-2 px-1">Entry Title</label>
+                                        <label className="block text-xs font-bold text-bhutan-dark/60 uppercase tracking-[0.2em] mb-2 px-1">Entry Title</label>
                                         <input
                                             type="text"
                                             placeholder="Optional title..."
@@ -258,15 +258,15 @@ export default function GalleryPage() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em] mb-2 px-1">Classification</label>
+                                        <label className="block text-xs font-bold text-bhutan-dark/60 uppercase tracking-[0.2em] mb-2 px-1">Classification</label>
                                         <div className="flex flex-wrap gap-2">
                                             {categories.filter(c => c !== "All").map(cat => (
                                                 <button
                                                     key={cat}
                                                     onClick={() => setNewImage({ ...newImage, category: cat })}
-                                                    className={`px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all ${newImage.category === cat
+                                                    className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${newImage.category === cat
                                                             ? "bg-bhutan-gold text-bhutan-dark shadow-md shadow-bhutan-gold/20"
-                                                            : "bg-white text-bhutan-dark/30 hover:bg-bhutan-gold/10"
+                                                            : "bg-white text-bhutan-dark/60 hover:bg-bhutan-gold/10 font-medium"
                                                         }`}
                                                 >
                                                     {cat}

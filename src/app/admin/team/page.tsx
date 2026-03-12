@@ -100,7 +100,7 @@ export default function TeamAdminPage() {
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <div className="w-1 h-4 bg-bhutan-red rounded-full" />
-                        <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">Management</p>
+                        <p className="text-bhutan-red font-bold text-sm uppercase tracking-[0.3em]">Management</p>
                     </div>
                     <h1 className="text-3xl font-bold text-bhutan-dark">Our Leaders / Team</h1>
                 </div>
@@ -144,13 +144,13 @@ export default function TeamAdminPage() {
                                     <Image src={member.image} alt={member.name} fill className="object-cover" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-[10px] font-bold text-bhutan-gold uppercase tracking-[0.2em]">{member.role}</p>
-                                    <h3 className="font-serif text-xl font-bold text-bhutan-dark truncate">{member.name}</h3>
-                                    <p className="text-xs text-bhutan-dark/40 mt-1">Order: {member.order}</p>
+                                    <p className="text-xs font-bold text-bhutan-gold uppercase tracking-[0.2em]">{member.role}</p>
+                                    <h3 className="font-serif text-2xl font-bold text-bhutan-dark truncate">{member.name}</h3>
+                                    <p className="text-sm text-bhutan-dark/60 mt-1 font-medium">Order: {member.order}</p>
                                 </div>
                             </div>
 
-                            <p className="mt-4 text-sm text-bhutan-dark/60 italic font-light line-clamp-2">"{member.quote}"</p>
+                            <p className="mt-4 text-base text-bhutan-dark/70 italic font-medium line-clamp-2">"{member.quote}"</p>
 
                             <div className="flex items-center justify-end gap-2 mt-6 pt-4 border-t border-bhutan-gold/10">
                                 <Link

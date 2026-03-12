@@ -136,14 +136,14 @@ export default function InquiriesPage() {
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[10px] font-bold uppercase tracking-widest">
-            <MessageSquare className="w-3 h-3" />
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-xs font-bold uppercase tracking-widest">
+            <MessageSquare className="w-3.5 h-3.5" />
             Communications
           </div>
           <h1 className="text-4xl font-bold text-bhutan-dark tracking-tight">
             Client <span className="text-bhutan-red italic font-light">Inquiries</span>
           </h1>
-          <p className="text-bhutan-dark/50 text-base font-bold italic">
+          <p className="text-bhutan-dark/70 text-lg font-bold italic">
             Manage your interactions with potential legacy seekers.
           </p>
         </div>
@@ -183,7 +183,7 @@ export default function InquiriesPage() {
             className="bg-white p-6 rounded-[2rem] shadow-xl border border-bhutan-gold/10 flex items-center justify-between"
           >
             <div>
-              <p className="text-bhutan-dark/40 text-[10px] font-bold uppercase tracking-widest mb-1">{stat.label}</p>
+              <p className="text-bhutan-dark/60 text-xs font-bold uppercase tracking-widest mb-1">{stat.label}</p>
               <p className="text-3xl font-bold text-bhutan-dark">{stat.value}</p>
             </div>
             <div className={cn("w-12 h-12 rounded-2xl flex items-center justify-center bg-opacity-10", `bg-${stat.color}`)}>
@@ -219,11 +219,11 @@ export default function InquiriesPage() {
           <table className="w-full">
             <thead className="bg-[#F9F7F2]/50 border-b border-bhutan-gold/10">
               <tr>
-                <th className="px-8 py-5 text-left text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em]">Contact</th>
-                <th className="px-8 py-5 text-left text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em]">Subject & Message</th>
-                <th className="px-8 py-5 text-left text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em]">Date</th>
-                <th className="px-8 py-5 text-left text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em]">Status</th>
-                <th className="px-8 py-5 text-right text-[10px] font-bold text-bhutan-dark/40 uppercase tracking-[0.2em]">Actions</th>
+                <th className="px-8 py-5 text-left text-xs font-bold text-bhutan-dark/70 uppercase tracking-[0.2em]">Contact</th>
+                <th className="px-8 py-5 text-left text-xs font-bold text-bhutan-dark/70 uppercase tracking-[0.2em]">Subject & Message</th>
+                <th className="px-8 py-5 text-left text-xs font-bold text-bhutan-dark/70 uppercase tracking-[0.2em]">Date</th>
+                <th className="px-8 py-5 text-left text-xs font-bold text-bhutan-dark/70 uppercase tracking-[0.2em]">Status</th>
+                <th className="px-8 py-5 text-right text-xs font-bold text-bhutan-dark/70 uppercase tracking-[0.2em]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-bhutan-gold/5">
@@ -271,8 +271,8 @@ export default function InquiriesPage() {
                             <h4 className={cn("font-bold text-base tracking-tight", inquiry.isRead ? "text-bhutan-dark/70" : "text-bhutan-dark")}>
                               {inquiry.name}
                             </h4>
-                            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/30">
-                              <Mail className="w-3 h-3" />
+                            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-bhutan-dark/60">
+                              <Mail className="w-3.5 h-3.5" />
                               {inquiry.email}
                             </div>
                           </div>
@@ -289,13 +289,13 @@ export default function InquiriesPage() {
                         </div>
                       </td>
                       <td className="px-8 py-6">
-                        <div className="flex flex-col text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/40">
+                        <div className="flex flex-col text-xs font-bold uppercase tracking-widest text-bhutan-dark/60 font-serif">
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-3 h-3" />
+                            <Calendar className="w-3.5 h-3.5" />
                             {format(new Date(inquiry.createdAt), "MMM d, yyyy")}
                           </div>
                           <div className="flex items-center gap-2 mt-1">
-                            <Clock className="w-3 h-3" />
+                            <Clock className="w-3.5 h-3.5" />
                             {format(new Date(inquiry.createdAt), "h:mm a")}
                           </div>
                         </div>

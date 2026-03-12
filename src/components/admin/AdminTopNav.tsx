@@ -159,7 +159,7 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
                                                                     {new Date(inquiry.createdAt).toLocaleDateString()}
                                                                 </span>
                                                             </div>
-                                                            <p className="text-xs text-bhutan-dark/50 line-clamp-1 italic mt-0.5 font-serif">
+                                                            <p className="text-sm text-bhutan-dark/70 line-clamp-1 italic mt-0.5 font-serif">
                                                                 "{inquiry.message}"
                                                             </p>
                                                         </div>
@@ -187,7 +187,7 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
                     <Logo size="sm" />
                     <div className="hidden md:block">
                         <p className="text-base font-bold text-bhutan-dark capitalize leading-none">{adminName}</p>
-                        <p className="text-xs font-bold text-bhutan-dark/30 uppercase tracking-wider mt-0.5">Administrator</p>
+                        <p className="text-sm font-bold text-bhutan-dark/50 uppercase tracking-wider mt-0.5">Administrator</p>
                     </div>
                 </div>
 

@@ -315,21 +315,21 @@ export default function PropertyDetailPage() {
                     <Bed className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
                   <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground leading-none pt-2">{displayProperty.bedrooms}</p>
-                  <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Bedrooms</p>
+                  <p className="text-xs md:text-sm font-bold text-bhutan-dark/60 dark:text-foreground/60 uppercase tracking-widest">Bedrooms</p>
                 </div>
                 <div className="space-y-1 md:space-y-3 text-center md:border-x border-bhutan-gold/10 px-1 md:px-8 border-l border-bhutan-gold/10">
                   <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
                     <Bath className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
                   <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground leading-none pt-2">{displayProperty.bathrooms}</p>
-                  <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Baths</p>
+                  <p className="text-xs md:text-sm font-bold text-bhutan-dark/60 dark:text-foreground/60 uppercase tracking-widest">Baths</p>
                 </div>
                 <div className="space-y-1 md:space-y-3 text-center col-span-2 md:col-span-1 border-t md:border-t-0 pt-4 md:pt-0 mt-2 md:mt-0 border-bhutan-gold/10">
                   <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
                     <Maximize className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
                   <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground leading-none pt-2">{displayProperty.area}</p>
-                  <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Area</p>
+                  <p className="text-xs md:text-sm font-bold text-bhutan-dark/60 dark:text-foreground/60 uppercase tracking-widest">Area</p>
                 </div>
 
                 {/* Custom Specifications */}
@@ -340,7 +340,7 @@ export default function PropertyDetailPage() {
                         <Home className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                       </div>
                       <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground leading-none pt-2">{spec.value}</p>
-                      <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">{spec.label}</p>
+                      <p className="text-xs md:text-sm font-bold text-bhutan-dark/60 dark:text-foreground/60 uppercase tracking-widest">{spec.label}</p>
                     </div>
                   ))
                 }
@@ -358,7 +358,7 @@ export default function PropertyDetailPage() {
                     <h3 className="text-2xl font-serif font-bold text-bhutan-dark">Loan Support Available</h3>
                   </div>
                   <div className="bg-white dark:bg-card px-8 py-4 rounded-2xl shadow-sm border border-bhutan-gold/10 dark:border-white/5 text-center">
-                    <p className="text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest mb-1">Loan Amount</p>
+                    <p className="text-xs font-bold text-bhutan-dark/50 dark:text-foreground/50 uppercase tracking-widest mb-1">Loan Amount</p>
                     <p className="text-2xl font-serif font-bold text-bhutan-red">Nu. {displayProperty.loanAmount.toLocaleString("en-IN")}</p>
                   </div>
                 </motion.div>
@@ -401,7 +401,7 @@ export default function PropertyDetailPage() {
                       <div className="w-10 h-10 bg-bhutan-gold/10 rounded-xl flex items-center justify-center flex-shrink-0">
                         <Check className="w-5 h-5 text-bhutan-gold" />
                       </div>
-                       <span className="text-bhutan-dark/70 dark:text-muted-foreground font-medium text-lg">{feature}</span>
+                       <span className="text-bhutan-dark/80 dark:text-foreground/80 font-medium text-lg">{feature}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -445,9 +445,9 @@ export default function PropertyDetailPage() {
                     />
                   </div>
                   <div className="flex-1">
-                    <p className="text-bhutan-gold text-[10px] font-bold uppercase tracking-widest mb-1">Local Agent</p>
+                    <p className="text-bhutan-gold text-xs font-bold uppercase tracking-widest mb-1">Local Agent</p>
                     <h3 className="font-serif text-xl font-bold text-bhutan-dark dark:text-foreground">Dorji Wangchuk</h3>
-                    <p className="text-bhutan-dark/40 text-xs font-medium">General Manager (GM)</p>
+                    <p className="text-bhutan-dark/60 dark:text-foreground/60 text-sm font-bold uppercase tracking-wide">General Manager (GM)</p>
                   </div>
                 </div>
 
@@ -477,13 +477,13 @@ export default function PropertyDetailPage() {
                   </div>
                   <div>
                     <h3 className="font-serif text-xl font-bold text-bhutan-dark dark:text-foreground">Send Inquiry</h3>
-                    <p className="text-bhutan-dark/40 text-[9px] font-bold uppercase tracking-widest">Prompt Response Guaranteed</p>
+                    <p className="text-bhutan-dark/60 dark:text-foreground/60 text-xs font-bold uppercase tracking-widest">Prompt Response Guaranteed</p>
                   </div>
                 </div>
 
                 <form onSubmit={handleContactSubmit} className="space-y-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] ml-2">Your Name</label>
+                    <label className="text-xs font-bold text-bhutan-dark/70 dark:text-foreground/70 uppercase tracking-[0.2em] ml-2">Your Name</label>
                     <Input
                       placeholder="Please enter your name"
                       value={contactForm.name}
@@ -495,7 +495,7 @@ export default function PropertyDetailPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] ml-2">Phone Number</label>
+                    <label className="text-xs font-bold text-bhutan-dark/70 dark:text-foreground/70 uppercase tracking-[0.2em] ml-2">Phone Number</label>
                     <Input
                       type="tel"
                       placeholder="Enter phone with code"
@@ -508,7 +508,7 @@ export default function PropertyDetailPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] ml-2">Email Address</label>
+                    <label className="text-xs font-bold text-bhutan-dark/70 dark:text-foreground/70 uppercase tracking-[0.2em] ml-2">Email Address</label>
                     <Input
                       type="email"
                       placeholder="yourname@gmail.com"
@@ -521,7 +521,7 @@ export default function PropertyDetailPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] ml-2">Your Message</label>
+                    <label className="text-xs font-bold text-bhutan-dark/70 dark:text-foreground/70 uppercase tracking-[0.2em] ml-2">Your Message</label>
                     <Textarea
                       placeholder="How can we help you?"
                       value={contactForm.message}
@@ -546,7 +546,7 @@ export default function PropertyDetailPage() {
                 </form>
 
                 <div className="mt-12 pt-8 border-t border-bhutan-gold/10 text-center">
-                  <p className="text-bhutan-dark/30 text-[10px] font-bold uppercase tracking-widest mb-6">Call directly</p>
+                  <p className="text-bhutan-dark/60 dark:text-foreground/60 text-xs font-bold uppercase tracking-widest mb-6">Call directly</p>
                   <div className="space-y-4">
                     <a
                       href="tel:+97516111999"
