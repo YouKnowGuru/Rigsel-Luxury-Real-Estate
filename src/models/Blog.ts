@@ -18,7 +18,7 @@ const BlogSchema: Schema = new Schema(
             type: String,
             required: [true, "Blog title is required"],
             trim: true,
-            maxlength: [200, "Title cannot exceed 200 characters"],
+            maxlength: [500, "Title cannot exceed 500 characters"],
         },
         slug: {
             type: String,

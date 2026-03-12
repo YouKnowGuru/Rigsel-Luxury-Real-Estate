@@ -91,7 +91,7 @@ const PropertySchema: Schema = new Schema(
       type: String,
       required: [true, "Description is required"],
       minlength: [50, "Description must be at least 50 characters"],
-      maxlength: [5000, "Description cannot exceed 5000 characters"],
+      maxlength: [20000, "Description cannot exceed 20000 characters"],
     },
     features: {
       type: [String],
