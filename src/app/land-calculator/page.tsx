@@ -148,7 +148,7 @@ export default function LandCalculatorPage() {
               <div className="space-y-4 md:space-y-5">
                 {fields.map((item, idx) => (
                   <div key={item.field}>
-                    <label className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/35 uppercase tracking-[0.15em] mb-1.5 block pl-1">
+                    <label className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.15em] mb-1.5 block pl-1">
                       {item.label}
                     </label>
                     <div className="relative">
@@ -158,10 +158,10 @@ export default function LandCalculatorPage() {
                         placeholder="0.00"
                         value={item.value}
                         onChange={(e) => item.handler(e.target.value)}
-                        className={`h-11 md:h-12 rounded-lg md:rounded-xl pl-10 md:pl-12 pr-14 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 focus:ring-bhutan-red/20 focus:border-bhutan-red text-sm md:text-base font-serif ${activeField === item.field ? "border-bhutan-red/40 bg-bhutan-red/[0.02]" : ""
+                        className={`h-12 md:h-14 rounded-lg md:rounded-xl pl-10 md:pl-12 pr-14 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/20 dark:border-white/20 focus:ring-bhutan-red/20 focus:border-bhutan-red text-base md:text-lg font-serif font-bold ${activeField === item.field ? "border-bhutan-red/40 bg-bhutan-red/[0.02]" : ""
                           }`}
                       />
-                      <span className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-bhutan-dark/20 dark:text-muted-foreground/20 text-[10px] md:text-xs font-bold">
+                      <span className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-bhutan-dark/40 dark:text-muted-foreground/40 text-[11px] md:text-xs font-bold">
                         {item.unit}
                       </span>
                     </div>
@@ -195,21 +195,21 @@ export default function LandCalculatorPage() {
 
                 {/* Area Summary */}
                 <div className="p-4 md:p-5 bg-[#F9F7F2] dark:bg-background rounded-xl border border-dashed border-bhutan-gold/20 dark:border-white/10 mb-5 md:mb-6">
-                  <p className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/35 uppercase tracking-widest mb-2">Total Area</p>
+                  <p className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-widest mb-2">Total Area</p>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-xl md:text-2xl font-serif font-bold text-bhutan-dark dark:text-foreground">
+                    <span className="text-2xl md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground">
                       {decimals ? parseFloat(decimals).toFixed(4) : "0.0000"}
                     </span>
-                    <span className="text-bhutan-red text-xs italic font-serif">decimals</span>
+                    <span className="text-bhutan-red text-sm italic font-serif font-bold">decimals</span>
                   </div>
-                  <p className="text-bhutan-dark/30 text-[10px] md:text-xs font-light mt-1">
+                  <p className="text-bhutan-dark/50 dark:text-muted-foreground/50 text-xs md:text-sm font-bold mt-1">
                     = {squareMeters ? parseFloat(squareMeters).toFixed(1) : "0"} m²
                   </p>
                 </div>
 
                 {/* Price input */}
                 <div className="mb-5 md:mb-6">
-                  <label className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/35 uppercase tracking-[0.15em] mb-1.5 block pl-1">
+                  <label className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.15em] mb-1.5 block pl-1">
                     Price per Decimal (Nu.)
                   </label>
                   <div className="relative">
@@ -219,7 +219,7 @@ export default function LandCalculatorPage() {
                       placeholder="Market rate..."
                       value={pricePerDecimal}
                       onChange={(e) => setPricePerDecimal(e.target.value)}
-                      className="h-11 md:h-12 rounded-lg md:rounded-xl pl-10 md:pl-12 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/10 dark:border-white/10 focus:ring-bhutan-red/20 focus:border-bhutan-red font-serif text-sm md:text-base"
+                      className="h-12 md:h-14 rounded-lg md:rounded-xl pl-10 md:pl-12 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/20 dark:border-white/20 focus:ring-bhutan-red/20 focus:border-bhutan-red font-serif font-bold text-base md:text-lg"
                     />
                   </div>
                 </div>
@@ -229,8 +229,8 @@ export default function LandCalculatorPage() {
                   <div className="absolute inset-0 bg-thangka opacity-[0.04] pointer-events-none" />
                   <div className="absolute -top-10 -right-10 w-32 h-32 bg-bhutan-gold/15 rounded-full blur-[60px]" />
 
-                  <p className="text-white/35 text-[9px] md:text-[10px] font-bold uppercase tracking-widest mb-2 relative z-10">Total Valuation</p>
-                  <p className="text-2xl md:text-3xl font-serif font-bold text-bhutan-gold relative z-10">
+                  <p className="text-white/60 text-[10px] md:text-[11px] font-bold uppercase tracking-widest mb-2 relative z-10">Total Valuation</p>
+                  <p className="text-3xl md:text-4xl font-serif font-bold text-bhutan-gold relative z-10">
                     {formatPrice(totalPrice)}
                   </p>
                   <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-2 relative z-10">
@@ -303,8 +303,8 @@ export default function LandCalculatorPage() {
                 transition={{ delay: index * 0.04 }}
                 className="bg-[#F9F7F2] dark:bg-card rounded-lg md:rounded-xl p-3 md:p-5 border border-bhutan-gold/10 dark:border-white/5 hover:border-bhutan-gold/25 dark:hover:border-white/20 hover:shadow-sm transition-all text-center"
               >
-                <p className="text-bhutan-dark/30 text-[8px] md:text-[10px] font-bold uppercase tracking-widest mb-1">{conv.from}</p>
-                <p className="text-bhutan-gold font-serif text-sm md:text-base font-bold">≈ {conv.to}</p>
+                <p className="text-bhutan-dark/50 dark:text-muted-foreground/50 text-[9px] md:text-[11px] font-bold uppercase tracking-widest mb-1">{conv.from}</p>
+                <p className="text-bhutan-gold font-serif text-base md:text-lg font-bold">≈ {conv.to}</p>
               </motion.div>
             ))}
           </div>

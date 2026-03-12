@@ -87,7 +87,7 @@ export function LandCalculator() {
           <div className="bg-[#F9F7F2] dark:bg-card rounded-2xl md:rounded-3xl p-5 md:p-10 border border-bhutan-gold/10 dark:border-white/5 shadow-lg">
             {/* Unit Selector */}
             <div className="mb-6 md:mb-8">
-              <label className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] mb-3 block pl-1">
+              <label className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.2em] mb-3 block pl-1">
                 Convert From
               </label>
               <div className="flex gap-2 md:gap-3">
@@ -108,7 +108,7 @@ export function LandCalculator() {
 
             {/* Input */}
             <div className="mb-6 md:mb-8">
-              <label className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/40 dark:text-muted-foreground/40 uppercase tracking-[0.2em] mb-3 block pl-1">
+              <label className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.2em] mb-3 block pl-1">
                 Enter Value
               </label>
               <div className="relative">
@@ -118,7 +118,7 @@ export function LandCalculator() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Enter amount..."
-                  className="w-full bg-white dark:bg-background pl-11 md:pl-14 pr-4 py-3.5 md:py-5 rounded-xl md:rounded-2xl text-base md:text-xl font-serif font-bold text-bhutan-dark dark:text-foreground outline-none border border-bhutan-gold/15 dark:border-white/10 focus:border-bhutan-red/40 focus:ring-2 focus:ring-bhutan-red/10 transition-all placeholder:text-bhutan-dark/20 dark:placeholder:text-white/20 placeholder:font-light placeholder:text-sm"
+                  className="w-full bg-white dark:bg-background pl-11 md:pl-14 pr-4 py-3.5 md:py-5 rounded-xl md:rounded-2xl text-lg md:text-2xl font-serif font-bold text-bhutan-dark dark:text-foreground outline-none border border-bhutan-gold/15 dark:border-white/10 focus:border-bhutan-red/40 focus:ring-2 focus:ring-bhutan-red/10 transition-all placeholder:text-bhutan-dark/40 dark:placeholder:text-white/40 placeholder:font-light placeholder:text-sm"
                 />
                 {inputValue && (
                   <button
@@ -150,10 +150,10 @@ export function LandCalculator() {
                   transition={{ delay: idx * 0.05 }}
                   className="bg-white rounded-xl md:rounded-2xl p-3 md:p-5 border border-bhutan-gold/10 hover:border-bhutan-red/20 hover:shadow-md transition-all group"
                 >
-                  <p className="text-[8px] md:text-[9px] font-bold text-bhutan-dark/30 uppercase tracking-[0.2em] mb-1 md:mb-2">
+                  <p className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/50 dark:text-muted-foreground/50 uppercase tracking-[0.2em] mb-1 md:mb-2">
                     {result.label}
                   </p>
-                  <p className="text-sm sm:text-base md:text-2xl font-serif font-bold text-bhutan-dark dark:text-foreground group-hover:text-bhutan-red transition-colors truncate">
+                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground group-hover:text-bhutan-red transition-colors truncate">
                     {result.value}
                   </p>
                 </motion.div>
