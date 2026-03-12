@@ -64,11 +64,12 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
                         size === "sm" ? "text-[11px] md:text-sm" :
                             size === "md" ? "text-base md:text-xl" :
                                 "text-lg sm:text-2xl md:text-4xl lg:text-5xl",
-                        dark ? "text-white" : "text-bhutan-green"
+                        "text-bhutan-green",
+                        "animate-glow-green transition-all"
                     )}>
                         {firstWord}
                         {otherWords && (
-                            <span className="text-bhutan-green ml-1">
+                            <span className="text-bhutan-green ml-1 animate-glow-green">
                                 {otherWords}
                             </span>
                         )}
@@ -76,7 +77,8 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
                     <p className={cn(
                         "font-bold uppercase tracking-[0.05em] sm:tracking-[0.1em] md:tracking-[0.2em] whitespace-nowrap",
                         size === "sm" ? "text-[6px] md:text-[7px]" : "text-[7px] sm:text-[8px] md:text-[10px]",
-                        dark ? "text-bhutan-gold" : "text-bhutan-green"
+                        "text-bhutan-green",
+                        "animate-glow-green transition-all"
                     )}>
                         Bhutan Property
                     </p>
