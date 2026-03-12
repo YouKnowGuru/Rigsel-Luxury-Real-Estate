@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Phojaa Real Estate</string>
+    <string name="title_activity_main">Phojaa Real Estate</string>
+    <string name="package_name">com.phojaarealestate.app</string>
+    <string name="custom_url_scheme">com.phojaarealestate.app</string>
+</resources>

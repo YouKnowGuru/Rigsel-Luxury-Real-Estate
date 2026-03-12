@@ -5,7 +5,7 @@ import Settings from "@/models/Settings";
 export const dynamic = "force-dynamic";
 
 const DEFAULT_SETTINGS = {
-    siteName: "Phojaa Real Estate",
+    siteName: "Phojaa95Real Estate",
     phone: "+975 16 111 999",
     email: "phojaa95realestate@gmail.com",
     address: "Norzin Lam, Thimphu, Bhutan",

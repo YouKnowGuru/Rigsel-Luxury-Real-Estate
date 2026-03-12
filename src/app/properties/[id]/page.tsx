@@ -21,6 +21,7 @@ import {
   MessageSquare,
   ArrowRight,
   ExternalLink,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -79,6 +80,7 @@ export default function PropertyDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [contactForm, setContactForm] = useState({
     name: "",
     phone: "",
@@ -221,10 +223,10 @@ export default function PropertyDetailPage() {
               navigation
               pagination={{ clickable: true }}
               autoplay={{ delay: 6000 }}
-              className="h-[400px] md:h-[650px] lg:h-[750px]"
+              className="h-[300px] sm:h-[400px] md:h-[650px] lg:h-[750px] cursor-pointer"
             >
               {displayProperty.images.map((image, index) => (
-                <SwiperSlide key={index}>
+                <SwiperSlide key={index} onClick={() => setSelectedImage(index)}>
                   <div className="relative w-full h-full">
                     <img
                       src={image}
@@ -237,7 +239,7 @@ export default function PropertyDetailPage() {
               ))}
             </Swiper>
             {/* Price Badge Overlay */}
-            <div className="absolute bottom-12 left-12 z-20">
+            <div className="absolute bottom-6 left-4 md:bottom-12 md:left-12 z-20">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -257,7 +259,7 @@ export default function PropertyDetailPage() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-bhutan-red text-white px-8 md:px-12 py-3 md:py-4 rounded-3xl md:rounded-[2rem] shadow-2xl border-4 md:border-8 border-white text-xl md:text-4xl font-black uppercase tracking-[0.3em] rotate-[-5deg]"
+                  className="bg-bhutan-red text-white px-6 md:px-12 py-2 md:py-4 rounded-2xl md:rounded-[2rem] shadow-2xl border-4 md:border-8 border-white text-lg md:text-4xl font-black uppercase tracking-[0.3em] rotate-[-5deg]"
                 >
                   Sold Out
                 </motion.div>
@@ -265,12 +267,12 @@ export default function PropertyDetailPage() {
             )}
 
             {/* Type Badge Overlay */}
-            <div className="absolute top-8 left-8 z-20 flex gap-4">
-              <div className="px-6 py-2.5 bg-bhutan-red text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-xl">
+            <div className="absolute top-4 left-4 md:top-8 md:left-8 z-20 flex flex-wrap gap-2 md:gap-4">
+              <div className="px-3 md:px-6 py-1.5 md:py-2.5 bg-bhutan-red text-white text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-xl">
                 {displayProperty.propertyType}
               </div>
               {displayProperty.featured && (
-                <div className="px-6 py-2.5 bg-bhutan-gold text-white text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-xl flex items-center gap-2">
+                <div className="px-3 md:px-6 py-1.5 md:py-2.5 bg-bhutan-gold text-white text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] rounded-full shadow-xl flex items-center gap-2">
                   Special Choice
                 </div>
               )}
@@ -296,7 +298,7 @@ export default function PropertyDetailPage() {
                   <div className="h-0.5 w-12 bg-bhutan-gold/30 rounded-full" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.5em]">{displayProperty.district} District</span>
                 </div>
-                <h1 className="font-serif text-3xl md:text-6xl font-bold text-bhutan-dark leading-tight">
+                <h1 className="font-serif text-2xl sm:text-3xl md:text-6xl font-bold text-bhutan-dark leading-tight break-words">
                   {displayProperty.title}
                 </h1>
                 <div className="flex items-center gap-3 text-bhutan-dark/60 text-lg bg-white/50 w-fit px-6 py-3 rounded-2xl border border-bhutan-gold/10">
@@ -306,27 +308,27 @@ export default function PropertyDetailPage() {
               </motion.div>
 
               {/* Quick Spec Grid */}
-              <div className="grid grid-cols-3 gap-2 md:gap-8 p-6 md:p-12 bg-white rounded-[2rem] md:rounded-[3rem] shadow-sm border border-bhutan-gold/10">
-                <div className="space-y-2 md:space-y-3 text-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl md:rounded-2xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
-                    <Bed className="w-5 h-5 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 md:gap-8 p-4 sm:p-6 md:p-12 bg-white rounded-[1.5rem] md:rounded-[3rem] shadow-sm border border-bhutan-gold/10">
+                <div className="space-y-1 md:space-y-3 text-center">
+                  <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
+                    <Bed className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
-                  <p className="text-xl md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.bedrooms}</p>
-                  <p className="text-[8px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Bedrooms</p>
+                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.bedrooms}</p>
+                  <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Bedrooms</p>
                 </div>
-                <div className="space-y-2 md:space-y-3 text-center border-x border-bhutan-gold/10 px-2 md:px-8">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl md:rounded-2xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
-                    <Bath className="w-5 h-5 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
+                <div className="space-y-1 md:space-y-3 text-center md:border-x border-bhutan-gold/10 px-1 md:px-8 border-l border-bhutan-gold/10">
+                  <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
+                    <Bath className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
-                  <p className="text-xl md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.bathrooms}</p>
-                  <p className="text-[8px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Baths</p>
+                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.bathrooms}</p>
+                  <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Baths</p>
                 </div>
-                <div className="space-y-2 md:space-y-3 text-center">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl md:rounded-2xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
-                    <Maximize className="w-5 h-5 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
+                <div className="space-y-1 md:space-y-3 text-center col-span-2 md:col-span-1 border-t md:border-t-0 pt-4 md:pt-0 mt-2 md:mt-0 border-bhutan-gold/10">
+                  <div className="w-10 h-10 md:w-16 md:h-16 bg-[#F9F7F2] rounded-xl flex items-center justify-center mx-auto border border-bhutan-gold/5 group hover:bg-bhutan-red transition-all duration-500">
+                    <Maximize className="w-4 h-4 md:w-8 md:h-8 text-bhutan-gold group-hover:text-white transition-all duration-500" />
                   </div>
-                  <p className="text-xl md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.area}</p>
-                  <p className="text-[8px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Size (m²)</p>
+                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark leading-none pt-2">{displayProperty.area}</p>
+                  <p className="text-[7px] md:text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-widest">Size (m²)</p>
                 </div>
               </div>
 
@@ -355,7 +357,7 @@ export default function PropertyDetailPage() {
                   <div className="h-px flex-1 bg-bhutan-gold/10" />
                 </div>
                 <div
-                  className="text-bhutan-dark/60 text-lg md:text-xl leading-relaxed italic font-light prose prose-bhutan max-w-none prose-p:my-2"
+                  className="text-bhutan-dark/60 text-base md:text-xl leading-relaxed italic font-light prose prose-bhutan max-w-none prose-p:my-2 w-full overflow-hidden break-words [&_img]:max-w-full [&_iframe]:max-w-full [&_table]:max-w-full [&_*]:break-words"
                   dangerouslySetInnerHTML={{ __html: displayProperty.description }}
                 />
               </div>
@@ -540,6 +542,43 @@ export default function PropertyDetailPage() {
           </div>
         </div>
       </div>
+      {/* Lightbox / Fullscreen Image Viewer */}
+      <AnimatePresence>
+        {selectedImage !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center p-4 md:p-8"
+          >
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-6 right-6 z-[110] w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <div className="relative w-full max-w-6xl aspect-video md:aspect-[21/9] lg:aspect-auto lg:h-[80vh] flex items-center justify-center">
+              <img
+                src={displayProperty.images[selectedImage]}
+                alt={displayProperty.title}
+                className="max-w-full max-h-full object-contain rounded-lg"
+              />
+            </div>
+            {/* Thumbnails */}
+            <div className="absolute bottom-6 left-0 right-0 max-w-3xl mx-auto px-4 w-full flex items-center justify-center gap-2 overflow-x-auto pb-4 custom-scrollbar">
+              {displayProperty.images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelectedImage(idx)}
+                  className={`relative w-20 h-16 md:w-24 md:h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${selectedImage === idx ? "border-bhutan-gold scale-105" : "border-transparent opacity-50 hover:opacity-100"}`}
+                >
+                  <img src={img} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

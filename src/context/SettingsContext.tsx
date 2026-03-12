@@ -15,7 +15,7 @@ interface SiteSettings {
 }
 
 const DEFAULT_SETTINGS: SiteSettings = {
-    siteName: "Phojaa Real Estate",
+    siteName: "Phojaa95Real Estate",
     phone: "+975 16 111 999",
     email: "phojaa95realestate@gmail.com",
     address: "Norzin Lam, Thimphu, Bhutan",

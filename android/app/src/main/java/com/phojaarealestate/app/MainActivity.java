@@ -1,0 +1,5 @@
+package com.phojaarealestate.app;
+
+import com.getcapacitor.BridgeActivity;
+
+public class MainActivity extends BridgeActivity {}

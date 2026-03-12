@@ -56,6 +56,11 @@ const config: Config = {
             light: "#F7D566",
             dark: "#C29A26",
           },
+          green: {
+            DEFAULT: "#10B981", // Emerald Green
+            light: "#34D399",
+            dark: "#059669",
+          },
           white: "#FFFFFF",     // Snow White
           mountain: "#2F2F2F",  // Mountain Gray
           temple: "#F5E6C8",    // Temple Beige

@@ -225,13 +225,13 @@ function PropertiesContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/80 backdrop-blur-xl rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl p-4 md:p-8 mb-12 border border-bhutan-gold/10 sticky top-20 md:top-24 z-50 overflow-hidden group"
+          className="bg-white/80 backdrop-blur-xl rounded-[1.5rem] md:rounded-[2.5rem] shadow-2xl p-4 md:p-8 mb-12 border border-bhutan-gold/10 sticky top-[72px] md:top-24 z-30 group"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-bhutan-gold/5 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none" />
 
-          <div className="flex flex-wrap items-center gap-6 relative z-10">
+          <div className="flex flex-col md:flex-row flex-wrap items-center gap-4 md:gap-6 relative z-10 w-full">
             {/* Search */}
-            <div className="flex-1 min-w-full md:min-w-[280px]">
+            <div className="w-full md:flex-1 md:min-w-[280px]">
               <div className="group/search relative">
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-bhutan-gold group-focus-within/search:text-bhutan-red transition-colors" />
                 <Input
@@ -246,9 +246,9 @@ function PropertiesContent() {
             </div>
 
             {/* Quick Filters Group */}
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-col sm:flex-row flex-wrap items-center gap-4 w-full md:w-auto">
               {/* District Select */}
-              <div className="relative group/select">
+              <div className="relative group/select w-full sm:w-auto flex-1">
                 <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-bhutan-gold pointer-events-none" />
                 <select
                   value={filters.district}
@@ -267,7 +267,7 @@ function PropertiesContent() {
               </div>
 
               {/* Type Select */}
-              <div className="relative group/select">
+              <div className="relative group/select w-full sm:w-auto flex-1">
                 <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-bhutan-gold pointer-events-none" />
                 <select
                   value={filters.propertyType}
@@ -287,7 +287,7 @@ function PropertiesContent() {
               </div>
 
               {/* Advanced Toggle */}
-              <div className="flex items-center gap-2 p-1.5 bg-[#F9F7F2] rounded-2xl border border-bhutan-gold/20">
+              <div className="flex items-center justify-between sm:justify-start w-full sm:w-auto gap-2 p-1.5 bg-[#F9F7F2] rounded-2xl border border-bhutan-gold/20">
                 <Button
                   variant="ghost"
                   size="icon"
@@ -331,7 +331,7 @@ function PropertiesContent() {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
-                className="mt-8 pt-8 border-t border-bhutan-gold/10 overflow-hidden"
+                className="mt-8 pt-8 border-t border-bhutan-gold/10 max-h-[60vh] md:max-h-none overflow-y-auto md:overflow-visible custom-scrollbar"
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
                   {/* Price Range */}
