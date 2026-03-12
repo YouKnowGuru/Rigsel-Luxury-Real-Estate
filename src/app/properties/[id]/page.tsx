@@ -245,10 +245,10 @@ export default function PropertyDetailPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="bg-white/90 backdrop-blur-xl rounded-xl md:rounded-[2rem] p-3 sm:p-4 md:p-8 shadow-2xl border border-white/50"
+                className="bg-white/90 backdrop-blur-xl rounded-lg md:rounded-2xl p-2 sm:p-3 md:p-5 shadow-2xl border border-white/50"
               >
-                <p className="text-bhutan-dark/40 text-[8px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-0.5 md:mb-2 text-center">Price</p>
-                <p className="text-xl sm:text-2xl md:text-5xl font-serif font-bold text-bhutan-red text-center">
+                <p className="text-bhutan-dark/40 text-[7px] md:text-[9px] font-bold uppercase tracking-[0.3em] mb-0.5 md:mb-1 text-center">Price</p>
+                <p className="text-lg sm:text-xl md:text-3xl font-sans font-bold text-bhutan-red text-center">
                   {formatPrice(displayProperty.price)}
                 </p>
               </motion.div>
@@ -260,7 +260,7 @@ export default function PropertyDetailPage() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-bhutan-red text-white px-6 md:px-12 py-2 md:py-4 rounded-2xl md:rounded-[2rem] shadow-2xl border-4 md:border-8 border-white text-lg md:text-4xl font-black uppercase tracking-[0.3em] rotate-[-5deg]"
+                  className="bg-bhutan-red text-white px-4 md:px-8 py-1.5 md:py-3 rounded-xl md:rounded-2xl shadow-2xl border-2 md:border-4 border-white text-base md:text-2xl font-black uppercase tracking-[0.2em] rotate-[-5deg]"
                 >
                   Sold Out
                 </motion.div>

@@ -124,16 +124,6 @@ const config: Config = {
           "0%, 100%": { boxShadow: "0 0 20px rgba(244, 196, 48, 0.2)" },
           "50%": { boxShadow: "0 0 50px rgba(244, 196, 48, 0.5)" },
         },
-        "glow-green": {
-          "0%, 100%": { 
-              textShadow: "0 0 10px rgba(16, 185, 129, 0.3)",
-              boxShadow: "0 0 20px rgba(16, 185, 129, 0.2)"
-          },
-          "50%": { 
-              textShadow: "0 0 20px rgba(16, 185, 129, 0.8)",
-              boxShadow: "0 0 50px rgba(16, 185, 129, 0.5)"
-          },
-        },
         "pulse-gold": {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.7" },
@@ -149,7 +139,6 @@ const config: Config = {
         shimmer: "shimmer 3s linear infinite",
         float: "float 6s ease-in-out infinite",
         glow: "glow 3s ease-in-out infinite",
-        "glow-green": "glow-green 3s ease-in-out infinite",
         "pulse-gold": "pulse-gold 2s ease-in-out infinite",
       },
       backgroundImage: {
