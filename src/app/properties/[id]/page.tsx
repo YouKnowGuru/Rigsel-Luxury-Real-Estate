@@ -81,6 +81,7 @@ export default function PropertyDetailPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [descriptionImageUrl, setDescriptionImageUrl] = useState<string | null>(null);
   const [contactForm, setContactForm] = useState({
     name: "",
     phone: "",
@@ -239,15 +240,15 @@ export default function PropertyDetailPage() {
               ))}
             </Swiper>
             {/* Price Badge Overlay */}
-            <div className="absolute bottom-6 left-4 md:bottom-12 md:left-12 z-20">
+            <div className="absolute bottom-4 left-2 md:bottom-12 md:left-12 z-20 pointer-events-none">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
-                className="bg-white/90 backdrop-blur-xl rounded-[1.5rem] md:rounded-[2rem] p-4 md:p-8 shadow-2xl border border-white/50"
+                className="bg-white/90 backdrop-blur-xl rounded-xl md:rounded-[2rem] p-3 sm:p-4 md:p-8 shadow-2xl border border-white/50"
               >
-                <p className="text-bhutan-dark/40 text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-1 md:mb-2 text-center">Price</p>
-                <p className="text-3xl md:text-5xl font-serif font-bold text-bhutan-red text-center">
+                <p className="text-bhutan-dark/40 text-[8px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-0.5 md:mb-2 text-center">Price</p>
+                <p className="text-xl sm:text-2xl md:text-5xl font-serif font-bold text-bhutan-red text-center">
                   {formatPrice(displayProperty.price)}
                 </p>
               </motion.div>
@@ -255,7 +256,7 @@ export default function PropertyDetailPage() {
 
             {/* Sold Badge Overlay */}
             {displayProperty.isSold && (
-              <div className="absolute inset-0 bg-bhutan-dark/40 backdrop-blur-[2px] z-10 flex items-center justify-center p-4">
+              <div className="absolute inset-0 bg-bhutan-dark/40 backdrop-blur-[2px] z-10 flex items-center justify-center p-4 pointer-events-none">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -357,7 +358,13 @@ export default function PropertyDetailPage() {
                   <div className="h-px flex-1 bg-bhutan-gold/10" />
                 </div>
                 <div
-                  className="text-bhutan-dark/60 text-base md:text-xl leading-relaxed italic font-light prose prose-bhutan max-w-none prose-p:my-2 w-full overflow-hidden break-words [&_img]:max-w-full [&_iframe]:max-w-full [&_table]:max-w-full [&_*]:break-words"
+                  onClick={(e) => {
+                    const target = e.target as HTMLElement;
+                    if (target.tagName === 'IMG') {
+                        setDescriptionImageUrl((target as HTMLImageElement).src);
+                    }
+                  }}
+                  className="text-bhutan-dark/80 text-base md:text-lg leading-relaxed font-normal prose prose-bhutan max-w-none prose-p:my-4 w-full overflow-hidden break-words [&_img]:max-w-full [&_img]:cursor-pointer [&_img]:rounded-xl [&_iframe]:max-w-full [&_table]:max-w-full [&_*]:break-words"
                   dangerouslySetInnerHTML={{ __html: displayProperty.description }}
                 />
               </div>
@@ -544,7 +551,7 @@ export default function PropertyDetailPage() {
       </div>
       {/* Lightbox / Fullscreen Image Viewer */}
       <AnimatePresence>
-        {selectedImage !== null && (
+        {(selectedImage !== null || descriptionImageUrl !== null) && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -552,30 +559,35 @@ export default function PropertyDetailPage() {
             className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center p-4 md:p-8"
           >
             <button
-              onClick={() => setSelectedImage(null)}
+              onClick={() => {
+                setSelectedImage(null);
+                setDescriptionImageUrl(null);
+              }}
               className="absolute top-6 right-6 z-[110] w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
             <div className="relative w-full max-w-6xl aspect-video md:aspect-[21/9] lg:aspect-auto lg:h-[80vh] flex items-center justify-center">
               <img
-                src={displayProperty.images[selectedImage]}
+                src={selectedImage !== null ? displayProperty.images[selectedImage] : descriptionImageUrl!}
                 alt={displayProperty.title}
                 className="max-w-full max-h-full object-contain rounded-lg"
               />
             </div>
             {/* Thumbnails */}
-            <div className="absolute bottom-6 left-0 right-0 max-w-3xl mx-auto px-4 w-full flex items-center justify-center gap-2 overflow-x-auto pb-4 custom-scrollbar">
-              {displayProperty.images.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedImage(idx)}
-                  className={`relative w-20 h-16 md:w-24 md:h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${selectedImage === idx ? "border-bhutan-gold scale-105" : "border-transparent opacity-50 hover:opacity-100"}`}
-                >
-                  <img src={img} alt="" className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
+            {selectedImage !== null && (
+              <div className="absolute bottom-6 left-0 right-0 max-w-3xl mx-auto px-4 w-full flex items-center justify-center gap-2 overflow-x-auto pb-4 custom-scrollbar">
+                {displayProperty.images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setSelectedImage(idx)}
+                    className={`relative w-20 h-16 md:w-24 md:h-20 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all ${selectedImage === idx ? "border-bhutan-gold scale-105" : "border-transparent opacity-50 hover:opacity-100"}`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
