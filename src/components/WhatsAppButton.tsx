@@ -2,9 +2,24 @@
 
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function WhatsAppButton() {
-    const whatsappUrl = "https://wa.me/message/PKJFHGFCVTYPH1";
+    const pathname = usePathname();
+    
+    // Construct pre-filled message if on a property page
+    let whatsappUrl = "https://wa.me/message/PKJFHGFCVTYPH1";
+    if (pathname?.startsWith("/properties/")) {
+        const text = encodeURIComponent(`Hi, I'm inquiring about this property: ${typeof window !== "undefined" ? window.location.href : ""}`);
+        whatsappUrl += `?text=${text}`;
+    } else {
+        // Default message
+        const text = encodeURIComponent("Hi, I'm interested in Phojaa Real Estate services.");
+        whatsappUrl += `?text=${text}`;
+    }
+
+    // Hide WhatsApp button on admin dashboard
+    if (pathname?.startsWith("/admin")) return null;
 
     return (
         <motion.a

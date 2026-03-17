@@ -33,6 +33,7 @@ const sidebarItems = [
     { name: "Add Property", href: "/admin/properties/new", icon: Plus },
     { name: "Messages", href: "/admin/inquiries", icon: MessageSquare, badgeKey: "unread" },
     { name: "Reviews", href: "/admin/reviews", icon: Star },
+    { name: "Live Chats", href: "/admin/chats", icon: MessageSquare },
     { name: "Blogs", href: "/admin/blogs", icon: Newspaper },
     { name: "Team", href: "/admin/team", icon: Users },
     { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },

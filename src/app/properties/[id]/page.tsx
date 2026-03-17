@@ -29,6 +29,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Property } from "@/types";
 import { formatPrice, formatDate } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
+import ChatWidget from "@/components/ChatWidget";
 
 // Swiper imports
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -382,6 +383,34 @@ export default function PropertyDetailPage() {
                 />
               </div>
 
+              {/* Inline Live Chat CTA */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.98 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="bg-bhutan-red text-white p-8 md:p-10 rounded-[2rem] shadow-luxury flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+                <div className="absolute bottom-0 left-0 w-40 h-40 bg-black/10 rounded-full blur-2xl -ml-10 -mb-10 pointer-events-none" />
+                
+                <div className="relative z-10 flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex flex-shrink-0 items-center justify-center border border-white/20">
+                    <MessageSquare className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl md:text-2xl font-bold font-serif mb-1">Have questions about this property?</h3>
+                    <p className="text-white/80 text-sm md:text-base font-medium">Chat directly with our team to get instant answers.</p>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent("open-chat"))}
+                  className="relative z-10 bg-white text-bhutan-red hover:bg-[#F9F7F2] px-8 py-4 rounded-xl font-bold whitespace-nowrap shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl w-full md:w-auto text-base hover:text-bhutan-dark"
+                >
+                  Start Live Chat
+                </button>
+              </motion.div>
+
               {/* Features List */}
               <div className="space-y-8">
                 <div className="flex items-center gap-6">
@@ -453,7 +482,9 @@ export default function PropertyDetailPage() {
 
                 <div className="mt-6 pt-6 border-t border-bhutan-gold/10 space-y-3">
                   <a
-                    href="https://wa.me/message/PKJFHGFCVTYPH1"
+                    href={`https://wa.me/message/PKJFHGFCVTYPH1?text=${encodeURIComponent(
+                      `Hi, I'm interested in: ${displayProperty.title}. \n\nLink: ${typeof window !== "undefined" ? window.location.href : ""}`
+                    )}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-3 w-full py-3.5 bg-[#25D366] text-white rounded-xl text-[10px] font-bold uppercase tracking-widest hover:shadow-lg transition-all transform hover:-translate-y-0.5"
@@ -604,6 +635,11 @@ export default function PropertyDetailPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Chat Widget Integration */}
+      {property && (
+        <ChatWidget propertyId={property._id} propertyTitle={property.title} />
+      )}
     </div>
   );
 }
