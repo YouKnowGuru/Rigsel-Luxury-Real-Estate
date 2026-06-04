@@ -122,8 +122,8 @@ async function loadLiveData(): Promise<LiveDataCache> {
 
   liveDataCache = {
     expiresAt: now + CACHE_TTL_MS,
-    settings: (settingsDoc?.value as Record<string, string>) ?? {},
-    properties: properties as ListingRecord[],
+    settings: ((settingsDoc as any)?.value as Record<string, string>) ?? {},
+    properties: properties as unknown as ListingRecord[],
     propertyTypes: propertyTypes.map((t) => ({
       name: t.name,
       slug: t.slug,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -48,6 +48,14 @@ const filterOptions: { value: string; label: string; icon: typeof Globe }[] = [
 ];
 
 export default function Phojaa95SolutionsPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-16"><Loader2 className="w-8 h-8 animate-spin text-sky" /></div>}>
+      <Phojaa95SolutionsContent />
+    </Suspense>
+  );
+}
+
+function Phojaa95SolutionsContent() {
   const searchParams = useSearchParams();
   const [items, setItems] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
