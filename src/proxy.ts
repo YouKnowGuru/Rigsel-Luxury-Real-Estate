@@ -5,7 +5,7 @@ import { verifyToken } from "@/lib/jwt";
 // Protected routes that require authentication
 const protectedRoutes = ["/admin/dashboard", "/admin/properties", "/admin/inquiries", "/admin/settings"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   // Check if the route is protected
   const isProtectedRoute = protectedRoutes.some((route) =>
