@@ -81,10 +81,11 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
     return (
         <>
             {/* Mobile toggle */}
-            <div className="lg:hidden fixed top-4 left-4 z-[70]">
+            <div className="lg:hidden fixed top-3 left-3 z-[70]">
                 <button
                     onClick={() => setMobileOpen(!mobileOpen)}
                     className="w-10 h-10 bg-card/90 backdrop-blur-xl text-foreground rounded-[14px] flex items-center justify-center shadow-soft border border-ink-100/80"
+                    aria-label="Toggle menu"
                 >
                     {mobileOpen ? <X className="w-4 h-4" strokeWidth={2} /> : <Menu className="w-4 h-4" strokeWidth={2} />}
                 </button>
@@ -108,9 +109,9 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
                 animate={{ width: collapsed ? 72 : 256 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
-                    "fixed left-0 top-0 h-full bg-card z-[65] shadow-elevated border-r border-ink-100/60 flex flex-col overflow-hidden",
-                    !mobileOpen && "max-lg:-translate-x-full",
-                    "transition-transform lg:translate-x-0"
+                    "fixed left-0 top-0 h-full bg-card z-[65] shadow-elevated border-r border-ink-100/60 flex flex-col overflow-hidden w-[256px] lg:w-auto",
+                    !mobileOpen && "-translate-x-full lg:translate-x-0",
+                    "transition-transform duration-300"
                 )}
             >
                 {/* Header */}

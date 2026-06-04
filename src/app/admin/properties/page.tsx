@@ -202,9 +202,9 @@ if (isLoading) {
             <div className="w-14 h-14 bg-card rounded-full flex items-center justify-center mx-auto mb-3">
               <Building2 className="w-6 h-6 text-ink-300" strokeWidth={1.5} />
             </div>
-            <p className="text-ink-400 text-xs sm:text-sm md:text-sm font-medium">
+            <p className="text-ink-400 text-xs sm:text-sm font-medium">
               No properties found
-              <br /><span className="hidden md:inline text-[11px] sm:text-[13px] sm:text-[13px]">Try adjusting your filters</span>
+              <br /><span className="hidden md:inline text-[11px] sm:text-[13px]">Try adjusting your filters</span>
             </p>
           </div>
         )}
@@ -217,21 +217,21 @@ if (isLoading) {
             transition={{ delay: 0.05 * idx }}
             className="bg-card rounded-2xl border border-ink-100/60 shadow-soft overflow-hidden hover:shadow-elevated transition-all duration-300 group"
           >
-            <div className="flex flex-col sm:flex-row lg:flex-row">
+            <div className="flex flex-col sm:flex-row">
               {/* Image */}
-              <div className="w-full sm:w-40 lg:w-44 h-32 sm:h-36 lg:h-auto shrink-0 overflow-hidden relative">
+              <div className="w-full sm:w-40 lg:w-44 h-40 sm:h-36 shrink-0 overflow-hidden relative">
                 <img
                   src={property.images?.[0] || "/placeholder.jpg"}
                   alt={property.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 {property.isSold && (
-                  <div className="absolute top-2.5 left-2.5 px-2.5 py-1 bg-ink-900 text-white text-[11px] sm:text-[13px] sm:text-[12px] font-semibold uppercase tracking-wider rounded-md shadow-soft">
+                  <div className="absolute top-2.5 left-2.5 px-2.5 py-1 bg-ink-900 text-white text-[11px] sm:text-[12px] font-semibold uppercase tracking-wider rounded-md shadow-soft">
                     Sold
                   </div>
                 )}
                 {property.featured && !property.isSold && (
-                  <div className="absolute top-2.5 left-2.5 px-2.5 py-1 bg-sky text-white text-[11px] sm:text-[13px] sm:text-[12px] font-semibold uppercase tracking-wider rounded-md shadow-soft">
+                  <div className="absolute top-2.5 left-2.5 px-2.5 py-1 bg-sky text-white text-[11px] sm:text-[12px] font-semibold uppercase tracking-wider rounded-md shadow-soft">
                     Featured
                   </div>
                 )}
@@ -255,14 +255,14 @@ if (isLoading) {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                    <span className="text-[11px] sm:text-[13px] sm:text-[13px] text-ink-500 font-medium bg-fog-light px-2 py-1 rounded-md">
+                    <span className="text-[11px] sm:text-[13px] text-ink-500 font-medium bg-fog-light px-2 py-1 rounded-md">
                       {getTypeName(property.propertyType)}
                     </span>
-                    <span className="text-[11px] sm:text-[13px] sm:text-[13px] text-ink-500 font-medium bg-fog-light px-2 py-1 rounded-md">
+                    <span className="text-[11px] sm:text-[13px] text-ink-500 font-medium bg-fog-light px-2 py-1 rounded-md">
                       {property.area} {getAreaLabel(property.propertyType)}
                     </span>
                     {property.loanAvailable && (
-                      <span className="text-[11px] sm:text-[13px] sm:text-[13px] text-sky font-medium bg-sky/10 px-2 py-1 rounded-md border border-sky/20">
+                      <span className="text-[11px] sm:text-[13px] text-sky font-medium bg-sky/10 px-2 py-1 rounded-md border border-sky/20">
                         Loan Available
                       </span>
                     )}

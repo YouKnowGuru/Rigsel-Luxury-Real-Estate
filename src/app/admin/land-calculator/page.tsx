@@ -73,12 +73,12 @@ export default function LandCalculatorPage() {
     const exampleSqm = exampleDecimal * settings.decimalToSqm;
 
     return (
-        <div className="max-w-[900px] mx-auto space-y-8">
+        <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-[900px] mx-auto space-y-6 sm:space-y-8">
             {/* Header */}
             <header>
                 <p className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em] mb-1">Configuration</p>
-                <h1 className="text-[28px] font-semibold text-foreground tracking-tight">Land Calculator Settings</h1>
-                <p className="text-base text-ink-600 mt-1">
+                <h1 className="text-[22px] sm:text-[26px] md:text-[28px] font-semibold text-foreground tracking-tight">Land Calculator Settings</h1>
+                <p className="text-sm sm:text-base text-ink-600 mt-1">
                     These values control how the public-facing land calculator works on your website.
                 </p>
             </header>
@@ -164,7 +164,7 @@ export default function LandCalculatorPage() {
 
                 {/* Live Preview */}
                 <div className="lg:col-span-2">
-                    <div className="bg-ink-800 rounded-[20px] p-6 border border-ink-700 shadow-soft sticky top-24">
+                    <div className="bg-ink-800 rounded-[20px] p-4 sm:p-6 border border-ink-700 shadow-soft lg:sticky lg:top-24">
                         <h3 className="font-semibold text-white text-base mb-5 flex items-center gap-2">
                             <Calculator className="w-4 h-4 text-sky" strokeWidth={1.5} /> Live Preview
                         </h3>

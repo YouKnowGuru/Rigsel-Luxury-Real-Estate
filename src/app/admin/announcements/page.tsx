@@ -360,7 +360,7 @@ export default function AnnouncementsManagement() {
                                             <Calendar className="w-3 h-3 shrink-0" strokeWidth={1.5} />
                                             <span className="truncate">{new Date(announcement.publishedAt).toLocaleDateString()}</span>
                                         </span>
-                                        <span className="hidden xs:inline shrink-0">&bull;</span>
+                                        <span className="hidden sm:inline shrink-0">&bull;</span>
                                         <span className="truncate">{announcement.author}</span>
                                     </div>
                                     <div className="flex items-center gap-1 text-ink-400 shrink-0">

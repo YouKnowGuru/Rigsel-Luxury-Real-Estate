@@ -137,62 +137,62 @@ export default function InquiryDetailPage() {
     if (!inquiry) return <div className="p-20 text-center text-sky font-semibold">Inquiry not found</div>;
 
     return (
-        <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 min-h-screen pb-32">
+        <div className="p-3 sm:p-4 md:p-8 max-w-5xl mx-auto space-y-6 sm:space-y-8 min-h-screen pb-20 sm:pb-32">
             {/* Navigation & Actions */}
             <div className="flex items-center justify-between">
                 <Link
                     href="/admin/inquiries"
-                    className="group flex items-center gap-3 text-ink-400 hover:text-sky transition-all duration-300"
+                    className="group flex items-center gap-2 sm:gap-3 text-ink-400 hover:text-sky transition-all duration-300"
                 >
-                    <div className="w-10 h-10 rounded-[14px] bg-card border border-ink-100/60 flex items-center justify-center group-hover:bg-sky group-hover:text-background transition-all shadow-soft">
-                        <ArrowLeft className="w-5 h-5" strokeWidth={1.5} />
+                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-[14px] bg-card border border-ink-100/60 flex items-center justify-center group-hover:bg-sky group-hover:text-background transition-all shadow-soft">
+                        <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.5} />
                     </div>
-                    <span className="font-semibold uppercase tracking-wider text-[11px] sm:text-[13px] sm:text-[12px]">Back to Inquiries</span>
+                    <span className="font-semibold uppercase tracking-wider text-[11px] sm:text-[12px]">Back to Inquiries</span>
                 </Link>
 
                 <Button
                     variant="ghost"
                     onClick={handleDelete}
-                    className="text-ink-300 hover:text-red-500 hover:bg-red-50 flex gap-2 rounded-[14px] transition-all"
+                    className="text-ink-300 hover:text-red-500 hover:bg-red-50 flex gap-2 rounded-[14px] transition-all h-9 sm:h-10"
                 >
                     <Trash2 className="w-4 h-4" strokeWidth={1.5} />
-                    <span className="font-semibold uppercase tracking-wider text-[11px] sm:text-[13px] sm:text-[12px]">Delete Record</span>
+                    <span className="font-semibold uppercase tracking-wider text-[11px] sm:text-[12px]">Delete</span>
                 </Button>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10">
                 {/* Main Message Content */}
-                <div className="lg:col-span-8 space-y-8">
+                <div className="lg:col-span-8 space-y-6 sm:space-y-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-card rounded-[20px] p-8 md:p-12 shadow-soft border border-ink-100/60 relative overflow-hidden"
+                        className="bg-card rounded-[20px] p-5 sm:p-8 md:p-12 shadow-soft border border-ink-100/60 relative overflow-hidden"
                     >
-                        <div className="relative z-10 space-y-6">
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="w-14 h-14 bg-sky/10 rounded-2xl flex items-center justify-center text-sky font-semibold text-2xl">
+                        <div className="relative z-10 space-y-4 sm:space-y-6">
+                            <div className="flex items-center gap-3 sm:gap-4 mb-4">
+                                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-sky/10 rounded-2xl flex items-center justify-center text-sky font-semibold text-xl sm:text-2xl">
                                     {inquiry.name.charAt(0)}
                                 </div>
-                                <div>
-                                    <h2 className="text-2xl md:text-3xl font-semibold text-foreground tracking-tight">{inquiry.name}</h2>
-                                    <p className="text-ink-400 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px] sm:text-[12px]">{inquiry.subject}</p>
+                                <div className="min-w-0">
+                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground tracking-tight truncate">{inquiry.name}</h2>
+                                    <p className="text-ink-400 font-semibold uppercase tracking-wider text-[11px] sm:text-[12px]">{inquiry.subject}</p>
                                 </div>
                             </div>
 
-                            <div className="bg-card rounded-2xl p-8 border border-ink-100/40 min-h-[200px]">
-                                <p className="text-ink-700 text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
+                            <div className="bg-card rounded-2xl p-4 sm:p-8 border border-ink-100/40 min-h-[150px] sm:min-h-[200px]">
+                                <p className="text-ink-700 text-base sm:text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
                                     {inquiry.message}
                                 </p>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-ink-100/40">
+                            <div className="flex flex-wrap items-center gap-4 sm:gap-6 pt-4 sm:pt-6 border-t border-ink-100/40">
                                 <div className="flex items-center gap-2 text-ink-400">
                                     <Calendar className="w-4 h-4 text-ink-400" strokeWidth={1.5} />
-                                    <span className="text-[11px] sm:text-[13px] sm:text-[13px] font-semibold uppercase tracking-wider">{format(new Date(inquiry.createdAt), "MMMM d, yyyy")}</span>
+                                    <span className="text-[11px] sm:text-[13px] font-semibold uppercase tracking-wider">{format(new Date(inquiry.createdAt), "MMMM d, yyyy")}</span>
                                 </div>
                                 <div className="flex items-center gap-2 text-ink-400">
                                     <Clock className="w-4 h-4 text-ink-400" strokeWidth={1.5} />
-                                    <span className="text-[11px] sm:text-[13px] sm:text-[13px] font-semibold uppercase tracking-wider">{format(new Date(inquiry.createdAt), "h:mm a")}</span>
+                                    <span className="text-[11px] sm:text-[13px] font-semibold uppercase tracking-wider">{format(new Date(inquiry.createdAt), "h:mm a")}</span>
                                 </div>
                             </div>
                         </div>
@@ -203,28 +203,28 @@ export default function InquiryDetailPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="bg-card rounded-[20px] p-8 md:p-10 shadow-elevated border border-ink-100/60 relative overflow-hidden"
+                        className="bg-card rounded-[20px] p-5 sm:p-8 md:p-10 shadow-elevated border border-ink-100/60 relative overflow-hidden"
                     >
-                        <div className="relative z-10 space-y-6">
+                        <div className="relative z-10 space-y-4 sm:space-y-6">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="w-10 h-10 bg-sky rounded-[14px] flex items-center justify-center">
-                                    <Send className="w-5 h-5 text-background" strokeWidth={1.5} />
+                                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-sky rounded-[14px] flex items-center justify-center">
+                                    <Send className="w-4 h-4 sm:w-5 sm:h-5 text-background" strokeWidth={1.5} />
                                 </div>
-                                <h3 className="text-xl font-semibold text-foreground">Draft a Reply</h3>
+                                <h3 className="text-lg sm:text-xl font-semibold text-foreground">Draft a Reply</h3>
                             </div>
 
-                            <form onSubmit={handleReply} className="space-y-6">
+                            <form onSubmit={handleReply} className="space-y-4 sm:space-y-6">
                                 <Textarea
                                     placeholder="Type your personal response here..."
                                     value={replyMessage}
                                     onChange={(e) => setReplyMessage(e.target.value)}
-                                    className="min-h-[180px] bg-card border-ink-200 text-foreground placeholder:text-ink-400 rounded-2xl p-6 text-base focus:ring-[3px] focus:ring-sky/15 focus:border-sky resize-none"
+                                    className="min-h-[140px] sm:min-h-[180px] bg-card border-ink-200 text-foreground placeholder:text-ink-400 rounded-2xl p-4 sm:p-6 text-sm sm:text-base focus:ring-[3px] focus:ring-sky/15 focus:border-sky resize-none"
                                     required
                                 />
                                 <button
                                     type="submit"
                                     disabled={isReplying || !replyMessage.trim()}
-                                    className="w-full h-14 bg-sky hover:bg-sky-600 text-background transition-all duration-300 rounded-[14px] font-semibold uppercase tracking-wider text-xs flex items-center justify-center gap-3 shadow-soft disabled:opacity-50"
+                                    className="w-full h-12 sm:h-14 bg-sky hover:bg-sky-600 text-background transition-all duration-300 rounded-[14px] font-semibold uppercase tracking-wider text-xs flex items-center justify-center gap-3 shadow-soft disabled:opacity-50"
                                 >
                                     {isReplying ? (
                                         "Sending Mail..."
@@ -241,31 +241,31 @@ export default function InquiryDetailPage() {
                 </div>
 
                 {/* Sidebar Info */}
-                <div className="lg:col-span-4 space-y-6">
+                <div className="lg:col-span-4 space-y-4 sm:space-y-6">
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="bg-card rounded-[20px] p-8 shadow-soft border border-ink-100/60 space-y-8"
+                        className="bg-card rounded-[20px] p-5 sm:p-8 shadow-soft border border-ink-100/60 space-y-6 sm:space-y-8"
                     >
                         <div>
-                            <h4 className="text-[11px] sm:text-[13px] sm:text-[13px] font-semibold text-ink-400 uppercase tracking-wider mb-6">Contact Details</h4>
-                            <div className="space-y-6">
-                                <a href={`mailto:${inquiry.email}`} className="flex items-start gap-4 group">
-                                    <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-ink-400 group-hover:bg-sky group-hover:text-background transition-all shadow-sm">
+                            <h4 className="text-[11px] sm:text-[13px] font-semibold text-ink-400 uppercase tracking-wider mb-4 sm:mb-6">Contact Details</h4>
+                            <div className="space-y-4 sm:space-y-6">
+                                <a href={`mailto:${inquiry.email}`} className="flex items-start gap-3 sm:gap-4 group">
+                                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-muted flex items-center justify-center text-ink-400 group-hover:bg-sky group-hover:text-background transition-all shadow-sm">
                                         <Mail className="w-4 h-4" strokeWidth={1.5} />
                                     </div>
-                                    <div>
-                                        <p className="text-[11px] sm:text-[13px] sm:text-[12px] font-semibold text-ink-400 uppercase tracking-wider mb-1">Email Address</p>
+                                    <div className="min-w-0">
+                                        <p className="text-[11px] sm:text-[12px] font-semibold text-ink-400 uppercase tracking-wider mb-1">Email Address</p>
                                         <p className="text-sm font-semibold text-foreground break-all group-hover:text-sky transition-colors">{inquiry.email}</p>
                                     </div>
                                 </a>
 
-                                <a href={`tel:${inquiry.phone}`} className="flex items-start gap-4 group">
-                                    <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-ink-400 group-hover:bg-sky group-hover:text-background transition-all shadow-sm">
+                                <a href={`tel:${inquiry.phone}`} className="flex items-start gap-3 sm:gap-4 group">
+                                    <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-muted flex items-center justify-center text-ink-400 group-hover:bg-sky group-hover:text-background transition-all shadow-sm">
                                         <Phone className="w-4 h-4" strokeWidth={1.5} />
                                     </div>
-                                    <div>
-                                        <p className="text-[11px] sm:text-[13px] sm:text-[12px] font-semibold text-ink-400 uppercase tracking-wider mb-1">Phone Number</p>
+                                    <div className="min-w-0">
+                                        <p className="text-[11px] sm:text-[12px] font-semibold text-ink-400 uppercase tracking-wider mb-1">Phone Number</p>
                                         <p className="text-sm font-semibold text-foreground group-hover:text-sky transition-colors">{inquiry.phone}</p>
                                     </div>
                                 </a>
@@ -273,25 +273,25 @@ export default function InquiryDetailPage() {
                         </div>
 
                         {inquiry.propertyId && (
-                            <div className="pt-8 border-t border-ink-100/40">
-                                <h4 className="text-[11px] sm:text-[13px] sm:text-[13px] font-semibold text-ink-400 uppercase tracking-wider mb-6">Related Property</h4>
+                            <div className="pt-6 sm:pt-8 border-t border-ink-100/40">
+                                <h4 className="text-[11px] sm:text-[13px] font-semibold text-ink-400 uppercase tracking-wider mb-4 sm:mb-6">Related Property</h4>
                                 <Link
                                     href={`/properties/${inquiry.propertyId.slug}`}
-                                    className="block p-4 rounded-2xl bg-muted border border-ink-100/60 hover:border-sky/30 transition-all group"
+                                    className="block p-3 sm:p-4 rounded-2xl bg-muted border border-ink-100/60 hover:border-sky/30 transition-all group"
                                 >
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-16 h-16 rounded-2xl overflow-hidden bg-card shrink-0 shadow-sm">
+                                    <div className="flex items-center gap-3 sm:gap-4">
+                                        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl overflow-hidden bg-card shrink-0 shadow-sm">
                                             {inquiry.propertyId.images?.[0] ? (
                                                 <img src={inquiry.propertyId.images[0]} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center text-ink-300">
-                                                    <Building2 className="w-6 h-6" strokeWidth={1.5} />
+                                                    <Building2 className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />
                                                 </div>
                                             )}
                                         </div>
                                         <div className="min-w-0">
                                             <p className="text-xs font-semibold text-foreground truncate leading-tight mb-1">{inquiry.propertyId.title}</p>
-                                            <p className="text-[11px] sm:text-[13px] sm:text-[12px] font-semibold text-sky uppercase tracking-wider flex items-center gap-1">
+                                            <p className="text-[11px] sm:text-[12px] font-semibold text-sky uppercase tracking-wider flex items-center gap-1">
                                                 <Globe className="w-3 h-3" strokeWidth={1.5} />
                                                 View Listing
                                             </p>
@@ -301,14 +301,14 @@ export default function InquiryDetailPage() {
                             </div>
                         )}
 
-                        <div className="pt-8 border-t border-ink-100/40 text-center">
+                        <div className="pt-6 sm:pt-8 border-t border-ink-100/40 text-center">
                             {inquiry.isRead ? (
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-600 text-[11px] sm:text-[13px] sm:text-[12px] font-semibold uppercase tracking-wider border border-emerald-500/20">
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-600 text-[11px] sm:text-[12px] font-semibold uppercase tracking-wider border border-emerald-500/20">
                                     <CheckCircle2 className="w-4 h-4" strokeWidth={1.5} />
                                     Response Complete
                                 </div>
                             ) : (
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-600 text-[11px] sm:text-[13px] sm:text-[12px] font-semibold uppercase tracking-wider border border-orange-500/20">
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-600 text-[11px] sm:text-[12px] font-semibold uppercase tracking-wider border border-orange-500/20">
                                     <Clock className="w-4 h-4" strokeWidth={1.5} />
                                     Pending Reply
                                 </div>

@@ -146,14 +146,14 @@ export default function PropertyTypesPage() {
     }
 
     return (
-        <div className="p-4 md:p-6 lg:p-8 max-w-4xl mx-auto">
-            <header className="mb-8 flex items-center justify-between">
+        <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-4xl mx-auto">
+            <header className="mb-6 sm:mb-8 flex items-center justify-between">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <div className="w-0.5 h-4 bg-sky rounded-full" />
                         <p className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em]">System Config</p>
                     </div>
-                    <h1 className="text-[28px] font-semibold text-foreground tracking-tight">Property Types</h1>
+                    <h1 className="text-[22px] sm:text-[26px] md:text-[28px] font-semibold text-foreground tracking-tight">Property Types</h1>
                 </div>
             </header>
 
@@ -167,14 +167,14 @@ export default function PropertyTypesPage() {
                     <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
                         <Plus className="w-4 h-4 text-emerald-500" strokeWidth={1.5} /> Add New Type
                     </h2>
-                    <form onSubmit={handleAdd} className="flex flex-col md:flex-row gap-4 items-end">
+                    <form onSubmit={handleAdd} className="flex flex-col md:flex-row gap-3 sm:gap-4 items-end">
                         <div className="flex-1 w-full text-left">
                             <label className="block text-[13px] font-medium text-ink-600 mb-1.5 ml-1">Type Name</label>
                             <Input
                                 value={newName}
                                 onChange={(e) => setNewName(e.target.value)}
                                 placeholder="e.g. Land, Apartment, Villa"
-                                className="h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
+                                className="h-10 sm:h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                             />
                         </div>
                         <div className="flex-1 w-full text-left">
@@ -183,10 +183,10 @@ export default function PropertyTypesPage() {
                                 value={newAreaLabel}
                                 onChange={(e) => setNewAreaLabel(e.target.value)}
                                 placeholder="Area (m²), Area (Decimals)"
-                                className="h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
+                                className="h-10 sm:h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                             />
                         </div>
-                        <div className="flex items-center gap-3 h-11 px-4 rounded-2xl border border-ink-200">
+                        <div className="flex items-center gap-3 h-10 sm:h-11 px-3 sm:px-4 rounded-2xl border border-ink-200">
                             <input
                                 type="checkbox"
                                 checked={newRequires}
@@ -199,7 +199,7 @@ export default function PropertyTypesPage() {
                         <button
                             type="submit"
                             disabled={isSaving || !newName.trim()}
-                            className="h-11 px-6 rounded-full bg-sky text-white font-medium text-sm hover:bg-sky-600 transition-all disabled:opacity-50"
+                            className="h-10 sm:h-11 px-4 sm:px-6 rounded-full bg-sky text-white font-medium text-sm hover:bg-sky-600 transition-all disabled:opacity-50"
                         >
                             {isSaving ? <Loader2 className="w-4 h-4 animate-spin border-sky/20 border-t-sky" strokeWidth={1.5} /> : "Add Type"}
                         </button>

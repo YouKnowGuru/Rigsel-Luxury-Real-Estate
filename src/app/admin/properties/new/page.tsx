@@ -197,12 +197,12 @@ export default function NewPropertyPage() {
   const labelCls = "block text-[13px] font-medium text-ink-600 mb-1.5";
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
+    <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
       {/* Header */}
-      <header className="mb-7 flex items-center gap-4">
+      <header className="mb-5 sm:mb-7 flex items-center gap-3 sm:gap-4">
         <button
           onClick={() => router.back()}
-          className="w-10 h-10 bg-card rounded-[14px] border border-ink-200 flex items-center justify-center text-ink-400 hover:text-sky hover:scale-105 transition-all shadow-soft"
+          className="w-9 h-9 sm:w-10 sm:h-10 bg-card rounded-[14px] border border-ink-200 flex items-center justify-center text-ink-400 hover:text-sky hover:scale-105 transition-all shadow-soft"
         >
           <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
         </button>
@@ -211,7 +211,7 @@ export default function NewPropertyPage() {
             <div className="w-0.5 h-4 bg-sky rounded-full" />
             <p className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em]">New Listing</p>
           </div>
-          <h1 className="text-[28px] font-semibold text-foreground tracking-tight">Add Property</h1>
+          <h1 className="text-[22px] sm:text-[26px] md:text-[28px] font-semibold text-foreground tracking-tight">Add Property</h1>
         </div>
       </header>
 
@@ -257,7 +257,7 @@ export default function NewPropertyPage() {
                     {districts.map((d) => <option key={d} value={d}>{d}</option>)}
                   </select>
                 </div>
-                <div className={`md:col-span-2 grid ${showBedBath ? 'grid-cols-3' : 'grid-cols-1'} gap-3`}>
+                <div className={`md:col-span-2 grid ${showBedBath ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-1'} gap-3`}>
                   {showBedBath && (
                     <>
                       <div>

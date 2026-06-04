@@ -150,22 +150,23 @@ export default function SettingsPage() {
     const labelCls = "block text-[13px] font-medium text-ink-600 mb-1.5";
 
     return (
-        <div className="p-4 md:p-6 lg:p-8 max-w-[1200px] mx-auto">
+        <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-[1200px] mx-auto">
             {/* Header */}
-            <header className="mb-7 flex items-center justify-between">
+            <header className="mb-5 sm:mb-7 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
                         <div className="w-0.5 h-4 bg-sky rounded-full" />
                         <p className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em]">Configuration</p>
                     </div>
-                    <h1 className="text-[28px] font-semibold text-foreground tracking-tight">Admin Settings</h1>
+                    <h1 className="text-[22px] sm:text-[26px] md:text-[28px] font-semibold text-foreground tracking-tight">Admin Settings</h1>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex gap-2 sm:gap-3">
                     <Link
                         href="/admin/settings/property-types"
-                        className="h-11 px-6 rounded-[14px] border border-ink-200 text-ink-700 font-medium text-sm flex items-center gap-2 hover:bg-ink-50 transition-all"
+                        className="h-9 sm:h-11 px-4 sm:px-6 rounded-[14px] border border-ink-200 text-ink-700 font-medium text-xs sm:text-sm flex items-center gap-2 hover:bg-ink-50 transition-all"
                     >
-                        <Home className="w-4 h-4" strokeWidth={1.5} /> Property Types
+                        <Home className="w-4 h-4" strokeWidth={1.5} /> <span className="hidden sm:inline">Property Types</span>
+                        <span className="sm:hidden">Types</span>
                     </Link>
                 </div>
             </header>
@@ -335,8 +336,8 @@ export default function SettingsPage() {
                 {/* Change Password */}
                 <div>
                     <form onSubmit={handleChangePassword}>
-                        <div className="bg-ink-800 dark:bg-card rounded-[20px] p-6 shadow-soft border border-ink-100/60">
-                            <h2 className="font-semibold text-white dark:text-foreground text-base mb-5 flex items-center gap-2">
+                        <div className="bg-card dark:bg-card rounded-[20px] p-4 sm:p-6 shadow-soft border border-ink-100/60">
+                            <h2 className="font-semibold text-foreground text-base mb-5 flex items-center gap-2">
                                 <Lock className="w-4 h-4 text-ink-400" strokeWidth={1.5} /> Change Password
                             </h2>
                             <div className="space-y-4">
@@ -345,17 +346,17 @@ export default function SettingsPage() {
                                     const keys = { current: "currentPassword", new: "newPassword", confirm: "confirmPassword" } as const;
                                     return (
                                         <div key={field}>
-                                            <label className="block text-[13px] font-medium text-white/70 mb-1.5">{labels[field]}</label>
+                                            <label className="block text-[13px] font-medium text-ink-500 mb-1.5">{labels[field]}</label>
                                             <div className="relative">
                                                 <Input
                                                     type={showPw[field] ? "text" : "password"}
                                                     value={pwForm[keys[field]]}
                                                     onChange={(e) => setPwForm({ ...pwForm, [keys[field]]: e.target.value })}
                                                     placeholder="••••••••"
-                                                    className="h-11 bg-white/10 border-white/10 text-white placeholder:text-white/20 rounded-2xl pr-10 text-sm focus:border-sky focus:ring-[3px] focus:ring-sky/15"
+                                                    className="h-11 bg-background dark:bg-ink-800 border-ink-200 dark:border-ink-700 text-foreground placeholder:text-ink-400 rounded-2xl pr-10 text-sm focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                                                 />
                                                 <button type="button" onClick={() => setShowPw({ ...showPw, [field]: !showPw[field] })}
-                                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white transition-colors">
+                                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-foreground transition-colors">
                                                     {showPw[field] ? <EyeOff className="w-4 h-4" strokeWidth={1.5} /> : <Eye className="w-4 h-4" strokeWidth={1.5} />}
                                                 </button>
                                             </div>

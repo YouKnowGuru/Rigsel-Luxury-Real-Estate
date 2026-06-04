@@ -115,7 +115,7 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
       )}
     >
       {/* Main Nav Bar */}
-      <div className="h-[60px] flex items-center px-4 md:px-6 gap-3">
+      <div className="h-[60px] flex items-center px-3 sm:px-4 md:px-6 gap-2 sm:gap-3">
         {/* Mobile spacer for hamburger */}
         <div className="w-10 lg:hidden shrink-0" />
 
@@ -141,7 +141,7 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
         </nav>
 
         {/* Search */}
-        <div ref={searchRef} className="flex-1 max-w-md relative">
+        <div ref={searchRef} className="flex-1 max-w-md relative min-w-0">
           <form onSubmit={handleSearch}>
             <div className="relative group">
               <Search
@@ -153,7 +153,7 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setShowSearch(true)}
-                placeholder="Search properties..."
+                placeholder="Search..."
                 className="w-full h-9 pl-9 pr-4 rounded-xl bg-ink-50/60 dark:bg-ink-800/30 border border-transparent focus:border-sky/25 focus:bg-background focus:outline-none text-[13px] text-foreground placeholder:text-ink-400 transition-all duration-200"
               />
               <kbd className="hidden md:inline-flex absolute right-2.5 top-1/2 -translate-y-1/2 h-5 px-1.5 items-center rounded text-[10px] font-medium text-ink-400 bg-ink-100/60 border border-ink-200/40">
@@ -194,12 +194,12 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
         <div className="flex-1 hidden md:block" />
 
         {/* Right actions */}
-        <div className="flex items-center gap-1.5 sm:gap-2">
+        <div className="flex items-center gap-1 sm:gap-1.5 md:gap-2">
           {/* View Site */}
           <Link
             href="/"
             target="_blank"
-            className="hidden sm:flex items-center gap-2 h-9 px-3 rounded-xl bg-ink-50/60 dark:bg-ink-800/30 border border-transparent hover:border-ink-200/80 text-ink-500 hover:text-foreground transition-all text-[13px] font-medium"
+            className="hidden sm:flex items-center gap-1.5 md:gap-2 h-9 px-2 md:px-3 rounded-xl bg-ink-50/60 dark:bg-ink-800/30 border border-transparent hover:border-ink-200/80 text-ink-500 hover:text-foreground transition-all text-[13px] font-medium"
           >
             <Home className="w-4 h-4" strokeWidth={1.5} />
             <span className="hidden lg:inline">View Site</span>

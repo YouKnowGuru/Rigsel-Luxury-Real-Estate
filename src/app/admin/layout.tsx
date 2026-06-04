@@ -49,7 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
         <div className="min-h-screen bg-fog-light dark:bg-card flex font-sans antialiased">
             <AdminSidebar unreadCount={unreadCount} />
-            <div className="flex-1 flex flex-col min-h-screen lg:ml-64 transition-all duration-300 ease-apple">
+            <div className="flex-1 flex flex-col min-h-screen ml-0 lg:ml-64 transition-all duration-300 ease-apple">
                 <AdminTopNav unreadCount={unreadCount} recentInquiries={recentInquiries} />
                 <main className="flex-1 overflow-auto min-h-0">
                     {children}

@@ -133,9 +133,9 @@ export default function AdminChatsPage() {
       </div>
 
       {/* Chat Grid */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-3 sm:gap-4 lg:gap-5 min-h-0">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[320px_1fr] gap-3 sm:gap-4 lg:gap-5 min-h-0">
         {/* Sidebar: Chat List */}
-        <div className="bg-card rounded-2xl sm:rounded-[20px] border border-ink-100/60 shadow-soft flex flex-col overflow-hidden">
+        <div className={`bg-card rounded-2xl sm:rounded-[20px] border border-ink-100/60 shadow-soft flex flex-col overflow-hidden ${activeChatId ? 'hidden lg:flex' : 'flex'}`}>
           <div className="p-3 sm:p-4 border-b border-ink-100/60">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400" strokeWidth={1.5} />
@@ -193,7 +193,7 @@ export default function AdminChatsPage() {
         </div>
 
         {/* Main Chat Area */}
-        <div className="bg-card rounded-2xl sm:rounded-[20px] border border-ink-100/60 shadow-soft flex flex-col overflow-hidden min-h-0">
+        <div className={`bg-card rounded-2xl sm:rounded-[20px] border border-ink-100/60 shadow-soft flex flex-col overflow-hidden min-h-0 ${activeChatId ? 'flex' : 'hidden lg:flex'}`}>
           {activeChat ? (
             <>
               {/* Chat Header */}
@@ -232,6 +232,13 @@ export default function AdminChatsPage() {
                   >
                     <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.5} />
                   </Button>
+                  <button
+                    onClick={() => setActiveChatId(null)}
+                    className="lg:hidden h-8 w-8 rounded-lg bg-ink-50 flex items-center justify-center text-ink-500"
+                    title="Back to chats"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                  </button>
                 </div>
               </div>
 

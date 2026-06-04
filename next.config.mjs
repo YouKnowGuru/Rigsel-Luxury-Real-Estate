@@ -97,6 +97,14 @@ const nextConfig = {
           },
         ],
       },
+      // Cache-busting headers for Next.js static assets
+      // These files have content hashes in filenames, so they can be cached forever
+      {
+        source: "/_next/static/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
       // CORS headers for public API routes only (NOT admin routes)
       {
         source: "/api/(properties|blogs|contact|reviews|chats|gallery|download)(/.*)?",

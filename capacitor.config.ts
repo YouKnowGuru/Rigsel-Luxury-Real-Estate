@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.phojaarealestate.app',
-  appName: 'Phojaa Real Estate',
+  appName: 'Phojaa95 Real Estate',
   webDir: 'public',
   server: {
     url: 'http://phojaarealestate.com',

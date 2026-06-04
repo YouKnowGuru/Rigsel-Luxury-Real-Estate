@@ -91,7 +91,7 @@ function StatCard({
           {change}
         </div>
       </div>
-      <p className="text-[32px] font-semibold text-foreground tracking-tight mb-0.5">
+      <p className="text-[24px] sm:text-[28px] md:text-[32px] font-semibold text-foreground tracking-tight mb-0.5">
         {animated.toLocaleString()}
       </p>
       <p className="text-[13px] text-ink-400 font-medium">{name}</p>
@@ -103,7 +103,7 @@ function CustomTooltip({ active, payload, label }: any) {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white/95 dark:bg-card/95 backdrop-blur-xl border border-ink-100/80 rounded-[16px] p-3 shadow-lifted">
-        <p className="text-[11px] sm:text-[13px] sm:text-[13px] text-ink-400 font-semibold uppercase tracking-wider mb-2">{label}</p>
+        <p className="text-[11px] sm:text-[13px] text-ink-400 font-semibold uppercase tracking-wider mb-2">{label}</p>
         {payload.map((entry: any) => (
           <div key={entry.name} className="flex items-center gap-2 text-[13px]">
             <span className="w-2 h-2 rounded-full" style={{ background: entry.color }} />
@@ -339,7 +339,7 @@ export default function AdminDashboard() {
                     </div>
                     <p className="text-[13px] text-ink-400 truncate">&ldquo;{inquiry.message}&rdquo;</p>
                   </div>
-                  <span className="text-[11px] sm:text-[13px] sm:text-[13px] text-ink-300 font-medium uppercase tracking-wider shrink-0">
+                  <span className="text-[11px] sm:text-[13px] text-ink-300 font-medium uppercase tracking-wider shrink-0">
                     {formatDate(inquiry.createdAt)}
                   </span>
                 </motion.div>
@@ -387,7 +387,7 @@ export default function AdminDashboard() {
                       </p>
                     </div>
                     {property.featured && (
-                      <span className="px-2 py-0.5 bg-sky/[0.08] text-sky text-[11px] sm:text-[13px] sm:text-[12px] font-bold rounded-full uppercase tracking-wider shrink-0">
+                      <span className="px-2 py-0.5 bg-sky/[0.08] text-sky text-[11px] sm:text-[12px] font-bold rounded-full uppercase tracking-wider shrink-0">
                         Featured
                       </span>
                     )}
