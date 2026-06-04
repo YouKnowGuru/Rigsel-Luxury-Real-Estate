@@ -1,0 +1,176 @@
+[
+  {
+    "path": "/api/settings",
+    "status": 200,
+    "ms": 15831,
+    "bytes": 570
+  },
+  {
+    "path": "/api/properties?featured=true&limit=3",
+    "status": 200,
+    "ms": 1796,
+    "bytes": 5702
+  },
+  {
+    "path": "/api/property-types",
+    "status": 200,
+    "ms": 1056,
+    "bytes": 1934
+  },
+  {
+    "path": "/api/team",
+    "status": 200,
+    "ms": 423,
+    "bytes": 4104
+  },
+  {
+    "path": "/api/reviews",
+    "status": 200,
+    "ms": 1167,
+    "bytes": 26
+  },
+  {
+    "path": "/api/blogs?published=true",
+    "status": 200,
+    "ms": 1449,
+    "bytes": 5630
+  },
+  {
+    "path": "/api/gallery",
+    "status": 200,
+    "ms": 675,
+    "bytes": 26
+  },
+  {
+    "path": "/api/documents",
+    "status": 200,
+    "ms": 1272,
+    "bytes": 5277118
+  },
+  {
+    "path": "/",
+    "status": 200,
+    "ms": 17946,
+    "bytes": 90547
+  },
+  {
+    "path": "/properties",
+    "status": 200,
+    "ms": 4637,
+    "bytes": 45611
+  },
+  {
+    "path": "/about",
+    "status": 200,
+    "ms": 2382,
+    "bytes": 49203
+  },
+  {
+    "path": "/contact",
+    "status": 200,
+    "ms": 1770,
+    "bytes": 45237
+  },
+  {
+    "path": "/blog",
+    "status": 200,
+    "ms": 1951,
+    "bytes": 38870
+  },
+  {
+    "path": "/gallery",
+    "status": 200,
+    "ms": 1760,
+    "bytes": 39957
+  },
+  {
+    "path": "/downloads",
+    "status": 200,
+    "ms": 1418,
+    "bytes": 39550
+  },
+  {
+    "path": "/land-calculator",
+    "status": 200,
+    "ms": 1358,
+    "bytes": 44486
+  },
+  {
+    "path": "/terms",
+    "status": 200,
+    "ms": 1916,
+    "bytes": 45327
+  },
+  {
+    "path": "/admin",
+    "status": 200,
+    "ms": 3834,
+    "bytes": 33847
+  },
+  {
+    "path": "/admin/dashboard",
+    "status": 307,
+    "ms": 41,
+    "bytes": 6
+  },
+  {
+    "path": "/admin/properties",
+    "status": 307,
+    "ms": 21,
+    "bytes": 6
+  },
+  {
+    "path": "/admin/blogs",
+    "status": 200,
+    "ms": 2224,
+    "bytes": 28713
+  },
+  {
+    "path": "/admin/team",
+    "status": 200,
+    "ms": 2192,
+    "bytes": 29641
+  },
+  {
+    "path": "/admin/gallery",
+    "status": 200,
+    "ms": 2412,
+    "bytes": 31668
+  },
+  {
+    "path": "/admin/reviews",
+    "status": 200,
+    "ms": 2239,
+    "bytes": 30554
+  },
+  {
+    "path": "/admin/settings",
+    "status": 307,
+    "ms": 18,
+    "bytes": 6
+  },
+  {
+    "path": "/admin/inquiries",
+    "status": 307,
+    "ms": 21,
+    "bytes": 6
+  },
+  {
+    "path": "/admin/documents",
+    "status": 200,
+    "ms": 2199,
+    "bytes": 31462
+  },
+  {
+    "path": "/admin/chats",
+    "status": 200,
+    "ms": 3054,
+    "bytes": 30891
+  },
+  {
+    "path": "/admin/land-calculator",
+    "status": 200,
+    "ms": 2922,
+    "bytes": 28615
+  }
+]

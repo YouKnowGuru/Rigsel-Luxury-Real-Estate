@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Settings from "@/models/Settings";
+import { checkRateLimit, getClientIP } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -23,14 +24,24 @@ const DEFAULT_SETTINGS = {
 // GET /api/settings - Public access to site settings
 export async function GET(request: NextRequest) {
     try {
+        // Rate limit public reads
+        const clientIP = getClientIP(request);
+        const rateLimit = await checkRateLimit(`settings_get_${clientIP}`, 60, 60 * 1000);
+        if (!rateLimit.success) {
+            return NextResponse.json(
+                { success: false, error: "Rate limit exceeded. Please try again later." },
+                { status: 429 }
+            );
+        }
+
         await connectDB();
         let settings = await Settings.findOne({ key: "site_settings" });
 
         const data = settings ? settings.value : DEFAULT_SETTINGS;
 
         return NextResponse.json({ success: true, data });
-    } catch (error: any) {
-        console.error("Public Settings API Error:", error);
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }

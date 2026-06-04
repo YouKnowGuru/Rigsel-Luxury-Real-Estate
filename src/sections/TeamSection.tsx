@@ -1,128 +1,99 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import useSWR from "swr";
 import NextImage from "next/image";
 import { TeamMember } from "@/types";
+import { SectionHeader } from "@/components/layout/SectionHeader";
+import { fetcher, ApiResponse } from "@/lib/fetcher";
+
+const fallbackTeam: TeamMember[] = [
+  {
+    _id: "static-1",
+    name: "Jigme Rabgay",
+    role: "Proprietor",
+    image: "/image/jime rabgay.jpg",
+    desc: "Jigme Rabgay is the founder and driving force behind PHOJAA95 Real Estate. With a strong vision for connecting buyers and sellers, he brings extensive knowledge of the property market and a deep commitment to transparency and trust.",
+    quote: "Building trust, one property at a time — fairness at the core of every deal.",
+    order: 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    _id: "static-2",
+    name: "Dorji Wangchuk",
+    role: "General Manager",
+    image: "/image/dorji wangchuk.jpg",
+    desc: "Dorji Wangchuk manages the daily operations of PHOJAA95 Real Estate, ensuring smooth and efficient property transactions. He brings expertise in client relations and real estate management.",
+    quote: "Turning property dreams into reality, with clarity and care.",
+    order: 2,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
 
 export function TeamSection() {
-    const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-    const [loading, setLoading] = useState(true);
+  // Use SWR for caching and deduplication
+  const { data, error } = useSWR<ApiResponse<TeamMember[]>>("/api/team", fetcher, {
+    dedupingInterval: 300000, // 5 minutes - team data rarely changes
+    revalidateOnFocus: false,
+  });
 
-    useEffect(() => {
-        const fetchTeam = async () => {
-            try {
-                const res = await fetch("/api/team");
-                const data = await res.json();
-                if (data.success && data.data.length > 0) {
-                    setTeamMembers(data.data);
-                } else {
-                    // Fallback static data
-                    setTeamMembers([
-                        {
-                            _id: "static-1",
-                            name: "Jigme Rabgay",
-                            role: "Proprietor",
-                            image: "/image/jime rabgay.jpg",
-                            desc: "Jigme Rabgay is the founder and driving force behind Phojaa Real Estate. With a strong vision for connecting buyers and sellers, he brings extensive knowledge of the property market and a deep commitment to transparency and trust.",
-                            quote: "Building trust, one property at a time, with fairness at the core of every deal.",
-                            order: 1,
-                            createdAt: new Date().toISOString(),
-                            updatedAt: new Date().toISOString()
-                        },
-                        {
-                            _id: "static-2",
-                            name: "Dorji Wangchuk",
-                            role: "General Manager (GM)",
-                            image: "/image/dorji wangchuk.jpg",
-                            desc: "Dorji Wangchuk manages the daily operations of Phojaa Real Estate, ensuring smooth and efficient property transactions. With expertise in client relations and real estate management.",
-                            quote: "Turning property dreams into reality with clarity and care.",
-                            order: 2,
-                            createdAt: new Date().toISOString(),
-                            updatedAt: new Date().toISOString()
-                        }
-                    ]);
-                }
-            } catch (error) {
-                console.error("Failed to fetch team:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchTeam();
-    }, []);
+  const teamMembers = data?.data?.length ? data.data : !data && !error ? fallbackTeam : [];
 
-    return (
-        <section className="py-12 md:py-24 bg-white dark:bg-[#111214] relative overflow-hidden">
-            {/* Decorative background */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-[#F9F7F2]/30 dark:bg-white/[0.02] -skew-x-12 transform translate-x-1/2" />
+  return (
+    <section className="section-y bg-background content-visibility-auto">
+      <div className="container-apple-wide">
+        <SectionHeader
+          eyebrow="The team"
+          title="Meet the people."
+          highlight="Behind every deal."
+          subtitle="Real people, deep local knowledge, and a track record of trust across Bhutan."
+        />
 
-            <div className="w-full max-w-6xl mx-auto px-4 md:px-6 relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-12 md:mb-20"
-                >
-                    <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 dark:bg-bhutan-red/15 border border-bhutan-red/20 text-bhutan-red text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
-                        Our Leaders
-                    </div>
-                    <h2 className="font-serif text-3xl md:text-5xl font-bold text-bhutan-dark dark:text-white mb-4">
-                        Meet the <span className="text-bhutan-red italic font-light">Team</span>
-                    </h2>
-                    <div className="w-24 h-1 bg-bhutan-gold/30 mx-auto rounded-full" />
-                </motion.div>
-
-                <div className="space-y-8 md:space-y-12">
-                    {teamMembers.map((member, idx) => (
-                        <motion.div
-                            key={member._id}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="flex flex-col lg:flex-row items-center gap-8 md:gap-16 bg-white/50 dark:bg-white/5 backdrop-blur-sm p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-bhutan-gold/10 hover:border-bhutan-gold/40 hover:shadow-2xl hover:shadow-bhutan-gold/5 transition-all duration-700 group relative overflow-hidden"
-                        >
-                            {/* Image Column */}
-                            <div className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 flex-shrink-0 rounded-3xl overflow-hidden relative ring-1 ring-bhutan-gold/20 ring-offset-8 ring-offset-[#F9F7F2] dark:ring-offset-[#111214] group-hover:ring-bhutan-red/30 transition-all duration-700 shadow-xl">
-                                <NextImage
-                                    src={member.image}
-                                    alt={member.name}
-                                    fill
-                                    className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                            </div>
-
-                            {/* Content Column */}
-                            <div className="flex-1 text-center lg:text-left space-y-4 md:space-y-8 relative z-10">
-                                <div className="space-y-3">
-                                    <div className="inline-flex items-center gap-2">
-                                        <span className="w-8 h-[1px] bg-bhutan-gold" />
-                                        <p className="text-bhutan-gold-dark text-[10px] md:text-[11px] font-bold uppercase tracking-[0.3em]">
-                                            {member.role}
-                                        </p>
-                                    </div>
-                                    <h3 className="font-serif text-3xl md:text-5xl font-bold text-bhutan-dark dark:text-white group-hover:text-bhutan-red transition-colors duration-500 tracking-tight">
-                                        {member.name}
-                                    </h3>
-                                </div>
-
-                                <p className="text-bhutan-dark/70 dark:text-white/60 text-base md:text-xl leading-relaxed font-light max-w-2xl">
-                                    {member.desc}
-                                </p>
-
-                                <div className="relative pt-6">
-                                    <span className="absolute -top-2 -left-6 text-6xl md:text-8xl text-bhutan-gold/10 font-serif leading-none">&ldquo;</span>
-                                    <p className="text-bhutan-red text-lg md:text-2xl italic font-serif font-medium pl-2 relative z-10">
-                                        {member.quote}
-                                    </p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 max-w-5xl mx-auto">
+          {teamMembers.map((member, idx) => (
+            <motion.article
+              key={member._id}
+              initial={{ opacity: 0, y: 22 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{
+                duration: 0.7,
+                delay: idx * 0.06,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="bg-fog rounded-apple-xl overflow-hidden group hover:shadow-product transition-shadow duration-500"
+            >
+              <div className="relative aspect-[4/3] sm:aspect-[5/4] overflow-hidden bg-ink-100">
+                <NextImage
+                  src={member.image}
+                  alt={member.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-1200 ease-apple-out group-hover:scale-[1.04]"
+                />
+              </div>
+              <div className="p-6 sm:p-8">
+                <p className="text-[12px] font-semibold uppercase tracking-eyebrow text-sky mb-2">
+                  {member.role}
+                </p>
+                <h3 className="font-semibold text-[24px] sm:text-[28px] tracking-tighter2 leading-tight2 text-foreground">
+                  {member.name}
+                </h3>
+                <p className="mt-3 text-[15px] sm:text-[16px] text-ink-500 leading-snug2 max-w-md">
+                  {member.desc}
+                </p>
+                {member.quote && (
+                  <p className="mt-5 pt-5 border-t border-ink-200/70 dark:border-ink-700/40 text-[15px] sm:text-[16px] text-foreground italic">
+                    &ldquo;{member.quote}&rdquo;
+                  </p>
+                )}
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

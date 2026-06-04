@@ -3,12 +3,13 @@ import connectDB from "@/lib/mongodb";
 import Property from "@/models/Property";
 import Contact from "@/models/Contact";
 import { verifyToken } from "@/lib/jwt";
+import { getAdminToken } from "@/lib/auth";
 
 // GET /api/admin/stats - Get dashboard statistics (Admin only)
 export async function GET(request: NextRequest) {
   try {
     // Verify admin token
-    const token = request.headers.get("authorization")?.split(" ")[1];
+    const token = await getAdminToken(request);
     if (!token) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
@@ -30,11 +31,11 @@ export async function GET(request: NextRequest) {
     const totalProperties = await Property.countDocuments();
     const totalInquiries = await Contact.countDocuments();
     const featuredProperties = await Property.countDocuments({ featured: true });
-    
+
     // Get recent listings (last 30 days)
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-    
+
     const recentListings = await Property.countDocuments({
       createdAt: { $gte: thirtyDaysAgo },
     });
@@ -66,10 +67,10 @@ export async function GET(request: NextRequest) {
         recentInquiries,
       },
     });
-  } catch (error: any) {
-    console.error("Error fetching stats:", error);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }

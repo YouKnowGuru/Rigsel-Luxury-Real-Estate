@@ -15,9 +15,8 @@ export default function TeamAdminPage() {
 
     const fetchMembers = async () => {
         try {
-            const token = localStorage.getItem("adminToken");
-            const res = await fetch("/api/admin/team", {
-                headers: { Authorization: `Bearer ${token}` }
+                    const res = await fetch("/api/admin/team", {
+                
             });
             const data = await res.json();
             if (data.success) setMembers(data.data);
@@ -35,10 +34,9 @@ export default function TeamAdminPage() {
     const handleDelete = async (id: string) => {
         if (!window.confirm("Are you sure you want to delete this team member?")) return;
         try {
-            const token = localStorage.getItem("adminToken");
-            const res = await fetch(`/api/admin/team/${id}`, {
+                    const res = await fetch(`/api/admin/team/${id}`, {
                 method: "DELETE",
-                headers: { Authorization: `Bearer ${token}` }
+                
             });
             const data = await res.json();
             if (data.success) {
@@ -55,8 +53,7 @@ export default function TeamAdminPage() {
     const handleSeed = async () => {
         setIsLoading(true);
         try {
-            const token = localStorage.getItem("adminToken");
-            const defaults = [
+                    const defaults = [
                 {
                     name: "Jigme Rabgay",
                     role: "Proprietor",
@@ -79,8 +76,7 @@ export default function TeamAdminPage() {
                 await fetch("/api/admin/team", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify(member)
                 });
@@ -98,33 +94,30 @@ export default function TeamAdminPage() {
         <div className="p-4 md:p-8 space-y-8">
             <header className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <div className="flex items-center gap-2 mb-1">
-                        <div className="w-1 h-4 bg-bhutan-red rounded-full" />
-                        <p className="text-bhutan-red font-bold text-sm uppercase tracking-[0.3em]">Management</p>
-                    </div>
-                    <h1 className="text-3xl font-bold text-bhutan-dark">Our Leaders / Team</h1>
+                    <p className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em] mb-1">Management</p>
+                    <h1 className="text-[28px] font-semibold text-foreground tracking-tight">Our Leaders / Team</h1>
                 </div>
                 <Link
                     href="/admin/team/new"
-                    className="flex items-center gap-2 px-5 py-3 bg-bhutan-gold hover:bg-bhutan-red text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-md group border border-white/10"
+                    className="flex items-center gap-2 px-5 py-3 rounded-full bg-sky text-background text-sm font-medium transition-all hover:opacity-90"
                 >
-                    <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform" />
+                    <Plus className="w-4 h-4" strokeWidth={1.5} />
                     New Member
                 </Link>
             </header>
 
             {isLoading ? (
                 <div className="flex items-center justify-center py-20">
-                    <div className="animate-spin w-8 h-8 border-4 border-bhutan-gold border-t-transparent rounded-full" />
+                    <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
                 </div>
             ) : members.length === 0 ? (
-                <div className="text-center py-20 bg-white rounded-3xl border border-bhutan-gold/10">
-                    <Users className="w-12 h-12 text-bhutan-gold/40 mx-auto mb-4" />
-                    <p className="text-xl font-serif text-bhutan-dark mb-2">No team members</p>
-                    <p className="text-bhutan-dark/40 font-light mb-6">Add someone to start building your leadership team.</p>
+                <div className="text-center py-20 bg-card rounded-[20px] border border-ink-100/60 shadow-soft">
+                    <Users className="w-12 h-12 text-ink-300 mx-auto mb-4" strokeWidth={1.5} />
+                    <p className="text-xl text-foreground mb-2">No team members</p>
+                    <p className="text-ink-400 mb-6">Add someone to start building your leadership team.</p>
                     <button
                         onClick={handleSeed}
-                        className="px-6 py-2 bg-bhutan-gold/10 text-bhutan-gold-dark text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-bhutan-gold hover:text-white transition-all"
+                        className="px-6 py-2 rounded-[14px] border border-ink-200 text-ink-600 text-sm font-medium hover:bg-card transition-all"
                     >
                         Import Default Team
                     </button>
@@ -137,33 +130,33 @@ export default function TeamAdminPage() {
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.05 }}
-                            className="bg-white rounded-2xl p-6 shadow-sm border border-bhutan-gold/10 relative group hover:border-bhutan-gold/30 hover:shadow-lg transition-all"
+                            className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6 relative group hover:border-sky/30 transition-all"
                         >
                             <div className="flex gap-4">
                                 <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden relative shadow-inner">
                                     <Image src={member.image} alt={member.name} fill className="object-cover" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-xs font-bold text-bhutan-gold uppercase tracking-[0.2em]">{member.role}</p>
-                                    <h3 className="font-serif text-2xl font-bold text-bhutan-dark truncate">{member.name}</h3>
-                                    <p className="text-sm text-bhutan-dark/60 mt-1 font-medium">Order: {member.order}</p>
+                                    <p className="text-xs font-semibold text-sky uppercase tracking-wide">{member.role}</p>
+                                    <h3 className="text-2xl font-semibold text-foreground truncate">{member.name}</h3>
+                                    <p className="text-sm text-ink-400 mt-1 font-medium">Order: {member.order}</p>
                                 </div>
                             </div>
 
-                            <p className="mt-4 text-base text-bhutan-dark/70 italic font-medium line-clamp-2">"{member.quote}"</p>
+                            <p className="mt-4 text-base text-ink-500 font-medium line-clamp-2">&ldquo;{member.quote}&rdquo;</p>
 
-                            <div className="flex items-center justify-end gap-2 mt-6 pt-4 border-t border-bhutan-gold/10">
+                            <div className="flex items-center justify-end gap-2 mt-6 pt-4 border-t border-ink-100">
                                 <Link
                                     href={`/admin/team/${member._id}/edit`}
-                                    className="p-2 text-bhutan-dark/40 hover:text-bhutan-gold hover:bg-bhutan-gold/5 rounded-lg transition-colors"
+                                    className="p-2 text-ink-300 hover:text-sky hover:bg-sky/5 rounded-lg transition-colors"
                                 >
-                                    <Edit2 className="w-4 h-4" />
+                                    <Edit2 className="w-4 h-4" strokeWidth={1.5} />
                                 </Link>
                                 <button
                                     onClick={() => handleDelete(member._id)}
-                                    className="p-2 text-bhutan-dark/40 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                                    className="p-2 text-ink-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                                 >
-                                    <Trash2 className="w-4 h-4" />
+                                    <Trash2 className="w-4 h-4" strokeWidth={1.5} />
                                 </button>
                             </div>
                         </motion.div>

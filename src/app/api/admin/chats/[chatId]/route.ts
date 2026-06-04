@@ -3,7 +3,7 @@ import connectDB from "@/lib/mongodb";
 import Chat from "@/models/Chat";
 import Message from "@/models/Message";
 import { verifyToken } from "@/lib/jwt";
-import { cookies } from "next/headers";
+import { getAdminTokenFromRequest } from "@/lib/auth";
 
 export async function DELETE(
     req: Request,
@@ -11,16 +11,8 @@ export async function DELETE(
 ) {
     try {
         const { chatId } = await params;
-        
-        const cookieStore = await cookies();
-        let token = cookieStore.get("adminToken")?.value;
-        
-        if (!token) {
-            const authHeader = req.headers.get("authorization");
-            if (authHeader && authHeader.startsWith("Bearer ")) {
-                token = authHeader.split(" ")[1];
-            }
-        }
+
+        const token = await getAdminTokenFromRequest(req);
 
         if (!token) {
             return NextResponse.json({ error: "Unauthorized - No token" }, { status: 401 });
@@ -44,8 +36,8 @@ export async function DELETE(
         }
 
         return NextResponse.json({ success: true, message: "Chat deleted successfully" }, { status: 200 });
-    } catch (error: any) {
-        console.error("Error deleting chat:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ error: errorMessage }, { status: 500 });
     }
 }

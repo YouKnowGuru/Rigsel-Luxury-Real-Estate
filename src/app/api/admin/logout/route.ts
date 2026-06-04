@@ -1,6 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { logAuthEvent } from "@/lib/logger";
 
-export async function POST() {
+export async function POST(request: NextRequest) {
     const response = NextResponse.json({
         success: true,
         message: "Logged out successfully",
@@ -12,6 +14,16 @@ export async function POST() {
         expires: new Date(0),
         path: "/",
     });
+
+    // Clear CSRF nonce cookie
+    response.cookies.set("csrfNonce", "", {
+        httpOnly: true,
+        expires: new Date(0),
+        path: "/",
+    });
+
+    // Log logout event
+    await logAuthEvent("LOGOUT", request);
 
     return response;
 }

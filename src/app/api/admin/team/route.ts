@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { headers } from "next/headers";
 import { verifyToken } from "@/lib/jwt";
 import dbConnect from "@/lib/mongodb";
 import TeamMember from "@/models/TeamMember";
+import { teamMemberSchema } from "@/lib/validation";
+import { getAdminTokenFromRequest } from "@/lib/auth";
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
-        const headersList = await headers();
-        const token = headersList.get("authorization")?.split(" ")[1];
+        const token = await getAdminTokenFromRequest(request);
 
         if (!token) {
             return NextResponse.json(
@@ -28,9 +28,10 @@ export async function GET() {
         const members = await TeamMember.find().sort({ order: 1, createdAt: 1 });
 
         return NextResponse.json({ success: true, data: members });
-    } catch (error: any) {
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
         return NextResponse.json(
-            { success: false, error: error.message },
+            { success: false, error: errorMessage },
             { status: 500 }
         );
     }
@@ -38,8 +39,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
     try {
-        const headersList = await headers();
-        const token = headersList.get("authorization")?.split(" ")[1];
+        const token = await getAdminTokenFromRequest(request);
 
         if (!token) {
             return NextResponse.json(
@@ -57,14 +57,24 @@ export async function POST(request: Request) {
         }
 
         const body = await request.json();
-        await dbConnect();
 
-        const newMember = await TeamMember.create(body);
+        // Validate with Zod
+        const validationResult = teamMemberSchema.safeParse(body);
+        if (!validationResult.success) {
+            return NextResponse.json(
+                { success: false, error: "Validation failed", details: validationResult.error.format() },
+                { status: 400 }
+            );
+        }
+
+        await dbConnect();
+        const newMember = await TeamMember.create(validationResult.data);
 
         return NextResponse.json({ success: true, data: newMember }, { status: 201 });
-    } catch (error: any) {
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
         return NextResponse.json(
-            { success: false, error: error.message },
+            { success: false, error: errorMessage },
             { status: 500 }
         );
     }

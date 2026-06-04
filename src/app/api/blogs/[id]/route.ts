@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { verifyToken } from "@/lib/jwt";
+import { blogSchema } from "@/lib/validation";
+import { getAdminToken } from "@/lib/auth";
 
 // GET /api/blogs/[id] - Get a single blog by ID
 export async function GET(
@@ -21,9 +23,10 @@ export async function GET(
         }
 
         return NextResponse.json({ success: true, data: blog });
-    } catch (error: any) {
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
         return NextResponse.json(
-            { success: false, error: error.message },
+            { success: false, error: errorMessage },
             { status: 500 }
         );
     }
@@ -36,12 +39,12 @@ export async function PUT(
 ) {
     try {
         const { id } = await params;
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         if (!token) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 
-        const decoded = verifyToken(token);
+        const decoded = await verifyToken(token);
         if (!decoded) {
             return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
         }
@@ -49,7 +52,16 @@ export async function PUT(
         await connectDB();
         const body = await request.json();
 
-        const blog = await Blog.findByIdAndUpdate(id, body, {
+        // Validate with Zod (partial)
+        const validationResult = blogSchema.partial().safeParse(body);
+        if (!validationResult.success) {
+            return NextResponse.json(
+                { success: false, error: "Validation failed", details: validationResult.error.format() },
+                { status: 400 }
+            );
+        }
+
+        const blog = await Blog.findByIdAndUpdate(id, validationResult.data, {
             new: true,
             runValidators: true,
         });
@@ -62,15 +74,16 @@ export async function PUT(
         }
 
         return NextResponse.json({ success: true, data: blog });
-    } catch (error: any) {
-        if (error.code === 11000) {
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        if ((error as { code?: number }).code === 11000) {
             return NextResponse.json(
                 { success: false, error: "Blog with this slug already exists" },
                 { status: 400 }
             );
         }
         return NextResponse.json(
-            { success: false, error: error.message },
+            { success: false, error: errorMessage },
             { status: 500 }
         );
     }
@@ -83,12 +96,12 @@ export async function DELETE(
 ) {
     try {
         const { id } = await params;
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         if (!token) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
 
-        const decoded = verifyToken(token);
+        const decoded = await verifyToken(token);
         if (!decoded) {
             return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
         }
@@ -104,9 +117,10 @@ export async function DELETE(
         }
 
         return NextResponse.json({ success: true, message: "Blog deleted successfully" });
-    } catch (error: any) {
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
         return NextResponse.json(
-            { success: false, error: error.message },
+            { success: false, error: errorMessage },
             { status: 500 }
         );
     }

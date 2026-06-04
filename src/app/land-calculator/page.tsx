@@ -1,19 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Calculator,
-  ArrowRightLeft,
-  Info,
-  RotateCcw,
-  TrendingUp,
-  Ruler,
-  ArrowRight,
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Calculator, RotateCcw, Ruler, TrendingUp } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
+import { PageHero } from "@/components/layout/PageHero";
 
 const landConversions = {
   sqmToDecimal: (sqm: number): number => sqm / 40.47,
@@ -31,53 +23,61 @@ export default function LandCalculatorPage() {
   const [squareFeet, setSquareFeet] = useState<string>("");
   const [pricePerDecimal, setPricePerDecimal] = useState<string>("");
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const [activeField, setActiveField] = useState<string>("sqm");
 
-  const handleSqmChange = (value: string) => {
-    setSquareMeters(value);
-    setActiveField("sqm");
-    const sqm = parseFloat(value) || 0;
-    setDecimals(landConversions.sqmToDecimal(sqm).toFixed(4));
-    setAcres(landConversions.decimalToAcre(landConversions.sqmToDecimal(sqm)).toFixed(6));
+  const recalc = (sqm: number) => {
+    const d = landConversions.sqmToDecimal(sqm);
+    setDecimals(d.toFixed(2));
+    setAcres(landConversions.decimalToAcre(d).toFixed(4));
     setSquareFeet(landConversions.sqmToSqft(sqm).toFixed(2));
+    const p = parseFloat(pricePerDecimal) || 0;
+    setTotalPrice(d * p);
   };
 
-  const handleDecimalChange = (value: string) => {
-    setDecimals(value);
-    setActiveField("decimal");
-    const decimal = parseFloat(value) || 0;
-    setSquareMeters(landConversions.decimalToSqm(decimal).toFixed(2));
-    setAcres(landConversions.decimalToAcre(decimal).toFixed(6));
-    setSquareFeet(landConversions.sqmToSqft(landConversions.decimalToSqm(decimal)).toFixed(2));
+  const handleSqmChange = (v: string) => {
+    setSquareMeters(v);
+    recalc(parseFloat(v) || 0);
   };
-
-  const handleAcreChange = (value: string) => {
-    setAcres(value);
-    setActiveField("acre");
-    const acre = parseFloat(value) || 0;
-    const decimal = landConversions.acreToDecimal(acre);
-    setDecimals(decimal.toFixed(4));
-    setSquareMeters(landConversions.decimalToSqm(decimal).toFixed(2));
-    setSquareFeet(landConversions.sqmToSqft(landConversions.decimalToSqm(decimal)).toFixed(2));
+  const handleDecChange = (v: string) => {
+    setDecimals(v);
+    const d = parseFloat(v) || 0;
+    setSquareMeters(landConversions.decimalToSqm(d).toFixed(2));
+    setAcres(landConversions.decimalToAcre(d).toFixed(4));
+    setSquareFeet(
+      landConversions.sqmToSqft(landConversions.decimalToSqm(d)).toFixed(2)
+    );
+    const p = parseFloat(pricePerDecimal) || 0;
+    setTotalPrice(d * p);
   };
-
-  const handleSqftChange = (value: string) => {
-    setSquareFeet(value);
-    setActiveField("sqft");
-    const sqft = parseFloat(value) || 0;
+  const handleAcreChange = (v: string) => {
+    setAcres(v);
+    const a = parseFloat(v) || 0;
+    const d = landConversions.acreToDecimal(a);
+    setDecimals(d.toFixed(2));
+    const sqm = landConversions.decimalToSqm(d);
+    setSquareMeters(sqm.toFixed(2));
+    setSquareFeet(landConversions.sqmToSqft(sqm).toFixed(2));
+    const p = parseFloat(pricePerDecimal) || 0;
+    setTotalPrice(d * p);
+  };
+  const handleSqftChange = (v: string) => {
+    setSquareFeet(v);
+    const sqft = parseFloat(v) || 0;
     const sqm = landConversions.sqftToSqm(sqft);
     setSquareMeters(sqm.toFixed(2));
-    setDecimals(landConversions.sqmToDecimal(sqm).toFixed(4));
-    setAcres(landConversions.decimalToAcre(landConversions.sqmToDecimal(sqm)).toFixed(6));
+    const d = landConversions.sqmToDecimal(sqm);
+    setDecimals(d.toFixed(2));
+    setAcres(landConversions.decimalToAcre(d).toFixed(4));
+    const p = parseFloat(pricePerDecimal) || 0;
+    setTotalPrice(d * p);
+  };
+  const handlePriceChange = (v: string) => {
+    setPricePerDecimal(v);
+    const p = parseFloat(v) || 0;
+    const d = parseFloat(decimals) || 0;
+    setTotalPrice(d * p);
   };
 
-  useEffect(() => {
-    const decimal = parseFloat(decimals) || 0;
-    const price = parseFloat(pricePerDecimal) || 0;
-    setTotalPrice(decimal * price);
-  }, [decimals, pricePerDecimal]);
-
-  const resetCalculator = () => {
+  const reset = () => {
     setSquareMeters("");
     setDecimals("");
     setAcres("");
@@ -86,230 +86,168 @@ export default function LandCalculatorPage() {
     setTotalPrice(0);
   };
 
-  const fields = [
-    { label: "Square Meters (m²)", value: squareMeters, handler: handleSqmChange, unit: "m²", field: "sqm" },
-    { label: "Decimals", value: decimals, handler: handleDecimalChange, unit: "decimal", field: "decimal" },
-    { label: "Acres", value: acres, handler: handleAcreChange, unit: "acre", field: "acre" },
-    { label: "Square Feet (ft²)", value: squareFeet, handler: handleSqftChange, unit: "ft²", field: "sqft" },
-  ];
-
   return (
-    <div className="min-h-screen bg-[#F9F7F2] dark:bg-background">
-      {/* Hero */}
-      <section className="relative pt-28 pb-8 md:pt-36 md:pb-12 overflow-hidden bg-white dark:bg-background">
-        <div className="absolute inset-0 bg-thangka opacity-[0.02] pointer-events-none" />
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-bhutan-gold/5 rounded-full blur-[120px]" />
+    <main className="bg-background">
+      <PageHero
+        eyebrow="Tools"
+        title="Land Calculator."
+        highlight="Precision conversions."
+        subtitle="Convert between Bhutan's heritage land units and estimate value — instantly."
+        breadcrumbs={[{ label: "Land Calculator" }]}
+      />
 
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 md:px-6">
+      <section className="section-y-sm">
+        <div className="container-apple-wide grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Inputs */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-center max-w-3xl mx-auto"
-          >
-            <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-bhutan-gold/10 border border-bhutan-gold/20 text-bhutan-gold-dark text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-5 md:mb-6">
-              <Calculator className="w-3 h-3" />
-              Precision Tools
-            </div>
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4 leading-tight">
-              Land <span className="text-bhutan-red italic font-light">Calculator</span>
-            </h1>
-            <p className="text-bhutan-dark/50 dark:text-muted-foreground text-base md:text-lg max-w-lg mx-auto font-light">
-              Convert land measurements with precision. Calibrated for Bhutanese property standards.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Calculator Section */}
-      <section className="py-8 md:py-16">
-        <div className="w-full max-w-5xl mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-8">
-            {/* Unit Converter Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-               className="bg-white dark:bg-card rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 dark:border-white/5 shadow-sm"
-            >
-              <div className="flex items-center justify-between mb-5 md:mb-8">
-                <h2 className="font-serif text-lg md:text-xl font-bold text-bhutan-dark dark:text-foreground">
-                  Unit Converter
-                </h2>
-                <button
-                  onClick={resetCalculator}
-                  className="flex items-center gap-1.5 text-bhutan-red hover:bg-bhutan-red/5 px-3 py-1.5 rounded-lg text-[9px] md:text-[10px] font-bold uppercase tracking-wider transition-colors"
-                >
-                  <RotateCcw className="w-3 h-3" />
-                  Reset
-                </button>
-              </div>
-
-              <div className="space-y-4 md:space-y-5">
-                {fields.map((item, idx) => (
-                  <div key={item.field}>
-                    <label className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.15em] mb-1.5 block pl-1">
-                      {item.label}
-                    </label>
-                    <div className="relative">
-                      <Ruler className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-bhutan-gold/50" />
-                      <Input
-                        type="number"
-                        placeholder="0.00"
-                        value={item.value}
-                        onChange={(e) => item.handler(e.target.value)}
-                        className={`h-12 md:h-14 rounded-lg md:rounded-xl pl-10 md:pl-12 pr-14 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/20 dark:border-white/20 focus:ring-bhutan-red/20 focus:border-bhutan-red text-base md:text-lg font-serif font-bold ${activeField === item.field ? "border-bhutan-red/40 bg-bhutan-red/[0.02]" : ""
-                          }`}
-                      />
-                      <span className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 text-bhutan-dark/40 dark:text-muted-foreground/40 text-[11px] md:text-xs font-bold">
-                        {item.unit}
-                      </span>
-                    </div>
-                    {idx < fields.length - 1 && (
-                      <div className="flex justify-center my-1.5">
-                        <ArrowRightLeft className="w-3 h-3 text-bhutan-gold/25 rotate-90" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Price Calculator Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="space-y-5 md:space-y-6"
-            >
-              <div className="bg-white dark:bg-card rounded-xl md:rounded-2xl p-5 md:p-8 border border-bhutan-gold/10 dark:border-white/5 shadow-sm">
-                <div className="flex items-center gap-3 mb-5 md:mb-8">
-                  <div className="w-9 h-9 md:w-11 md:h-11 bg-bhutan-gold/10 rounded-xl flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-bhutan-gold" />
-                  </div>
-                  <h2 className="font-serif text-lg md:text-xl font-bold text-bhutan-dark dark:text-foreground">
-                    Price Estimator
-                  </h2>
-                </div>
-
-                {/* Area Summary */}
-                <div className="p-4 md:p-5 bg-[#F9F7F2] dark:bg-background rounded-xl border border-dashed border-bhutan-gold/20 dark:border-white/10 mb-5 md:mb-6">
-                  <p className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-widest mb-2">Total Area</p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground">
-                      {decimals ? parseFloat(decimals).toFixed(4) : "0.0000"}
-                    </span>
-                    <span className="text-bhutan-red text-sm italic font-serif font-bold">decimals</span>
-                  </div>
-                  <p className="text-bhutan-dark/50 dark:text-muted-foreground/50 text-xs md:text-sm font-bold mt-1">
-                    = {squareMeters ? parseFloat(squareMeters).toFixed(1) : "0"} m²
-                  </p>
-                </div>
-
-                {/* Price input */}
-                <div className="mb-5 md:mb-6">
-                  <label className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.15em] mb-1.5 block pl-1">
-                    Price per Decimal (Nu.)
-                  </label>
-                  <div className="relative">
-                    <span className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 text-[10px] md:text-xs font-bold text-bhutan-gold/50">Nu</span>
-                    <Input
-                      type="number"
-                      placeholder="Market rate..."
-                      value={pricePerDecimal}
-                      onChange={(e) => setPricePerDecimal(e.target.value)}
-                      className="h-12 md:h-14 rounded-lg md:rounded-xl pl-10 md:pl-12 bg-[#F9F7F2] dark:bg-background border-bhutan-gold/20 dark:border-white/20 focus:ring-bhutan-red/20 focus:border-bhutan-red font-serif font-bold text-base md:text-lg"
-                    />
-                  </div>
-                </div>
-
-                {/* Total Result */}
-                <div className="bg-bhutan-dark rounded-xl md:rounded-2xl p-5 md:p-6 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-thangka opacity-[0.04] pointer-events-none" />
-                  <div className="absolute -top-10 -right-10 w-32 h-32 bg-bhutan-gold/15 rounded-full blur-[60px]" />
-
-                  <p className="text-white/60 text-[10px] md:text-[11px] font-bold uppercase tracking-widest mb-2 relative z-10">Total Valuation</p>
-                  <p className="text-3xl md:text-4xl font-serif font-bold text-bhutan-gold relative z-10">
-                    {formatPrice(totalPrice)}
-                  </p>
-                  <div className="mt-3 pt-3 border-t border-white/10 flex items-center gap-2 relative z-10">
-                    <Info className="w-3 h-3 text-bhutan-gold/60" />
-                    <p className="text-white/30 text-[9px] md:text-[10px] font-light">Estimated based on entered rate</p>
-                  </div>
-                </div>
-
-                <Link href="/contact" className="block mt-4 md:mt-5">
-                  <button className="w-full py-3 md:py-3.5 bg-bhutan-red text-white text-[9px] md:text-[10px] font-bold uppercase tracking-wider rounded-xl hover:bg-bhutan-dark transition-all duration-500 flex items-center justify-center gap-2">
-                    Get Market Appraisal
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </Link>
-              </div>
-
-              {/* Info Card */}
-               <div className="bg-white dark:bg-card rounded-xl md:rounded-2xl p-4 md:p-6 border border-bhutan-gold/10 dark:border-white/5">
-                <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 md:w-10 md:h-10 bg-bhutan-dark rounded-lg md:rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Info className="w-4 h-4 md:w-5 md:h-5 text-bhutan-gold" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-sm md:text-base font-bold text-bhutan-dark dark:text-foreground mb-1">Heritage Units</h4>
-                    <p className="text-bhutan-dark/50 text-xs md:text-sm font-light leading-relaxed">
-                      In Bhutan, land is measured in <span className="text-bhutan-red font-medium italic">decimals</span>.
-                      1 decimal = 435.6 ft². A full acre = 100 decimals.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Reference Table */}
-      <section className="py-10 md:py-16 bg-white dark:bg-background">
-        <div className="w-full max-w-5xl mx-auto px-4 md:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-8 md:mb-12"
+            transition={{ duration: 0.7 }}
+            className="lg:col-span-7 bg-fog rounded-apple-xl p-6 sm:p-8 md:p-10"
           >
-            <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4">
-              Reference Table
-            </div>
-            <h2 className="font-serif text-xl md:text-3xl font-bold text-bhutan-dark dark:text-foreground">
-              Standard <span className="text-bhutan-red italic font-light">Conversions</span>
+            <p className="text-[14px] font-semibold text-sky mb-2 inline-flex items-center gap-2">
+              <Ruler className="w-4 h-4" strokeWidth={1.75} />
+              Conversions
+            </p>
+            <h2 className="font-semibold text-[clamp(1.75rem,1.5rem+1.5vw,2.5rem)] tracking-tighter2 leading-tight2 text-foreground">
+              Type any value. See all four.
             </h2>
+
+            <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {[
+                {
+                  label: "Square meters (sqm)",
+                  value: squareMeters,
+                  setter: handleSqmChange,
+                },
+                {
+                  label: "Decimal",
+                  value: decimals,
+                  setter: handleDecChange,
+                },
+                {
+                  label: "Acres",
+                  value: acres,
+                  setter: handleAcreChange,
+                },
+                {
+                  label: "Square feet (sqft)",
+                  value: squareFeet,
+                  setter: handleSqftChange,
+                },
+              ].map((f) => (
+                <label key={f.label} className="block">
+                  <span className="text-[12px] text-ink-500 uppercase tracking-eyebrow">
+                    {f.label}
+                  </span>
+                  <input
+                    type="number"
+                    value={f.value}
+                    onChange={(e) => f.setter(e.target.value)}
+                    placeholder="0"
+                    className="input-apple mt-1.5 text-[clamp(1.25rem,1rem+0.5vw,1.5rem)] font-semibold tracking-tightest tabular-nums"
+                  />
+                </label>
+              ))}
+            </div>
+
+            <button
+              onClick={reset}
+              className="mt-6 link-apple inline-flex items-center gap-1 text-[13px]"
+            >
+              <RotateCcw className="w-3 h-3" strokeWidth={2} /> Reset
+            </button>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-4">
+          {/* Pricing estimator */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.08 }}
+            className="lg:col-span-5 bg-ink-900 text-white rounded-apple-xl p-6 sm:p-8 md:p-10"
+          >
+            <p className="text-[14px] font-semibold text-sky-dim mb-2 inline-flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" strokeWidth={1.75} />
+              Pricing
+            </p>
+            <h2 className="font-semibold text-[clamp(1.5rem,1.25rem+1.25vw,2.25rem)] tracking-tighter2 leading-tight2 text-white">
+              Estimate the total.
+            </h2>
+
+            <label className="block mt-6">
+              <span className="text-[12px] text-white/60 uppercase tracking-eyebrow">
+                Price per decimal (Nu.)
+              </span>
+              <input
+                type="number"
+                value={pricePerDecimal}
+                onChange={(e) => handlePriceChange(e.target.value)}
+                placeholder="0"
+                className="mt-1.5 w-full rounded-2xl bg-white/10 border border-white/15 px-4 py-3.5 text-white placeholder:text-white/40 text-[18px] font-semibold tracking-tightest tabular-nums focus:bg-white/15 outline-none transition-colors"
+              />
+            </label>
+
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <p className="text-[12px] text-white/60 uppercase tracking-eyebrow">
+                Total estimate
+              </p>
+              <p className="mt-2 text-[clamp(2rem,1.5rem+2vw,3.5rem)] font-semibold tracking-tighter3 leading-tighter tabular-nums text-white">
+                {totalPrice > 0 ? formatPrice(totalPrice) : "—"}
+              </p>
+              {decimals && parseFloat(decimals) > 0 && (
+                <p className="mt-2 text-[13px] text-white/55">
+                  Based on {parseFloat(decimals).toFixed(2)} decimals
+                </p>
+              )}
+            </div>
+
+            <Link
+              href="/contact"
+              className="mt-8 inline-flex link-apple link-arrow text-sky-dim text-[14px]"
+            >
+              Get an expert valuation
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Reference */}
+      <section className="bg-fog section-y-sm">
+        <div className="container-apple">
+          <h2 className="font-semibold text-[clamp(1.5rem,1.25rem+1vw,2rem)] tracking-tighter2 leading-tight2 text-foreground text-center">
+            Common conversions.
+          </h2>
+          <div className="mt-8 bg-white dark:bg-card rounded-apple-lg border border-ink-100 dark:border-ink-700/40 overflow-hidden">
+            <div className="grid grid-cols-3 text-[13px] font-semibold uppercase tracking-eyebrow text-ink-500 bg-fog px-5 py-3">
+              <span>From</span>
+              <span>To</span>
+              <span className="text-right">Value</span>
+            </div>
             {[
-              { from: "1 Decimal", to: "40.47 m²" },
-              { from: "1 Decimal", to: "435.6 ft²" },
-              { from: "1 Acre", to: "100 Decimals" },
-              { from: "1 Acre", to: "4,047 m²" },
-              { from: "1 m²", to: "0.0247 Decimals" },
-              { from: "10 ft²", to: "0.023 Decimals" },
-              { from: "10 Decimals", to: "404.7 m²" },
-              { from: "25 Decimals", to: "0.25 Acres" },
-            ].map((conv, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.04 }}
-                className="bg-[#F9F7F2] dark:bg-card rounded-lg md:rounded-xl p-3 md:p-5 border border-bhutan-gold/10 dark:border-white/5 hover:border-bhutan-gold/25 dark:hover:border-white/20 hover:shadow-sm transition-all text-center"
+              { from: "1 Decimal", to: "Square meters", value: "40.47 sqm" },
+              { from: "1 Decimal", to: "Square feet", value: "435.6 sqft" },
+              { from: "1 Acre", to: "Decimals", value: "100" },
+              { from: "1 Acre", to: "Square meters", value: "4,047 sqm" },
+              { from: "1 Sqm", to: "Square feet", value: "10.76 sqft" },
+            ].map((row, i) => (
+              <div
+                key={row.from + row.to}
+                className={`grid grid-cols-3 px-5 py-4 text-[14px] ${
+                  i % 2 ? "bg-fog/50" : ""
+                }`}
               >
-                <p className="text-bhutan-dark/50 dark:text-muted-foreground/50 text-[9px] md:text-[11px] font-bold uppercase tracking-widest mb-1">{conv.from}</p>
-                <p className="text-bhutan-gold font-serif text-base md:text-lg font-bold">≈ {conv.to}</p>
-              </motion.div>
+                <span className="text-foreground font-medium">{row.from}</span>
+                <span className="text-ink-500">{row.to}</span>
+                <span className="text-foreground font-semibold tabular-nums text-right">
+                  {row.value}
+                </span>
+              </div>
             ))}
           </div>
         </div>
       </section>
-    </div>
+    </main>
   );
 }

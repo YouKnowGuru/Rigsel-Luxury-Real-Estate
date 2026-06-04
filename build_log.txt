@@ -1,0 +1,9 @@
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: ENOENT: no such file or directory, open 'f:\Rigsel Luxury Real Estate\rigsel-realestate\.next\static\ttugTuUa7SjD6POd9EDRW\_buildManifest.js.tmp.b5f1b2j22hj'
+    at ignore-listed frames

@@ -1,107 +1,108 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck, Scale, FileText, Anchor, Gavel, AlertCircle } from "lucide-react";
+import {
+  ShieldCheck,
+  Scale,
+  FileText,
+  Anchor,
+  Gavel,
+  AlertCircle,
+} from "lucide-react";
+import { PageHero } from "@/components/layout/PageHero";
+import Link from "next/link";
 
 const sections = [
-    {
-        icon: FileText,
-        title: "1. Acceptance of Terms",
-        content: "By accessing and using the Phojaa Real Estate website, you agree to be bound by these Terms and Conditions and all applicable laws and regulations in the Kingdom of Bhutan. If you do not agree with any of these terms, you are prohibited from using or accessing this site."
-    },
-    {
-        icon: Scale,
-        title: "2. Real Estate Services",
-        content: "Phojaa Real Estate acts as a facilitator connecting property buyers and sellers. While we strive for accuracy, all property listings, descriptions, dimensions, and prices are provided for informational purposes only. Users are advised to verify all details independently before entering into any legal or financial commitments."
-    },
-    {
-        icon: ShieldCheck,
-        title: "3. User Obligations",
-        content: "Users agree to provide accurate, current, and complete information when inquiries are made. You are prohibited from using the site for any unlawful purpose or to solicit others to perform or participate in any unlawful acts as per the laws of Bhutan."
-    },
-    {
-        icon: Anchor,
-        title: "4. Property Transactions",
-        content: "All property transactions facilitated through our platform must comply with the Land Act of Bhutan and other relevant property laws. Phojaa Real Estate is not responsible for any disputes arising from transactions between buyers and sellers, although we provide guidance and facilitation services."
-    },
-    {
-        icon: Gavel,
-        title: "5. Intellectual Property",
-        content: "The content, layout, design, data, and graphics on this website are protected by Bhutanese and international intellectual property laws. Content may not be reproduced, downloaded, or distributed without express written permission from Phojaa Real Estate."
-    },
-    {
-        icon: AlertCircle,
-        title: "6. Limitation of Liability",
-        content: "In no event shall Phojaa Real Estate or its partners be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on our website."
-    }
+  {
+    icon: FileText,
+    title: "Acceptance of terms.",
+    content:
+      "By accessing and using this website, you agree to be bound by these Terms and Conditions and all applicable laws and regulations in the Kingdom of Bhutan.",
+  },
+  {
+    icon: Scale,
+    title: "Real estate services.",
+    content:
+      "We act as a facilitator connecting property buyers and sellers. All listings are provided for informational purposes; verify details independently before any commitment.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "User obligations.",
+    content:
+      "Users agree to provide accurate information when making inquiries and may not use the site for unlawful purposes or in violation of any local or international laws.",
+  },
+  {
+    icon: Anchor,
+    title: "Property transactions.",
+    content:
+      "Transactions must comply with the Land Act of Bhutan and other relevant property laws. We strongly advise consulting a qualified legal professional before any commitment.",
+  },
+  {
+    icon: Gavel,
+    title: "Intellectual property.",
+    content:
+      "Site content — text, images, logos, designs — may not be reproduced or distributed without express written permission of PHOJAA95 Real Estate.",
+  },
+  {
+    icon: AlertCircle,
+    title: "Limitation of liability.",
+    content:
+      "PHOJAA95 Real Estate is not liable for any direct or indirect damages arising from the use of this site or from any property transaction.",
+  },
 ];
 
 export default function TermsPage() {
-    return (
-        <div className="min-h-screen bg-[#F9F7F2] dark:bg-background pt-28 pb-20">
-            <div className="absolute inset-0 bg-thangka opacity-[0.02] pointer-events-none" />
+  return (
+    <main className="bg-background">
+      <PageHero
+        eyebrow="Legal"
+        title="Terms & conditions."
+        subtitle="Please read these terms carefully before using the PHOJAA95 Real Estate website or services."
+        breadcrumbs={[{ label: "Terms" }]}
+      />
 
-            <div className="max-w-4xl mx-auto px-4 relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-center mb-16"
-                >
-                    <div className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[10px] font-bold uppercase tracking-[0.3em] mb-6">
-                        Legal Information
-                    </div>
-                    <h1 className="font-serif text-3xl md:text-5xl font-bold text-bhutan-dark dark:text-foreground mb-6">
-                        Terms & <span className="text-bhutan-red italic font-light">Conditions</span>
-                    </h1>
-                    <p className="text-bhutan-dark/50 dark:text-muted-foreground font-light max-w-2xl mx-auto italic">
-                        Last updated: March 11, 2026. Please read these rules and regulations carefully before using our services.
+      <section className="section-y-sm">
+        <div className="container-apple">
+          <div className="space-y-4">
+            {sections.map((section, i) => (
+              <motion.article
+                key={section.title}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.5, delay: i * 0.04 }}
+                className="bg-fog rounded-apple-lg p-6 sm:p-8"
+              >
+                <div className="flex items-start gap-4">
+                  <span className="w-11 h-11 rounded-full bg-white shadow-soft text-foreground flex items-center justify-center shrink-0">
+                    <section.icon className="w-4 h-4" strokeWidth={1.75} />
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="font-semibold text-[20px] sm:text-[22px] tracking-tighter2 leading-tight2 text-foreground">
+                      {section.title}
+                    </h2>
+                    <p className="mt-2 text-[15px] sm:text-[16px] text-ink-500 leading-snug2">
+                      {section.content}
                     </p>
-                </motion.div>
-
-                <div className="space-y-8">
-                    {sections.map((section, idx) => (
-                        <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
-                             className="bg-white dark:bg-card rounded-2xl p-6 md:p-8 border border-bhutan-gold/10 dark:border-white/5 hover:border-bhutan-red/20 transition-all shadow-sm group"
-                        >
-                            <div className="flex items-start gap-6">
-                                <div className="w-12 h-12 rounded-xl bg-bhutan-red/5 flex items-center justify-center flex-shrink-0 group-hover:bg-bhutan-red transition-colors duration-500">
-                                    <section.icon className="w-6 h-6 text-bhutan-red group-hover:text-white transition-colors" />
-                                </div>
-                                <div className="flex-1">
-                                    <h2 className="font-serif text-xl font-bold text-bhutan-dark dark:text-foreground mb-3 group-hover:text-bhutan-red transition-colors">
-                                        {section.title}
-                                    </h2>
-                                    <p className="text-bhutan-dark/70 dark:text-muted-foreground leading-relaxed font-light">
-                                        {section.content}
-                                    </p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
+                  </div>
                 </div>
+              </motion.article>
+            ))}
+          </div>
 
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="mt-16 p-8 bg-bhutan-dark rounded-3xl text-center text-white relative overflow-hidden"
-                >
-                    <div className="absolute inset-0 bg-thangka opacity-[0.05] pointer-events-none" />
-                    <h3 className="font-serif text-2xl font-bold mb-4 relative z-10">Questions regarding our terms?</h3>
-                    <p className="text-white/60 font-light mb-8 relative z-10">We are here to clear any doubts about our property services and policies.</p>
-                    <a
-                        href="/contact"
-                        className="inline-block px-8 py-4 bg-bhutan-red text-white text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-white hover:text-bhutan-red transition-all relative z-10"
-                    >
-                        Contact Legal representative
-                    </a>
-                </motion.div>
-            </div>
+          <div className="mt-12 pt-10 border-t border-ink-100 dark:border-ink-700/40 text-center">
+            <p className="text-[13px] text-ink-500">
+              Last updated: 20 May 2026
+            </p>
+            <p className="mt-6 text-[15px] text-ink-500 max-w-md mx-auto">
+              Questions about these terms? Reach out — we&apos;re happy to clarify.
+            </p>
+            <Link href="/contact" className="btn-secondary mt-6">
+              Contact us
+            </Link>
+          </div>
         </div>
-    );
+      </section>
+    </main>
+  );
 }

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Settings from "@/models/Settings";
 import { verifyToken } from "@/lib/jwt";
+import { landCalculatorSchema } from "@/lib/validation";
+import { getAdminToken } from "@/lib/auth";
 
 const DEFAULT_CALC = {
     pricePerDecimal: 500000,
@@ -13,7 +15,7 @@ const DEFAULT_CALC = {
 // GET /api/admin/land-calculator
 export async function GET(request: NextRequest) {
     try {
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         if (!token) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
@@ -29,15 +31,16 @@ export async function GET(request: NextRequest) {
         }
 
         return NextResponse.json({ success: true, data: settings.value });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }
 
 // PUT /api/admin/land-calculator
 export async function PUT(request: NextRequest) {
     try {
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         if (!token) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
@@ -49,14 +52,24 @@ export async function PUT(request: NextRequest) {
         await connectDB();
         const body = await request.json();
 
+        // Validate with Zod
+        const validationResult = landCalculatorSchema.safeParse(body);
+        if (!validationResult.success) {
+            return NextResponse.json(
+                { success: false, error: "Validation failed", details: validationResult.error.format() },
+                { status: 400 }
+            );
+        }
+
         const settings = await Settings.findOneAndUpdate(
             { key: "land_calculator" },
-            { $set: { value: body } },
+            { $set: { value: validationResult.data } },
             { upsert: true, new: true }
         );
 
         return NextResponse.json({ success: true, data: settings.value });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }

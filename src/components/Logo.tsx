@@ -21,8 +21,8 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
         xl: "w-14 h-14 md:w-20 md:h-20",
     };
 
-    const firstWord = settings.siteName.split(" ")[0];
-    const otherWords = settings.siteName.split(" ").slice(1).join(" ");
+    const firstWord = settings?.siteName?.split(" ")[0] || "Phojaa";
+    const otherWords = settings?.siteName?.split(" ").slice(1).join(" ") || "";
 
     return (
         <div className={cn("flex items-center gap-2 md:gap-3", className)}>
@@ -32,7 +32,7 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
                 className={cn(
                     "relative rounded-full overflow-hidden border shadow-lg flex-shrink-0 bg-white",
                     sizes[size],
-                    dark ? "border-bhutan-gold/30" : "border-bhutan-green/20"
+                    dark ? "border-white/20" : "border-ink-200"
                 )}
             >
                 <Image
@@ -42,7 +42,6 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
                     className="object-cover"
                     priority
                 />
-                {/* Shine animation */}
                 <motion.div
                     animate={{
                         left: ["-100%", "200%"],
@@ -60,23 +59,21 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
             {showText && (
                 <div className="flex flex-col min-w-0">
                     <h1 className={cn(
-                        "font-serif font-bold leading-[1.1] md:leading-[1.1] tracking-tight",
+                        "font-serif font-bold leading-[1.1] md:leading-[1.1] tracking-tight text-foreground",
                         size === "sm" ? "text-[11px] md:text-sm" :
                             size === "md" ? "text-base md:text-xl" :
-                                "text-lg sm:text-2xl md:text-4xl lg:text-5xl",
-                        "text-bhutan-green"
+                                "text-lg sm:text-2xl md:text-4xl lg:text-5xl"
                     )}>
                         {firstWord}
                         {otherWords && (
-                            <span className="text-bhutan-green ml-1">
+                            <span className="text-ink-500 ml-1">
                                 {otherWords}
                             </span>
                         )}
                     </h1>
                     <p className={cn(
-                        "font-bold uppercase tracking-[0.05em] sm:tracking-[0.1em] md:tracking-[0.2em] whitespace-nowrap",
-                        size === "sm" ? "text-[6px] md:text-[7px]" : "text-[7px] sm:text-[8px] md:text-[10px]",
-                        "text-bhutan-green"
+                        "font-bold uppercase tracking-[0.05em] sm:tracking-[0.1em] md:tracking-[0.2em] whitespace-nowrap text-ink-400",
+                        size === "sm" ? "text-[6px] md:text-[7px]" : "text-[7px] sm:text-[8px] md:text-[10px]"
                     )}>
                         Bhutan Property
                     </p>

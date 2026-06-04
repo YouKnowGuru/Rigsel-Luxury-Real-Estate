@@ -1,116 +1,347 @@
 "use client";
 
+import type { ElementType } from "react";
 import Link from "next/link";
 import NextImage from "next/image";
 import { motion } from "framer-motion";
-import { Home, Building2, TreePine, Store, Hotel, ArrowRight } from "lucide-react";
+import {
+  Home,
+  Building2,
+  TreePine,
+  Store,
+  Hotel,
+  ArrowRight,
+  LayoutGrid,
+} from "lucide-react";
+import useSWR from "swr";
+import { fetcher, ApiResponse } from "@/lib/fetcher";
+import { cn } from "@/lib/utils";
 
-const categories = [
-  {
-    id: "apartment",
-    name: "Apartment",
-    icon: Building2,
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800",
-    count: 89,
-  },
-  {
-    id: "house",
-    name: "House",
+type PropertyTypeWithCount = {
+  _id: string;
+  name: string;
+  slug: string;
+  listingCount?: number;
+};
+
+type CategoryMeta = {
+  icon: ElementType;
+  image: string;
+  label: string;
+  tagline: string;
+  accent: string;
+  /** Bento grid placement on lg+ */
+  bento: string;
+};
+
+const categoryMeta: Record<string, CategoryMeta> = {
+  house: {
     icon: Home,
-    image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800",
-    count: 150,
+    image: "/image/bhutan/houses.png",
+    label: "Houses",
+    tagline: "Homes & traditional villas",
+    accent: "from-sky/80 to-sky/20",
+    bento: "lg:col-span-7 lg:row-span-2 min-h-[280px] lg:min-h-[420px]",
   },
-  {
-    id: "land",
-    name: "Land",
+  apartment: {
+    icon: Building2,
+    image: "/image/bhutan/apartments.png",
+    label: "Apartments",
+    tagline: "Urban flats & studios",
+    accent: "from-violet-500/70 to-violet-500/10",
+    bento: "lg:col-span-5 min-h-[200px] lg:min-h-[200px]",
+  },
+  land: {
     icon: TreePine,
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800",
-    count: 120,
+    image: "/image/bhutan/land.png",
+    label: "Land",
+    tagline: "Plots & valley estates",
+    accent: "from-emerald/70 to-emerald/10",
+    bento: "lg:col-span-4 min-h-[200px]",
   },
-  {
-    id: "commercial",
-    name: "Commercial",
+  commercial: {
     icon: Store,
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800",
-    count: 45,
+    image: "/image/bhutan/commercial.png",
+    label: "Commercial",
+    tagline: "Shops & offices",
+    accent: "from-amber/70 to-amber/10",
+    bento: "lg:col-span-4 min-h-[200px]",
   },
-  {
-    id: "hotel",
-    name: "Hotel",
+  hotel: {
     icon: Hotel,
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800",
-    count: 12,
+    image: "/image/bhutan/hotels.png",
+    label: "Hotels",
+    tagline: "Hospitality & stays",
+    accent: "from-rose/70 to-rose/10",
+    bento: "lg:col-span-4 min-h-[200px]",
   },
-];
+  villa: {
+    icon: Home,
+    image: "/image/bhutan/houses.png",
+    label: "Villas",
+    tagline: "Premium residences",
+    accent: "from-sky/70 to-sky/10",
+    bento: "lg:col-span-4 min-h-[200px]",
+  },
+};
+
+const FEATURED_CATEGORY_SLUGS = [
+  "house",
+  "apartment",
+  "land",
+  "commercial",
+  "hotel",
+] as const;
+
+const defaultMeta: CategoryMeta = {
+  icon: Home,
+  image: "/image/bhutan/houses.png",
+  label: "Properties",
+  tagline: "Browse listings",
+  accent: "from-ink-900/70 to-transparent",
+  bento: "lg:col-span-4 min-h-[200px]",
+};
+
+function buildCategoryList(apiTypes: PropertyTypeWithCount[]) {
+  const bySlug = new Map(apiTypes.map((t) => [t.slug.toLowerCase(), t]));
+
+  const featured = FEATURED_CATEGORY_SLUGS.map((slug) => {
+    const api = bySlug.get(slug);
+    const meta = categoryMeta[slug];
+    return {
+      _id: api?._id ?? slug,
+      slug,
+      name: api?.name ?? meta.label,
+      listingCount: api?.listingCount ?? 0,
+    };
+  });
+
+  const extra = apiTypes
+    .filter(
+      (t) =>
+        !FEATURED_CATEGORY_SLUGS.includes(
+          t.slug.toLowerCase() as (typeof FEATURED_CATEGORY_SLUGS)[number]
+        ) && categoryMeta[t.slug.toLowerCase()]
+    )
+    .map((t) => ({
+      _id: t._id,
+      slug: t.slug.toLowerCase(),
+      name: t.name,
+      listingCount: t.listingCount ?? 0,
+    }));
+
+  return [...featured, ...extra];
+}
+
+function CategoryCard({
+  category,
+  meta,
+  index,
+  large,
+}: {
+  category: { _id: string; slug: string; name: string; listingCount: number };
+  meta: CategoryMeta;
+  index: number;
+  large?: boolean;
+}) {
+  const Icon = meta.icon;
+  const count = category.listingCount;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{
+        duration: 0.55,
+        delay: index * 0.05,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+      className={cn(
+        "relative snap-start shrink-0 w-[82vw] sm:w-auto sm:shrink",
+        meta.bento,
+        index === 0 && "sm:w-full"
+      )}
+    >
+      <Link
+        href={`/properties?type=${category.slug}`}
+        className={cn(
+          "group relative flex flex-col justify-end overflow-hidden rounded-apple-xl",
+          "h-full min-h-[220px] border border-ink-100/50 dark:border-ink-700/40",
+          "shadow-soft hover:shadow-elevated transition-all duration-500 no-tap",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky/50 focus-visible:ring-offset-2",
+          large && "min-h-[260px]"
+        )}
+      >
+        <NextImage
+          src={meta.image}
+          alt={category.name}
+          fill
+          sizes={
+            large
+              ? "(max-width: 1024px) 100vw, 55vw"
+              : "(max-width: 1024px) 85vw, 28vw"
+          }
+          className="object-cover transition-transform duration-[1.2s] ease-apple-out group-hover:scale-[1.04]"
+        />
+
+        <div
+          className={`absolute inset-0 bg-gradient-to-t opacity-90 transition-opacity duration-500 group-hover:opacity-100 ${meta.accent}`}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-black/10" />
+
+        <div className="absolute top-4 left-4 right-4 flex items-start justify-between gap-2 z-10">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-[11px] font-semibold">
+            <Icon className="w-3.5 h-3.5" strokeWidth={2} />
+            {category.name}
+          </span>
+          <span
+            className={cn(
+              "px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider backdrop-blur-md border",
+              count > 0
+                ? "bg-white/20 border-white/25 text-white"
+                : "bg-black/30 border-white/10 text-white/70"
+            )}
+          >
+            {count > 0 ? `${count} live` : "Coming soon"}
+          </span>
+        </div>
+
+        <div className="relative z-10 p-5 sm:p-6">
+          <h3
+            className={cn(
+              "font-semibold tracking-tighter2 text-white leading-tight2",
+              large
+                ? "text-[28px] sm:text-[36px] lg:text-[42px]"
+                : "text-[22px] sm:text-[26px]"
+            )}
+          >
+            {meta.label}
+          </h3>
+          <p
+            className={cn(
+              "mt-1 text-white/75 leading-snug2",
+              large ? "text-[15px] sm:text-[17px] max-w-md" : "text-[13px] sm:text-[14px]"
+            )}
+          >
+            {meta.tagline}
+          </p>
+          <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-white/90 group-hover:text-white transition-colors">
+            Browse {meta.label.toLowerCase()}
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
 
 export function PropertyCategories() {
+  const { data } = useSWR<ApiResponse<PropertyTypeWithCount[]>>(
+    "/api/property-types?counts=true",
+    fetcher,
+    { revalidateOnFocus: false, dedupingInterval: 120000 }
+  );
+
+  const types = buildCategoryList(data?.data ?? []);
+
   return (
-    <section className="section-padding bg-white dark:bg-[#111214] relative overflow-hidden">
-      {/* Decorative Divider */}
-      <div className="absolute top-0 left-0 right-0 flex justify-center py-4">
-        <span className="text-bhutan-gold/40 tracking-widest text-lg font-serif">────────── ✦ ──────────</span>
+    <section className="relative section-y overflow-hidden content-visibility-auto">
+      <div
+        className="absolute inset-0 -z-10 pointer-events-none"
+        aria-hidden
+      >
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-sky/[0.06] rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[300px] bg-bhutan-gold/[0.04] rounded-full blur-[80px]" />
       </div>
 
-      <div className="container-luxury relative z-10 w-full max-w-7xl mx-auto">
-        {/* Centered Heading */}
-        <div className="text-center mb-16">
-          <motion.h2
+      <div className="container-apple-wide">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-10 mb-10 sm:mb-12">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark dark:text-white mb-4"
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-2xl"
           >
-            Browse By Property Type
-          </motion.h2>
+            <p className="inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-sky mb-4">
+              <LayoutGrid className="w-3.5 h-3.5" strokeWidth={2} />
+              Property types
+            </p>
+            <h2
+              className="font-semibold tracking-tighter3 leading-tighter text-foreground text-balance"
+              style={{ fontSize: "clamp(2rem, 1.5rem + 2.5vw, 3.75rem)" }}
+            >
+              Every way to own Bhutan.
+              <span className="block text-ink-400 font-semibold">
+                Start with what fits you.
+              </span>
+            </h2>
+            <p className="mt-4 text-[16px] sm:text-[18px] text-ink-500 leading-snug2 max-w-xl text-pretty">
+              Homes, land, commercial space, and hospitality — each collection is
+              curated for how people actually buy and build in the kingdom.
+            </p>
+          </motion.div>
+
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="w-24 h-1 bg-bhutan-gold mx-auto rounded-full"
-          />
+            transition={{ duration: 0.5, delay: 0.08 }}
+            className="flex flex-wrap gap-2 lg:justify-end"
+          >
+            {types.map((t) => {
+              const meta = categoryMeta[t.slug] ?? defaultMeta;
+              const Icon = meta.icon;
+              return (
+                <Link
+                  key={t.slug}
+                  href={`/properties?type=${t.slug}`}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-medium bg-card border border-ink-100/80 dark:border-ink-700/50 text-ink-600 hover:text-foreground hover:border-sky/30 hover:bg-sky/[0.04] transition-all no-tap"
+                >
+                  <Icon className="w-3.5 h-3.5 text-sky" strokeWidth={2} />
+                  {meta.label}
+                  {t.listingCount > 0 && (
+                    <span className="text-[11px] tabular-nums text-ink-400">
+                      {t.listingCount}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+            <Link href="/properties" className="btn-secondary text-[13px] !py-2 !px-4">
+              All listings
+              <ArrowRight className="w-3.5 h-3.5 ml-1 inline" />
+            </Link>
+          </motion.div>
         </div>
 
-        {/* Categories Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 lg:gap-8">
-          {categories.map((category, index) => (
-            <motion.div
-              key={category.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="relative group overflow-hidden rounded-2xl md:rounded-[2rem] shadow-soft dark:shadow-lg dark:shadow-black/20 hover:shadow-2xl transition-all duration-500 bg-white dark:bg-[#1B1E23]"
-            >
-              <Link href={`/properties?type=${category.id}`} className="block w-full h-40 md:h-64 lg:h-80 relative">
-                {/* Background Image */}
-                <NextImage
-                  src={category.image}
-                  alt={category.name}
-                  fill
-                  className="object-cover transition-transform duration-[1.5s] group-hover:scale-110 ease-out"
-                />
+        {/* Mobile: horizontal snap */}
+        <div
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide lg:hidden"
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          {types.map((category, i) => (
+            <CategoryCard
+              key={category._id}
+              category={{ ...category, listingCount: category.listingCount ?? 0 }}
+              meta={categoryMeta[category.slug] ?? defaultMeta}
+              index={i}
+              large={i === 0}
+            />
+          ))}
+        </div>
 
-                {/* Overlays */}
-                <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark/90 via-bhutan-dark/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-700" />
-
-                {/* Content */}
-                <div className="absolute inset-0 p-3 md:p-6 flex flex-col justify-end text-center items-center">
-                  <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-white/20 backdrop-blur-md border border-white/20 flex items-center justify-center mb-2 md:mb-4 group-hover:bg-bhutan-red group-hover:scale-110 group-hover:border-bhutan-red transition-all duration-500 shadow-lg">
-                    <category.icon className="w-5 h-5 md:w-8 md:h-8 text-white relative z-10" />
-                  </div>
-
-                  <h3 className="font-serif text-base md:text-2xl font-bold text-white mb-1 tracking-wide line-clamp-1">
-                    {category.name}
-                  </h3>
-
-                  <div className="flex items-center gap-1 md:gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0 text-bhutan-gold text-[9px] md:text-sm font-bold uppercase tracking-widest mt-1 md:mt-2">
-                    Explore <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
+        {/* Desktop: bento mosaic */}
+        <div className="hidden lg:grid lg:grid-cols-12 gap-4 auto-rows-fr">
+          {types.map((category, i) => (
+            <CategoryCard
+              key={category._id}
+              category={{ ...category, listingCount: category.listingCount ?? 0 }}
+              meta={categoryMeta[category.slug] ?? defaultMeta}
+              index={i}
+              large={i === 0}
+            />
           ))}
         </div>
       </div>

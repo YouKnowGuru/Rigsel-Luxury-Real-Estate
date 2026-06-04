@@ -16,32 +16,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     useEffect(() => {
         if (!isLoginPage) {
             fetchStats();
-            // Poll every 15 seconds for new messages
-            const interval = setInterval(fetchStats, 15000);
+            const interval = setInterval(fetchStats, 60000);
             return () => clearInterval(interval);
         }
     }, [isLoginPage]);
 
     const fetchStats = async () => {
         try {
-            const token = localStorage.getItem("adminToken");
-            if (!token) return;
-            const res = await fetch("/api/admin/stats", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await fetch("/api/admin/stats");
             const data = await res.json();
             if (data.success) {
                 const newCount = data.data.unreadInquiries || 0;
-
-                // If count increased, show toast
-                if (newCount > unreadCount) {
+                const prevCount = unreadCount;
+                if (newCount > prevCount) {
                     toast({
                         title: "New Inquiry",
                         description: `You have ${newCount} unread message${newCount > 1 ? 's' : ''}.`,
-                        variant: "success",
                     });
                 }
-
                 setUnreadCount(newCount);
                 setRecentInquiries(data.data.recentInquiries || []);
             }
@@ -51,15 +43,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     };
 
     if (isLoginPage) {
-        return <div className="min-h-screen bg-bhutan-dark">{children}</div>;
+        return <div className="min-h-screen bg-fog-light dark:bg-card font-sans">{children}</div>;
     }
 
     return (
-        <div className="min-h-screen bg-[#F9F7F2] flex">
+        <div className="min-h-screen bg-fog-light dark:bg-card flex font-sans antialiased">
             <AdminSidebar unreadCount={unreadCount} />
-            <div className="flex-1 flex flex-col min-h-screen lg:ml-64 transition-all duration-300">
+            <div className="flex-1 flex flex-col min-h-screen lg:ml-64 transition-all duration-300 ease-apple">
                 <AdminTopNav unreadCount={unreadCount} recentInquiries={recentInquiries} />
-                <main className="flex-1 overflow-auto">
+                <main className="flex-1 overflow-auto min-h-0">
                     {children}
                 </main>
             </div>

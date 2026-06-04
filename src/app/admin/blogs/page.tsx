@@ -11,7 +11,6 @@ import {
     Edit,
     Trash2,
     Eye,
-    Filter,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,13 +35,8 @@ export default function BlogListPage() {
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
-        const token = localStorage.getItem("adminToken");
-        if (!token) {
-            router.push("/admin");
-        } else {
-            fetchBlogs();
-        }
-    }, [router]);
+        fetchBlogs();
+    }, []);
 
     const fetchBlogs = async () => {
         try {
@@ -65,7 +59,6 @@ export default function BlogListPage() {
             const response = await fetch(`/api/blogs/${id}`, {
                 method: "DELETE",
                 headers: {
-                    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
                 },
             });
 
@@ -91,16 +84,14 @@ export default function BlogListPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-[#F9F7F2] flex items-center justify-center">
-                <div className="animate-spin w-8 h-8 border-4 border-bhutan-red border-t-transparent rounded-full" />
+            <div className="min-h-screen bg-fog-light flex items-center justify-center">
+                <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
             </div>
         );
     }
 
     return (
         <div className="p-4 md:p-8 lg:p-10 max-w-[1500px] mx-auto min-h-screen">
-            <div className="fixed inset-0 bg-thangka opacity-[0.015] pointer-events-none" />
-
             {/* Header */}
             <header className="mb-6 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
                 <div>
@@ -109,15 +100,15 @@ export default function BlogListPage() {
                         animate={{ opacity: 1, x: 0 }}
                         className="flex items-center gap-2 mb-2"
                     >
-                        <div className="w-0.5 h-6 bg-bhutan-red rounded-full" />
-                        <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">Insights</p>
+                        <div className="w-0.5 h-6 bg-sky rounded-full" />
+                        <p className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em]">Insights</p>
                     </motion.div>
                     <motion.h2
                         initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-3xl md:text-4xl font-bold text-bhutan-dark leading-tight"
+                        className="text-[28px] font-semibold text-foreground tracking-tight"
                     >
-                        Manage <span className="text-bhutan-gold italic font-light">Blogs</span>
+                        Manage Blogs
                     </motion.h2>
                 </div>
 
@@ -125,11 +116,12 @@ export default function BlogListPage() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                 >
-                    <Link href="/admin/blogs/new">
-                        <button className="h-12 md:h-14 px-6 bg-bhutan-red text-white text-[9px] font-bold uppercase tracking-[0.3em] rounded-xl hover:bg-bhutan-dark transition-all duration-500 shadow-xl shadow-bhutan-red/10 flex items-center gap-3 group">
-                            <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-                            New Blog Post
-                        </button>
+                    <Link
+                        href="/admin/blogs/new"
+                        className="h-12 md:h-14 px-6 bg-sky text-white rounded-full hover:bg-sky-hover transition-all duration-300 flex items-center gap-3 group"
+                    >
+                        <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" strokeWidth={1.5} />
+                        New Blog Post
                     </Link>
                 </motion.div>
             </header>
@@ -137,12 +129,12 @@ export default function BlogListPage() {
             {/* Filters & Search */}
             <div className="mb-8 flex flex-col md:flex-row gap-4 items-center relative z-10">
                 <div className="relative flex-1 group w-full">
-                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-bhutan-dark/30 group-focus-within:text-bhutan-red transition-colors" />
+                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400 group-focus-within:text-sky transition-colors" strokeWidth={1.5} />
                     <Input
                         placeholder="Search by title..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="h-12 md:h-14 pl-12 rounded-xl bg-white border-white shadow-luxury focus:ring-bhutan-red/10 text-base"
+                        className="h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15 text-base"
                     />
                 </div>
             </div>
@@ -151,41 +143,41 @@ export default function BlogListPage() {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white/80 backdrop-blur-xl rounded-[1.5rem] md:rounded-[2rem] shadow-luxury border border-white overflow-hidden relative z-10"
+                className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft overflow-hidden relative z-10"
             >
                 <div className="overflow-x-auto">
                     <table className="w-full">
                         <thead>
-                            <tr className="bg-[#F9F7F2]/50 border-b border-bhutan-gold/5">
-                                <th className="px-6 py-4 text-left text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
+                            <tr className="bg-card/50 border-b border-ink-100/60">
+                                <th className="px-6 py-4 text-left text-sm font-medium text-ink-500 uppercase tracking-wider">
                                     Blog Details
                                 </th>
-                                <th className="px-6 py-4 text-left text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
+                                <th className="px-6 py-4 text-left text-sm font-medium text-ink-500 uppercase tracking-wider">
                                     Author
                                 </th>
-                                <th className="px-6 py-4 text-left text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
+                                <th className="px-6 py-4 text-left text-sm font-medium text-ink-500 uppercase tracking-wider">
                                     Date
                                 </th>
-                                <th className="px-6 py-4 text-left text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
+                                <th className="px-6 py-4 text-left text-sm font-medium text-ink-500 uppercase tracking-wider">
                                     Status
                                 </th>
-                                <th className="px-6 py-4 text-right text-sm font-bold text-bhutan-dark/40 uppercase tracking-widest border-b border-bhutan-gold/5">
+                                <th className="px-6 py-4 text-right text-sm font-medium text-ink-500 uppercase tracking-wider">
                                     Actions
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-bhutan-gold/5">
+                        <tbody className="divide-y divide-ink-100/60">
                             {filteredBlogs.map((blog, idx) => (
                                 <motion.tr
                                     key={blog._id}
                                     initial={{ opacity: 0, x: -5 }}
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.05 * idx }}
-                                    className="hover:bg-[#F9F7F2]/30 transition-colors group"
+                                    className="hover:bg-card/40 transition-colors group"
                                 >
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-lg border border-white group-hover:scale-105 transition-transform duration-500 shrink-0">
+                                            <div className="w-12 h-12 rounded-xl overflow-hidden border border-ink-100/60 group-hover:scale-105 transition-transform duration-500 shrink-0">
                                                 <img
                                                     src={blog.coverImage}
                                                     alt={blog.title}
@@ -193,25 +185,25 @@ export default function BlogListPage() {
                                                 />
                                             </div>
                                             <div className="min-w-0">
-                                                <h4 className="text-base font-bold text-bhutan-dark truncate leading-tight group-hover:text-bhutan-red transition-colors">
+                                                <h4 className="text-base font-medium text-foreground truncate leading-tight group-hover:text-sky transition-colors">
                                                     {blog.title}
                                                 </h4>
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-bhutan-dark/60 font-medium">
+                                    <td className="px-6 py-4 text-sm text-ink-600 font-medium">
                                         {blog.author}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-bhutan-dark/60 italic">
+                                    <td className="px-6 py-4 text-sm text-ink-600">
                                         {new Date(blog.createdAt).toLocaleDateString()}
                                     </td>
                                     <td className="px-6 py-4">
                                         <span
                                             className={cn(
-                                                "px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border transition-all",
+                                                "px-3 py-1 rounded-full text-xs font-medium uppercase tracking-wider border transition-all",
                                                 blog.published
-                                                    ? "bg-emerald-500 text-white border-emerald-500/5 shadow-md shadow-emerald-500/5"
-                                                    : "bg-bhutan-gold/10 text-bhutan-gold border-bhutan-gold/20"
+                                                    ? "bg-emerald-500 text-white border-emerald-500/20"
+                                                    : "bg-ink-100 text-ink-600 border-ink-200"
                                             )}
                                         >
                                             {blog.published ? "Published" : "Draft"}
@@ -219,21 +211,24 @@ export default function BlogListPage() {
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex items-center justify-end gap-2">
-                                            <Link href={`/blog/${blog.slug}`} target="_blank">
-                                                <button className="w-9 h-9 rounded-lg bg-white border border-black/5 flex items-center justify-center text-bhutan-dark/20 hover:bg-bhutan-dark hover:text-white transition-all duration-300 shadow-sm">
-                                                    <Eye className="w-4 h-4" />
-                                                </button>
+                                            <Link
+                                                href={`/blog/${blog.slug}`}
+                                                target="_blank"
+                                                className="w-9 h-9 rounded-[14px] bg-card border border-ink-200 flex items-center justify-center text-ink-400 hover:text-foreground hover:border-sky transition-all duration-300"
+                                            >
+                                                <Eye className="w-4 h-4" strokeWidth={1.5} />
                                             </Link>
-                                            <Link href={`/admin/blogs/${blog._id}/edit`}>
-                                                <button className="w-9 h-9 rounded-lg bg-white border border-black/5 flex items-center justify-center text-bhutan-gold/30 hover:bg-bhutan-gold hover:text-white transition-all duration-300 shadow-sm">
-                                                    <Edit className="w-4 h-4" />
-                                                </button>
+                                            <Link
+                                                href={`/admin/blogs/${blog._id}/edit`}
+                                                className="w-9 h-9 rounded-[14px] bg-card border border-ink-200 flex items-center justify-center text-ink-400 hover:text-foreground hover:border-sky transition-all duration-300"
+                                            >
+                                                <Edit className="w-4 h-4" strokeWidth={1.5} />
                                             </Link>
                                             <button
                                                 onClick={() => handleDelete(blog._id)}
-                                                className="w-9 h-9 rounded-lg bg-white border border-black/5 flex items-center justify-center text-bhutan-red/30 hover:bg-bhutan-red hover:text-white transition-all duration-300 shadow-sm"
+                                                className="w-9 h-9 rounded-[14px] bg-card border border-ink-200 flex items-center justify-center text-ink-400 hover:text-red-500 hover:border-red-300 transition-all duration-300"
                                             >
-                                                <Trash2 className="w-4 h-4" />
+                                                <Trash2 className="w-4 h-4" strokeWidth={1.5} />
                                             </button>
                                         </div>
                                     </td>
@@ -245,10 +240,10 @@ export default function BlogListPage() {
 
                 {filteredBlogs.length === 0 && (
                     <div className="text-center py-20">
-                        <div className="w-16 h-16 bg-[#F9F7F2] rounded-full flex items-center justify-center mx-auto mb-4">
-                            <Newspaper className="w-8 h-8 text-bhutan-dark/5" />
+                        <div className="w-16 h-16 bg-card rounded-full flex items-center justify-center mx-auto mb-4">
+                            <Newspaper className="w-8 h-8 text-ink-300" strokeWidth={1.5} />
                         </div>
-                        <p className="text-bhutan-dark/20 text-[8px] font-bold uppercase tracking-[0.3em]">No Blogs Found</p>
+                        <p className="text-ink-400 text-sm font-medium">No Blogs Found</p>
                     </div>
                 )}
             </motion.div>

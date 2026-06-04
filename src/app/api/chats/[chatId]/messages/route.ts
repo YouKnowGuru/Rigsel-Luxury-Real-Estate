@@ -4,7 +4,9 @@ import Chat from "@/models/Chat";
 import Message from "@/models/Message";
 import mongoose from "mongoose";
 import { verifyToken } from "@/lib/jwt";
-import { cookies } from "next/headers";
+import { messageSchema } from "@/lib/validation";
+import { checkRateLimit, getClientIP } from "@/lib/rate-limit";
+import { getAdminTokenFromRequest } from "@/lib/auth";
 
 export async function GET(
   req: Request,
@@ -26,8 +28,8 @@ export async function GET(
     const messages = await Message.find({ chatId }).sort({ createdAt: 1 });
 
     return NextResponse.json(messages, { status: 200 });
-  } catch (error: any) {
-    console.error("Error fetching messages:", error);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json(
       { error: "Failed to fetch messages" },
       { status: 500 }
@@ -40,40 +42,45 @@ export async function POST(
   { params }: { params: Promise<{ chatId: string }> }
 ) {
   try {
+    // Rate limit messages
+    const clientIP = getClientIP(req);
+    const rateLimit = await checkRateLimit(`messages_post_${clientIP}`, 30, 60 * 1000); // 30 per minute
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: "Too many messages. Please slow down." },
+        { status: 429 }
+      );
+    }
+
     await connectDB();
     const { chatId } = await params;
-    
+
     // Check token to see if admin is sending the message
-    const cookieStore = await cookies();
-    let token = cookieStore.get("adminToken")?.value;
-    
-    if (!token) {
-        const authHeader = req.headers.get("authorization");
-        if (authHeader && authHeader.startsWith("Bearer ")) {
-            token = authHeader.split(" ")[1];
-        }
-    }
-    
+    const token = await getAdminTokenFromRequest(req);
+
     let sender: "guest" | "admin" = "guest";
-    
+
     if (token) {
         try {
             const payload = await verifyToken(token);
             if (payload) {
                 sender = "admin";
             }
-        } catch(e) { /* ignore invalid token for sender determination */ }
+        } catch { /* ignore invalid token for sender determination */ }
     }
 
     const body = await req.json();
-    const { text } = body;
 
-    if (!text || typeof text !== "string" || text.trim().length === 0) {
+    // Validate with Zod
+    const validationResult = messageSchema.safeParse(body);
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: "Message text is required" },
+        { error: "Validation failed", details: validationResult.error.format() },
         { status: 400 }
       );
     }
+
+    const { text } = validationResult.data;
 
     if (!mongoose.Types.ObjectId.isValid(chatId)) {
       return NextResponse.json({ error: "Invalid Chat ID" }, { status: 400 });
@@ -101,8 +108,8 @@ export async function POST(
     await Chat.findByIdAndUpdate(chatId, { lastMessageAt: new Date() });
 
     return NextResponse.json(message, { status: 201 });
-  } catch (error: any) {
-    console.error("Error sending message:", error);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json(
       { error: "Failed to send message" },
       { status: 500 }

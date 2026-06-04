@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Property from "@/models/Property";
 import { verifyToken } from "@/lib/jwt";
+import { propertySchema } from "@/lib/validation";
+import { getAdminToken } from "@/lib/auth";
 
 // GET /api/properties/[id] - Get single property
 export async function GET(
@@ -25,10 +27,10 @@ export async function GET(
       success: true,
       data: property,
     });
-  } catch (error: any) {
-    console.error("Error fetching property:", error);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }
@@ -42,7 +44,7 @@ export async function PUT(
   try {
     const { id } = await params;
     // Verify admin token
-    const token = request.headers.get("authorization")?.split(" ")[1];
+    const token = await getAdminToken(request);
     if (!token) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
@@ -50,7 +52,7 @@ export async function PUT(
       );
     }
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json(
         { success: false, error: "Invalid token" },
@@ -62,9 +64,18 @@ export async function PUT(
 
     const body = await request.json();
 
+    // Validate with Zod (partial - allow partial updates)
+    const validationResult = propertySchema.partial().safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        { success: false, error: "Validation failed", details: validationResult.error.format() },
+        { status: 400 }
+      );
+    }
+
     const property = await Property.findByIdAndUpdate(
       id,
-      { ...body, updatedAt: new Date() },
+      { ...validationResult.data, updatedAt: new Date() },
       { new: true, runValidators: true }
     );
 
@@ -79,10 +90,10 @@ export async function PUT(
       success: true,
       data: property,
     });
-  } catch (error: any) {
-    console.error("Error updating property:", error);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }
@@ -96,7 +107,7 @@ export async function DELETE(
   try {
     const { id } = await params;
     // Verify admin token
-    const token = request.headers.get("authorization")?.split(" ")[1];
+    const token = await getAdminToken(request);
     if (!token) {
       return NextResponse.json(
         { success: false, error: "Unauthorized" },
@@ -104,7 +115,7 @@ export async function DELETE(
       );
     }
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) {
       return NextResponse.json(
         { success: false, error: "Invalid token" },
@@ -127,10 +138,10 @@ export async function DELETE(
       success: true,
       message: "Property deleted successfully",
     });
-  } catch (error: any) {
-    console.error("Error deleting property:", error);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }

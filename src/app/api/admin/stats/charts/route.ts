@@ -3,11 +3,12 @@ import connectDB from "@/lib/mongodb";
 import Property from "@/models/Property";
 import Contact from "@/models/Contact";
 import { verifyToken } from "@/lib/jwt";
+import { getAdminToken } from "@/lib/auth";
 
 // GET /api/admin/stats/charts - Get monthly chart data
 export async function GET(request: NextRequest) {
     try {
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         if (!token) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
@@ -80,8 +81,8 @@ export async function GET(request: NextRequest) {
         }
 
         return NextResponse.json({ success: true, data: months });
-    } catch (error: any) {
-        console.error("Error fetching chart data:", error);
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }

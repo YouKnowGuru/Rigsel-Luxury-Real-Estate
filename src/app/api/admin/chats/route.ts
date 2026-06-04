@@ -2,20 +2,12 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Chat from "@/models/Chat";
 import { verifyToken } from "@/lib/jwt";
-import { cookies } from "next/headers";
 import "@/models/Property"; // Needed to populate property
+import { getAdminTokenFromRequest } from "@/lib/auth";
 
 export async function GET(req: Request) {
   try {
-    const cookieStore = await cookies();
-    let token = cookieStore.get("adminToken")?.value;
-    
-    if (!token) {
-        const authHeader = req.headers.get("authorization");
-        if (authHeader && authHeader.startsWith("Bearer ")) {
-            token = authHeader.split(" ")[1];
-        }
-    }
+    const token = await getAdminTokenFromRequest(req);
 
     if (!token) {
         return NextResponse.json({ error: "Unauthorized - No token" }, { status: 401 });
@@ -39,8 +31,8 @@ export async function GET(req: Request) {
       .lean();
 
     return NextResponse.json(chats, { status: 200 });
-  } catch (error: any) {
-    console.error("Error fetching admin chats:", error);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json(
       { error: "Failed to fetch chats" },
       { status: 500 }

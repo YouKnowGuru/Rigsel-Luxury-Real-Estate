@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import PropertyType from "@/models/PropertyType";
 import { verifyToken } from "@/lib/jwt";
+import { propertyTypeSchema } from "@/lib/validation";
+import { getAdminToken } from "@/lib/auth";
 
 export async function GET() {
     try {
@@ -22,14 +24,15 @@ export async function GET() {
         }
 
         return NextResponse.json({ success: true, data: types });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }
 
 export async function POST(request: NextRequest) {
     try {
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         const decoded = token ? await verifyToken(token) : null;
         if (!token || !decoded) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
@@ -37,9 +40,20 @@ export async function POST(request: NextRequest) {
 
         await connectDB();
         const body = await request.json();
-        const propertyType = await PropertyType.create(body);
+
+        // Validate with Zod
+        const validationResult = propertyTypeSchema.safeParse(body);
+        if (!validationResult.success) {
+            return NextResponse.json(
+                { success: false, error: "Validation failed", details: validationResult.error.format() },
+                { status: 400 }
+            );
+        }
+
+        const propertyType = await PropertyType.create(validationResult.data);
         return NextResponse.json({ success: true, data: propertyType }, { status: 201 });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }

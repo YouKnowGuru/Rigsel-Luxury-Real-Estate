@@ -1,216 +1,175 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, memo } from "react";
+import useSWR from "swr";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, ChevronLeft, ChevronRight, Quote, Heart, Loader2, Plus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Star, ChevronLeft, ChevronRight, Loader2, Plus } from "lucide-react";
 import { Testimonial } from "@/types";
 import { ReviewForm } from "@/components/ReviewForm";
+import { SectionHeader } from "@/components/layout/SectionHeader";
+import { fetcher, ApiResponse } from "@/lib/fetcher";
+
+// Extracted star component to prevent remounts
+const StarRating = memo(function StarRating() {
+  return (
+    <div className="flex justify-center gap-1 mb-6">
+      {[1, 2, 3, 4, 5].map((s) => (
+        <Star
+          key={s}
+          className="w-4 h-4 fill-foreground text-foreground"
+          strokeWidth={0}
+        />
+      ))}
+    </div>
+  );
+});
 
 export function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch("/api/reviews");
-        const data = await response.json();
-        if (data.success) {
-          setTestimonials(data.data);
-        } else {
-          setError(data.error || "Failed to fetch reviews");
-        }
-      } catch (err) {
-        setError("An error occurred while fetching reviews");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // Use SWR for caching and deduplication
+  const { data, isLoading, error } = useSWR<ApiResponse<Testimonial[]>>(
+    "/api/reviews",
+    fetcher,
+    {
+      dedupingInterval: 60000,
+      revalidateOnFocus: false,
+    }
+  );
 
-    fetchReviews();
-  }, []);
+  const testimonials = data?.data || [];
 
-  const nextTestimonial = () => {
+  const next = () => {
     if (testimonials.length <= 1) return;
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    setCurrentIndex((p) => (p + 1) % testimonials.length);
   };
-
-  const prevTestimonial = () => {
+  const prev = () => {
     if (testimonials.length <= 1) return;
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    setCurrentIndex(
+      (p) => (p - 1 + testimonials.length) % testimonials.length
+    );
   };
 
   if (isLoading) {
     return (
-      <div className="py-24 flex flex-col items-center justify-center bg-white dark:bg-[#111214] min-h-[400px]">
-        <Loader2 className="w-12 h-12 text-bhutan-red animate-spin mb-4" />
-        <p className="text-bhutan-dark/40 dark:text-white/40 font-serif italic text-lg text-center px-6">Loading stories of happiness...</p>
-      </div>
+      <section className="section-y bg-fog content-visibility-auto">
+        <div className="container-apple flex flex-col items-center justify-center min-h-[260px]">
+          <Loader2 className="w-8 h-8 text-ink-400 animate-spin mb-3" />
+          <p className="text-ink-500 text-[14px]">Loading stories…</p>
+        </div>
+      </section>
     );
   }
 
-  if (error) {
-    return null;
-  }
+  if (error) return null;
 
   return (
-    <section className="py-24 md:py-32 bg-white dark:bg-[#111214] relative overflow-hidden">
-      {/* Background Decorative Element */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-[#F9F7F2] dark:bg-[#1B1E23] -skew-x-12 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-1/3 h-full bg-[#F9F7F2] dark:bg-[#1B1E23] -skew-x-12 -translate-x-1/2" />
+    <section className="section-y bg-fog content-visibility-auto">
+      <div className="container-apple">
+        <SectionHeader
+          eyebrow="Customer stories"
+          title="Loved by families across Bhutan."
+          subtitle="The people who trust us — in their own words."
+        />
 
-      <div className="container-luxury relative z-10 w-full max-w-7xl mx-auto px-6">
+        {testimonials.length > 0 ? (
+          <div className="relative">
+            <div className="bg-white dark:bg-card rounded-apple-xl border border-ink-100 dark:border-ink-700/40 px-6 py-12 sm:p-14 md:p-16 text-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentIndex}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <StarRating />
 
-        {/* Header Section */}
-        <div className="text-center mb-24">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="inline-block px-6 py-2 rounded-full bg-bhutan-red/10 dark:bg-bhutan-red/15 border border-bhutan-red/20 text-bhutan-red text-[10px] font-bold uppercase tracking-[0.4em] mb-6 shadow-sm"
-          >
-            Heartfelt Stories
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-bhutan-dark dark:text-white mb-6"
-          >
-            Happy <span className="text-bhutan-red italic font-light">Families</span>
-          </motion.h2>
-          <p className="text-bhutan-dark/60 dark:text-white/50 max-w-2xl mx-auto text-xl font-light leading-relaxed">
-            See why people across Bhutan trust us to help them find their perfect home.
-          </p>
-        </div>
+                  <blockquote className="font-semibold text-[clamp(1.25rem,1rem+1.25vw,2rem)] tracking-tighter2 leading-tight2 text-foreground max-w-3xl mx-auto text-balance">
+                    &ldquo;{testimonials[currentIndex].content}&rdquo;
+                  </blockquote>
 
-        {/* Testimonial Card */}
-        <div className="max-w-5xl mx-auto">
-          {testimonials.length > 0 ? (
-            <div className="relative pt-12">
-              {/* Large Decorative Quote Icon */}
-              <div className="absolute top-0 left-10 z-0">
-                <Quote className="w-40 h-40 text-bhutan-gold/10 -rotate-12" />
-              </div>
-
-              <div className="bg-[#F9F7F2] dark:bg-[#1B1E23] rounded-[2rem] md:rounded-[4rem] p-8 md:p-24 shadow-2xl border-4 border-white dark:border-white/5 relative overflow-hidden group">
-                {/* Pattern Background */}
-                <div className="absolute inset-0 bg-thangka opacity-[0.04] pointer-events-none group-hover:opacity-[0.06] transition-opacity duration-1000" />
-
-                {/* Top Accent Line */}
-                <div className="absolute top-0 left-1/4 right-1/4 h-1 bg-gradient-to-r from-transparent via-bhutan-gold/30 to-transparent" />
-
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={currentIndex}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative z-10"
-                  >
-                    <div className="flex flex-col items-center text-center">
-                      {/* Stars */}
-                      <div className="flex gap-2 mb-12">
-                        {[1, 2, 3, 4, 5].map((s) => (
-                          <Star key={s} className="w-8 h-8 fill-bhutan-gold text-bhutan-gold shadow-sm" />
-                        ))}
-                      </div>
-
-                      <blockquote className="text-xl md:text-3xl lg:text-4xl text-bhutan-dark dark:text-white font-serif font-bold italic mb-8 md:mb-16 leading-relaxed md:leading-tight max-w-4xl px-4 md:px-0">
-                        "{testimonials[currentIndex].content}"
-                      </blockquote>
-                      <div className="flex flex-col items-center">
-                        <div className="relative mb-4 md:mb-6">
-                          <div className="w-20 h-20 md:w-28 md:h-28 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border-4 border-white dark:border-white/10 shadow-2xl group-hover:scale-105 transition-transform duration-700">
-                            <img
-                              src={testimonials[currentIndex].avatar || "/image/user-placeholder.jpg"}
-                              alt={testimonials[currentIndex].name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          {/* Little Heart Badge */}
-                          <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-bhutan-red rounded-xl flex items-center justify-center shadow-xl border-2 border-white dark:border-[#1B1E23]">
-                            <Heart className="w-5 h-5 text-white fill-white" />
-                          </div>
-                        </div>
-
-                        <h4 className="text-2xl font-serif font-bold text-bhutan-dark dark:text-white mb-1">
-                          {testimonials[currentIndex].name}
-                        </h4>
-                        <div className="flex items-center gap-4">
-                          <span className="text-[10px] font-bold text-bhutan-red uppercase tracking-[0.3em]">
-                            {testimonials[currentIndex].role}
-                          </span>
-                          <div className="w-1.5 h-1.5 rounded-full bg-bhutan-gold/40" />
-                          <span className="text-[10px] font-bold text-bhutan-dark/40 dark:text-white/40 uppercase tracking-[0.3em]">
-                            {testimonials[currentIndex].location}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Controls (Custom Boutique Style) */}
-              <div className="flex flex-col md:flex-row justify-between items-center mt-16 gap-8 px-6">
-                <div className="flex gap-4">
-                  {testimonials.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentIndex(i)}
-                      className={`h-2 rounded-full transition-all duration-700 ${i === currentIndex ? "bg-bhutan-red w-16" : "bg-bhutan-gold/20 dark:bg-white/10 w-4 hover:bg-bhutan-gold/40 dark:hover:bg-white/20"
-                        }`}
+                  <div className="mt-10 flex items-center justify-center gap-3">
+                    <img
+                      src={
+                        testimonials[currentIndex].avatar ||
+                        "/image/user-placeholder.jpg"
+                      }
+                      alt={testimonials[currentIndex].name}
+                      className="w-11 h-11 rounded-full object-cover border border-ink-100"
                     />
-                  ))}
-                </div>
-                <div className="flex gap-6">
+                    <div className="text-left">
+                      <p className="text-[14px] font-semibold text-foreground">
+                        {testimonials[currentIndex].name}
+                      </p>
+                      <p className="text-[12px] text-ink-500">
+                        {testimonials[currentIndex].role} ·{" "}
+                        {testimonials[currentIndex].location}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {/* Controls */}
+            <div className="mt-6 flex items-center justify-between gap-4">
+              <div className="flex gap-1.5">
+                {testimonials.map((_, i) => (
                   <button
-                    onClick={prevTestimonial}
-                    className="w-16 h-16 rounded-2xl bg-white dark:bg-[#1B1E23] border-2 border-[#F9F7F2] dark:border-white/10 flex items-center justify-center text-bhutan-dark dark:text-white hover:bg-bhutan-red hover:text-white hover:border-bhutan-red transition-all duration-500 shadow-xl group"
-                  >
-                    <ChevronLeft className="w-8 h-8 group-hover:-translate-x-1 transition-transform" />
-                  </button>
-                  <button
-                    onClick={nextTestimonial}
-                    className="w-16 h-16 rounded-2xl bg-white dark:bg-[#1B1E23] border-2 border-[#F9F7F2] dark:border-white/10 flex items-center justify-center text-bhutan-dark dark:text-white hover:bg-bhutan-red hover:text-white hover:border-bhutan-red transition-all duration-500 shadow-xl group"
-                  >
-                    <ChevronRight className="w-8 h-8 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
+                    key={i}
+                    onClick={() => setCurrentIndex(i)}
+                    aria-label={`Go to testimonial ${i + 1}`}
+                    aria-current={i === currentIndex ? "true" : undefined}
+                    className={`h-1 rounded-full transition-all duration-fast ${
+                      i === currentIndex ? "bg-sky w-8" : "bg-ink-200 w-3"
+                    }`}
+                  />
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={prev}
+                  className="w-10 h-10 rounded-full bg-white dark:bg-card border border-ink-200 dark:border-ink-700 flex items-center justify-center text-foreground hover:bg-fog transition-colors no-tap"
+                  aria-label="Previous testimonial"
+                >
+                  <ChevronLeft className="w-4 h-4" strokeWidth={1.75} />
+                </button>
+                <button
+                  onClick={next}
+                  className="w-10 h-10 rounded-full bg-white dark:bg-card border border-ink-200 dark:border-ink-700 flex items-center justify-center text-foreground hover:bg-fog transition-colors no-tap"
+                  aria-label="Next testimonial"
+                >
+                  <ChevronRight className="w-4 h-4" strokeWidth={1.75} />
+                </button>
               </div>
             </div>
-          ) : (
-            <div className="text-center py-20 bg-[#F9F7F2] rounded-[3rem] border-2 border-dashed border-bhutan-gold/20">
-              <Heart className="w-16 h-16 text-bhutan-red/20 mx-auto mb-6" />
-              <h3 className="text-2xl font-serif font-bold text-bhutan-dark dark:text-foreground mb-4 italic">No stories yet</h3>
-              <p className="text-bhutan-dark/50 dark:text-muted-foreground max-w-md mx-auto mb-10">We haven't shared your happiness stories yet. Be the very first to share your legacy with us!</p>
-            </div>
-          )}
 
-          {/* Share Your Story Button */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-24 text-center"
-          >
-            <p className="text-bhutan-dark/40 dark:text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] mb-6">Have your own experience to share?</p>
-            <Button
+            <div className="mt-12 text-center">
+              <button
+                onClick={() => setIsReviewFormOpen(true)}
+                className="btn-secondary"
+              >
+                <Plus className="w-4 h-4" strokeWidth={2} />
+                Share your story
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="text-center py-16 max-w-md mx-auto">
+            <p className="text-ink-500 mb-6">
+              No stories yet — be the first to share your experience.
+            </p>
+            <button
               onClick={() => setIsReviewFormOpen(true)}
-              className="h-16 px-10 bg-bhutan-dark text-white rounded-2xl hover:bg-bhutan-red transition-all duration-500 group shadow-2xl"
+              className="btn-primary"
             >
-              <Plus className="w-5 h-5 mr-3 group-hover:rotate-90 transition-transform duration-500" />
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Share Your Story</span>
-            </Button>
-          </motion.div>
-        </div>
+              <Plus className="w-4 h-4" strokeWidth={2} />
+              Share your story
+            </button>
+          </div>
+        )}
       </div>
 
       <ReviewForm

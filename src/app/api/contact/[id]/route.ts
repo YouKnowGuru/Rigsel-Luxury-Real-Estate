@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Contact from "@/models/Contact";
 import { verifyToken } from "@/lib/jwt";
-import { sendEmail } from "@/lib/mail";
+import { getAdminToken } from "@/lib/auth";
 
 // GET /api/contact/[id] - Get single message
 export async function GET(
@@ -11,10 +11,10 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const token = request.headers.get("authorization")?.split(" ")[1];
+    const token = await getAdminToken(request);
     if (!token) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
 
     await connectDB();
@@ -22,8 +22,9 @@ export async function GET(
     if (!inquiry) return NextResponse.json({ success: false, error: "Inquiry not found" }, { status: 404 });
 
     return NextResponse.json({ success: true, data: inquiry });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
+    return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
   }
 }
 
@@ -34,21 +35,28 @@ export async function PATCH(
 ) {
   try {
     const { id } = await params;
-    const token = request.headers.get("authorization")?.split(" ")[1];
+    const token = await getAdminToken(request);
     if (!token) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
 
     await connectDB();
     const body = await request.json();
-    const inquiry = await Contact.findByIdAndUpdate(id, body, { new: true });
+
+    // Only allow specific fields to be updated
+    const allowedUpdates: Record<string, unknown> = {};
+    if (typeof body.isRead === "boolean") allowedUpdates.isRead = body.isRead;
+    if (typeof body.isReplied === "boolean") allowedUpdates.isReplied = body.isReplied;
+
+    const inquiry = await Contact.findByIdAndUpdate(id, { $set: allowedUpdates }, { new: true });
 
     if (!inquiry) return NextResponse.json({ success: false, error: "Inquiry not found" }, { status: 404 });
 
     return NextResponse.json({ success: true, data: inquiry });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
+    return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
   }
 }
 
@@ -59,17 +67,18 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    const token = request.headers.get("authorization")?.split(" ")[1];
+    const token = await getAdminToken(request);
     if (!token) return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
 
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     if (!decoded) return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
 
     await connectDB();
     await Contact.findByIdAndDelete(id);
 
     return NextResponse.json({ success: true, message: "Inquiry deleted successfully" });
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
+    return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
   }
 }

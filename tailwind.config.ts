@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
+import typography from "@tailwindcss/typography";
 
 const config: Config = {
   darkMode: ["class"],
@@ -9,6 +11,14 @@ const config: Config = {
     "./src/sections/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      xs: "475px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     extend: {
       colors: {
         border: "hsl(var(--border))",
@@ -44,48 +54,152 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Bhutan-inspired luxury colors
+        // Apple-style neutral palette ("ink" → text, "fog" → surfaces).
+        ink: {
+          DEFAULT: "#1D1D1F", // primary text
+          50: "#F5F5F7",
+          100: "#E8E8ED",
+          200: "#D2D2D7",
+          300: "#B8B8BD",
+          400: "#86868B",
+          500: "#6E6E73",
+          600: "#515154",
+          700: "#3A3A3C",
+          800: "#1D1D1F",
+          900: "#0B0B0D",
+        },
+        fog: {
+          DEFAULT: "#F5F5F7", // section background
+          light: "#FBFBFD",
+          deep: "#E8E8ED",
+        },
+        // Apple accent blue + small set of system colors for state.
+        sky: {
+          DEFAULT: "#0071E3",
+          hover: "#0077ED",
+          dim: "#147CE5",
+          deep: "#0040DD",
+        },
+        emerald: {
+          DEFAULT: "#34C759",
+        },
+        // Brand accents — used sparingly, mostly for pricing/tags.
         bhutan: {
           red: {
-            DEFAULT: "#9B1C1C", // Bhutan Red
-            light: "#B22222",
-            dark: "#7A1616",
+            DEFAULT: "#B22222",
+            light: "#C8302E",
+            dark: "#8B0000",
+            deep: "#6B0000",
           },
           gold: {
-            DEFAULT: "#F4C430", // Dragon Gold
-            light: "#F7D566",
-            dark: "#C29A26",
+            DEFAULT: "#C5A572",
+            light: "#D4B57A",
+            dark: "#A08854",
+            bronze: "#876D3D",
           },
-          green: {
-            DEFAULT: "#10B981", // Emerald Green
-            light: "#34D399",
-            dark: "#059669",
-          },
-          white: "#FFFFFF",     // Snow White
-          mountain: "#2F2F2F",  // Mountain Gray
-          temple: "#F5E6C8",    // Temple Beige
-          forest: "#1F4D3A",    // Forest Green
-          saffron: {
-            DEFAULT: "#FF9933",
-            light: "#FFB366",
-            dark: "#CC7A00",
-          },
-          cream: "#F5E6C8",     // Temple Beige alias for legacy
-          beige: "#F5E6C8",     // Temple Beige alias for legacy
-          dark: "#2F2F2F",      // Mountain Gray alias for legacy
-          gray: "#2F2F2F",      // Mountain Gray alias for legacy
+          dark: "#1D1D1F",
+          onyx: "#0B0B0D",
+          ink: "#15161A",
+          pearl: "#FBFBFD",
         },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        "2xl": "1.5rem",
-        "3xl": "2rem",
+        "2xl": "1rem",
+        "3xl": "1.25rem",
+        "4xl": "1.75rem",
+        "5xl": "2.25rem",
+        apple: "18px", // Apple's signature card corner
+        "apple-lg": "24px",
+        "apple-xl": "32px",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "Inter", "system-ui", "sans-serif"],
-        serif: ["var(--font-serif)", "Playfair Display", "Georgia", "serif"],
+        sans: [
+          "Inter",
+          "var(--font-sans)",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "SF Pro Display",
+          "SF Pro Text",
+          "system-ui",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif",
+        ],
+        display: [
+          "Inter",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "SF Pro Display",
+          "system-ui",
+          "sans-serif",
+        ],
+        serif: ["Playfair Display", "Georgia", "serif"],
+        mono: [
+          "SFMono-Regular",
+          "ui-monospace",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "monospace",
+        ],
+      },
+      fontSize: {
+        // Apple-style fluid type scale — every step is comfortable on every device.
+        "fluid-xs": "clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem)",
+        "fluid-sm": "clamp(0.8125rem, 0.78rem + 0.2vw, 0.875rem)",
+        "fluid-base": "clamp(0.9375rem, 0.9rem + 0.25vw, 1.0625rem)",
+        "fluid-lg": "clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem)",
+        "fluid-xl": "clamp(1.1875rem, 1.1rem + 0.4vw, 1.4375rem)",
+        "fluid-2xl": "clamp(1.375rem, 1.25rem + 0.6vw, 1.75rem)",
+        "fluid-3xl": "clamp(1.75rem, 1.5rem + 1vw, 2.25rem)",
+        "fluid-4xl": "clamp(2.125rem, 1.75rem + 1.5vw, 3rem)",
+        "fluid-5xl": "clamp(2.5rem, 2rem + 2.25vw, 4rem)",
+        "fluid-6xl": "clamp(3rem, 2.25rem + 3vw, 5rem)",
+        "fluid-7xl": "clamp(3.5rem, 2.5rem + 4vw, 6.5rem)",
+        "fluid-headline":
+          "clamp(2.75rem, 2rem + 3.5vw, 5.5rem)", // hero
+        "fluid-eyebrow":
+          "clamp(0.75rem, 0.72rem + 0.1vw, 0.8125rem)",
+      },
+      letterSpacing: {
+        // Apple uses very tight tracking on large display sizes.
+        tightest: "-0.022em",
+        tighter2: "-0.035em",
+        tighter3: "-0.045em",
+        eyebrow: "0.012em",
+        wide2: "0.04em",
+      },
+      lineHeight: {
+        tighter: "1.05",
+        tight2: "1.08",
+        snug2: "1.15",
+      },
+      spacing: {
+        "section-y-sm": "clamp(3rem, 6vw, 5rem)",
+        "section-y": "clamp(4rem, 9vw, 8rem)",
+        "section-y-lg": "clamp(5rem, 12vw, 10rem)",
+      },
+      transitionTimingFunction: {
+        apple: "cubic-bezier(0.4, 0, 0.2, 1)", // Apple's standard ease
+        "apple-out": "cubic-bezier(0.16, 1, 0.3, 1)", // overshoot reveal
+        snap: "cubic-bezier(0.22, 1, 0.36, 1)",
+        bounce: "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      },
+      transitionDuration: {
+        fast: "180ms",
+        slow: "700ms",
+        slower: "1100ms",
+        "400": "400ms",
+        "600": "600ms",
+        "800": "800ms",
+        "1000": "1000ms",
+        "1200": "1200ms",
+        "1500": "1500ms",
       },
       keyframes: {
         "accordion-down": {
@@ -101,64 +215,111 @@ const config: Config = {
           to: { opacity: "1" },
         },
         "fade-in-up": {
-          from: { opacity: "0", transform: "translateY(30px)" },
+          from: { opacity: "0", transform: "translateY(24px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
-        "slide-in-right": {
-          from: { opacity: "0", transform: "translateX(30px)" },
-          to: { opacity: "1", transform: "translateX(0)" },
+        "fade-in-down": {
+          from: { opacity: "0", transform: "translateY(-24px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
         },
         "scale-in": {
-          from: { opacity: "0", transform: "scale(0.9)" },
+          from: { opacity: "0", transform: "scale(0.96)" },
           to: { opacity: "1", transform: "scale(1)" },
+        },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
+        "marquee-reverse": {
+          from: { transform: "translateX(-50%)" },
+          to: { transform: "translateX(0)" },
         },
         shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "ken-burns": {
+          "0%": { transform: "scale(1) translateY(0)" },
+          "100%": { transform: "scale(1.08) translateY(-1.5%)" },
+        },
         float: {
           "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-15px)" },
+          "50%": { transform: "translateY(-8px)" },
         },
-        glow: {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(244, 196, 48, 0.2)" },
-          "50%": { boxShadow: "0 0 50px rgba(244, 196, 48, 0.5)" },
-        },
-        "pulse-gold": {
+        blink: {
           "0%, 100%": { opacity: "1" },
-          "50%": { opacity: "0.7" },
+          "50%": { opacity: "0.25" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.8s ease-out",
-        "fade-in-up": "fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-        "slide-in-right": "slide-in-right 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-        "scale-in": "scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
-        shimmer: "shimmer 3s linear infinite",
-        float: "float 6s ease-in-out infinite",
-        glow: "glow 3s ease-in-out infinite",
-        "pulse-gold": "pulse-gold 2s ease-in-out infinite",
+        "fade-in": "fade-in 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
+        "fade-in-up":
+          "fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "fade-in-down":
+          "fade-in-down 0.8s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "scale-in":
+          "scale-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both",
+        marquee: "marquee 40s linear infinite",
+        "marquee-fast": "marquee 22s linear infinite",
+        "marquee-reverse": "marquee-reverse 40s linear infinite",
+        shimmer: "shimmer 3.5s linear infinite",
+        "ken-burns": "ken-burns 14s ease-in-out infinite alternate",
+        float: "float 5s ease-in-out infinite",
+        blink: "blink 1s step-start infinite",
       },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-        "luxury-gradient": "linear-gradient(135deg, #9B1C1C 0%, #F4C430 100%)",
-        "glass-gradient": "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%)",
-        "bhutan-pattern": "url('/images/pattern.png')",
+        "gradient-radial":
+          "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "fog-soft":
+          "linear-gradient(180deg, #FBFBFD 0%, #F5F5F7 100%)",
+        "ink-soft":
+          "linear-gradient(180deg, #1D1D1F 0%, #0B0B0D 100%)",
+        "hero-grain":
+          "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
       },
       boxShadow: {
-        glass: "0 8px 32px 0 rgba(0, 0, 0, 0.1)",
-        luxury: "0 20px 50px -15px rgba(155, 28, 28, 0.2)",
-        "luxury-gold": "0 20px 50px -15px rgba(244, 196, 48, 0.2)",
-        "luxury-hover": "0 30px 70px -10px rgba(155, 28, 28, 0.3)",
-        soft: "0 10px 30px rgba(0, 0, 0, 0.05)",
-        elevated: "0 20px 60px rgba(0, 0, 0, 0.1)",
+        // Apple's product shadows are subtle and high-spread.
+        soft: "0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04)",
+        elevated:
+          "0 4px 12px rgba(0,0,0,0.06), 0 16px 32px rgba(0,0,0,0.05)",
+        lifted:
+          "0 10px 30px rgba(0,0,0,0.08), 0 30px 60px rgba(0,0,0,0.06)",
+        product:
+          "0 30px 80px -30px rgba(0,0,0,0.25), 0 10px 30px -15px rgba(0,0,0,0.15)",
+        "inner-soft": "inset 0 1px 0 rgba(255,255,255,0.06)",
+        sky: "0 6px 20px rgba(0,113,227,0.25)",
+      },
+      maxWidth: {
+        "screen-2xl": "1536px",
+        "apple-content": "1024px",
+        "apple-wide": "1200px",
+      },
+      blur: {
+        "4xl": "120px",
+      },
+      opacity: {
+        "1": "0.01",
+        "2": "0.02",
+        "3": "0.03",
+        "4": "0.04",
+        "6": "0.06",
+        "7": "0.07",
+        "8": "0.08",
+        "12": "0.12",
+        "15": "0.15",
+        "18": "0.18",
+        "22": "0.22",
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [
+    tailwindcssAnimate,
+    typography,
+  ],
 };
 
 export default config;

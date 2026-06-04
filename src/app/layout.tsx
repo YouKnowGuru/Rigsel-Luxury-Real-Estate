@@ -1,27 +1,27 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import { SettingsProvider } from "@/context/SettingsContext";
 import { ThemeProvider } from "@/context/ThemeProvider";
-import { WhatsAppButton } from "@/components/WhatsAppButton";
-
+import { MotionProvider } from "@/components/providers/MotionProvider";
+import { RouteAwareLayout } from "@/components/layout/RouteAwareLayout";
+import { ScrollToTop } from "@/components/ScrollToTop";
+import "@/lib/fonts";
 export const metadata: Metadata = {
-  title: "Phojaa Real Estate | Trusted Properties in Bhutan",
+  title: "PHOJAA95 Real Estate | Trusted Properties in Bhutan",
   description:
-    "Discover land and properties across Bhutan. Phojaa Real Estate offers transparent and reliable services to connect buyers and sellers.",
+    "Discover land and properties across Bhutan. PHOJAA95 Real Estate offers transparent and reliable services to connect buyers and sellers.",
   keywords: [
     "Bhutan real estate",
     "property Bhutan",
     "buy property Bhutan",
     "land for sale Bhutan",
-    "Phojaa Real Estate",
+    "PHOJAA95 Real Estate",
     "Bhutan property listings",
   ],
-  authors: [{ name: "Phojaa Real Estate" }],
-  creator: "Phojaa Real Estate",
-  publisher: "Phojaa Real Estate",
+  authors: [{ name: "PHOJAA95 Real Estate" }],
+  creator: "PHOJAA95 Real Estate",
+  publisher: "PHOJAA95 Real Estate",
   robots: {
     index: true,
     follow: true,
@@ -37,24 +37,24 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://phojaa95realestate.com",
-    siteName: "Phojaa Real Estate",
-    title: "Phojaa Real Estate | Trusted Properties in Bhutan",
+    siteName: "PHOJAA95 Real Estate",
+    title: "PHOJAA95 Real Estate | Trusted Properties in Bhutan",
     description:
-      "Discover land and properties across Bhutan. Connect with genuine buyers and sellers through Phojaa Real Estate.",
+      "Discover land and properties across Bhutan. Connect with genuine buyers and sellers through PHOJAA95 Real Estate.",
     images: [
       {
         url: "https://phojaa95realestate.com/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Phojaa Real Estate - Properties in Bhutan",
+        alt: "PHOJAA95 Real Estate — Properties in Bhutan",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Phojaa Real Estate | Properties in Bhutan",
+    title: "PHOJAA95 Real Estate | Properties in Bhutan",
     description:
-      "Discover land and properties across Bhutan with Phojaa Real Estate.",
+      "Discover land and properties across Bhutan with PHOJAA95 Real Estate.",
     images: ["https://phojaa95realestate.com/twitter-image.jpg"],
     creator: "@phojaa95realestate",
   },
@@ -72,7 +72,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#8B0000",
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
@@ -81,11 +81,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <html
+      lang="en"
+      className="scroll-smooth"
+      suppressHydrationWarning
+    >
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
         <link rel="manifest" href="/site.webmanifest" />
+        {/* Preload critical hero image for faster LCP */}
+        <link rel="preload" as="image" href="/image/about-hero.png" type="image/png" />
 
         {/* Inline script to prevent flash of unstyled theme */}
         <script
@@ -101,11 +107,11 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "RealEstateAgent",
-              name: "Phojaa Real Estate",
+              name: "PHOJAA95 Real Estate",
               description:
                 "Trusted real estate agency in Bhutan offering transparent property services",
               url: "https://phojaa95realestate.com",
-              logo: "https://phojaa95realestate.com/logo.png",
+              logo: "https://phojaa95realestate.com/image/logo.png",
               image: "https://phojaa95realestate.com/og-image.jpg",
               address: {
                 "@type": "PostalAddress",
@@ -129,14 +135,17 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen bg-background antialiased" suppressHydrationWarning>
+      <body
+        className="min-h-screen bg-background font-sans antialiased"
+        suppressHydrationWarning
+      >
         <ThemeProvider>
           <SettingsProvider>
-            <Navbar />
-            <main className="relative">{children}</main>
-            <Footer />
-            <WhatsAppButton />
-            <Toaster />
+            <MotionProvider>
+              <RouteAwareLayout>{children}</RouteAwareLayout>
+              <ScrollToTop />
+              <Toaster />
+            </MotionProvider>
           </SettingsProvider>
         </ThemeProvider>
       </body>

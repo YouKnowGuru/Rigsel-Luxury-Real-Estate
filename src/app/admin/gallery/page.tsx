@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, X, Loader2, Image as ImageIcon, Trash2, Filter, Plus } from "lucide-react";
+import { Upload, X, Loader2, Image as ImageIcon, Trash2, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface GalleryItem {
@@ -47,14 +47,12 @@ export default function GalleryPage() {
         if (!file) return;
 
         setUploading(true);
-        const token = localStorage.getItem("adminToken");
-
+    
         try {
             const fd = new FormData();
             fd.append("file", file);
             const res = await fetch("/api/upload", {
                 method: "POST",
-                headers: { Authorization: `Bearer ${token}` },
                 body: fd,
             });
             const data = await res.json();
@@ -77,7 +75,6 @@ export default function GalleryPage() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
                 },
                 body: JSON.stringify(newImage),
             });
@@ -98,7 +95,6 @@ export default function GalleryPage() {
         try {
             const res = await fetch(`/api/gallery/${id}`, {
                 method: "DELETE",
-                headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
             });
             if (res.ok) {
                 toast({ title: "Deleted", description: "Image removed successfully." });
@@ -112,39 +108,34 @@ export default function GalleryPage() {
     const filteredItems = items.filter(item => selectedCategory === "All" || item.category === selectedCategory);
 
     return (
-        <div className="p-4 md:p-8 lg:p-10 max-w-[1600px] mx-auto min-h-screen">
-            <div className="fixed inset-0 bg-thangka opacity-[0.01] pointer-events-none" />
-
+        <div className="p-3 sm:p-5 lg:p-8 max-w-[1600px] mx-auto space-y-4 sm:space-y-6 lg:space-y-8">
             {/* Header */}
-            <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
+            <header className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4">
                 <div>
-                    <div className="flex items-center gap-2 mb-2">
-                        <div className="w-0.5 h-6 bg-bhutan-red rounded-full" />
-                        <p className="text-bhutan-red font-bold text-sm uppercase tracking-[0.3em]">Visual Assets</p>
-                    </div>
-                    <h2 className="text-3xl md:text-5xl font-bold text-bhutan-dark leading-tight">
-                        Photo <span className="text-bhutan-gold italic font-light">Gallery</span>
-                    </h2>
+                    <p className="text-sky text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.12em] mb-1">Visual Assets</p>
+                    <h1 className="text-[22px] sm:text-[26px] lg:text-[28px] font-semibold text-foreground tracking-tight">Photo Gallery</h1>
+                    <p className="text-ink-600 text-sm sm:text-base font-medium mt-1">Manage and organize property photos</p>
                 </div>
 
                 <button
                     onClick={() => setIsUploadModalOpen(true)}
-                    className="h-12 md:h-14 px-8 bg-bhutan-dark text-white text-xs font-bold uppercase tracking-[0.3em] rounded-2xl hover:bg-bhutan-red transition-all duration-500 shadow-xl flex items-center gap-3 group"
+                    className="h-9 sm:h-11 px-4 sm:px-6 bg-sky text-background text-xs sm:text-sm font-medium rounded-full hover:bg-sky/90 transition-all duration-300 shadow-soft flex items-center gap-1.5 sm:gap-2 group self-start sm:self-auto"
                 >
-                    <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
-                    Add To Gallery
+                    <Plus className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-90 transition-transform duration-300" strokeWidth={1.5} />
+                    <span className="hidden sm:inline">Add To Gallery</span>
+                    <span className="sm:hidden">Add</span>
                 </button>
             </header>
 
             {/* Categories */}
-            <div className="mb-8 flex flex-wrap gap-2 relative z-10">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
                 {categories.map(cat => (
                     <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
-                        className={`px-5 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all border ${selectedCategory === cat
-                                ? "bg-bhutan-red text-white border-bhutan-red shadow-lg shadow-bhutan-red/20"
-                                : "bg-white text-bhutan-dark/60 border-white hover:border-bhutan-red/20 hover:text-bhutan-red font-medium"
+                        className={`px-3 sm:px-5 py-1.5 sm:py-2.5 rounded-xl sm:rounded-[14px] text-xs sm:text-sm font-medium transition-all border ${selectedCategory === cat
+                                ? "bg-sky text-background border-sky shadow-soft"
+                                : "bg-card text-ink-500 border-ink-100 hover:border-sky/30 hover:text-sky"
                             }`}
                     >
                         {cat}
@@ -154,13 +145,13 @@ export default function GalleryPage() {
 
             {/* Gallery Grid */}
             {isLoading ? (
-                <div className="flex items-center justify-center py-20">
-                    <Loader2 className="w-8 h-8 text-bhutan-red animate-spin" />
+                <div className="flex items-center justify-center py-12 sm:py-20">
+                    <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 text-sky animate-spin" strokeWidth={1.5} />
                 </div>
             ) : (
                 <motion.div
                     layout
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative z-10"
+                    className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6"
                 >
                     <AnimatePresence>
                         {filteredItems.map((item) => (
@@ -170,18 +161,18 @@ export default function GalleryPage() {
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
-                                className="group relative aspect-square bg-white rounded-3xl overflow-hidden shadow-luxury border border-white"
+                                className="group relative aspect-square bg-card rounded-xl sm:rounded-[20px] overflow-hidden shadow-soft border border-ink-100/60"
                             >
                                 <img src={item.image} alt={item.title || "Gallery"} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark/90 via-bhutan-dark/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                                    <p className="text-bhutan-gold text-xs font-bold uppercase tracking-[0.2em] mb-1">{item.category}</p>
-                                    <h4 className="text-white font-bold text-lg mb-4">{item.title || "Gallery Image"}</h4>
+                                <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-ink-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-3 sm:p-6">
+                                    <p className="text-sky text-[10px] sm:text-[12px] font-semibold uppercase tracking-[0.12em] mb-0.5 sm:mb-1">{item.category}</p>
+                                    <h4 className="text-white font-semibold text-sm sm:text-lg mb-2 sm:mb-4 truncate">{item.title || "Gallery Image"}</h4>
                                     <div className="flex gap-2">
                                         <button
                                             onClick={() => handleDelete(item._id)}
-                                            className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-bhutan-red transition-colors"
+                                            className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-[14px] bg-card/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-red-500 transition-colors"
                                         >
-                                            <Trash2 className="w-4 h-4" />
+                                            <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={1.5} />
                                         </button>
                                     </div>
                                 </div>
@@ -194,51 +185,51 @@ export default function GalleryPage() {
             {/* Upload Modal */}
             <AnimatePresence>
                 {isUploadModalOpen && (
-                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4">
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsUploadModalOpen(false)}
-                            className="absolute inset-0 bg-bhutan-dark/80 backdrop-blur-sm"
+                            className="absolute inset-0 bg-ink-900/60 backdrop-blur-sm"
                         />
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="relative w-full max-w-lg bg-[#F9F7F2] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/20"
+                            className="relative w-full max-w-lg bg-card rounded-2xl sm:rounded-[20px] overflow-hidden shadow-elevated border border-ink-100/60"
                         >
-                            <div className="p-8">
-                                <div className="flex items-center justify-between mb-8">
-                                    <h3 className="text-2xl font-bold text-bhutan-dark">Add New <span className="text-bhutan-gold">Asset</span></h3>
-                                    <button onClick={() => setIsUploadModalOpen(false)} className="text-bhutan-dark/20 hover:text-bhutan-red transition-colors">
-                                        <X className="w-6 h-6" />
+                            <div className="p-4 sm:p-8">
+                                <div className="flex items-center justify-between mb-4 sm:mb-8">
+                                    <h3 className="text-lg sm:text-xl font-semibold text-foreground">Add New Asset</h3>
+                                    <button onClick={() => setIsUploadModalOpen(false)} className="text-ink-300 hover:text-red-500 transition-colors">
+                                        <X className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={1.5} />
                                     </button>
                                 </div>
 
-                                <div className="space-y-6">
+                                <div className="space-y-4 sm:space-y-6">
                                     {/* Image Preview / Upload */}
                                     <label className="block cursor-pointer">
                                         {newImage.image ? (
-                                            <div className="relative aspect-video rounded-2xl overflow-hidden shadow-lg border-2 border-white">
+                                            <div className="relative aspect-video rounded-xl sm:rounded-2xl overflow-hidden shadow-soft border border-ink-100/60">
                                                 <img src={newImage.image} alt="Preview" className="w-full h-full object-cover" />
                                                 <button
                                                     onClick={(e) => { e.preventDefault(); setNewImage({ ...newImage, image: "" }); }}
-                                                    className="absolute top-3 right-3 w-8 h-8 rounded-full bg-bhutan-red text-white flex items-center justify-center shadow-lg"
+                                                    className="absolute top-2 right-2 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-red-500 text-white flex items-center justify-center shadow-soft"
                                                 >
-                                                    <X className="w-4 h-4" />
+                                                    <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" strokeWidth={1.5} />
                                                 </button>
                                             </div>
                                         ) : (
-                                            <div className={`aspect-video rounded-3xl border-2 border-dashed border-bhutan-gold/20 bg-white/50 flex flex-col items-center justify-center text-center p-6 hover:border-bhutan-red/40 transition-all ${uploading ? "opacity-50" : ""}`}>
+                                            <div className={`aspect-video rounded-xl sm:rounded-2xl border-2 border-dashed border-ink-200 bg-card/50 flex flex-col items-center justify-center text-center p-4 sm:p-6 hover:border-sky/40 transition-all ${uploading ? "opacity-50" : ""}`}>
                                                 {uploading ? (
-                                                    <Loader2 className="w-10 h-10 text-bhutan-red animate-spin" />
+                                                    <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 text-sky animate-spin" strokeWidth={1.5} />
                                                 ) : (
                                                     <>
-                                                        <div className="w-14 h-14 rounded-2xl bg-bhutan-gold/10 flex items-center justify-center mb-4">
-                                                            <Upload className="w-6 h-6 text-bhutan-gold" />
+                                                        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-sky/10 flex items-center justify-center mb-3 sm:mb-4">
+                                                            <Upload className="w-5 h-5 sm:w-6 sm:h-6 text-sky" strokeWidth={1.5} />
                                                         </div>
-                                                        <p className="text-bhutan-dark/70 font-bold text-sm uppercase tracking-widest">Select Image</p>
+                                                        <p className="text-ink-600 font-medium text-xs sm:text-sm">Select Image</p>
                                                     </>
                                                 )}
                                             </div>
@@ -247,26 +238,26 @@ export default function GalleryPage() {
                                     </label>
 
                                     <div>
-                                        <label className="block text-xs font-bold text-bhutan-dark/60 uppercase tracking-[0.2em] mb-2 px-1">Entry Title</label>
+                                        <label className="block text-xs sm:text-[13px] font-medium text-ink-600 mb-1.5 sm:mb-2">Entry Title</label>
                                         <input
                                             type="text"
                                             placeholder="Optional title..."
                                             value={newImage.title}
                                             onChange={(e) => setNewImage({ ...newImage, title: e.target.value })}
-                                            className="w-full h-12 px-5 bg-white rounded-xl border border-white focus:outline-none focus:ring-2 focus:ring-bhutan-gold/20 text-bhutan-dark shadow-sm"
+                                            className="w-full h-9 sm:h-11 px-3 sm:px-4 bg-card rounded-xl sm:rounded-2xl border border-ink-200 focus:outline-none focus:border-sky focus:ring-[3px] focus:ring-sky/15 text-foreground text-sm"
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-xs font-bold text-bhutan-dark/60 uppercase tracking-[0.2em] mb-2 px-1">Classification</label>
-                                        <div className="flex flex-wrap gap-2">
+                                        <label className="block text-xs sm:text-[13px] font-medium text-ink-600 mb-1.5 sm:mb-2">Classification</label>
+                                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
                                             {categories.filter(c => c !== "All").map(cat => (
                                                 <button
                                                     key={cat}
                                                     onClick={() => setNewImage({ ...newImage, category: cat })}
-                                                    className={`px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${newImage.category === cat
-                                                            ? "bg-bhutan-gold text-bhutan-dark shadow-md shadow-bhutan-gold/20"
-                                                            : "bg-white text-bhutan-dark/60 hover:bg-bhutan-gold/10 font-medium"
+                                                    className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-[14px] text-[11px] sm:text-xs font-medium transition-all ${newImage.category === cat
+                                                            ? "bg-sky text-background shadow-soft"
+                                                            : "bg-card text-ink-500 hover:bg-sky/10 border border-ink-100"
                                                         }`}
                                                 >
                                                     {cat}
@@ -278,7 +269,7 @@ export default function GalleryPage() {
                                     <button
                                         onClick={handleSave}
                                         disabled={!newImage.image || uploading}
-                                        className="w-full h-14 mt-4 bg-bhutan-red text-white font-bold uppercase tracking-[0.3em] rounded-2xl shadow-xl shadow-bhutan-red/20 hover:bg-bhutan-dark transition-all disabled:opacity-50"
+                                        className="w-full h-9 sm:h-11 mt-2 sm:mt-4 bg-sky text-background font-medium rounded-full shadow-soft hover:bg-sky/90 transition-all disabled:opacity-50 text-sm sm:text-base"
                                     >
                                         Add to Portfolio
                                     </button>

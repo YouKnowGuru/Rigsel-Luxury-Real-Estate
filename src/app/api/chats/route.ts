@@ -2,19 +2,34 @@ import { NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Chat from "@/models/Chat";
 import mongoose from "mongoose";
+import { chatSchema } from "@/lib/validation";
+import { checkRateLimit, getClientIP } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
   try {
+    // Rate limit chat creation
+    const clientIP = getClientIP(req);
+    const rateLimit = await checkRateLimit(`chats_post_${clientIP}`, 10, 60 * 60 * 1000); // 10 per hour
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: "Too many chat requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     await connectDB();
     const body = await req.json();
-    const { propertyId, guestName, guestEmail } = body;
 
-    if (!propertyId || !guestName || !guestEmail) {
+    // Validate with Zod
+    const validationResult = chatSchema.safeParse(body);
+    if (!validationResult.success) {
       return NextResponse.json(
-        { error: "Property ID, Name, and Email are required" },
+        { error: "Validation failed", details: validationResult.error.format() },
         { status: 400 }
       );
     }
+
+    const { propertyId, guestName, guestEmail } = validationResult.data;
 
     if (!mongoose.Types.ObjectId.isValid(propertyId)) {
       return NextResponse.json(
@@ -41,8 +56,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json(chat, { status: 200 });
-  } catch (error: any) {
-    console.error("Error creating chat:", error);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json(
       { error: "Failed to create or retrieve chat" },
       { status: 500 }

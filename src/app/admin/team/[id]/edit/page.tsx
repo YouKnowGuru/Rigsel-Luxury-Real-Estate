@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Loader2, Upload } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -9,8 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 
-export default function EditTeamMemberPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = use(params);
+export default function EditTeamMemberPage() {
+    const params = useParams();
+    const id = params?.id as string;
     const router = useRouter();
     const { toast } = useToast();
 
@@ -30,9 +31,8 @@ export default function EditTeamMemberPage({ params }: { params: Promise<{ id: s
     useEffect(() => {
         const fetchMember = async () => {
             try {
-                const token = localStorage.getItem("adminToken");
-                const res = await fetch(`/api/admin/team/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
+                            const res = await fetch(`/api/admin/team/${id}`, {
+                    
                 });
                 const data = await res.json();
                 if (data.success) {
@@ -64,14 +64,12 @@ export default function EditTeamMemberPage({ params }: { params: Promise<{ id: s
         if (!file) return;
 
         setUploadingImage(true);
-        const token = localStorage.getItem("adminToken");
-
+    
         try {
             const fd = new FormData();
             fd.append("file", file);
             const res = await fetch("/api/upload", {
                 method: "POST",
-                headers: { Authorization: `Bearer ${token}` },
                 body: fd,
             });
             const data = await res.json();
@@ -98,7 +96,6 @@ export default function EditTeamMemberPage({ params }: { params: Promise<{ id: s
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
                 },
                 body: JSON.stringify(formData),
             });
@@ -120,7 +117,7 @@ export default function EditTeamMemberPage({ params }: { params: Promise<{ id: s
     if (isLoading) {
         return (
             <div className="flex items-center justify-center py-20">
-                <div className="animate-spin w-8 h-8 border-4 border-bhutan-gold border-t-transparent rounded-full" />
+                <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
             </div>
         );
     }
@@ -130,79 +127,79 @@ export default function EditTeamMemberPage({ params }: { params: Promise<{ id: s
             <header className="mb-8 flex items-center gap-4">
                 <Link
                     href="/admin/team"
-                    className="w-10 h-10 bg-white rounded-xl border border-white flex items-center justify-center text-bhutan-dark/40 hover:text-bhutan-red hover:scale-105 transition-all shadow-sm"
+                    className="w-10 h-10 bg-card rounded-xl border border-ink-200 flex items-center justify-center text-ink-400 hover:text-sky hover:border-sky/30 transition-all shadow-sm"
                 >
-                    <ArrowLeft className="w-5 h-5" />
+                    <ArrowLeft className="w-5 h-5" strokeWidth={1.5} />
                 </Link>
                 <div>
-                    <h1 className="text-3xl font-bold text-bhutan-dark">Edit Team Member</h1>
+                    <h1 className="text-[28px] font-semibold text-foreground tracking-tight">Edit Team Member</h1>
                 </div>
             </header>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="bg-white rounded-[2rem] p-6 shadow-sm border border-bhutan-gold/10">
+                <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="md:col-span-2 space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-bhutan-dark/40">Full Name *</label>
+                            <label className="text-[13px] font-medium text-ink-600">Full Name *</label>
                             <Input
                                 value={formData.name}
                                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                 placeholder="e.g. Jigme Rabgay"
-                                className="h-12 bg-[#F9F7F2] border-transparent"
+                                className="h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                                 required
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-bhutan-dark/40">Role / Position *</label>
+                            <label className="text-[13px] font-medium text-ink-600">Role / Position *</label>
                             <Input
                                 value={formData.role}
                                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                                 placeholder="e.g. Proprietor"
-                                className="h-12 bg-[#F9F7F2] border-transparent"
+                                className="h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                                 required
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-bhutan-dark/40">Display Order</label>
+                            <label className="text-[13px] font-medium text-ink-600">Display Order</label>
                             <Input
                                 type="number"
                                 value={formData.order}
                                 onChange={(e) => setFormData({ ...formData, order: Number(e.target.value) })}
-                                className="h-12 bg-[#F9F7F2] border-transparent"
+                                className="h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                             />
                         </div>
                         <div className="md:col-span-2 space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-bhutan-dark/40">Description / Bio *</label>
+                            <label className="text-[13px] font-medium text-ink-600">Description / Bio *</label>
                             <Textarea
                                 value={formData.desc}
                                 onChange={(e) => setFormData({ ...formData, desc: e.target.value })}
                                 placeholder="Detailed biography and experience..."
-                                className="bg-[#F9F7F2] border-transparent min-h-[120px]"
+                                className="rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15 min-h-[120px]"
                                 required
                             />
                         </div>
                         <div className="md:col-span-2 space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-bhutan-dark/40">Quote *</label>
+                            <label className="text-[13px] font-medium text-ink-600">Quote *</label>
                             <Input
                                 value={formData.quote}
                                 onChange={(e) => setFormData({ ...formData, quote: e.target.value })}
                                 placeholder="Inspirational quote or personal mantra..."
-                                className="h-12 bg-[#F9F7F2] border-transparent italic"
+                                className="h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                                 required
                             />
                         </div>
 
                         <div className="md:col-span-2 space-y-3">
-                            <label className="text-xs font-bold uppercase tracking-widest text-bhutan-dark/40">Portrait Image *</label>
+                            <label className="text-[13px] font-medium text-ink-600">Portrait Image *</label>
                             <div className="flex items-center gap-6">
                                 <label className="flex-1 max-w-xs cursor-pointer">
-                                    <div className="h-32 border-2 border-dashed border-bhutan-gold/30 rounded-2xl flex flex-col items-center justify-center hover:bg-bhutan-gold/5 hover:border-bhutan-gold transition-all">
+                                    <div className="h-32 border-2 border-dashed border-ink-200 rounded-2xl flex flex-col items-center justify-center hover:bg-sky/5 hover:border-sky transition-all">
                                         {uploadingImage ? (
-                                            <Loader2 className="w-6 h-6 animate-spin text-bhutan-gold mb-2" />
+                                            <Loader2 className="w-6 h-6 animate-spin text-sky mb-2" strokeWidth={1.5} />
                                         ) : (
-                                            <Upload className="w-6 h-6 text-bhutan-gold/50 mb-2" />
+                                            <Upload className="w-6 h-6 text-ink-300 mb-2" strokeWidth={1.5} />
                                         )}
-                                        <span className="text-xs font-bold text-bhutan-dark/60 uppercase tracking-widest">
+                                        <span className="text-[13px] font-medium text-ink-500">
                                             {uploadingImage ? "Uploading..." : "Upload Image"}
                                         </span>
                                     </div>
@@ -222,13 +219,13 @@ export default function EditTeamMemberPage({ params }: { params: Promise<{ id: s
                     <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex-1 h-14 bg-bhutan-red hover:bg-bhutan-dark text-white rounded-xl font-bold uppercase tracking-[0.2em] transition-all shadow-lg flex items-center justify-center gap-2"
+                        className="flex-1 h-12 rounded-full bg-sky text-background text-sm font-medium transition-all hover:opacity-90 flex items-center justify-center gap-2"
                     >
-                        {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : "Save Changes"}
+                        {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" strokeWidth={1.5} /> : "Save Changes"}
                     </button>
                     <Link
                         href="/admin/team"
-                        className="px-8 h-14 flex items-center justify-center border border-bhutan-gold/20 rounded-xl text-bhutan-dark/60 font-bold uppercase tracking-widest hover:bg-bhutan-gold/5 transition-all"
+                        className="px-8 h-12 flex items-center justify-center rounded-[14px] border border-ink-200 text-ink-600 text-sm font-medium hover:bg-card transition-all"
                     >
                         Cancel
                     </Link>

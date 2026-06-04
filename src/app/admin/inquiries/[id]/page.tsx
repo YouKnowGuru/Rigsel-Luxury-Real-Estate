@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import {
     Mail,
     Phone,
@@ -8,17 +8,15 @@ import {
     Clock,
     ChevronLeft,
     Send,
-    User,
     Trash2,
     CheckCircle2,
     Building2,
-    MessageSquare,
     Globe,
     ArrowLeft
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -40,8 +38,9 @@ interface Inquiry {
     };
 }
 
-export default function InquiryDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = use(params);
+export default function InquiryDetailPage() {
+    const params = useParams();
+    const id = params?.id as string;
     const [inquiry, setInquiry] = useState<Inquiry | null>(null);
     const [loading, setLoading] = useState(true);
     const [replyMessage, setReplyMessage] = useState("");
@@ -55,9 +54,8 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
 
     const fetchInquiry = async () => {
         try {
-            const token = localStorage.getItem("adminToken");
-            const res = await fetch(`/api/contact/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                    const res = await fetch(`/api/contact/${id}`, {
+                
             });
             const data = await res.json();
             if (data.success) {
@@ -74,12 +72,10 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
 
     const markAsRead = async () => {
         try {
-            const token = localStorage.getItem("adminToken");
-            await fetch(`/api/contact/${id}`, {
+                    await fetch(`/api/contact/${id}`, {
                 method: "PATCH",
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ isRead: true })
             });
@@ -94,12 +90,10 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
 
         setIsReplying(true);
         try {
-            const token = localStorage.getItem("adminToken");
-            const res = await fetch(`/api/admin/inquiries/${id}/reply`, {
+                    const res = await fetch(`/api/admin/inquiries/${id}/reply`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({ replyMessage })
             });
@@ -122,10 +116,9 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
         if (!confirm("Are you sure you want to delete this inquiry?")) return;
 
         try {
-            const token = localStorage.getItem("adminToken");
-            const res = await fetch(`/api/contact/${id}`, {
+                    const res = await fetch(`/api/contact/${id}`, {
                 method: "DELETE",
-                headers: { Authorization: `Bearer ${token}` }
+                
             });
             if (res.ok) {
                 toast({ title: "Deleted", description: "Inquiry removed." });
@@ -136,30 +129,34 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
         }
     };
 
-    if (loading) return <div className="p-20 text-center italic text-bhutan-dark/30 animate-pulse text-2xl font-serif">Deep in the Himalayas, finding your legacy...</div>;
-    if (!inquiry) return <div className="p-20 text-center text-bhutan-red font-bold">Inquiry not found</div>;
+    if (loading) return (
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="w-8 h-8 border-2 border-sky/20 border-t-sky rounded-full animate-spin" />
+        </div>
+    );
+    if (!inquiry) return <div className="p-20 text-center text-sky font-semibold">Inquiry not found</div>;
 
     return (
-        <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 min-h-screen bg-[#F9F7F2]/30 pb-32">
+        <div className="p-4 md:p-8 max-w-5xl mx-auto space-y-8 min-h-screen pb-32">
             {/* Navigation & Actions */}
             <div className="flex items-center justify-between">
                 <Link
                     href="/admin/inquiries"
-                    className="group flex items-center gap-3 text-bhutan-dark/50 hover:text-bhutan-red transition-all duration-300"
+                    className="group flex items-center gap-3 text-ink-400 hover:text-sky transition-all duration-300"
                 >
-                    <div className="w-10 h-10 rounded-xl bg-white border border-bhutan-gold/10 flex items-center justify-center group-hover:bg-bhutan-red group-hover:text-white transition-all shadow-sm">
-                        <ArrowLeft className="w-5 h-5" />
+                    <div className="w-10 h-10 rounded-[14px] bg-card border border-ink-100/60 flex items-center justify-center group-hover:bg-sky group-hover:text-background transition-all shadow-soft">
+                        <ArrowLeft className="w-5 h-5" strokeWidth={1.5} />
                     </div>
-                    <span className="font-bold uppercase tracking-widest text-[10px]">Back to Inquiries</span>
+                    <span className="font-semibold uppercase tracking-wider text-[11px] sm:text-[13px] sm:text-[12px]">Back to Inquiries</span>
                 </Link>
 
                 <Button
                     variant="ghost"
                     onClick={handleDelete}
-                    className="text-bhutan-dark/30 hover:text-bhutan-red hover:bg-bhutan-red/5 flex gap-2 rounded-xl transition-all"
+                    className="text-ink-300 hover:text-red-500 hover:bg-red-50 flex gap-2 rounded-[14px] transition-all"
                 >
-                    <Trash2 className="w-4 h-4" />
-                    <span className="font-bold uppercase tracking-widest text-[10px]">Delete Record</span>
+                    <Trash2 className="w-4 h-4" strokeWidth={1.5} />
+                    <span className="font-semibold uppercase tracking-wider text-[11px] sm:text-[13px] sm:text-[12px]">Delete Record</span>
                 </Button>
             </div>
 
@@ -169,35 +166,33 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-bhutan-gold/10 relative overflow-hidden"
+                        className="bg-card rounded-[20px] p-8 md:p-12 shadow-soft border border-ink-100/60 relative overflow-hidden"
                     >
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-bhutan-red/5 rounded-bl-[4rem]" />
-
                         <div className="relative z-10 space-y-6">
                             <div className="flex items-center gap-4 mb-4">
-                                <div className="w-14 h-14 bg-bhutan-red/10 rounded-2xl flex items-center justify-center text-bhutan-red font-bold text-2xl">
+                                <div className="w-14 h-14 bg-sky/10 rounded-2xl flex items-center justify-center text-sky font-semibold text-2xl">
                                     {inquiry.name.charAt(0)}
                                 </div>
                                 <div>
-                                    <h2 className="text-2xl md:text-3xl font-bold text-bhutan-dark tracking-tight">{inquiry.name}</h2>
-                                    <p className="text-bhutan-dark/40 font-bold uppercase tracking-widest text-[9px]">{inquiry.subject}</p>
+                                    <h2 className="text-2xl md:text-3xl font-semibold text-foreground tracking-tight">{inquiry.name}</h2>
+                                    <p className="text-ink-400 font-semibold uppercase tracking-wider text-[11px] sm:text-[13px] sm:text-[12px]">{inquiry.subject}</p>
                                 </div>
                             </div>
 
-                            <div className="bg-[#F9F7F2]/50 rounded-3xl p-8 border border-bhutan-gold/5 min-h-[200px]">
-                                <p className="text-bhutan-dark/80 text-lg md:text-xl font-serif italic leading-relaxed whitespace-pre-wrap">
-                                    "{inquiry.message}"
+                            <div className="bg-card rounded-2xl p-8 border border-ink-100/40 min-h-[200px]">
+                                <p className="text-ink-700 text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
+                                    {inquiry.message}
                                 </p>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-bhutan-gold/5">
-                                <div className="flex items-center gap-2 text-bhutan-dark/50">
-                                    <Calendar className="w-4 h-4 text-bhutan-gold" />
-                                    <span className="text-xs font-bold uppercase tracking-widest">{format(new Date(inquiry.createdAt), "MMMM d, yyyy")}</span>
+                            <div className="flex flex-wrap items-center gap-6 pt-6 border-t border-ink-100/40">
+                                <div className="flex items-center gap-2 text-ink-400">
+                                    <Calendar className="w-4 h-4 text-ink-400" strokeWidth={1.5} />
+                                    <span className="text-[11px] sm:text-[13px] sm:text-[13px] font-semibold uppercase tracking-wider">{format(new Date(inquiry.createdAt), "MMMM d, yyyy")}</span>
                                 </div>
-                                <div className="flex items-center gap-2 text-bhutan-dark/50">
-                                    <Clock className="w-4 h-4 text-bhutan-gold" />
-                                    <span className="text-xs font-bold uppercase tracking-widest">{format(new Date(inquiry.createdAt), "h:mm a")}</span>
+                                <div className="flex items-center gap-2 text-ink-400">
+                                    <Clock className="w-4 h-4 text-ink-400" strokeWidth={1.5} />
+                                    <span className="text-[11px] sm:text-[13px] sm:text-[13px] font-semibold uppercase tracking-wider">{format(new Date(inquiry.createdAt), "h:mm a")}</span>
                                 </div>
                             </div>
                         </div>
@@ -208,16 +203,14 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="bg-bhutan-dark rounded-[2.5rem] p-8 md:p-10 shadow-3xl text-white relative overflow-hidden"
+                        className="bg-card rounded-[20px] p-8 md:p-10 shadow-elevated border border-ink-100/60 relative overflow-hidden"
                     >
-                        <div className="absolute inset-0 bg-thangka opacity-[0.05] pointer-events-none" />
-
                         <div className="relative z-10 space-y-6">
                             <div className="flex items-center gap-3 mb-2">
-                                <div className="w-10 h-10 bg-bhutan-red rounded-xl flex items-center justify-center">
-                                    <Send className="w-5 h-5 text-white" />
+                                <div className="w-10 h-10 bg-sky rounded-[14px] flex items-center justify-center">
+                                    <Send className="w-5 h-5 text-background" strokeWidth={1.5} />
                                 </div>
-                                <h3 className="text-xl font-bold italic">Draft a Legacy Reply</h3>
+                                <h3 className="text-xl font-semibold text-foreground">Draft a Reply</h3>
                             </div>
 
                             <form onSubmit={handleReply} className="space-y-6">
@@ -225,20 +218,20 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
                                     placeholder="Type your personal response here..."
                                     value={replyMessage}
                                     onChange={(e) => setReplyMessage(e.target.value)}
-                                    className="min-h-[180px] bg-white/10 border-white/10 text-white placeholder:text-white/30 rounded-2xl p-6 text-lg font-serif italic focus:ring-bhutan-red/50 focus:border-bhutan-red/50 resize-none"
+                                    className="min-h-[180px] bg-card border-ink-200 text-foreground placeholder:text-ink-400 rounded-2xl p-6 text-base focus:ring-[3px] focus:ring-sky/15 focus:border-sky resize-none"
                                     required
                                 />
                                 <button
                                     type="submit"
                                     disabled={isReplying || !replyMessage.trim()}
-                                    className="w-full h-16 bg-bhutan-red hover:bg-white hover:text-bhutan-red text-white transition-all duration-500 rounded-xl font-bold uppercase tracking-[0.3em] text-[10px] flex items-center justify-center gap-4 shadow-xl disabled:opacity-50"
+                                    className="w-full h-14 bg-sky hover:bg-sky-600 text-background transition-all duration-300 rounded-[14px] font-semibold uppercase tracking-wider text-xs flex items-center justify-center gap-3 shadow-soft disabled:opacity-50"
                                 >
                                     {isReplying ? (
                                         "Sending Mail..."
                                     ) : (
                                         <>
                                             Send Personal Message
-                                            <Send className="w-4 h-4" />
+                                            <Send className="w-4 h-4" strokeWidth={1.5} />
                                         </>
                                     )}
                                 </button>
@@ -252,54 +245,54 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="bg-white rounded-[2.5rem] p-8 shadow-xl border border-bhutan-gold/10 space-y-8"
+                        className="bg-card rounded-[20px] p-8 shadow-soft border border-ink-100/60 space-y-8"
                     >
                         <div>
-                            <h4 className="text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-[0.3em] mb-6">Contact Details</h4>
+                            <h4 className="text-[11px] sm:text-[13px] sm:text-[13px] font-semibold text-ink-400 uppercase tracking-wider mb-6">Contact Details</h4>
                             <div className="space-y-6">
                                 <a href={`mailto:${inquiry.email}`} className="flex items-start gap-4 group">
-                                    <div className="w-10 h-10 rounded-xl bg-[#F9F7F2] flex items-center justify-center text-bhutan-gold group-hover:bg-bhutan-red group-hover:text-white transition-all shadow-sm">
-                                        <Mail className="w-4 h-4" />
+                                    <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-ink-400 group-hover:bg-sky group-hover:text-background transition-all shadow-sm">
+                                        <Mail className="w-4 h-4" strokeWidth={1.5} />
                                     </div>
                                     <div>
-                                        <p className="text-[9px] font-bold text-bhutan-dark/40 uppercase tracking-widest mb-1">Email Address</p>
-                                        <p className="text-sm font-bold text-bhutan-dark break-all group-hover:text-bhutan-red transition-colors">{inquiry.email}</p>
+                                        <p className="text-[11px] sm:text-[13px] sm:text-[12px] font-semibold text-ink-400 uppercase tracking-wider mb-1">Email Address</p>
+                                        <p className="text-sm font-semibold text-foreground break-all group-hover:text-sky transition-colors">{inquiry.email}</p>
                                     </div>
                                 </a>
 
                                 <a href={`tel:${inquiry.phone}`} className="flex items-start gap-4 group">
-                                    <div className="w-10 h-10 rounded-xl bg-[#F9F7F2] flex items-center justify-center text-bhutan-gold group-hover:bg-bhutan-red group-hover:text-white transition-all shadow-sm">
-                                        <Phone className="w-4 h-4" />
+                                    <div className="w-10 h-10 rounded-xl bg-muted flex items-center justify-center text-ink-400 group-hover:bg-sky group-hover:text-background transition-all shadow-sm">
+                                        <Phone className="w-4 h-4" strokeWidth={1.5} />
                                     </div>
                                     <div>
-                                        <p className="text-[9px] font-bold text-bhutan-dark/40 uppercase tracking-widest mb-1">Phone Number</p>
-                                        <p className="text-sm font-bold text-bhutan-dark group-hover:text-bhutan-red transition-colors">{inquiry.phone}</p>
+                                        <p className="text-[11px] sm:text-[13px] sm:text-[12px] font-semibold text-ink-400 uppercase tracking-wider mb-1">Phone Number</p>
+                                        <p className="text-sm font-semibold text-foreground group-hover:text-sky transition-colors">{inquiry.phone}</p>
                                     </div>
                                 </a>
                             </div>
                         </div>
 
                         {inquiry.propertyId && (
-                            <div className="pt-8 border-t border-bhutan-gold/5">
-                                <h4 className="text-[10px] font-bold text-bhutan-dark/30 uppercase tracking-[0.3em] mb-6">Related Property</h4>
+                            <div className="pt-8 border-t border-ink-100/40">
+                                <h4 className="text-[11px] sm:text-[13px] sm:text-[13px] font-semibold text-ink-400 uppercase tracking-wider mb-6">Related Property</h4>
                                 <Link
                                     href={`/properties/${inquiry.propertyId.slug}`}
-                                    className="block p-4 rounded-3xl bg-[#F9F7F2] border border-bhutan-gold/10 hover:border-bhutan-red/30 transition-all group"
+                                    className="block p-4 rounded-2xl bg-muted border border-ink-100/60 hover:border-sky/30 transition-all group"
                                 >
                                     <div className="flex items-center gap-4">
-                                        <div className="w-16 h-16 rounded-2xl overflow-hidden bg-white shrink-0 shadow-sm">
+                                        <div className="w-16 h-16 rounded-2xl overflow-hidden bg-card shrink-0 shadow-sm">
                                             {inquiry.propertyId.images?.[0] ? (
                                                 <img src={inquiry.propertyId.images[0]} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center text-bhutan-gold/30">
-                                                    <Building2 className="w-6 h-6" />
+                                                <div className="w-full h-full flex items-center justify-center text-ink-300">
+                                                    <Building2 className="w-6 h-6" strokeWidth={1.5} />
                                                 </div>
                                             )}
                                         </div>
                                         <div className="min-w-0">
-                                            <p className="text-xs font-bold text-bhutan-dark truncate leading-tight mb-1">{inquiry.propertyId.title}</p>
-                                            <p className="text-[9px] font-bold text-bhutan-red uppercase tracking-widest flex items-center gap-1">
-                                                <Globe className="w-3 h-3" />
+                                            <p className="text-xs font-semibold text-foreground truncate leading-tight mb-1">{inquiry.propertyId.title}</p>
+                                            <p className="text-[11px] sm:text-[13px] sm:text-[12px] font-semibold text-sky uppercase tracking-wider flex items-center gap-1">
+                                                <Globe className="w-3 h-3" strokeWidth={1.5} />
                                                 View Listing
                                             </p>
                                         </div>
@@ -308,15 +301,15 @@ export default function InquiryDetailPage({ params }: { params: Promise<{ id: st
                             </div>
                         )}
 
-                        <div className="pt-8 border-t border-bhutan-gold/5 text-center">
+                        <div className="pt-8 border-t border-ink-100/40 text-center">
                             {inquiry.isRead ? (
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-600 text-[10px] font-bold uppercase tracking-widest border border-emerald-500/20">
-                                    <CheckCircle2 className="w-4 h-4" />
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-600 text-[11px] sm:text-[13px] sm:text-[12px] font-semibold uppercase tracking-wider border border-emerald-500/20">
+                                    <CheckCircle2 className="w-4 h-4" strokeWidth={1.5} />
                                     Response Complete
                                 </div>
                             ) : (
-                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-600 text-[10px] font-bold uppercase tracking-widest border border-orange-500/20">
-                                    <Clock className="w-4 h-4" />
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-600 text-[11px] sm:text-[13px] sm:text-[12px] font-semibold uppercase tracking-wider border border-orange-500/20">
+                                    <Clock className="w-4 h-4" strokeWidth={1.5} />
                                     Pending Reply
                                 </div>
                             )}

@@ -5,14 +5,26 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Building2, MessageSquare, TrendingUp, Eye, Plus, ArrowUpRight,
-  Clock, ArrowRight, Star, AlertCircle,
+  Building2, MessageSquare, TrendingUp, Star, Plus, ArrowUpRight,
+  Clock, ArrowRight, AlertCircle, Home,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { formatDate, formatPrice } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from "recharts";
+
+function useIsDark() {
+  const [isDark, setIsDark] = useState(false);
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+  return isDark;
+}
 
 interface StatsData {
   totalProperties: number;
@@ -30,7 +42,6 @@ interface ChartDataPoint {
   inquiries: number;
 }
 
-// Animated counter hook
 function useAnimatedCounter(target: number, duration = 1200) {
   const [count, setCount] = useState(0);
   const frameRef = useRef<number>();
@@ -40,7 +51,7 @@ function useAnimatedCounter(target: number, duration = 1200) {
     const start = performance.now();
     const animate = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
       setCount(Math.round(eased * target));
       if (progress < 1) frameRef.current = requestAnimationFrame(animate);
     };
@@ -52,45 +63,52 @@ function useAnimatedCounter(target: number, duration = 1200) {
 }
 
 function StatCard({
-  name, value, change, icon: Icon, colorClass, bgClass, delay,
+  name, value, change, icon: Icon, delay, accent = "sky",
 }: {
-  name: string; value: number; change: string; icon: React.ElementType; colorClass: string; bgClass: string; delay: number;
+  name: string; value: number; change: string; icon: React.ElementType; delay: number; accent?: "sky" | "emerald" | "amber" | "violet";
 }) {
   const animated = useAnimatedCounter(value);
+  const accentMap = {
+    sky: "bg-sky/8 text-sky",
+    emerald: "bg-emerald/10 text-emerald",
+    amber: "bg-amber/10 text-amber",
+    violet: "bg-violet/10 text-violet",
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-white rounded-2xl p-6 border border-white shadow-sm hover:shadow-lg hover:border-bhutan-gold/20 transition-all duration-500 group cursor-default"
+      className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-5 hover:shadow-elevated transition-shadow duration-300 group"
     >
       <div className="flex items-start justify-between mb-4">
-        <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500", bgClass)}>
-          <Icon className={cn("w-5 h-5", colorClass)} />
+        <div className={cn("w-10 h-10 rounded-[14px] flex items-center justify-center transition-transform duration-300 group-hover:scale-105", accentMap[accent])}>
+          <Icon className="w-5 h-5" strokeWidth={1.5} />
         </div>
-        <div className="flex items-center gap-1 text-emerald-600 text-sm font-bold bg-emerald-50 px-2.5 py-1.5 rounded-full">
-          <ArrowUpRight className="w-3.5 h-3.5" />
+        <div className="flex items-center gap-1 text-emerald-600 text-[12px] font-semibold bg-emerald-50/80 px-2.5 py-1 rounded-full">
+          <ArrowUpRight className="w-3 h-3" strokeWidth={2.5} />
           {change}
         </div>
       </div>
-      <p className="text-4xl font-bold text-bhutan-dark mb-1">{animated.toLocaleString()}</p>
-      <p className="text-sm text-bhutan-dark/60 font-bold uppercase tracking-widest">{name}</p>
+      <p className="text-[32px] font-semibold text-foreground tracking-tight mb-0.5">
+        {animated.toLocaleString()}
+      </p>
+      <p className="text-[13px] text-ink-400 font-medium">{name}</p>
     </motion.div>
   );
 }
 
-// Custom tooltip for recharts
 function CustomTooltip({ active, payload, label }: any) {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-bhutan-dark/95 backdrop-blur-md border border-white/10 rounded-xl p-3 shadow-2xl">
-        <p className="text-white/60 text-xs font-bold uppercase tracking-wider mb-2">{label}</p>
+      <div className="bg-white/95 dark:bg-card/95 backdrop-blur-xl border border-ink-100/80 rounded-[16px] p-3 shadow-lifted">
+        <p className="text-[11px] sm:text-[13px] sm:text-[13px] text-ink-400 font-semibold uppercase tracking-wider mb-2">{label}</p>
         {payload.map((entry: any) => (
-          <div key={entry.name} className="flex items-center gap-2 text-sm">
+          <div key={entry.name} className="flex items-center gap-2 text-[13px]">
             <span className="w-2 h-2 rounded-full" style={{ background: entry.color }} />
-            <span className="text-white/70">{entry.name}:</span>
-            <span className="text-white font-bold">{entry.value}</span>
+            <span className="text-ink-400">{entry.name}:</span>
+            <span className="text-foreground font-semibold">{entry.value}</span>
           </div>
         ))}
       </div>
@@ -104,23 +122,22 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<StatsData | null>(null);
   const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
+  const isDark = useIsDark();
+  const chartGridColor = isDark ? "#2C2C2E" : "#F0F0F2";
+  const chartTickColor = isDark ? "#A1A1A6" : "#86868B";
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (!token) { router.push("/admin"); return; }
-    fetchDashboardData(token);
-  }, [router]);
+    fetchDashboardData();
+  }, []);
 
-  const fetchDashboardData = async (token: string) => {
+  const fetchDashboardData = async () => {
     try {
       const [statsRes, chartRes] = await Promise.all([
-        fetch("/api/admin/stats", { headers: { Authorization: `Bearer ${token}` } }),
-        fetch("/api/admin/stats/charts", { headers: { Authorization: `Bearer ${token}` } }),
+        fetch("/api/admin/stats"),
+        fetch("/api/admin/stats/charts"),
       ]);
-
       const statsData = await statsRes.json();
       const chartDataRes = await chartRes.json();
-
       if (statsData.success) setStats(statsData.data);
       if (chartDataRes.success) setChartData(chartDataRes.data);
     } catch (e) {
@@ -133,80 +150,54 @@ export default function AdminDashboard() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-3">
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            className="w-10 h-10 border-4 border-bhutan-red/20 border-t-bhutan-red rounded-full"
+            transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+            className="w-8 h-8 border-[2.5px] border-sky/15 border-t-sky rounded-full"
           />
-          <p className="text-bhutan-dark/60 text-sm uppercase tracking-widest font-bold">Loading…</p>
+          <p className="text-ink-400 text-[13px] font-medium">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   const statCards = [
-    {
-      name: "Total Properties",
-      value: stats?.totalProperties ?? 0,
-      change: `+${stats?.recentListings ?? 0} this month`,
-      icon: Building2,
-      colorClass: "text-bhutan-red",
-      bgClass: "bg-bhutan-red/10",
-    },
-    {
-      name: "Total Inquiries",
-      value: stats?.totalInquiries ?? 0,
-      change: `${stats?.unreadInquiries ?? 0} unread`,
-      icon: MessageSquare,
-      colorClass: "text-bhutan-gold",
-      bgClass: "bg-bhutan-gold/10",
-    },
-    {
-      name: "Featured Listings",
-      value: stats?.featuredProperties ?? 0,
-      change: "Highlighted",
-      icon: Star,
-      colorClass: "text-amber-500",
-      bgClass: "bg-amber-50",
-    },
-    {
-      name: "New This Month",
-      value: stats?.recentListings ?? 0,
-      change: "Last 30 days",
-      icon: TrendingUp,
-      colorClass: "text-emerald-600",
-      bgClass: "bg-emerald-50",
-    },
+    { name: "Total Properties", value: stats?.totalProperties ?? 0, change: `+${stats?.recentListings ?? 0} this month`, icon: Building2, accent: "sky" as const },
+    { name: "Total Inquiries", value: stats?.totalInquiries ?? 0, change: `${stats?.unreadInquiries ?? 0} unread`, icon: MessageSquare, accent: "emerald" as const },
+    { name: "Featured Listings", value: stats?.featuredProperties ?? 0, change: "Highlighted", icon: Star, accent: "amber" as const },
+    { name: "New This Month", value: stats?.recentListings ?? 0, change: "Last 30 days", icon: TrendingUp, accent: "violet" as const },
   ];
 
   return (
-    <div className="p-4 md:p-6 lg:p-8 max-w-[1600px] mx-auto">
-      {/* Page Header */}
-      <header className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="p-5 md:p-8 lg:p-10 max-w-[1440px] mx-auto">
+      {/* Header */}
+      <header className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
-          <motion.div
-            initial={{ opacity: 0, x: -15 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2 mb-1"
-          >
-            <div className="w-0.5 h-5 bg-bhutan-red rounded-full" />
-            <p className="text-bhutan-red font-bold text-sm uppercase tracking-[0.3em]">Overview</p>
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 10 }}
+          <motion.p
+            initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-2xl md:text-3xl font-bold text-bhutan-dark"
+            transition={{ duration: 0.4 }}
+            className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em] mb-1.5"
+          >
+            Overview
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.05 }}
+            className="text-[28px] md:text-[32px] font-semibold text-foreground tracking-tight"
           >
             Dashboard
           </motion.h1>
         </div>
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
-          <Link href="/admin/properties/new">
-            <button className="h-11 px-5 bg-bhutan-red text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-bhutan-dark transition-all duration-300 shadow-lg shadow-bhutan-red/20 flex items-center gap-2.5 group">
-              <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-              Add Property
-            </button>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }}>
+          <Link
+            href="/admin/properties/new"
+            className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-sky text-white text-[14px] font-medium hover:bg-sky-hover active:scale-[0.98] transition-all duration-200"
+          >
+            <Plus className="w-4 h-4" strokeWidth={2} />
+            Add Property
           </Link>
         </motion.div>
       </header>
@@ -214,22 +205,24 @@ export default function AdminDashboard() {
       {/* Unread Alert */}
       {(stats?.unreadInquiries ?? 0) > 0 && (
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 bg-bhutan-gold/10 border border-bhutan-gold/30 rounded-2xl flex items-center gap-3"
+          className="mb-8 p-4 bg-sky/[0.04] border border-sky/15 rounded-[20px] flex items-center gap-3"
         >
-          <AlertCircle className="w-5 h-5 text-bhutan-gold shrink-0" />
-          <p className="text-sm text-bhutan-dark/70 font-medium">
-            You have <span className="font-bold text-bhutan-dark">{stats?.unreadInquiries}</span> unread{" "}
+          <div className="w-9 h-9 rounded-full bg-sky/10 flex items-center justify-center shrink-0">
+            <AlertCircle className="w-[18px] h-[18px] text-sky" strokeWidth={1.5} />
+          </div>
+          <p className="text-[14px] text-ink-600">
+            You have <span className="font-semibold text-foreground">{stats?.unreadInquiries}</span> unread{" "}
             {(stats?.unreadInquiries ?? 0) === 1 ? "inquiry" : "inquiries"}.
           </p>
-          <Link href="/admin/inquiries" className="ml-auto text-sm font-bold text-bhutan-red hover:underline">
-            View All →
+          <Link href="/admin/inquiries" className="ml-auto text-[13px] font-semibold text-sky hover:underline">
+            View All &rarr;
           </Link>
         </motion.div>
       )}
 
-      {/* Stats Grid */}
+      {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {statCards.map((stat, i) => (
           <StatCard key={stat.name} {...stat} delay={i * 0.08} />
@@ -237,118 +230,116 @@ export default function AdminDashboard() {
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
-        {/* Properties Chart */}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 mb-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="bg-white rounded-2xl p-6 border border-white shadow-sm"
+          className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6"
         >
           <div className="mb-5">
-            <h3 className="font-bold text-bhutan-dark text-base">Properties Added</h3>
-            <p className="text-sm text-bhutan-dark/60 mt-0.5 uppercase tracking-wider font-medium">Last 12 months</p>
+            <h3 className="font-semibold text-foreground text-[16px]">Properties Added</h3>
+            <p className="text-[12px] text-ink-400 mt-0.5 font-medium">Last 12 months</p>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={240}>
             <AreaChart data={chartData} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
               <defs>
                 <linearGradient id="propGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#9B1C1C" stopOpacity={0.25} />
-                  <stop offset="95%" stopColor="#9B1C1C" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#0071E3" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#0071E3" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F4C43015" />
-              <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#2F2F2F60" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: "#2F2F2F60" }} axisLine={false} tickLine={false} allowDecimals={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={chartGridColor} vertical={false} />
+              <XAxis dataKey="name" tick={{ fontSize: 11, fill: chartTickColor }} axisLine={false} tickLine={false} dy={8} />
+              <YAxis tick={{ fontSize: 11, fill: chartTickColor }} axisLine={false} tickLine={false} allowDecimals={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Area type="monotone" dataKey="properties" name="Properties" stroke="#9B1C1C" strokeWidth={2.5} fill="url(#propGrad)" dot={{ fill: "#9B1C1C", r: 3, strokeWidth: 0 }} />
+              <Area type="monotone" dataKey="properties" name="Properties" stroke="#0071E3" strokeWidth={2} fill="url(#propGrad)" dot={{ fill: "#0071E3", r: 3, strokeWidth: 0 }} activeDot={{ r: 5, strokeWidth: 0, fill: "#0071E3" }} />
             </AreaChart>
           </ResponsiveContainer>
         </motion.div>
 
-        {/* Inquiries Chart */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45 }}
-          className="bg-white rounded-2xl p-6 border border-white shadow-sm"
+          className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6"
         >
           <div className="mb-5">
-            <h3 className="font-bold text-bhutan-dark text-base">Inquiries Received</h3>
-            <p className="text-sm text-bhutan-dark/60 mt-0.5 uppercase tracking-wider font-medium">Last 12 months</p>
+            <h3 className="font-semibold text-foreground text-[16px]">Inquiries Received</h3>
+            <p className="text-[12px] text-ink-400 mt-0.5 font-medium">Last 12 months</p>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={240}>
             <AreaChart data={chartData} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
               <defs>
                 <linearGradient id="inqGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#F4C430" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#F4C430" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#34C759" stopOpacity={0.2} />
+                  <stop offset="95%" stopColor="#34C759" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F4C43015" />
-              <XAxis dataKey="name" tick={{ fontSize: 10, fill: "#2F2F2F60" }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: "#2F2F2F60" }} axisLine={false} tickLine={false} allowDecimals={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke={chartGridColor} vertical={false} />
+              <XAxis dataKey="name" tick={{ fontSize: 11, fill: chartTickColor }} axisLine={false} tickLine={false} dy={8} />
+              <YAxis tick={{ fontSize: 11, fill: chartTickColor }} axisLine={false} tickLine={false} allowDecimals={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Area type="monotone" dataKey="inquiries" name="Inquiries" stroke="#F4C430" strokeWidth={2.5} fill="url(#inqGrad)" dot={{ fill: "#F4C430", r: 3, strokeWidth: 0 }} />
+              <Area type="monotone" dataKey="inquiries" name="Inquiries" stroke="#34C759" strokeWidth={2} fill="url(#inqGrad)" dot={{ fill: "#34C759", r: 3, strokeWidth: 0 }} activeDot={{ r: 5, strokeWidth: 0, fill: "#34C759"}} />
             </AreaChart>
           </ResponsiveContainer>
         </motion.div>
       </div>
 
-      {/* Recent Lists */}
-      <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
+      {/* Bottom Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-5 gap-5">
         {/* Recent Inquiries */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="xl:col-span-3 bg-white rounded-2xl border border-white shadow-sm overflow-hidden"
+          className="xl:col-span-3 bg-card rounded-[20px] border border-ink-100/60 shadow-soft overflow-hidden"
         >
-          <div className="p-5 border-b border-bhutan-gold/5 flex items-center justify-between">
+          <div className="p-5 border-b border-ink-100/60 flex items-center justify-between">
             <div>
-              <h3 className="font-bold text-bhutan-dark text-base">Recent Inquiries</h3>
-              <p className="text-sm text-bhutan-dark/40 mt-0.5 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5" /> Latest communications
+              <h3 className="font-semibold text-foreground text-[16px]">Recent Inquiries</h3>
+              <p className="text-[12px] text-ink-400 mt-0.5 font-medium flex items-center gap-1">
+                <Clock className="w-3 h-3" strokeWidth={2} /> Latest communications
               </p>
             </div>
-            <Link href="/admin/inquiries" className="text-sm font-bold text-bhutan-red hover:underline flex items-center gap-1">
-              View All <ArrowRight className="w-3.5 h-3.5" />
+            <Link href="/admin/inquiries" className="text-[13px] font-semibold text-sky hover:underline flex items-center gap-1">
+              View All <ArrowRight className="w-3 h-3" strokeWidth={2} />
             </Link>
           </div>
-          <div className="divide-y divide-bhutan-gold/5">
+          <div className="divide-y divide-ink-100/60">
             {(stats?.recentInquiries ?? []).length === 0 ? (
-              <div className="py-12 text-center">
-                <MessageSquare className="w-8 h-8 text-bhutan-dark/10 mx-auto mb-2" />
-                <p className="text-sm text-bhutan-dark/50 uppercase tracking-wider font-medium">No inquiries yet</p>
+              <div className="py-14 text-center">
+                <MessageSquare className="w-9 h-9 text-ink-200 mx-auto mb-2" strokeWidth={1.5} />
+                <p className="text-[14px] text-ink-400 font-medium">No inquiries yet</p>
               </div>
             ) : (
               stats?.recentInquiries.map((inquiry, i) => (
                 <motion.div
                   key={inquiry._id}
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.55 + i * 0.06 }}
                   className={cn(
-                    "p-4 hover:bg-[#F9F7F2]/50 transition-colors flex items-center gap-4 group",
-                    !inquiry.isRead && "bg-bhutan-gold/3"
+                    "p-4 hover:bg-ink-50/60 transition-colors flex items-center gap-4 group cursor-pointer",
+                    !inquiry.isRead && "bg-sky/[0.015]"
                   )}
                 >
                   <div className={cn(
-                    "w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm shrink-0 shadow-sm",
-                    !inquiry.isRead ? "bg-bhutan-red text-white" : "bg-[#F9F7F2] text-bhutan-dark/40"
+                    "w-10 h-10 rounded-full flex items-center justify-center font-semibold text-[13px] shrink-0",
+                    !inquiry.isRead ? "bg-sky text-white shadow-sm" : "bg-ink-100 text-ink-500"
                   )}>
                     {inquiry.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <h4 className="text-base font-bold text-bhutan-dark group-hover:text-bhutan-red transition-colors truncate">
+                      <h4 className="text-[14px] font-semibold text-foreground group-hover:text-sky transition-colors truncate">
                         {inquiry.name}
                       </h4>
-                      {!inquiry.isRead && <span className="w-1.5 h-1.5 bg-bhutan-red rounded-full animate-pulse shrink-0" />}
+                      {!inquiry.isRead && <span className="w-1.5 h-1.5 bg-sky rounded-full animate-pulse shrink-0" />}
                     </div>
-                    <p className="text-sm text-bhutan-dark/50 truncate italic">"{inquiry.message}"</p>
+                    <p className="text-[13px] text-ink-400 truncate">&ldquo;{inquiry.message}&rdquo;</p>
                   </div>
-                  <span className="text-xs text-bhutan-dark/60 font-bold uppercase tracking-widest shrink-0">
+                  <span className="text-[11px] sm:text-[13px] sm:text-[13px] text-ink-300 font-medium uppercase tracking-wider shrink-0">
                     {formatDate(inquiry.createdAt)}
                   </span>
                 </motion.div>
@@ -359,45 +350,45 @@ export default function AdminDashboard() {
 
         {/* Recent Properties */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="xl:col-span-2 bg-bhutan-dark rounded-2xl border border-white/5 shadow-sm overflow-hidden"
+          className="xl:col-span-2 bg-card rounded-[20px] border border-ink-100/60 shadow-soft overflow-hidden"
         >
-          <div className="p-5 border-b border-white/5">
-            <h3 className="font-bold text-white text-sm">Recent Properties</h3>
-            <p className="text-sm text-bhutan-gold/70 mt-0.5 font-medium">Newest listings</p>
+          <div className="p-5 border-b border-ink-100/60">
+            <h3 className="font-semibold text-foreground text-[16px]">Recent Properties</h3>
+            <p className="text-[12px] text-ink-400 mt-0.5 font-medium">Newest listings</p>
           </div>
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-ink-100/60">
             {(stats?.recentProperties ?? []).length === 0 ? (
-              <div className="py-12 text-center">
-                <Building2 className="w-8 h-8 text-white/10 mx-auto mb-2" />
-                <p className="text-sm text-white/40 uppercase tracking-wider font-medium">No properties yet</p>
+              <div className="py-14 text-center">
+                <Home className="w-9 h-9 text-ink-200 mx-auto mb-2" strokeWidth={1.5} />
+                <p className="text-[14px] text-ink-400 font-medium">No properties yet</p>
               </div>
             ) : (
               stats?.recentProperties.map((property, i) => (
                 <motion.div
                   key={property._id}
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.65 + i * 0.06 }}
-                  className="p-4 hover:bg-white/5 transition-colors group"
+                  className="p-4 hover:bg-ink-50/60 transition-colors group cursor-pointer"
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-bhutan-red/20 rounded-lg flex items-center justify-center shrink-0">
-                      <Building2 className="w-4 h-4 text-bhutan-gold" />
+                    <div className="w-9 h-9 bg-sky/[0.08] rounded-[12px] flex items-center justify-center shrink-0">
+                      <Building2 className="w-[18px] h-[18px] text-sky" strokeWidth={1.5} />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-base font-bold text-white group-hover:text-bhutan-gold transition-colors truncate leading-tight">
+                      <p className="text-[14px] font-semibold text-foreground group-hover:text-sky transition-colors truncate leading-tight">
                         {property.title}
                       </p>
-                      <p className="text-bhutan-gold font-bold text-sm mt-0.5">
+                      <p className="text-sky font-semibold text-[13px] mt-0.5">
                         Nu. {property.price?.toLocaleString()}
                       </p>
                     </div>
                     {property.featured && (
-                      <span className="px-1.5 py-0.5 bg-bhutan-gold/20 text-bhutan-gold text-[10px] font-bold rounded uppercase tracking-wider shrink-0">
-                        ★
+                      <span className="px-2 py-0.5 bg-sky/[0.08] text-sky text-[11px] sm:text-[13px] sm:text-[12px] font-bold rounded-full uppercase tracking-wider shrink-0">
+                        Featured
                       </span>
                     )}
                   </div>
@@ -405,11 +396,12 @@ export default function AdminDashboard() {
               ))
             )}
           </div>
-          <div className="p-4">
-            <Link href="/admin/properties">
-              <button className="w-full h-10 rounded-xl border border-white/10 text-white/40 text-xs font-bold uppercase tracking-wider hover:bg-white/5 hover:text-white transition-all">
-                View All Properties
-              </button>
+          <div className="p-4 border-t border-ink-100/60">
+            <Link
+              href="/admin/properties"
+              className="w-full h-10 rounded-xl border border-ink-200/80 text-ink-400 text-[13px] font-medium hover:bg-ink-50 hover:text-foreground transition-all duration-200 flex items-center justify-center"
+            >
+              View All Properties
             </Link>
           </div>
         </motion.div>

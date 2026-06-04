@@ -1,16 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Search, MapPin, Home, ChevronDown } from "lucide-react";
+import { useState, useEffect, useCallback, memo, useRef } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Search, MapPin, Home, ChevronDown, ArrowRight, Code2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/context/SettingsContext";
 
+/* ============================================================
+   HERO — Apple.com-style luxury hero section
+   Design Principles:
+   • Massive typography with tight tracking
+   • Full-bleed hero image with gradient overlay
+   • Floating glassmorphic stat pills
+   • Search panel with compound component architecture
+   • Staggered entrance animations
+   • All touch targets ≥ 44px
+   ============================================================ */
+
 const districts = [
-  "All Districts",
+  "All districts",
   "Bumthang",
   "Chhukha",
   "Dagana",
@@ -24,6 +35,7 @@ const districts = [
   "Samdrup Jongkhar",
   "Samtse",
   "Sarpang",
+  "Thimphu",
   "Trashigang",
   "Trashi Yangtse",
   "Trongsa",
@@ -32,7 +44,6 @@ const districts = [
   "Zhemgang",
 ];
 
-// propertyTypes will be fetched from API
 interface IPropertyType {
   _id: string;
   name: string;
@@ -40,305 +51,487 @@ interface IPropertyType {
 }
 
 const priceRanges = [
-  { label: "Any Price", min: 0, max: 0 },
+  { label: "Any price", min: 0, max: 0 },
   { label: "Under Nu. 5M", min: 0, max: 5000000 },
-  { label: "Nu. 5M - 10M", min: 5000000, max: 10000000 },
-  { label: "Nu. 10M - 20M", min: 10000000, max: 20000000 },
+  { label: "Nu. 5M – 10M", min: 5000000, max: 10000000 },
+  { label: "Nu. 10M – 20M", min: 10000000, max: 20000000 },
   { label: "Above Nu. 20M", min: 20000000, max: 0 },
 ];
 
-export function Hero() {
-  const router = useRouter();
-  const { settings, isLoading } = useSettings();
-  const [selectedDistrict, setSelectedDistrict] = useState("All Districts");
-  const [selectedType, setSelectedType] = useState("All Types");
-  const [propertyTypes, setPropertyTypes] = useState<string[]>(["All Types"]);
-  const [selectedPrice, setSelectedPrice] = useState(priceRanges[0]);
-  const [isDistrictOpen, setIsDistrictOpen] = useState(false);
-  const [isTypeOpen, setIsTypeOpen] = useState(false);
-  const [isPriceOpen, setIsPriceOpen] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
+/* ── Animation variants ── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
 
-  const heroImages = (settings?.heroImages && settings.heroImages.length > 0)
-    ? settings.heroImages
-    : (settings?.heroImage
-      ? [settings.heroImage]
-      : [
-        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2674&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1483683393433-cced1fa02081?q=80&w=2670&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?q=80&w=2670&auto=format&fit=crop",
-      ]);
+/* ── Compound Components for Search Panel ── */
 
-  useEffect(() => {
-    if (heroImages.length <= 1) return;
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 6000); // 6 seconds for a more relaxed feel
-    return () => clearInterval(timer);
-  }, [heroImages.length]);
-
-  useEffect(() => {
-    fetch("/api/property-types")
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setPropertyTypes(["All Types", ...data.data.map((t: any) => t.name)]);
-        }
-      })
-      .catch(console.error);
-  }, []);
-
-  const { scrollY } = useScroll();
-  const backgroundY = useTransform(scrollY, [0, 1000], ["0%", "20%"]);
-  const textY = useTransform(scrollY, [0, 500], ["0%", "50%"]);
-  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
-
-  const closeAll = () => {
-    setIsDistrictOpen(false);
-    setIsTypeOpen(false);
-    setIsPriceOpen(false);
-  };
-
-  const handleSearch = () => {
-    const params = new URLSearchParams();
-    if (selectedDistrict !== "All Districts") params.append("district", selectedDistrict);
-    if (selectedType !== "All Types") params.append("type", selectedType.toLowerCase());
-    if (selectedPrice.min > 0) params.append("minPrice", selectedPrice.min.toString());
-    if (selectedPrice.max > 0) params.append("maxPrice", selectedPrice.max.toString());
-    router.push(`/properties?${params.toString()}`);
-  };
-
-  const NuIcon = ({ className }: { className?: string }) => (
-    <span className={cn("text-[10px] font-bold leading-none", className)}>Nu</span>
+// Search Panel Root
+interface SearchPanelProps {
+  children: React.ReactNode;
+}
+const SearchPanel = memo(function SearchPanel({ children }: SearchPanelProps) {
+  const shouldReduceMotion = useReducedMotion();
+  return (
+    <motion.div
+      initial={shouldReduceMotion ? {} : { opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className="rounded-apple-xl bg-fog/80 dark:bg-ink-900/40 backdrop-blur-xl p-6 sm:p-8 md:p-10 border border-ink-100/60 dark:border-ink-700/30 shadow-product"
+    >
+      {children}
+    </motion.div>
   );
+});
 
-  const dropdowns = [
-    { label: "Location", value: selectedDistrict, icon: MapPin, open: isDistrictOpen, setOpen: (v: boolean) => { setIsDistrictOpen(v); setIsTypeOpen(false); setIsPriceOpen(false); }, data: districts, setter: setSelectedDistrict },
-    { label: "Type", value: selectedType, icon: Home, open: isTypeOpen, setOpen: (v: boolean) => { setIsTypeOpen(v); setIsDistrictOpen(false); setIsPriceOpen(false); }, data: propertyTypes, setter: setSelectedType },
-    { label: "Price", value: selectedPrice.label, icon: NuIcon, open: isPriceOpen, setOpen: (v: boolean) => { setIsPriceOpen(v); setIsDistrictOpen(false); setIsTypeOpen(false); }, data: priceRanges, setter: setSelectedPrice, isPrice: true },
-  ];
+// Search Panel Header
+interface SearchPanelHeaderProps {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+}
+const SearchPanelHeader = memo(function SearchPanelHeader({
+  eyebrow,
+  title,
+  subtitle,
+}: SearchPanelHeaderProps) {
+  return (
+    <div className="mb-6 md:mb-0">
+      <p className="text-[13px] font-semibold text-sky mb-2 tracking-wide">
+        {eyebrow}
+      </p>
+      <h2 className="text-[clamp(1.5rem,1.25rem+1.5vw,2.5rem)] font-semibold tracking-tighter2 leading-tight2 text-foreground text-balance">
+        {title}
+      </h2>
+      <p className="mt-3 text-[15px] text-ink-500 leading-snug2 max-w-md">
+        {subtitle}
+      </p>
+    </div>
+  );
+});
+
+// Dropdown Field
+interface DropdownFieldProps {
+  label: string;
+  value: string;
+  icon?: React.ElementType;
+  isOpen: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+  fieldId: string;
+}
+const DropdownField = memo(function DropdownField({
+  label,
+  value,
+  icon: Icon,
+  isOpen,
+  onToggle,
+  children,
+  fieldId,
+}: DropdownFieldProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Close on outside click
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        onToggle();
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [isOpen, onToggle]);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden">
-      {/* Background Slider with Parallax */}
-      <motion.div
-        style={{ y: backgroundY }}
-        className="absolute inset-0 z-0 w-full h-[120%] -top-[10%]"
+    <div ref={ref} className="relative">
+      <button
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-controls={`dropdown-${fieldId}`}
+        className="w-full flex items-center justify-between gap-3 bg-white dark:bg-card border border-ink-200/80 dark:border-ink-700/60 rounded-2xl px-4 py-3.5 text-left transition-all duration-fast hover:border-ink-400 hover:shadow-soft no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40 focus-visible:ring-offset-2"
       >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={heroImages[currentSlide]}
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="absolute inset-0 w-full h-full"
-          >
-            <Image
-              src={heroImages[currentSlide]}
-              alt="Bhutan Mountains"
-              fill
-              className="object-cover object-center"
-              priority
-              sizes="100vw"
+        <span className="flex items-center gap-2.5 min-w-0">
+          {Icon && (
+            <Icon
+              className="w-4 h-4 text-ink-400 shrink-0"
+              strokeWidth={1.75}
             />
-          </motion.div>
-        </AnimatePresence>
-
-        <div className="absolute inset-0 bg-gradient-to-t from-bhutan-dark via-bhutan-dark/60 to-bhutan-dark/20 z-10" />
-        <div className="absolute inset-0 bg-thangka opacity-20 mix-blend-overlay z-10 pointer-events-none" />
-      </motion.div>
-
-      {/* Content */}
-      <motion.div
-        style={{ y: textY, opacity }}
-        className="relative z-20 w-full max-w-6xl mx-auto flex flex-col items-center justify-center text-center px-4 pt-24 pb-16 md:pt-28 md:pb-20"
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <span className="inline-block py-1 px-4 md:px-6 rounded-full bg-white/10 backdrop-blur-md border border-bhutan-gold/30 text-bhutan-gold text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] md:tracking-[0.3em] mb-4 md:mb-6">
-            The Best Real Estate in Bhutan
+          )}
+          <span className="min-w-0">
+            <span className="block text-[11px] text-ink-400 leading-none mb-1">
+              {label}
+            </span>
+            <span className="block text-[14px] text-foreground font-medium truncate">
+              {value}
+            </span>
           </span>
-        </motion.div>
+        </span>
+        <ChevronDown
+          className={cn(
+            "w-4 h-4 text-ink-400 transition-transform duration-200 shrink-0",
+            isOpen && "rotate-180"
+          )}
+          strokeWidth={1.75}
+        />
+      </button>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id={`dropdown-${fieldId}`}
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute z-30 left-0 right-0 mt-2 max-h-72 overflow-y-auto bg-white dark:bg-card rounded-2xl border border-ink-100 dark:border-ink-700 shadow-elevated p-1.5 overscroll-contain"
+            role="listbox"
+            aria-label={`${label} options`}
+          >
+            {children}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+});
+
+// Dropdown Option
+interface DropdownOptionProps {
+  label: string;
+  isActive: boolean;
+  onSelect: () => void;
+}
+const DropdownOption = memo(function DropdownOption({
+  label,
+  isActive,
+  onSelect,
+}: DropdownOptionProps) {
+  return (
+    <button
+      onClick={onSelect}
+      role="option"
+      aria-selected={isActive}
+      className={cn(
+        "w-full text-left px-3 py-2.5 rounded-xl text-[14px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sky/40",
+        isActive
+          ? "bg-sky text-white"
+          : "text-foreground hover:bg-fog dark:hover:bg-ink-800/40"
+      )}
+    >
+      {label}
+    </button>
+  );
+});
+
+// Stat Pill
+interface StatPillProps {
+  label: string;
+  color: string;
+  delay: number;
+}
+const StatPill = memo(function StatPill({ label, color, delay }: StatPillProps) {
+  const shouldReduceMotion = useReducedMotion();
+  return (
+    <motion.span
+      initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.85 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
+      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-xl text-white text-[11px] sm:text-[12px] font-semibold border border-white/10 shadow-lg"
+    >
+      <span className={cn("w-1.5 h-1.5 rounded-full", color)} />
+      {label}
+    </motion.span>
+  );
+});
+
+/* ── Main Hero Component ── */
+export function Hero() {
+  const router = useRouter();
+  const { settings } = useSettings();
+  const shouldReduceMotion = useReducedMotion();
+
+  const [district, setDistrict] = useState(districts[0]);
+  const [type, setType] = useState("All types");
+  const [propertyTypes, setPropertyTypes] = useState<string[]>(["All types"]);
+  const [price, setPrice] = useState(priceRanges[0]);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+
+  const heroImage =
+    settings?.heroImages?.[0] ||
+    settings?.heroImage ||
+    "/image/about-hero.png";
+
+  // Fetch property types with cleanup
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/property-types", { signal: controller.signal })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setPropertyTypes([
+            "All types",
+            ...data.data.map((t: IPropertyType) => t.name),
+          ]);
+        }
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
+
+  // Close dropdowns on Escape
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setOpenDropdown(null);
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const handleSearch = useCallback(() => {
+    const params = new URLSearchParams();
+    if (district !== districts[0]) params.append("district", district);
+    if (type !== "All types") {
+      // API expects "propertyType" not "type"
+      params.append("propertyType", type.toLowerCase());
+    }
+    if (price.min > 0) params.append("minPrice", String(price.min));
+    if (price.max > 0) params.append("maxPrice", String(price.max));
+    router.push(`/properties?${params.toString()}`);
+  }, [district, type, price, router]);
+
+  const toggleDropdown = useCallback((key: string) => {
+    setOpenDropdown((prev) => (prev === key ? null : key));
+  }, []);
+
+  return (
+    <section className="relative pt-12 sm:pt-14 md:pt-16 overflow-hidden">
+      {/* Background gradient ambient glow */}
+      <div className="absolute inset-0 -z-10 pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-sky/5 rounded-full blur-[120px]" />
+      </div>
+
+      {/* ── TEXT BLOCK ── */}
+      <div className="container-apple-wide text-center py-16 sm:py-20 md:py-28">
+        <motion.p
+          custom={0}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="text-[13px] sm:text-[14px] font-semibold text-sky tracking-wide uppercase"
+        >
+          PHOJAA95 Real Estate
+        </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-3 md:mb-5 leading-[1.15] max-w-4xl"
+          custom={0.08}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-4 font-semibold tracking-tighter3 leading-tighter text-balance text-foreground"
+          style={{ fontSize: "clamp(2.75rem, 2rem + 4.5vw, 6.5rem)" }}
         >
-          Find Your Dream Property in{" "}
-          <span className="text-bhutan-gold italic font-light">Bhutan</span>
+          Find Your Dream Property in Bhutan
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-base md:text-lg text-white/80 mb-6 md:mb-10 max-w-xl font-light tracking-wide"
+          custom={0.16}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-6 mx-auto max-w-xl text-[17px] sm:text-[19px] md:text-[21px] text-ink-500 leading-snug2 text-pretty"
         >
-          Beautiful houses, apartments, and land across the Land of the Thunder Dragon.
+          Browse verified land, homes, and commercial properties — or build your next website, app, or software with Phojaa95 Solutions.
         </motion.p>
 
-        {/* Search Bar - Compact on Mobile */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="w-full max-w-4xl mb-6 md:mb-10 relative z-30"
+          custom={0.24}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
         >
-          {/* Desktop: Horizontal bar */}
-          <div className="hidden md:flex bg-white/10 backdrop-blur-xl rounded-2xl p-2 border border-white/20 shadow-2xl gap-2">
-            {dropdowns.map((item, idx) => (
-              <div key={idx} className="relative flex-1">
-                <button
-                  onClick={() => item.setOpen(!item.open)}
-                  className="w-full flex items-center justify-between bg-white/90 hover:bg-white rounded-xl px-4 py-3 text-bhutan-dark transition-all group/btn"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-bhutan-red/10 flex items-center justify-center group-hover/btn:bg-bhutan-red transition-colors">
-                      <item.icon className="w-3.5 h-3.5 text-bhutan-red group-hover/btn:text-white transition-colors" />
-                    </div>
-                    <div className="flex flex-col items-start">
-                      <span className="text-[8px] text-gray-400 font-bold uppercase tracking-widest leading-none mb-0.5">{item.label}</span>
-                      <span className="font-semibold text-xs leading-none">{item.value}</span>
-                    </div>
-                  </div>
-                  <ChevronDown className={cn("w-3.5 h-3.5 text-gray-400 transition-transform", item.open && "rotate-180")} />
-                </button>
-
-                <AnimatePresence>
-                  {item.open && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 8 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-[100]"
-                    >
-                      <div className="max-h-48 overflow-y-auto py-1">
-                        {item.data.map((option: any) => (
-                          <button
-                            key={item.isPrice ? option.label : option}
-                            onClick={() => { item.setter(option); item.setOpen(false); }}
-                            className={cn(
-                              "w-full text-left px-4 py-2.5 text-sm transition-all",
-                              (item.isPrice ? item.value === option.label : item.value === option)
-                                ? "bg-bhutan-red/5 text-bhutan-red font-bold"
-                                : "text-gray-600 hover:bg-gray-50"
-                            )}
-                          >
-                            {item.isPrice ? option.label : option}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-
-            <button
-              onClick={handleSearch}
-              className="w-28 bg-bhutan-red hover:bg-bhutan-red/90 text-white rounded-xl flex items-center justify-center group overflow-hidden relative"
-            >
-              <Search className="w-5 h-5 group-hover:scale-110 transition-transform relative z-10" />
-            </button>
-          </div>
-
-          {/* Mobile: Stacked compact selects */}
-          <div className="md:hidden bg-white/10 backdrop-blur-xl rounded-xl p-2 border border-white/20 shadow-xl space-y-1.5">
-            {dropdowns.map((item, idx) => (
-              <div key={idx} className="relative">
-                <button
-                  onClick={() => item.setOpen(!item.open)}
-                  className="w-full flex items-center justify-between bg-white/90 rounded-lg px-3 py-2.5 text-bhutan-dark"
-                >
-                  <div className="flex items-center gap-2">
-                    <item.icon className="w-3.5 h-3.5 text-bhutan-red" />
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-[8px] text-gray-400 font-bold uppercase tracking-wider">{item.label}:</span>
-                      <span className="font-semibold text-[11px]">{item.value}</span>
-                    </div>
-                  </div>
-                  <ChevronDown className={cn("w-3 h-3 text-gray-400 transition-transform", item.open && "rotate-180")} />
-                </button>
-
-                <AnimatePresence>
-                  {item.open && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="overflow-hidden bg-white rounded-lg mt-1 shadow-lg border border-gray-100 z-[100] relative"
-                    >
-                      <div className="max-h-36 overflow-y-auto py-1">
-                        {item.data.map((option: any) => (
-                          <button
-                            key={item.isPrice ? option.label : option}
-                            onClick={() => { item.setter(option); item.setOpen(false); }}
-                            className={cn(
-                              "w-full text-left px-3 py-2 text-xs transition-all",
-                              (item.isPrice ? item.value === option.label : item.value === option)
-                                ? "bg-bhutan-red/5 text-bhutan-red font-bold"
-                                : "text-gray-600 hover:bg-gray-50"
-                            )}
-                          >
-                            {item.isPrice ? option.label : option}
-                          </button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-
-            <button
-              onClick={handleSearch}
-              className="w-full py-2.5 bg-bhutan-red hover:bg-bhutan-red/90 text-white rounded-lg flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider"
-            >
-              <Search className="w-3.5 h-3.5" />
-              Search
-            </button>
-          </div>
-        </motion.div>
-
-        {/* Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-row items-center gap-3 md:gap-5 w-full max-w-md relative z-10"
-        >
-          <Link href="/properties" className="flex-1">
-            <button className="w-full px-4 md:px-8 py-3 md:py-4 bg-bhutan-red text-white font-bold rounded-full transition-all duration-500 hover:bg-red-800 shadow-lg flex items-center justify-center group relative overflow-hidden border border-bhutan-gold/30">
-              <span className="relative z-10 uppercase tracking-[0.15em] md:tracking-[0.2em] text-[9px] md:text-[10px]">Browse Properties</span>
-            </button>
+          <Link
+            href="/properties"
+            className="inline-flex items-center gap-2 h-12 px-7 rounded-full bg-sky text-white text-[15px] font-medium hover:bg-sky-hover active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50 focus-visible:ring-offset-2"
+          >
+            Browse properties
+            <ArrowRight className="w-4 h-4" strokeWidth={2} />
           </Link>
-
-          <Link href="/contact" className="flex-1">
-            <button className="w-full px-4 md:px-8 py-3 md:py-4 bg-transparent text-white font-bold rounded-full transition-all duration-500 border border-white/30 hover:border-bhutan-gold hover:bg-white/10 flex items-center justify-center group">
-              <span className="relative z-10 uppercase tracking-[0.15em] md:tracking-[0.2em] text-[9px] md:text-[10px] group-hover:text-bhutan-gold transition-colors">Contact Us</span>
-            </button>
+          <Link
+            href="/phojaa95-solutions"
+            className="inline-flex items-center gap-2 h-12 px-7 rounded-full bg-foreground text-background text-[15px] font-medium hover:opacity-90 active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-2"
+          >
+            <Code2 className="w-4 h-4" strokeWidth={2} />
+            Phojaa95 Solutions
+          </Link>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-1 h-12 px-7 rounded-full border border-ink-200 dark:border-ink-700 text-foreground text-[15px] font-medium hover:bg-ink-50/60 dark:hover:bg-ink-800/40 active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40"
+          >
+            Talk to a specialist
           </Link>
         </motion.div>
-      </motion.div>
+      </div>
 
-      {/* Decorative Arrow Down */}
+      {/* ── HERO IMAGE ── */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
-        style={{ opacity, y: textY }}
-        className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none"
+        initial={shouldReduceMotion ? {} : { opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        className="relative max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8"
       >
-        <span className="text-[8px] md:text-[9px] text-white/50 uppercase tracking-[0.3em] font-bold">Discover</span>
-        <div className="w-px h-10 md:h-16 bg-gradient-to-b from-bhutan-gold/80 to-transparent animate-pulse" />
+        <div className="relative aspect-[16/9] sm:aspect-[2.2/1] overflow-hidden rounded-apple-xl bg-fog shadow-product">
+          <Image
+            src={heroImage}
+            alt="Luxury Bhutanese property with Himalayan mountain views"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover ken-burns"
+          />
+
+          {/* Gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+
+          {/* Bottom-left content */}
+          <div className="absolute left-5 sm:left-8 bottom-5 sm:bottom-8 text-white max-w-[75%]">
+            <motion.p
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+              className="text-[11px] sm:text-[12px] font-semibold uppercase tracking-eyebrow text-white/70"
+            >
+              Featured Property
+            </motion.p>
+            <motion.p
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+              className="mt-1.5 text-[16px] sm:text-[22px] md:text-[28px] font-semibold tracking-tighter2 leading-tight2"
+            >
+              Where Himalayan craft meets modern living.
+            </motion.p>
+          </div>
+
+          {/* Floating stat pills — top right */}
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex flex-col gap-2 items-end">
+            <StatPill label="500+ Verified" color="bg-emerald" delay={0.8} />
+            <StatPill label="Nationwide" color="bg-sky" delay={0.95} />
+            <StatPill label="20+ Districts" color="bg-amber" delay={1.1} />
+            <Link
+              href="/phojaa95-solutions"
+              className="no-tap"
+              aria-label="Phojaa95 Solutions — web, app and software development"
+            >
+              <motion.span
+                initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5, delay: 1.25, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-xl text-white text-[11px] sm:text-[12px] font-semibold border border-white/10 shadow-lg hover:bg-white/25 transition-colors"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-violet-300" />
+                Web &amp; App Dev
+              </motion.span>
+            </Link>
+          </div>
+        </div>
       </motion.div>
+
+      {/* ── SEARCH PANEL ── */}
+      <div className="container-apple-wide py-14 sm:py-20">
+        <SearchPanel>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <SearchPanelHeader
+              eyebrow="Find your match"
+              title="Tell us what you're looking for."
+              subtitle="Choose a district, property type, and budget. We'll surface only what fits your needs."
+            />
+
+            <div className="space-y-3">
+              {/* District dropdown */}
+              <DropdownField
+                fieldId="loc"
+                label="Where"
+                value={district}
+                icon={MapPin}
+                isOpen={openDropdown === "loc"}
+                onToggle={() => toggleDropdown("loc")}
+              >
+                {districts.map((d) => (
+                  <DropdownOption
+                    key={d}
+                    label={d}
+                    isActive={d === district}
+                    onSelect={() => {
+                      setDistrict(d);
+                      setOpenDropdown(null);
+                    }}
+                  />
+                ))}
+              </DropdownField>
+
+              {/* Type dropdown */}
+              <DropdownField
+                fieldId="type"
+                label="What"
+                value={type}
+                icon={Home}
+                isOpen={openDropdown === "type"}
+                onToggle={() => toggleDropdown("type")}
+              >
+                {propertyTypes.map((t) => (
+                  <DropdownOption
+                    key={t}
+                    label={t}
+                    isActive={t === type}
+                    onSelect={() => {
+                      setType(t);
+                      setOpenDropdown(null);
+                    }}
+                  />
+                ))}
+              </DropdownField>
+
+              {/* Price dropdown */}
+              <DropdownField
+                fieldId="price"
+                label="Budget"
+                value={price.label}
+                isOpen={openDropdown === "price"}
+                onToggle={() => toggleDropdown("price")}
+              >
+                {priceRanges.map((p) => (
+                  <DropdownOption
+                    key={p.label}
+                    label={p.label}
+                    isActive={p.label === price.label}
+                    onSelect={() => {
+                      setPrice(p);
+                      setOpenDropdown(null);
+                    }}
+                  />
+                ))}
+              </DropdownField>
+
+              {/* Search button */}
+              <button
+                onClick={handleSearch}
+                className="w-full inline-flex items-center justify-center gap-2 h-12 rounded-2xl bg-sky text-white text-[15px] font-medium hover:bg-sky-hover active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50 focus-visible:ring-offset-2 mt-2"
+              >
+                <Search className="w-4 h-4" strokeWidth={2} />
+                Search properties
+              </button>
+            </div>
+          </div>
+        </SearchPanel>
+      </div>
     </section>
   );
 }

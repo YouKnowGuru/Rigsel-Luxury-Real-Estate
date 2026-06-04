@@ -1,0 +1,23 @@
+{
+  "uriPresent": true,
+  "connected": true,
+  "connectMs": 1283,
+  "ping": {
+    "ok": 1
+  },
+  "dbName": "test",
+  "collections": [
+    "documents",
+    "admins",
+    "propertytypes",
+    "contacts",
+    "reviews",
+    "settings",
+    "teammembers",
+    "messages",
+    "properties",
+    "galleries",
+    "chats",
+    "blogs"
+  ]
+}

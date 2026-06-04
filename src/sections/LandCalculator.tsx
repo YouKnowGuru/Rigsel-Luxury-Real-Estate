@@ -2,18 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowRightLeft, Calculator, Ruler, RotateCcw } from "lucide-react";
+import { Calculator, RotateCcw } from "lucide-react";
 import { landConversions } from "@/lib/utils";
+import { SectionHeader } from "@/components/layout/SectionHeader";
+import { cn } from "@/lib/utils";
 
 const units = [
-  { value: "decimal", label: "Decimal", color: "bg-bhutan-red" },
-  { value: "sqft", label: "Sq Ft", color: "bg-bhutan-gold" },
-  { value: "sqm", label: "Sq M", color: "bg-bhutan-dark" },
-];
+  { value: "decimal", label: "Decimal" },
+  { value: "sqft", label: "Sq Ft" },
+  { value: "sqm", label: "Sq M" },
+] as const;
 
 export function LandCalculator() {
   const [inputValue, setInputValue] = useState<string>("");
-  const [fromUnit, setFromUnit] = useState<"decimal" | "sqft" | "sqm">("decimal");
+  const [fromUnit, setFromUnit] =
+    useState<(typeof units)[number]["value"]>("decimal");
 
   const [results, setResults] = useState({
     decimal: "0.00",
@@ -33,149 +36,100 @@ export function LandCalculator() {
       decimal: landConversions.sqmToDecimal(sqm).toFixed(2),
       sqft: landConversions.sqmToSqft(sqm).toFixed(2),
       sqm: sqm.toFixed(2),
-      acre: landConversions.decimalToAcre(landConversions.sqmToDecimal(sqm)).toFixed(4),
+      acre: landConversions
+        .decimalToAcre(landConversions.sqmToDecimal(sqm))
+        .toFixed(4),
     });
   }, [inputValue, fromUnit]);
 
-  const resultCards = [
-    { label: "Acres", value: results.acre, show: true },
-    { label: "Decimal", value: results.decimal, show: fromUnit !== "decimal" },
-    { label: "Sq Ft", value: results.sqft, show: fromUnit !== "sqft" },
-    { label: "Sq M", value: results.sqm, show: fromUnit !== "sqm" },
-  ].filter((r) => r.show);
+  const reset = () => {
+    setInputValue("");
+    setFromUnit("decimal");
+  };
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-background relative overflow-hidden">
-      {/* Subtle background */}
-      <div className="absolute inset-0 bg-thangka opacity-[0.02] pointer-events-none" />
-      <div className="absolute -top-40 -right-40 w-80 h-80 bg-bhutan-gold/5 rounded-full blur-[100px]" />
-      <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-bhutan-red/5 rounded-full blur-[100px]" />
+    <section className="section-y bg-background content-visibility-auto">
+      <div className="container-apple-wide">
+        <SectionHeader
+          eyebrow="Precision tools"
+          title="Land. Calculated."
+          subtitle="Convert between Bhutan's heritage units instantly — decimal, sqft, sqm, and acres."
+        />
 
-      <div className="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-6">
-        {/* Header */}
-        <div className="text-center mb-10 md:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-block px-4 py-1.5 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[9px] md:text-[10px] font-bold uppercase tracking-[0.3em] mb-4 md:mb-5"
-          >
-            Easy Measurements
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-bhutan-dark dark:text-foreground mb-3 md:mb-4"
-          >
-            Land Area <span className="text-bhutan-red italic font-light">Calculator</span>
-          </motion.h2>
-          <p className="text-bhutan-dark/50 dark:text-muted-foreground max-w-lg mx-auto text-sm md:text-base font-light">
-            Convert land measurements instantly between Bhutanese and international units.
-          </p>
-        </div>
-
-        {/* Calculator Card */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 22 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="max-w-3xl mx-auto"
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mx-auto max-w-4xl bg-fog rounded-apple-xl p-6 sm:p-10"
         >
-          <div className="bg-[#F9F7F2] dark:bg-card rounded-2xl md:rounded-3xl p-5 md:p-10 border border-bhutan-gold/10 dark:border-white/5 shadow-lg">
-            {/* Unit Selector */}
-            <div className="mb-6 md:mb-8">
-              <label className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.2em] mb-3 block pl-1">
-                Convert From
-              </label>
-              <div className="flex gap-2 md:gap-3">
-                {units.map((unit) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Calculator className="w-4 h-4 text-sky" strokeWidth={1.75} />
+                <p className="text-[12px] font-semibold uppercase tracking-eyebrow text-sky">
+                  Convert
+                </p>
+              </div>
+
+              <div className="flex bg-white dark:bg-card rounded-2xl border border-ink-200 dark:border-ink-700 p-1 mb-4">
+                {units.map((u) => (
                   <button
-                    key={unit.value}
-                    onClick={() => setFromUnit(unit.value as "decimal" | "sqft" | "sqm")}
-                    className={`flex-1 py-2.5 md:py-3.5 rounded-xl md:rounded-2xl text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 border ${fromUnit === unit.value
-                      ? "bg-bhutan-dark dark:bg-bhutan-red text-white border-bhutan-dark dark:border-bhutan-red shadow-lg"
-                      : "bg-white dark:bg-background text-bhutan-dark/50 dark:text-muted-foreground/50 border-bhutan-gold/15 dark:border-white/10 hover:border-bhutan-red hover:text-bhutan-red"
-                      }`}
+                    key={u.value}
+                    onClick={() => setFromUnit(u.value)}
+                    className={cn(
+                      "flex-1 py-2 rounded-xl text-[13px] font-medium transition-colors",
+                      fromUnit === u.value
+                        ? "bg-foreground text-background"
+                        : "text-ink-500 hover:text-foreground"
+                    )}
                   >
-                    {unit.label}
+                    {u.label}
                   </button>
                 ))}
               </div>
-            </div>
 
-            {/* Input */}
-            <div className="mb-6 md:mb-8">
-              <label className="text-[10px] md:text-[11px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.2em] mb-3 block pl-1">
-                Enter Value
-              </label>
-              <div className="relative">
-                <Calculator className="absolute left-4 md:left-5 top-1/2 -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-bhutan-gold/50" />
-                <input
-                  type="number"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Enter amount..."
-                  className="w-full bg-white dark:bg-background pl-11 md:pl-14 pr-4 py-3.5 md:py-5 rounded-xl md:rounded-2xl text-lg md:text-2xl font-serif font-bold text-bhutan-dark dark:text-foreground outline-none border border-bhutan-gold/15 dark:border-white/10 focus:border-bhutan-red/40 focus:ring-2 focus:ring-bhutan-red/10 transition-all placeholder:text-bhutan-dark/40 dark:placeholder:text-white/40 placeholder:font-light placeholder:text-sm"
-                />
-                {inputValue && (
-                  <button
-                    onClick={() => setInputValue("")}
-                    className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-bhutan-red/5 text-bhutan-red/40 hover:bg-bhutan-red/10 hover:text-bhutan-red flex items-center justify-center transition-all"
-                  >
-                    <RotateCcw className="w-3 h-3 md:w-3.5 md:h-3.5" />
-                  </button>
-                )}
-              </div>
-            </div>
+              <input
+                type="number"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Enter value"
+                className="input-apple text-[clamp(1.5rem,1.25rem+1vw,2rem)] font-semibold tracking-tightest tabular-nums"
+              />
 
-            {/* Divider with icon */}
-            <div className="flex items-center gap-3 mb-6 md:mb-8">
-              <div className="flex-1 h-px bg-bhutan-gold/10 dark:bg-white/10" />
-              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-bhutan-red/10 dark:bg-bhutan-red/20 flex items-center justify-center">
-                <ArrowRightLeft className="w-3.5 h-3.5 md:w-4 md:h-4 text-bhutan-red" />
-              </div>
-              <div className="flex-1 h-px bg-bhutan-gold/10 dark:bg-white/10" />
-            </div>
-
-            {/* Results Grid */}
-            <div className="grid grid-cols-3 gap-2 md:gap-4">
-              {resultCards.map((result, idx) => (
-                <motion.div
-                  key={result.label}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: idx * 0.05 }}
-                  className="bg-white rounded-xl md:rounded-2xl p-3 md:p-5 border border-bhutan-gold/10 hover:border-bhutan-red/20 hover:shadow-md transition-all group"
-                >
-                  <p className="text-[9px] md:text-[10px] font-bold text-bhutan-dark/50 dark:text-muted-foreground/50 uppercase tracking-[0.2em] mb-1 md:mb-2">
-                    {result.label}
-                  </p>
-                  <p className="text-base sm:text-lg md:text-3xl font-serif font-bold text-bhutan-dark dark:text-foreground group-hover:text-bhutan-red transition-colors truncate">
-                    {result.value}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Bottom info chips */}
-          <div className="flex flex-wrap justify-center gap-3 md:gap-4 mt-6 md:mt-8">
-            {[
-              { icon: Ruler, text: "Instant Results" },
-              { icon: Calculator, text: "100% Accurate" },
-              { icon: ArrowRightLeft, text: "All Units" },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-[#F9F7F2] dark:bg-card border border-bhutan-gold/10 dark:border-white/5 text-bhutan-dark/50 dark:text-muted-foreground/50"
+              <button
+                onClick={reset}
+                className="mt-3 link-apple inline-flex items-center gap-1 text-[13px]"
               >
-                <item.icon className="w-3 h-3 md:w-3.5 md:h-3.5" />
-                <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider">{item.text}</span>
+                <RotateCcw className="w-3 h-3" strokeWidth={2} /> Reset
+              </button>
+            </div>
+
+            <div>
+              <p className="text-[12px] font-semibold uppercase tracking-eyebrow text-sky mb-3">
+                Equivalents
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { label: "Decimal", v: results.decimal },
+                  { label: "Sqft", v: results.sqft },
+                  { label: "Sqm", v: results.sqm },
+                  { label: "Acre", v: results.acre },
+                ].map((r) => (
+                  <div
+                    key={r.label}
+                    className="bg-white dark:bg-card rounded-2xl p-4 border border-ink-100 dark:border-ink-700/40"
+                  >
+                    <p className="text-[11px] uppercase tracking-eyebrow text-ink-500 mb-1">
+                      {r.label}
+                    </p>
+                    <p className="text-[clamp(1.25rem,1rem+0.75vw,1.75rem)] font-semibold tracking-tightest tabular-nums text-foreground">
+                      {r.v}
+                    </p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </motion.div>
       </div>

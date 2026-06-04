@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -12,7 +12,6 @@ import {
     Loader2,
     Settings as SettingsIcon
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
@@ -44,8 +43,9 @@ const commonFeatures = [
     "River Side",
 ];
 
-export default function EditPropertyPage({ params }: { params: Promise<{ id: string }> }) {
-    const { id } = use(params);
+export default function EditPropertyPage() {
+    const params = useParams();
+    const id = params?.id as string;
     const router = useRouter();
     const { toast } = useToast();
     const [isLoading, setIsLoading] = useState(true);
@@ -95,12 +95,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
     const showBedBath = currentType?.requiresBedBath ?? true;
 
     useEffect(() => {
-        const token = localStorage.getItem("adminToken");
-        if (!token) {
-            router.push("/admin");
-        } else {
-            fetchProperty();
-        }
+        fetchProperty();
     }, [id]);
 
     const fetchProperty = async () => {
@@ -148,15 +143,13 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
         const files = e.target.files;
         if (!files || files.length === 0) return;
         setUploadingImages(true);
-        const token = localStorage.getItem("adminToken");
-        try {
+            try {
             const urls = await Promise.all(
                 Array.from(files).map(async (file) => {
                     const fd = new FormData();
                     fd.append("file", file);
                     const res = await fetch("/api/upload", {
                         method: "POST",
-                        headers: { Authorization: `Bearer ${token}` },
                         body: fd,
                     });
                     const data = await res.json();
@@ -216,7 +209,6 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
                 },
                 body: JSON.stringify({
                     ...formData,
@@ -257,26 +249,27 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
         }
     };
 
+    const inputCls = "h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15 text-foreground text-base font-medium";
+    const labelCls = "block text-[13px] font-medium text-ink-600 mb-1.5";
+
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-[#F9F7F2] flex items-center justify-center">
-                <div className="animate-spin w-8 h-8 border-4 border-bhutan-red border-t-transparent rounded-full" />
+            <div className="min-h-screen bg-card flex items-center justify-center">
+                <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
             </div>
         );
     }
 
     return (
         <div className="p-4 md:p-8 lg:p-10 max-w-[1200px] mx-auto min-h-screen">
-            <div className="fixed inset-0 bg-thangka opacity-[0.015] pointer-events-none" />
-
             {/* Header */}
             <header className="mb-8 md:mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
                 <div className="flex items-center gap-6">
                     <button
                         onClick={() => router.back()}
-                        className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-xl border border-white flex items-center justify-center text-bhutan-dark/40 hover:text-bhutan-red hover:scale-110 transition-all shadow-luxury group"
+                        className="w-10 h-10 bg-card rounded-[14px] border border-ink-200 flex items-center justify-center text-ink-400 hover:text-sky hover:scale-105 transition-all shadow-soft"
                     >
-                        <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                        <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
                     </button>
                     <div>
                         <motion.div
@@ -284,15 +277,15 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                             animate={{ opacity: 1, x: 0 }}
                             className="flex items-center gap-2 mb-1"
                         >
-                            <div className="w-0.5 h-6 bg-bhutan-red rounded-full" />
-                            <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">Vault Modification</p>
+                            <div className="w-0.5 h-6 bg-sky rounded-full" />
+                            <p className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em]">Edit Listing</p>
                         </motion.div>
                         <motion.h2
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="text-3xl md:text-4xl font-bold text-bhutan-dark leading-tight"
+                            className="text-[28px] font-semibold text-foreground tracking-tight"
                         >
-                            Update <span className="text-bhutan-gold italic font-light">Listing</span>
+                            Update Property
                         </motion.h2>
                     </div>
                 </div>
@@ -309,12 +302,12 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
 
                     {/* Main Content Area */}
                     <div className="lg:col-span-8 space-y-6">
-                        <div className="bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-luxury">
+                        <div className="bg-card rounded-[20px] p-6 md:p-8 border border-ink-100/60 shadow-soft">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {/* Title */}
                                 <div className="md:col-span-2">
-                                    <label className="block text-sm uppercase tracking-widest font-bold text-bhutan-dark/40 mb-2">
-                                        Property Designation *
+                                    <label className={labelCls}>
+                                        Property Title *
                                     </label>
                                     <Input
                                         value={formData.title}
@@ -322,15 +315,15 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                             setFormData({ ...formData, title: e.target.value })
                                         }
                                         placeholder="e.g., Imperial Villa in Thimphu"
-                                        className="h-12 bg-white/50 border-white focus:ring-bhutan-red/10 text-base rounded-xl"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
 
                                 {/* Price */}
                                 <div>
-                                    <label className="block text-sm uppercase tracking-widest font-bold text-bhutan-dark/40 mb-2">
-                                        Investment Value (Nu.) *
+                                    <label className={labelCls}>
+                                        Price (Nu.) *
                                     </label>
                                     <Input
                                         type="number"
@@ -339,19 +332,19 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                             setFormData({ ...formData, price: e.target.value })
                                         }
                                         placeholder="25000000"
-                                        className="h-12 bg-white/50 border-white focus:ring-bhutan-red/10 text-base rounded-xl"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
 
                                 {/* Property Type */}
                                 <div>
-                                    <div className="flex items-center justify-between mb-2">
-                                        <label className="block text-sm uppercase tracking-widest font-bold text-bhutan-dark/40 mb-0">
-                                            Asset Class *
+                                    <div className="flex items-center justify-between mb-1.5">
+                                        <label className={labelCls + " mb-0"}>
+                                            Property Type *
                                         </label>
-                                        <Link href="/admin/settings/property-types" className="text-[10px] font-bold text-bhutan-gold hover:text-bhutan-red transition-colors uppercase tracking-wider flex items-center gap-1">
-                                            <SettingsIcon className="w-3 h-3" /> Manage
+                                        <Link href="/admin/settings/property-types" className="text-[12px] font-medium text-sky hover:text-sky-hover transition-colors flex items-center gap-1">
+                                            <SettingsIcon className="w-3.5 h-3.5" strokeWidth={1.5} /> Manage
                                         </Link>
                                     </div>
                                     <select
@@ -359,7 +352,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                         onChange={(e) =>
                                             setFormData({ ...formData, propertyType: e.target.value })
                                         }
-                                        className="w-full h-12 px-4 bg-white/50 border border-white rounded-xl focus:ring-2 focus:ring-bhutan-red/10 outline-none text-base appearance-none cursor-pointer"
+                                        className="w-full h-11 px-3 bg-background dark:bg-card border border-ink-200 dark:border-ink-700 rounded-2xl focus:outline-none focus:ring-[3px] focus:ring-sky/15 text-base text-foreground appearance-none cursor-pointer font-medium"
                                         required
                                     >
                                         {propertyTypes.map((type) => (
@@ -372,8 +365,8 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
 
                                 {/* Location Details */}
                                 <div>
-                                    <label className="block text-sm uppercase tracking-widest font-bold text-bhutan-dark/40 mb-2">
-                                        Specific Address *
+                                    <label className={labelCls}>
+                                        Location / Address *
                                     </label>
                                     <Input
                                         value={formData.location}
@@ -381,22 +374,22 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                             setFormData({ ...formData, location: e.target.value })
                                         }
                                         placeholder="e.g., High-end Residence at Motithang"
-                                        className="h-12 bg-white/50 border-white focus:ring-bhutan-red/10 text-base rounded-xl"
+                                        className={inputCls}
                                         required
                                     />
                                 </div>
 
                                 {/* District */}
                                 <div>
-                                    <label className="block text-sm uppercase tracking-widest font-bold text-bhutan-dark/40 mb-2">
-                                        Dzongkhag *
+                                    <label className={labelCls}>
+                                        District *
                                     </label>
                                     <select
                                         value={formData.district}
                                         onChange={(e) =>
                                             setFormData({ ...formData, district: e.target.value })
                                         }
-                                        className="w-full h-12 px-4 bg-white/50 border border-white rounded-xl focus:ring-2 focus:ring-bhutan-red/10 outline-none text-base appearance-none cursor-pointer"
+                                        className="w-full h-11 px-3 bg-background dark:bg-card border border-ink-200 dark:border-ink-700 rounded-2xl focus:outline-none focus:ring-[3px] focus:ring-sky/15 text-base text-foreground appearance-none cursor-pointer font-medium"
                                         required
                                     >
                                         {districts.map((district) => (
@@ -411,7 +404,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                      {showBedBath && (
                                          <>
                                              <div>
-                                                 <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-1.5 text-center">
+                                                 <label className={labelCls + " text-center block"}>
                                                      Bedrooms
                                                  </label>
                                                  <Input
@@ -420,12 +413,14 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                                      onChange={(e) =>
                                                          setFormData({ ...formData, bedrooms: e.target.value })
                                                      }
-                                                     className="h-10 text-center bg-white/50 border-white text-base rounded-lg"
+                                                     placeholder="3"
+                                                     className={inputCls + " text-center"}
+                                                     min="0"
                                                  />
                                              </div>
                                              <div>
-                                                 <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-1.5 text-center">
-                                                     Baths
+                                                 <label className={labelCls + " text-center block"}>
+                                                     Bathrooms
                                                  </label>
                                                  <Input
                                                      type="number"
@@ -433,13 +428,15 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                                      onChange={(e) =>
                                                          setFormData({ ...formData, bathrooms: e.target.value })
                                                      }
-                                                     className="h-10 text-center bg-white/50 border-white text-base rounded-lg"
+                                                     placeholder="2"
+                                                     className={inputCls + " text-center"}
+                                                     min="0"
                                                  />
                                              </div>
                                          </>
                                      )}
                                      <div className={showBedBath ? "" : "md:col-span-1"}>
-                                         <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-1.5 text-center">
+                                         <label className={labelCls + " text-center block"}>
                                              {currentType?.areaLabel || "Area (m²)"}
                                          </label>
                                          <Input
@@ -449,56 +446,62 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                              onChange={(e) =>
                                                  setFormData({ ...formData, area: e.target.value })
                                              }
-                                             className="h-10 text-center bg-white/50 border-white text-base rounded-lg"
+                                             placeholder="200"
+                                             className={inputCls + " text-center"}
+                                             min="0"
                                          />
                                      </div>
                                  </div>
 
                                 {/* Custom Specifications */}
-                                <div className="md:col-span-2 bg-[#F9F7F2]/50 p-6 rounded-2xl border border-bhutan-gold/10">
+                                <div className="md:col-span-2 bg-card rounded-[20px] p-5 border border-ink-100/60 shadow-soft">
                                     <div className="flex items-center justify-between mb-4">
-                                        <label className="block text-sm uppercase tracking-widest font-bold text-bhutan-dark/40 mb-0">
-                                            Property Specifications
-                                        </label>
+                                        <h3 className="font-semibold text-foreground text-base flex items-center gap-2">
+                                            <span className="w-1 h-4 bg-sky rounded-full" /> Property Specifications
+                                        </h3>
                                         <button
                                             type="button"
                                             onClick={addSpecification}
-                                            className="text-[10px] font-bold text-bhutan-red hover:text-bhutan-dark transition-colors uppercase tracking-widest flex items-center gap-1.5 px-3 py-1.5 bg-bhutan-red/5 rounded-lg border border-bhutan-red/10"
+                                            className="text-[12px] font-medium text-sky hover:text-sky-hover flex items-center gap-1.5 px-3 py-1.5 bg-sky/5 rounded-xl transition-colors border border-sky/10"
                                         >
-                                            <Plus className="w-3 h-3" /> Add Spec
+                                            <Plus className="w-3.5 h-3.5" strokeWidth={1.5} /> Add Spec
                                         </button>
                                     </div>
                                     <div className="space-y-3">
                                         {specifications.length === 0 ? (
-                                            <p className="text-bhutan-dark/30 text-[10px] italic text-center py-4 bg-white/50 rounded-xl border border-dashed border-bhutan-gold/15">
-                                                No custom specifications. Add items like "Storey", "Living Room", etc.
+                                            <p className="text-ink-400 text-sm text-center py-4 bg-card rounded-xl border border-dashed border-ink-200">
+                                                No custom specifications. Add items like &quot;Storey&quot;, &quot;Living Room&quot;, etc.
                                             </p>
                                         ) : (
                                             specifications.map((spec, index) => (
                                                 <div key={index} className="flex gap-3 animate-in fade-in slide-in-from-top-1 duration-200">
                                                     <div className="flex-1">
+                                                        <label className={labelCls}>Label (e.g. Story)</label>
                                                         <Input
                                                             value={spec.label}
                                                             onChange={(e) => updateSpecification(index, "label", e.target.value)}
-                                                            placeholder="Label (e.g. Story)"
-                                                            className="h-10 bg-white/50 border-white text-sm rounded-lg"
+                                                            placeholder="e.g. Story"
+                                                            className={inputCls}
                                                         />
                                                     </div>
                                                     <div className="flex-1">
+                                                        <label className={labelCls}>Value (e.g. 2)</label>
                                                         <Input
                                                             value={spec.value}
                                                             onChange={(e) => updateSpecification(index, "value", e.target.value)}
-                                                            placeholder="Value (e.g. 2)"
-                                                            className="h-10 bg-white/50 border-white text-sm rounded-lg"
+                                                            placeholder="e.g. 2"
+                                                            className={inputCls}
                                                         />
                                                     </div>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => removeSpecification(index)}
-                                                        className="w-10 h-10 flex items-center justify-center text-bhutan-dark/20 hover:text-bhutan-red transition-colors"
-                                                    >
-                                                        <X className="w-4 h-4" />
-                                                    </button>
+                                                    <div className="flex items-end pb-1.5">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeSpecification(index)}
+                                                            className="w-10 h-10 flex items-center justify-center text-ink-300 hover:text-sky hover:bg-sky/5 rounded-xl transition-colors"
+                                                        >
+                                                            <X className="w-4 h-4" strokeWidth={1.5} />
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             ))
                                         )}
@@ -507,7 +510,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
 
                                 {/* Description – Rich Text Editor */}
                                 <div className="md:col-span-2">
-                                    <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-2">
+                                    <label className={labelCls}>
                                         Description *
                                     </label>
                                     <RichTextEditor
@@ -520,19 +523,19 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                         </div>
 
                         {/* Features Card */}
-                        <div className="bg-white/70 backdrop-blur-xl rounded-[2rem] p-6 md:p-8 border border-white shadow-luxury">
-                            <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-4">
-                                Distinguished Features
-                            </label>
+                        <div className="bg-card rounded-[20px] p-6 md:p-8 border border-ink-100/60 shadow-soft">
+                            <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
+                                <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Features & Amenities
+                            </h2>
                             <div className="flex flex-wrap gap-2 mb-4">
                                 {commonFeatures.map((feature) => (
                                     <button
                                         key={feature}
                                         type="button"
                                         onClick={() => toggleFeature(feature)}
-                                        className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 border ${selectedFeatures.includes(feature)
-                                            ? "bg-bhutan-red text-white border-bhutan-red shadow-lg shadow-bhutan-red/10"
-                                            : "bg-white/50 text-bhutan-dark/40 border-white hover:border-bhutan-gold/20"
+                                        className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all border ${selectedFeatures.includes(feature)
+                                            ? "bg-sky text-background border-sky shadow-soft"
+                                            : "bg-muted text-ink-500 border-ink-200 hover:border-sky/30 hover:text-sky"
                                             }`}
                                     >
                                         {feature}
@@ -543,65 +546,73 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                 <Input
                                     value={customFeature}
                                     onChange={(e) => setCustomFeature(e.target.value)}
-                                    placeholder="Unique attribute..."
-                                    className="flex-1 h-10 bg-white/50 border-white text-base italic rounded-xl"
+                                    placeholder="Add custom feature..."
+                                    className={inputCls + " flex-1"}
                                 />
-                                <Button
+                                <button
                                     type="button"
-                                    variant="luxury"
                                     onClick={addCustomFeature}
-                                    className="h-10 px-4 rounded-xl"
+                                    className="h-11 px-4 bg-sky text-background rounded-xl font-medium text-base hover:bg-sky-hover transition-colors shadow-soft"
                                 >
-                                    <Plus className="w-4 h-4" />
-                                </Button>
+                                    <Plus className="w-4 h-4" strokeWidth={1.5} />
+                                </button>
                             </div>
+                            {selectedFeatures.length > 0 && (
+                                <div className="mt-3 flex flex-wrap gap-1.5">
+                                    {selectedFeatures.map((f) => (
+                                        <span key={f} className="flex items-center gap-1.5 px-2.5 py-1 bg-sky/10 text-sky text-sm font-medium rounded-lg">
+                                            {f}
+                                            <button type="button" onClick={() => toggleFeature(f)} className="hover:text-ink-800 transition-colors">
+                                                <X className="w-3 h-3" strokeWidth={1.5} />
+                                            </button>
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
 
                     {/* Sidebar Area (Images & Actions) */}
                     <div className="lg:col-span-4 space-y-6">
                         {/* Image Gallery Control */}
-                        <div className="bg-bhutan-dark rounded-[2.5rem] p-6 md:p-8 border-4 border-white/5 shadow-luxury relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-thangka opacity-[0.03] pointer-events-none" />
-                            <label className="block text-xs uppercase tracking-widest font-bold text-white/40 mb-4 relative z-10">
-                                Visual Assets
+                        <div className="bg-card rounded-[20px] p-6 md:p-8 border border-ink-100/60 shadow-soft">
+                            <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
+                                <Upload className="w-4 h-4 text-sky" strokeWidth={1.5} /> Property Images
+                            </h2>
+
+                            <label htmlFor="image-upload" className="block">
+                                <div className={`border-2 border-dashed border-ink-200 rounded-xl p-6 text-center cursor-pointer hover:border-sky/40 hover:bg-sky/5 transition-all ${uploadingImages ? "opacity-70 pointer-events-none" : ""}`}>
+                                    {uploadingImages ? (
+                                        <><Loader2 className="w-7 h-7 text-sky/60 mx-auto mb-2 animate-spin" strokeWidth={1.5} />
+                                            <p className="text-ink-500 text-sm font-medium">Uploading...</p></>
+                                    ) : (
+                                        <><Upload className="w-7 h-7 text-ink-300 mx-auto mb-2" strokeWidth={1.5} />
+                                            <p className="text-ink-600 text-sm font-medium">Click to Upload</p>
+                                            <p className="text-ink-400 text-xs sm:text-sm mt-1">JPEG · PNG · WebP</p></>
+                                    )}
+                                </div>
+                                <input id="image-upload" type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
                             </label>
 
-                            <div className="border border-white/10 rounded-2xl p-6 text-center hover:bg-white/5 transition-all cursor-pointer group/upload relative z-10">
-                                <input
-                                    type="file"
-                                    multiple
-                                    accept="image/*"
-                                    onChange={handleImageUpload}
-                                    className="hidden"
-                                    id="image-upload"
-                                />
-                                <label
-                                    htmlFor="image-upload"
-                                    className="cursor-pointer flex flex-col items-center"
-                                >
-                                    <Upload className="w-8 h-8 text-bhutan-gold/40 mb-3 group-hover/upload:scale-110 group-hover/upload:text-bhutan-gold transition-all duration-500" />
-                                    <p className="text-white text-xs font-bold uppercase tracking-widest opacity-80">Update Portfolios</p>
-                                    <p className="text-white/30 text-xs uppercase tracking-widest mt-1">Multi-select JPEG/PNG</p>
-                                </label>
-                            </div>
-
                             {images.length > 0 && (
-                                <div className="mt-6 grid grid-cols-3 gap-3 relative z-10">
+                                <div className="mt-6 grid grid-cols-3 gap-3">
                                     {images.map((image, index) => (
                                         <div key={index} className="relative aspect-square group/img">
                                             <img
                                                 src={image}
                                                 alt={`Preview ${index + 1}`}
-                                                className="w-full h-full object-cover rounded-xl border border-white/10"
+                                                className="w-full h-full object-cover rounded-xl border border-ink-100"
                                             />
                                             <button
                                                 type="button"
                                                 onClick={() => removeImage(index)}
-                                                className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-bhutan-red text-white rounded-full flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                                                className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-sky text-background rounded-full flex items-center justify-center opacity-0 group-hover/img:opacity-100 transition-opacity shadow-soft"
                                             >
-                                                <X className="w-3 h-3" />
+                                                <X className="w-3 h-3" strokeWidth={1.5} />
                                             </button>
+                                            {index === 0 && (
+                                                <span className="absolute bottom-1 left-1 text-[11px] sm:text-[13px] sm:text-[12px] font-semibold bg-sky text-background px-1.5 py-0.5 rounded">Cover</span>
+                                            )}
                                         </div>
                                     ))}
                                 </div>
@@ -609,40 +620,38 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                         </div>
 
                         {/* Coordinates & Meta */}
-                        <div className="bg-white/70 backdrop-blur-xl rounded-[2.5rem] p-6 md:p-8 border border-white shadow-luxury">
-                            <label className="block text-xs uppercase tracking-widest font-bold text-bhutan-dark/40 mb-4">
-                                System Attributes
-                            </label>
+                        <div className="bg-card rounded-[20px] p-6 md:p-8 border border-ink-100/60 shadow-soft">
+                            <h2 className="font-semibold text-foreground text-base mb-4">Location & Meta</h2>
                             <div className="space-y-4">
-                                <div className="flex items-center justify-between p-4 bg-[#F9F7F2]/50 rounded-2xl border border-transparent hover:border-bhutan-gold/10 transition-all group">
-                                    <div className="flex items-center gap-3">
-                                        <span className="w-4 h-4 text-bhutan-red">★</span>
-                                        <span className="text-xs font-bold uppercase tracking-[0.2em]">Featured Asset</span>
-                                    </div>
+                                <label className="flex items-center gap-3 p-3 bg-card rounded-xl cursor-pointer hover:bg-sky/5 transition-colors border border-transparent hover:border-sky/20">
                                     <input
                                         type="checkbox"
                                         checked={formData.featured}
                                         onChange={(e) =>
                                             setFormData({ ...formData, featured: e.target.checked })
                                         }
-                                        className="w-5 h-5 rounded-lg border-bhutan-gold/20 text-bhutan-red focus:ring-bhutan-red cursor-pointer"
+                                        className="w-4 h-4 rounded text-sky focus:ring-sky cursor-pointer"
                                     />
-                                </div>
-
-                                <div className="flex items-center justify-between p-4 bg-[#F9F7F2]/50 rounded-2xl border border-transparent hover:border-bhutan-gold/10 transition-all group">
-                                    <div className="flex items-center gap-3">
-                                        <span className="w-4 h-4 text-bhutan-gold">🏦</span>
-                                        <span className="text-xs font-bold uppercase tracking-[0.2em]">Loan Available</span>
+                                    <div>
+                                        <span className="text-sm font-medium text-foreground">Featured</span>
+                                        <p className="text-xs sm:text-sm text-ink-500">Show on homepage highlights</p>
                                     </div>
+                                </label>
+
+                                <label className="flex items-center gap-3 p-3 bg-card rounded-xl cursor-pointer hover:bg-sky/5 transition-colors border border-transparent hover:border-sky/20">
                                     <input
                                         type="checkbox"
                                         checked={formData.loanAvailable}
                                         onChange={(e) =>
                                             setFormData({ ...formData, loanAvailable: e.target.checked })
                                         }
-                                        className="w-5 h-5 rounded-lg border-bhutan-gold/20 text-bhutan-red focus:ring-bhutan-red cursor-pointer"
+                                        className="w-4 h-4 rounded text-sky focus:ring-sky cursor-pointer"
                                     />
-                                </div>
+                                    <div>
+                                        <span className="text-sm font-medium text-foreground">Loan Available</span>
+                                        <p className="text-xs sm:text-sm text-ink-500">Indicate if property has a loan option available</p>
+                                    </div>
+                                </label>
 
                                 {formData.loanAvailable && (
                                     <motion.div
@@ -650,36 +659,36 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                         animate={{ opacity: 1, height: "auto" }}
                                         className="space-y-1.5"
                                     >
-                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/30 mb-1">Loan Amount (Nu.)</label>
+                                        <label className={labelCls}>Loan Amount (Nu.)</label>
                                         <Input
                                             type="number"
                                             value={formData.loanAmount}
                                             onChange={(e) => setFormData({ ...formData, loanAmount: e.target.value })}
                                             placeholder="e.g. 5000000"
-                                            className="h-10 bg-white/50 border-white text-base rounded-lg"
+                                            className={inputCls}
                                         />
                                     </motion.div>
                                 )}
 
-                                <div className="flex items-center justify-between p-4 bg-[#F9F7F2]/50 rounded-2xl border border-transparent hover:border-bhutan-gold/10 transition-all group">
-                                    <div className="flex items-center gap-3">
-                                        <span className="w-4 h-4 text-emerald-500">✓</span>
-                                        <span className="text-xs font-bold uppercase tracking-[0.2em]">Mark as Sold</span>
-                                    </div>
+                                <label className="flex items-center gap-3 p-3 bg-card rounded-xl cursor-pointer hover:bg-sky/5 transition-colors border border-transparent hover:border-sky/20">
                                     <input
                                         type="checkbox"
                                         checked={formData.isSold}
                                         onChange={(e) =>
                                             setFormData({ ...formData, isSold: e.target.checked })
                                         }
-                                        className="w-5 h-5 rounded-lg border-bhutan-gold/20 text-bhutan-red focus:ring-bhutan-red cursor-pointer"
+                                        className="w-4 h-4 rounded text-sky focus:ring-sky cursor-pointer"
                                     />
-                                </div>
+                                    <div>
+                                        <span className="text-sm font-medium text-foreground">Mark as Sold</span>
+                                        <p className="text-xs sm:text-sm text-ink-500">Displays &quot;SOLD&quot; badge in frontend</p>
+                                    </div>
+                                </label>
 
                                 <div className="grid grid-cols-2 gap-3">
-                                    <div className="p-3 bg-white/50 border border-white rounded-xl">
-                                        <p className="text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/30 mb-1">Latitude</p>
-                                        <input
+                                    <div>
+                                        <label className={labelCls}>Latitude</label>
+                                        <Input
                                             type="number"
                                             step="any"
                                             value={formData.latitude}
@@ -687,12 +696,12 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                                 setFormData({ ...formData, latitude: e.target.value })
                                             }
                                             placeholder="27.4712"
-                                            className="w-full bg-transparent border-none p-0 text-sm text-bhutan-dark outline-none placeholder:text-bhutan-dark/10"
+                                            className={inputCls}
                                         />
                                     </div>
-                                    <div className="p-3 bg-white/50 border border-white rounded-xl">
-                                        <p className="text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/30 mb-1">Longitude</p>
-                                        <input
+                                    <div>
+                                        <label className={labelCls}>Longitude</label>
+                                        <Input
                                             type="number"
                                             step="any"
                                             value={formData.longitude}
@@ -700,7 +709,7 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
                                                 setFormData({ ...formData, longitude: e.target.value })
                                             }
                                             placeholder="89.6339"
-                                            className="w-full bg-transparent border-none p-0 text-sm text-bhutan-dark outline-none placeholder:text-bhutan-dark/10"
+                                            className={inputCls}
                                         />
                                     </div>
                                 </div>
@@ -709,20 +718,19 @@ export default function EditPropertyPage({ params }: { params: Promise<{ id: str
 
                         {/* Submit Block */}
                         <div className="flex flex-col gap-3">
-                            <Button
+                            <button
                                 type="submit"
-                                variant="luxury"
-                                isLoading={isSubmitting}
-                                className="w-full h-16 rounded-[1.5rem] shadow-2xl shadow-bhutan-red/10 text-sm font-bold uppercase tracking-[0.4em]"
+                                disabled={isSubmitting}
+                                className="w-full h-12 bg-sky text-background rounded-full font-semibold text-sm hover:bg-sky-hover transition-all shadow-elevated disabled:opacity-60 flex items-center justify-center gap-2"
                             >
-                                Update Listing
-                            </Button>
+                                {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" strokeWidth={1.5} /> Updating...</> : "Update Property"}
+                            </button>
                             <button
                                 type="button"
                                 onClick={() => router.back()}
-                                className="w-full h-12 text-sm font-bold uppercase tracking-widest text-bhutan-dark/30 hover:text-bhutan-red transition-colors"
+                                className="w-full h-10 text-sm text-ink-400 hover:text-sky transition-colors"
                             >
-                                Discard Changes
+                                Cancel
                             </button>
                         </div>
                     </div>

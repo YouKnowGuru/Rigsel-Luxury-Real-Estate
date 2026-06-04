@@ -60,7 +60,6 @@ export default function PropertyTypesPage() {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
                 },
                 body: JSON.stringify({
                     name: newName.trim(),
@@ -92,7 +91,6 @@ export default function PropertyTypesPage() {
         try {
             const res = await fetch(`/api/admin/property-types/${id}`, {
                 method: "DELETE",
-                headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
             });
             if (res.ok) {
                 setTypes(types.filter(t => t._id !== id));
@@ -118,7 +116,6 @@ export default function PropertyTypesPage() {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
                 },
                 body: JSON.stringify({
                     name: editName.trim(),
@@ -143,7 +140,7 @@ export default function PropertyTypesPage() {
     if (isLoading) {
         return (
             <div className="flex h-[60vh] items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-bhutan-red" />
+                <Loader2 className="w-8 h-8 animate-spin border-sky/20 border-t-sky" strokeWidth={1.5} />
             </div>
         );
     }
@@ -153,10 +150,10 @@ export default function PropertyTypesPage() {
             <header className="mb-8 flex items-center justify-between">
                 <div>
                     <div className="flex items-center gap-2 mb-1">
-                        <div className="w-0.5 h-4 bg-bhutan-red rounded-full" />
-                        <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">System Config</p>
+                        <div className="w-0.5 h-4 bg-sky rounded-full" />
+                        <p className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em]">System Config</p>
                     </div>
-                    <h1 className="text-3xl font-bold text-bhutan-dark">Property Types</h1>
+                    <h1 className="text-[28px] font-semibold text-foreground tracking-tight">Property Types</h1>
                 </div>
             </header>
 
@@ -165,46 +162,46 @@ export default function PropertyTypesPage() {
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-2xl p-6 border border-bhutan-gold/10 shadow-sm"
+                    className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6"
                 >
-                    <h2 className="font-bold text-bhutan-dark text-base mb-4 flex items-center gap-2">
-                        <Plus className="w-4 h-4 text-emerald-500" /> Add New Type
+                    <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
+                        <Plus className="w-4 h-4 text-emerald-500" strokeWidth={1.5} /> Add New Type
                     </h2>
                     <form onSubmit={handleAdd} className="flex flex-col md:flex-row gap-4 items-end">
                         <div className="flex-1 w-full text-left">
-                            <label className="block text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/40 mb-1.5 ml-1">Type Name</label>
+                            <label className="block text-[13px] font-medium text-ink-600 mb-1.5 ml-1">Type Name</label>
                             <Input
                                 value={newName}
                                 onChange={(e) => setNewName(e.target.value)}
                                 placeholder="e.g. Land, Apartment, Villa"
-                                className="h-11 rounded-xl border-bhutan-gold/15 focus:border-bhutan-red/30"
+                                className="h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                             />
                         </div>
                         <div className="flex-1 w-full text-left">
-                            <label className="block text-[10px] font-bold uppercase tracking-widest text-bhutan-dark/40 mb-1.5 ml-1">Area Label</label>
+                            <label className="block text-[13px] font-medium text-ink-600 mb-1.5 ml-1">Area Label</label>
                             <Input
                                 value={newAreaLabel}
                                 onChange={(e) => setNewAreaLabel(e.target.value)}
                                 placeholder="Area (m²), Area (Decimals)"
-                                className="h-11 rounded-xl border-bhutan-gold/15 focus:border-bhutan-red/30"
+                                className="h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                             />
                         </div>
-                        <div className="flex items-center gap-3 h-11 px-4 bg-[#F9F7F2] rounded-xl border border-bhutan-gold/10">
+                        <div className="flex items-center gap-3 h-11 px-4 rounded-2xl border border-ink-200">
                             <input
                                 type="checkbox"
                                 checked={newRequires}
                                 onChange={(e) => setNewRequires(e.target.checked)}
-                                className="w-4 h-4 text-bhutan-red bg-white border-bhutan-gold/30 rounded focus:ring-bhutan-red/20"
+                                className="w-4 h-4 text-sky bg-card border-ink-300 rounded focus:ring-sky/20"
                                 id="requires-new"
                             />
-                            <label htmlFor="requires-new" className="text-sm font-bold text-bhutan-dark/60 uppercase tracking-tight cursor-pointer">Requires Bed/Bath</label>
+                            <label htmlFor="requires-new" className="text-[13px] font-medium text-ink-600 cursor-pointer">Requires Bed/Bath</label>
                         </div>
                         <button
                             type="submit"
                             disabled={isSaving || !newName.trim()}
-                            className="h-11 px-6 bg-bhutan-red text-white rounded-xl font-bold text-sm uppercase tracking-widest hover:bg-bhutan-dark transition-all disabled:opacity-50"
+                            className="h-11 px-6 rounded-full bg-sky text-white font-medium text-sm hover:bg-sky-600 transition-all disabled:opacity-50"
                         >
-                            {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : "Add Type"}
+                            {isSaving ? <Loader2 className="w-4 h-4 animate-spin border-sky/20 border-t-sky" strokeWidth={1.5} /> : "Add Type"}
                         </button>
                     </form>
                 </motion.div>
@@ -219,65 +216,65 @@ export default function PropertyTypesPage() {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
-                                className="bg-white rounded-2xl p-4 border border-bhutan-gold/10 shadow-sm flex items-center justify-between hover:shadow-md transition-shadow"
+                                className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-4 flex items-center justify-between hover:shadow-md transition-shadow"
                             >
                                 {editingId === type._id ? (
                                     <div className="flex-1 flex flex-col md:flex-row gap-3 items-center">
                                         <Input
                                             value={editName}
                                             onChange={(e) => setEditName(e.target.value)}
-                                            className="h-10 rounded-lg flex-1"
+                                            className="h-10 rounded-2xl flex-1 border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                                             placeholder="Name"
                                         />
                                         <Input
                                             value={editAreaLabel}
                                             onChange={(e) => setEditAreaLabel(e.target.value)}
-                                            className="h-10 rounded-lg flex-1"
+                                            className="h-10 rounded-2xl flex-1 border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15"
                                             placeholder="Area Label"
                                         />
-                                        <div className="flex items-center gap-2 px-3 h-10 bg-[#F9F7F2] rounded-lg">
+                                        <div className="flex items-center gap-2 px-3 h-10 rounded-2xl border border-ink-200">
                                             <input
                                                 type="checkbox"
                                                 checked={editRequires}
                                                 onChange={(e) => setEditRequires(e.target.checked)}
                                                 id={`edit-req-${type._id}`}
                                             />
-                                            <label htmlFor={`edit-req-${type._id}`} className="text-xs font-bold text-bhutan-dark/60 uppercase">Bed/Bath</label>
+                                            <label htmlFor={`edit-req-${type._id}`} className="text-[13px] font-medium text-ink-600">Bed/Bath</label>
                                         </div>
                                         <div className="flex gap-2">
-                                            <button onClick={() => handleUpdate(type._id)} className="p-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600">
-                                                <Check className="w-4 h-4" />
+                                            <button onClick={() => handleUpdate(type._id)} className="p-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-600">
+                                                <Check className="w-4 h-4" strokeWidth={1.5} />
                                             </button>
-                                            <button onClick={() => setEditingId(null)} className="p-2 bg-bhutan-dark/10 text-bhutan-dark/50 rounded-lg hover:bg-bhutan-dark/20">
-                                                <X className="w-4 h-4" />
+                                            <button onClick={() => setEditingId(null)} className="p-2 bg-ink-100 text-ink-500 rounded-full hover:bg-ink-200">
+                                                <X className="w-4 h-4" strokeWidth={1.5} />
                                             </button>
                                         </div>
                                     </div>
                                 ) : (
                                     <>
                                         <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl bg-bhutan-gold/5 border border-bhutan-gold/15 flex items-center justify-center">
-                                                <Home className="w-5 h-5 text-bhutan-gold" />
+                                            <div className="w-10 h-10 rounded-xl bg-sky/5 border border-sky/15 flex items-center justify-center">
+                                                <Home className="w-5 h-5 text-sky" strokeWidth={1.5} />
                                             </div>
                                             <div>
-                                                <h3 className="font-bold text-bhutan-dark text-lg">{type.name}</h3>
+                                                <h3 className="font-semibold text-foreground text-lg">{type.name}</h3>
                                                 <div className="flex items-center gap-2 mt-0.5">
-                                                    <span className="text-[10px] bg-[#F9F7F2] text-bhutan-dark/40 px-1.5 py-0.5 rounded font-bold uppercase">{type.slug}</span>
-                                                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold uppercase ${type.requiresBedBath ? 'bg-emerald-50 text-emerald-600' : 'bg-bhutan-red/5 text-bhutan-red/60'}`}>
+                                                    <span className="text-[11px] sm:text-[13px] sm:text-[12px] bg-ink-50 text-ink-500 px-1.5 py-0.5 rounded font-medium">{type.slug}</span>
+                                                    <span className={`text-[11px] sm:text-[12px] px-1.5 py-0.5 rounded font-medium ${type.requiresBedBath ? 'bg-emerald-50 text-emerald-600' : 'bg-sky/5 text-sky/70'}`}>
                                                         {type.requiresBedBath ? "Bed/Bath Enabled" : "Area Only"}
                                                     </span>
-                                                    <span className="text-[10px] bg-bhutan-gold/5 text-bhutan-gold px-1.5 py-0.5 rounded font-bold uppercase">
+                                                    <span className="text-[11px] sm:text-[13px] sm:text-[12px] bg-sky/5 text-sky px-1.5 py-0.5 rounded font-medium">
                                                         {type.areaLabel || "Area (m²)"}
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="flex gap-3">
-                                            <button onClick={() => startEdit(type)} className="p-2 text-bhutan-dark/30 hover:text-bhutan-gold transition-colors">
-                                                <Edit2 className="w-4 h-4" />
+                                            <button onClick={() => startEdit(type)} className="p-2 text-ink-300 hover:text-sky transition-colors">
+                                                <Edit2 className="w-4 h-4" strokeWidth={1.5} />
                                             </button>
-                                            <button onClick={() => handleDelete(type._id)} className="p-2 text-bhutan-dark/30 hover:text-bhutan-red transition-colors">
-                                                <Trash2 className="w-4 h-4" />
+                                            <button onClick={() => handleDelete(type._id)} className="p-2 text-ink-300 hover:text-red-500 transition-colors">
+                                                <Trash2 className="w-4 h-4" strokeWidth={1.5} />
                                             </button>
                                         </div>
                                     </>

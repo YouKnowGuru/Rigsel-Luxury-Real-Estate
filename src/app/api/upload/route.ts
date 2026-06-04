@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/jwt";
 import { v2 as cloudinary } from "cloudinary";
+import { getAdminToken } from "@/lib/auth";
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -8,14 +9,21 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_PANORAMA_SIZE = 40 * 1024 * 1024; // 40MB — keep full-res 360° (e.g. 8K×4K)
+const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif", "image/bmp", "image/tiff"];
+const ALLOWED_DOCUMENT_TYPES = ["application/pdf", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation", "text/plain", "text/csv"];
+const ALLOWED_DOCUMENT_EXTS = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "csv"];
+const ALLOWED_IMAGE_EXTS = ["jpg", "jpeg", "png", "webp", "gif", "avif", "bmp", "tiff"];
+
 // POST /api/upload - Upload images to Cloudinary
 export async function POST(request: NextRequest) {
     try {
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         if (!token) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
         }
-        const decoded = verifyToken(token);
+        const decoded = await verifyToken(token);
         if (!decoded) {
             return NextResponse.json({ success: false, error: "Invalid token" }, { status: 401 });
         }
@@ -33,9 +41,19 @@ export async function POST(request: NextRequest) {
 
         const formData = await request.formData();
         const file = formData.get("file") as File;
+        const purpose = formData.get("purpose")?.toString() || "";
+        const isPanorama = purpose === "panorama";
 
         if (!file) {
             return NextResponse.json({ success: false, error: "No file provided" }, { status: 400 });
+        }
+
+        const maxSize = isPanorama ? MAX_PANORAMA_SIZE : MAX_FILE_SIZE;
+        if (file.size > maxSize) {
+            return NextResponse.json(
+                { success: false, error: `File size exceeds ${maxSize / (1024 * 1024)}MB limit` },
+                { status: 400 }
+            );
         }
 
         // Convert file to buffer
@@ -44,20 +62,27 @@ export async function POST(request: NextRequest) {
 
         const fileName = file.name.toLowerCase();
         const fileExt = fileName.split(".").pop() || "";
+
+        // Validate file type using both MIME type and extension
         const isPdf = file.type === "application/pdf" || fileExt === "pdf";
-        const isDocument = isPdf || ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "csv"].includes(fileExt);
-        const isImage = !isDocument && (file.type.startsWith("image/") || /\.(jpg|jpeg|png|webp|avif|gif|bmp|tiff)$/.test(fileName));
+        const isDocument = isPdf || ALLOWED_DOCUMENT_EXTS.includes(fileExt) || ALLOWED_DOCUMENT_TYPES.includes(file.type);
+        const isImage = ALLOWED_IMAGE_TYPES.includes(file.type) || ALLOWED_IMAGE_EXTS.includes(fileExt);
+
+        if (!isDocument && !isImage) {
+            return NextResponse.json(
+                { success: false, error: "Invalid file type. Only images (JPEG, PNG, WebP, GIF) and documents (PDF, DOC, XLS, PPT, TXT, CSV) are allowed." },
+                { status: 400 }
+            );
+        }
 
         // For documents/PDFs use 'raw' — this is the ONLY way to preserve the original file
         // 'image' and 'auto' cause Cloudinary to rasterize PDFs
-        const finalResourceType = isDocument ? "raw" : (isImage ? "image" : "raw");
-
-        console.log(`[Upload] File: ${file.name}, Type: ${file.type}, Extension: ${fileExt}, isPdf: ${isPdf}, isDocument: ${isDocument}, isImage: ${isImage}, resourceType: ${finalResourceType}`);
+        const finalResourceType = isDocument ? "raw" : "image";
 
         // Upload to Cloudinary
         const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-            const uploadOptions: any = {
-                folder: "phojaa-realestate",
+            const uploadOptions: Record<string, unknown> = {
+                folder: isPanorama ? "phojaa-panoramas" : "phojaa-realestate",
                 resource_type: finalResourceType,
             };
 
@@ -67,8 +92,9 @@ export async function POST(request: NextRequest) {
                 uploadOptions.public_id = `${baseName}_${Date.now()}.${fileExt}`;
             }
 
-            // Only apply image transformations for actual images (not documents)
-            if (isImage) {
+            // Panoramas: no resize/compress on upload — blur happens if Cloudinary shrinks the file
+            // (display URL adds a high-res delivery transform in panorama-url.ts)
+            if (isImage && !isPanorama) {
                 uploadOptions.transformation = [
                     { width: 1200, height: 900, crop: "limit" },
                     { quality: "auto" },
@@ -81,10 +107,8 @@ export async function POST(request: NextRequest) {
                     uploadOptions,
                     (error, result) => {
                         if (error) {
-                            console.error("[Upload] Cloudinary error:", error);
                             reject(error);
                         } else {
-                            console.log(`[Upload] Success: ${(result as any)?.secure_url}`);
                             resolve(result as { secure_url: string });
                         }
                     }
@@ -93,8 +117,8 @@ export async function POST(request: NextRequest) {
         });
 
         return NextResponse.json({ success: true, url: result.secure_url });
-    } catch (error: any) {
-        console.error("Upload error:", error);
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }

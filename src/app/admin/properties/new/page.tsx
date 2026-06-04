@@ -56,7 +56,6 @@ export default function NewPropertyPage() {
   const fetchPropertyTypes = async () => {
     try {
       const res = await fetch("/api/admin/property-types", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       const data = await res.json();
       if (data.success) {
@@ -78,7 +77,6 @@ export default function NewPropertyPage() {
     if (!files || files.length === 0) return;
 
     setUploadingImages(true);
-    const token = localStorage.getItem("adminToken");
 
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
@@ -86,7 +84,6 @@ export default function NewPropertyPage() {
         fd.append("file", file);
         const res = await fetch("/api/upload", {
           method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
           body: fd,
         });
         const data = await res.json();
@@ -163,7 +160,6 @@ export default function NewPropertyPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
         },
         body: JSON.stringify({
           ...formData,
@@ -196,9 +192,9 @@ export default function NewPropertyPage() {
     }
   };
 
-  const inputCls = "h-11 bg-white border-bhutan-gold/20 focus:border-bhutan-red/40 focus:ring-bhutan-red/10 rounded-xl text-bhutan-dark text-base font-medium";
-  const selectCls = "w-full h-11 px-3 bg-white border border-bhutan-gold/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-bhutan-red/10 text-base text-bhutan-dark appearance-none cursor-pointer font-medium";
-  const labelCls = "block text-sm font-bold uppercase tracking-widest text-bhutan-dark/70 mb-1.5";
+  const inputCls = "h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15 text-foreground text-base font-medium";
+  const selectCls = "w-full h-11 px-3 bg-background dark:bg-card border border-ink-200 dark:border-ink-700 rounded-2xl focus:outline-none focus:ring-[3px] focus:ring-sky/15 text-base text-foreground appearance-none cursor-pointer font-medium";
+  const labelCls = "block text-[13px] font-medium text-ink-600 mb-1.5";
 
   return (
     <div className="p-4 md:p-6 lg:p-8 max-w-[1400px] mx-auto">
@@ -206,16 +202,16 @@ export default function NewPropertyPage() {
       <header className="mb-7 flex items-center gap-4">
         <button
           onClick={() => router.back()}
-          className="w-10 h-10 bg-white rounded-xl border border-bhutan-gold/15 flex items-center justify-center text-bhutan-dark/40 hover:text-bhutan-red hover:scale-105 transition-all shadow-sm"
+          className="w-10 h-10 bg-card rounded-[14px] border border-ink-200 flex items-center justify-center text-ink-400 hover:text-sky hover:scale-105 transition-all shadow-soft"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4" strokeWidth={1.5} />
         </button>
         <div>
           <div className="flex items-center gap-2 mb-0.5">
-            <div className="w-0.5 h-4 bg-bhutan-red rounded-full" />
-            <p className="text-bhutan-red font-bold text-xs uppercase tracking-[0.3em]">New Listing</p>
+            <div className="w-0.5 h-4 bg-sky rounded-full" />
+            <p className="text-sky text-[12px] font-semibold uppercase tracking-[0.12em]">New Listing</p>
           </div>
-          <h1 className="text-3xl font-bold text-bhutan-dark">Add Property</h1>
+          <h1 className="text-[28px] font-semibold text-foreground tracking-tight">Add Property</h1>
         </div>
       </header>
 
@@ -224,9 +220,9 @@ export default function NewPropertyPage() {
           {/* Main Fields */}
           <div className="lg:col-span-2 space-y-5">
             {/* Basic Info */}
-            <div className="bg-white rounded-2xl p-6 border border-bhutan-gold/10 shadow-sm">
-              <h2 className="font-bold text-bhutan-dark text-base mb-5 flex items-center gap-2">
-                <span className="w-1 h-4 bg-bhutan-red rounded-full" /> Basic Information
+            <div className="bg-card rounded-[20px] p-6 border border-ink-100/60 shadow-soft">
+              <h2 className="font-semibold text-foreground text-base mb-5 flex items-center gap-2">
+                <span className="w-1 h-4 bg-sky rounded-full" /> Basic Information
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
@@ -242,8 +238,8 @@ export default function NewPropertyPage() {
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
                     <label className={labelCls + " mb-0"}>Property Type *</label>
-                    <Link href="/admin/settings/property-types" className="text-[10px] font-bold text-bhutan-gold hover:text-bhutan-red transition-colors uppercase tracking-wider flex items-center gap-1">
-                      <SettingsIcon className="w-3 h-3" /> Manage
+                    <Link href="/admin/settings/property-types" className="text-[12px] font-medium text-sky hover:text-sky-hover transition-colors flex items-center gap-1">
+                      <SettingsIcon className="w-3.5 h-3.5" strokeWidth={1.5} /> Manage
                     </Link>
                   </div>
                   <select value={formData.propertyType} onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })} className={selectCls} required>
@@ -288,23 +284,23 @@ export default function NewPropertyPage() {
             </div>
 
             {/* Specifications */}
-            <div className="bg-white rounded-2xl p-6 border border-bhutan-gold/10 shadow-sm">
+            <div className="bg-card rounded-[20px] p-6 border border-ink-100/60 shadow-soft">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="font-bold text-bhutan-dark text-base flex items-center gap-2">
-                  <span className="w-1 h-4 bg-bhutan-gold rounded-full" /> Property Specifications
+                <h2 className="font-semibold text-foreground text-base flex items-center gap-2">
+                  <span className="w-1 h-4 bg-sky rounded-full" /> Property Specifications
                 </h2>
                 <button
                   type="button"
                   onClick={addSpecification}
-                  className="text-xs font-bold text-bhutan-red hover:text-bhutan-dark uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 bg-bhutan-red/5 rounded-lg transition-colors border border-bhutan-red/10"
+                  className="text-[12px] font-medium text-sky hover:text-sky-hover flex items-center gap-1.5 px-3 py-1.5 bg-sky/5 rounded-xl transition-colors border border-sky/10"
                 >
-                  <Plus className="w-3 h-3" /> Add Spec
+                  <Plus className="w-3.5 h-3.5" strokeWidth={1.5} /> Add Spec
                 </button>
               </div>
 
               <div className="space-y-3">
                 {specifications.length === 0 ? (
-                  <p className="text-bhutan-dark/30 text-xs italic text-center py-4 bg-[#F9F7F2] rounded-xl border border-dashed border-bhutan-gold/15">
+                  <p className="text-ink-400 text-sm text-center py-4 bg-muted rounded-2xl border border-dashed border-ink-200">
                     No custom specifications added. You can add things like "Storey", "Living Room", etc.
                   </p>
                 ) : (
@@ -332,9 +328,9 @@ export default function NewPropertyPage() {
                         <button
                           type="button"
                           onClick={() => removeSpecification(index)}
-                          className="w-10 h-10 flex items-center justify-center text-bhutan-dark/20 hover:text-bhutan-red hover:bg-bhutan-red/5 rounded-xl transition-colors"
+                          className="w-10 h-10 flex items-center justify-center text-ink-300 hover:text-sky hover:bg-sky/5 rounded-xl transition-colors"
                         >
-                          <X className="w-4 h-4" />
+                          <X className="w-4 h-4" strokeWidth={1.5} />
                         </button>
                       </div>
                     </div>
@@ -344,9 +340,9 @@ export default function NewPropertyPage() {
             </div>
 
             {/* Description – Rich Text Editor */}
-            <div className="bg-white rounded-2xl p-6 border border-bhutan-gold/10 shadow-sm">
-              <h2 className="font-bold text-bhutan-dark text-base mb-4 flex items-center gap-2">
-                <span className="w-1 h-4 bg-bhutan-gold rounded-full" /> Description *
+            <div className="bg-card rounded-[20px] p-6 border border-ink-100/60 shadow-soft">
+              <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
+                <span className="w-1 h-4 bg-sky rounded-full" /> Description *
               </h2>
               <RichTextEditor
                 value={description}
@@ -356,16 +352,16 @@ export default function NewPropertyPage() {
             </div>
 
             {/* Features */}
-            <div className="bg-white rounded-2xl p-6 border border-bhutan-gold/10 shadow-sm">
-              <h2 className="font-bold text-bhutan-dark text-base mb-4 flex items-center gap-2">
+            <div className="bg-card rounded-[20px] p-6 border border-ink-100/60 shadow-soft">
+              <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
                 <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Features & Amenities
               </h2>
               <div className="flex flex-wrap gap-2 mb-4">
                 {commonFeatures.map((feature) => (
                   <button key={feature} type="button" onClick={() => toggleFeature(feature)}
-                    className={`px-3 py-1.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all border ${selectedFeatures.includes(feature)
-                      ? "bg-bhutan-red text-white border-bhutan-red shadow-md"
-                      : "bg-[#F9F7F2] text-bhutan-dark/50 border-bhutan-gold/15 hover:border-bhutan-red/30 hover:text-bhutan-red"
+                    className={`px-3 py-1.5 rounded-xl text-sm font-medium transition-all border ${selectedFeatures.includes(feature)
+                      ? "bg-sky text-background border-sky shadow-soft"
+                      : "bg-muted text-ink-500 border-ink-200 hover:border-sky/30 hover:text-sky"
                       }`}
                   >
                     {feature}
@@ -377,17 +373,17 @@ export default function NewPropertyPage() {
                   onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); addCustomFeature(); } }}
                   placeholder="Add custom feature..." className={inputCls + " flex-1"} />
                 <button type="button" onClick={addCustomFeature}
-                  className="h-11 px-4 bg-bhutan-red text-white rounded-xl font-bold text-base hover:bg-bhutan-dark transition-colors shadow-sm">
-                  <Plus className="w-4 h-4" />
+                  className="h-11 px-4 bg-sky text-background rounded-xl font-medium text-base hover:bg-sky-hover transition-colors shadow-soft">
+                  <Plus className="w-4 h-4" strokeWidth={1.5} />
                 </button>
               </div>
               {selectedFeatures.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {selectedFeatures.map((f) => (
-                    <span key={f} className="flex items-center gap-1.5 px-2.5 py-1 bg-bhutan-red/10 text-bhutan-red text-sm font-bold rounded-lg">
+                    <span key={f} className="flex items-center gap-1.5 px-2.5 py-1 bg-sky/10 text-sky text-sm font-medium rounded-lg">
                       {f}
-                      <button type="button" onClick={() => toggleFeature(f)} className="hover:text-bhutan-dark transition-colors">
-                        <X className="w-3 h-3" />
+                      <button type="button" onClick={() => toggleFeature(f)} className="hover:text-ink-800 transition-colors">
+                        <X className="w-3 h-3" strokeWidth={1.5} />
                       </button>
                     </span>
                   ))}
@@ -399,20 +395,20 @@ export default function NewPropertyPage() {
           {/* Sidebar */}
           <div className="space-y-5">
             {/* Image Upload */}
-            <div className="bg-bhutan-dark rounded-2xl p-5 border border-white/5 shadow-sm">
-              <h2 className="font-bold text-white text-base mb-4 flex items-center gap-2">
-                <ImageIcon className="w-4 h-4 text-bhutan-gold" /> Property Images *
+            <div className="bg-card rounded-[20px] p-5 border border-ink-100/60 shadow-soft">
+              <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
+                <ImageIcon className="w-4 h-4 text-sky" strokeWidth={1.5} /> Property Images *
               </h2>
 
               <label htmlFor="img-upload" className="block">
-                <div className={`border-2 border-dashed border-white/15 rounded-xl p-6 text-center cursor-pointer hover:border-bhutan-gold/40 hover:bg-white/5 transition-all ${uploadingImages ? "opacity-70 pointer-events-none" : ""}`}>
+                <div className={`border-2 border-dashed border-ink-200 rounded-xl p-6 text-center cursor-pointer hover:border-sky/40 hover:bg-sky/5 transition-all ${uploadingImages ? "opacity-70 pointer-events-none" : ""}`}>
                   {uploadingImages ? (
-                    <><Loader2 className="w-7 h-7 text-bhutan-gold/60 mx-auto mb-2 animate-spin" />
-                      <p className="text-white/60 text-sm font-bold uppercase tracking-wider">Uploading...</p></>
+                    <><Loader2 className="w-7 h-7 text-sky/60 mx-auto mb-2 animate-spin" strokeWidth={1.5} />
+                      <p className="text-ink-500 text-sm font-medium">Uploading...</p></>
                   ) : (
-                    <><Upload className="w-7 h-7 text-bhutan-gold/40 mx-auto mb-2" />
-                      <p className="text-white/70 text-sm font-bold uppercase tracking-wider">Click to Upload</p>
-                      <p className="text-white/30 text-xs mt-1">JPEG · PNG · WebP</p></>
+                    <><Upload className="w-7 h-7 text-ink-300 mx-auto mb-2" strokeWidth={1.5} />
+                      <p className="text-ink-600 text-sm font-medium">Click to Upload</p>
+                      <p className="text-ink-400 text-xs sm:text-sm mt-1">JPEG · PNG · WebP</p></>
                   )}
                 </div>
                 <input id="img-upload" type="file" multiple accept="image/*" onChange={handleImageUpload} className="hidden" />
@@ -422,13 +418,13 @@ export default function NewPropertyPage() {
                 <div className="mt-4 grid grid-cols-3 gap-2">
                   {images.map((img, i) => (
                     <div key={i} className="relative aspect-square group">
-                      <img src={img} alt={`Preview ${i + 1}`} className="w-full h-full object-cover rounded-xl border border-white/10" />
+                      <img src={img} alt={`Preview ${i + 1}`} className="w-full h-full object-cover rounded-xl border border-ink-100" />
                       <button type="button" onClick={() => removeImage(i)}
-                        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-bhutan-red text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
-                        <X className="w-3 h-3" />
+                        className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-sky text-background rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-soft">
+                        <X className="w-3 h-3" strokeWidth={1.5} />
                       </button>
                       {i === 0 && (
-                        <span className="absolute bottom-1 left-1 text-[10px] font-bold bg-bhutan-gold text-bhutan-dark px-1.5 py-0.5 rounded uppercase">Cover</span>
+                        <span className="absolute bottom-1 left-1 text-[11px] sm:text-[13px] sm:text-[12px] font-semibold bg-sky text-background px-1.5 py-0.5 rounded">Cover</span>
                       )}
                     </div>
                   ))}
@@ -437,8 +433,8 @@ export default function NewPropertyPage() {
             </div>
 
             {/* Coordinates & Meta */}
-            <div className="bg-white rounded-2xl p-5 border border-bhutan-gold/10 shadow-sm">
-              <h2 className="font-bold text-bhutan-dark text-base mb-4">Location & Meta</h2>
+            <div className="bg-card rounded-[20px] p-5 border border-ink-100/60 shadow-soft">
+              <h2 className="font-semibold text-foreground text-base mb-4">Location & Meta</h2>
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-2">
                   <div>
@@ -454,22 +450,22 @@ export default function NewPropertyPage() {
                       placeholder="89.6339" className={inputCls} />
                   </div>
                 </div>
-                <label className="flex items-center gap-3 p-3 bg-[#F9F7F2] rounded-xl cursor-pointer hover:bg-bhutan-gold/5 transition-colors border border-transparent hover:border-bhutan-gold/20">
+                <label className="flex items-center gap-3 p-3 bg-card rounded-xl cursor-pointer hover:bg-sky/5 transition-colors border border-transparent hover:border-sky/20">
                   <input type="checkbox" checked={formData.featured}
                     onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                    className="w-4 h-4 rounded text-bhutan-red focus:ring-bhutan-red cursor-pointer" />
+                    className="w-4 h-4 rounded text-sky focus:ring-sky cursor-pointer" />
                   <div>
-                    <span className="text-sm font-bold text-bhutan-dark uppercase tracking-widest">Featured</span>
-                    <p className="text-xs text-bhutan-dark/40">Show on homepage highlights</p>
+                    <span className="text-sm font-medium text-foreground">Featured</span>
+                    <p className="text-xs sm:text-sm text-ink-500">Show on homepage highlights</p>
                   </div>
                 </label>
-                <label className="flex items-center gap-3 p-3 bg-[#F9F7F2] rounded-xl cursor-pointer hover:bg-bhutan-gold/5 transition-colors border border-transparent hover:border-bhutan-gold/20">
+                <label className="flex items-center gap-3 p-3 bg-card rounded-xl cursor-pointer hover:bg-sky/5 transition-colors border border-transparent hover:border-sky/20">
                   <input type="checkbox" checked={formData.loanAvailable}
                     onChange={(e) => setFormData({ ...formData, loanAvailable: e.target.checked })}
-                    className="w-4 h-4 rounded text-bhutan-red focus:ring-bhutan-red cursor-pointer" />
+                    className="w-4 h-4 rounded text-sky focus:ring-sky cursor-pointer" />
                   <div>
-                    <span className="text-sm font-bold text-bhutan-dark uppercase tracking-widest">Loan Option</span>
-                    <p className="text-xs text-bhutan-dark/40">Indicate if property has a loan option available</p>
+                    <span className="text-sm font-medium text-foreground">Loan Option</span>
+                    <p className="text-xs sm:text-sm text-ink-500">Indicate if property has a loan option available</p>
                   </div>
                 </label>
 
@@ -490,13 +486,13 @@ export default function NewPropertyPage() {
                   </motion.div>
                 )}
 
-                <label className="flex items-center gap-3 p-3 bg-[#F9F7F2] rounded-xl cursor-pointer hover:bg-bhutan-gold/5 transition-colors border border-transparent hover:border-bhutan-gold/20">
+                <label className="flex items-center gap-3 p-3 bg-card rounded-xl cursor-pointer hover:bg-sky/5 transition-colors border border-transparent hover:border-sky/20">
                   <input type="checkbox" checked={formData.isSold}
                     onChange={(e) => setFormData({ ...formData, isSold: e.target.checked })}
-                    className="w-4 h-4 rounded text-bhutan-red focus:ring-bhutan-red cursor-pointer" />
+                    className="w-4 h-4 rounded text-sky focus:ring-sky cursor-pointer" />
                   <div>
-                    <span className="text-sm font-bold text-bhutan-dark uppercase tracking-widest">Mark as Sold</span>
-                    <p className="text-xs text-bhutan-dark/40">Displays "SOLD" badge in frontend</p>
+                    <span className="text-sm font-medium text-foreground">Mark as Sold</span>
+                    <p className="text-xs sm:text-sm text-ink-500">Displays &quot;SOLD&quot; badge in frontend</p>
                   </div>
                 </label>
               </div>
@@ -505,11 +501,11 @@ export default function NewPropertyPage() {
             {/* Submit */}
             <div className="space-y-2">
               <button type="submit" disabled={isSubmitting}
-                className="w-full h-12 bg-bhutan-red text-white rounded-xl font-bold uppercase tracking-[0.2em] text-sm hover:bg-bhutan-dark transition-all shadow-lg shadow-bhutan-red/20 disabled:opacity-60 flex items-center justify-center gap-2">
-                {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Creating...</> : "Create Property"}
+                className="w-full h-12 bg-sky text-background rounded-full font-semibold text-sm hover:bg-sky-hover transition-all shadow-elevated disabled:opacity-60 flex items-center justify-center gap-2">
+                {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" strokeWidth={1.5} /> Creating...</> : "Create Property"}
               </button>
               <button type="button" onClick={() => router.back()}
-                className="w-full h-10 text-sm text-bhutan-dark/30 hover:text-bhutan-red transition-colors">
+                className="w-full h-10 text-sm text-ink-400 hover:text-sky transition-colors">
                 Cancel
               </button>
             </div>

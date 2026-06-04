@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Review from "@/models/Review";
 import { verifyToken } from "@/lib/jwt";
+import { getAdminToken } from "@/lib/auth";
 
 // PATCH /api/admin/reviews/[id] - Update review status (Approve/Reject)
 export async function PATCH(
@@ -10,7 +11,7 @@ export async function PATCH(
 ) {
     try {
         const { id } = await params;
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         const decoded = token ? await verifyToken(token) : null;
         if (!token || !decoded) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
@@ -19,7 +20,12 @@ export async function PATCH(
         await connectDB();
         const body = await request.json();
 
-        const review = await Review.findByIdAndUpdate(id, body, {
+        // Only allow specific fields to be updated
+        const allowedUpdates: Record<string, unknown> = {};
+        if (typeof body.isApproved === "boolean") allowedUpdates.isApproved = body.isApproved;
+        if (typeof body.isRead === "boolean") allowedUpdates.isRead = body.isRead;
+
+        const review = await Review.findByIdAndUpdate(id, { $set: allowedUpdates }, {
             new: true,
             runValidators: true,
         });
@@ -32,8 +38,9 @@ export async function PATCH(
             success: true,
             data: review,
         });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }
 
@@ -44,7 +51,7 @@ export async function DELETE(
 ) {
     try {
         const { id } = await params;
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         const decoded = token ? await verifyToken(token) : null;
         if (!token || !decoded) {
             return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
@@ -61,7 +68,8 @@ export async function DELETE(
             success: true,
             message: "Review deleted successfully",
         });
-    } catch (error: any) {
-        return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        return NextResponse.json({ success: false, error: errorMessage }, { status: 500 });
     }
 }

@@ -13,19 +13,22 @@ import {
     LogOut,
     Menu,
     X,
-    Mountain,
     ChevronRight,
     Plus,
     Calculator,
     ChevronLeft,
     Newspaper,
     Image as ImageIcon,
-    FileDown,
+    Megaphone,
     Users,
+    MessageCircle,
+    Box,
+    Code2,
 } from "lucide-react";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
-import { Logo } from "../Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const sidebarItems = [
     { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -33,11 +36,13 @@ const sidebarItems = [
     { name: "Add Property", href: "/admin/properties/new", icon: Plus },
     { name: "Messages", href: "/admin/inquiries", icon: MessageSquare, badgeKey: "unread" },
     { name: "Reviews", href: "/admin/reviews", icon: Star },
-    { name: "Live Chats", href: "/admin/chats", icon: MessageSquare },
+    { name: "Live Chats", href: "/admin/chats", icon: MessageCircle },
     { name: "Blogs", href: "/admin/blogs", icon: Newspaper },
     { name: "Team", href: "/admin/team", icon: Users },
     { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
-    { name: "Downloads", href: "/admin/documents", icon: FileDown },
+    { name: "Architecture 360°", href: "/admin/architecture-design", icon: Box },
+    { name: "Phojaa95 Solutions", href: "/admin/phojaa95-solutions", icon: Code2 },
+    { name: "Announcements", href: "/admin/announcements", icon: Megaphone },
     { name: "Land Calculator", href: "/admin/land-calculator", icon: Calculator },
     { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
@@ -73,21 +78,19 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
         }
     };
 
-    if (!mounted) return null;
-
     return (
         <>
-            {/* Mobile Toggle Button */}
+            {/* Mobile toggle */}
             <div className="lg:hidden fixed top-4 left-4 z-[70]">
                 <button
                     onClick={() => setMobileOpen(!mobileOpen)}
-                    className="w-11 h-11 bg-bhutan-dark text-white rounded-xl flex items-center justify-center shadow-2xl border border-white/10"
+                    className="w-10 h-10 bg-card/90 backdrop-blur-xl text-foreground rounded-[14px] flex items-center justify-center shadow-soft border border-ink-100/80"
                 >
-                    {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                    {mobileOpen ? <X className="w-4 h-4" strokeWidth={2} /> : <Menu className="w-4 h-4" strokeWidth={2} />}
                 </button>
             </div>
 
-            {/* Mobile Overlay */}
+            {/* Mobile overlay */}
             <AnimatePresence>
                 {mobileOpen && (
                     <motion.div
@@ -95,7 +98,7 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setMobileOpen(false)}
-                        className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60]"
+                        className="lg:hidden fixed inset-0 bg-black/30 backdrop-blur-sm z-[60]"
                     />
                 )}
             </AnimatePresence>
@@ -103,55 +106,61 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
             {/* Sidebar */}
             <motion.aside
                 animate={{ width: collapsed ? 72 : 256 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
-                    "fixed left-0 top-0 h-full bg-bhutan-dark z-[65] shadow-[5px_0_30px_rgba(0,0,0,0.4)] border-r border-white/5 flex flex-col overflow-hidden",
+                    "fixed left-0 top-0 h-full bg-card z-[65] shadow-elevated border-r border-ink-100/60 flex flex-col overflow-hidden",
                     !mobileOpen && "max-lg:-translate-x-full",
                     "transition-transform lg:translate-x-0"
                 )}
             >
-                {/* Decorative accent line */}
-                <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-bhutan-gold/15 to-transparent" />
-
-                {/* Brand Header */}
-                <div className={cn("p-5 border-b border-white/5 flex items-center", collapsed ? "justify-center" : "justify-between")}>
-                    <Link href="/admin/dashboard" className="flex items-center gap-3 group min-w-0">
-                        <Logo size="md" dark />
+                {/* Header */}
+                <div className={cn("h-[68px] px-4 border-b border-ink-100/60 flex items-center shrink-0", collapsed ? "justify-center" : "justify-between")}>
+                    <Link href="/admin/dashboard" className="flex items-center gap-2.5 group min-w-0">
+                        <div className="w-9 h-9 bg-sky/[0.08] rounded-[14px] flex items-center justify-center shrink-0 group-hover:bg-sky/15 transition-colors overflow-hidden">
+                            <Image
+                                src="/image/logo.png"
+                                alt="PHOJAA95 Logo"
+                                width={28}
+                                height={28}
+                                className="object-cover rounded-[10px]"
+                            />
+                        </div>
                         {!collapsed && (
                             <div className="min-w-0">
-                                <h1 className="text-base font-bold text-white tracking-tight truncate">
-                                    Phojaa <span className="text-bhutan-gold italic font-light">Admin</span>
+                                <h1 className="text-[15px] font-semibold text-foreground tracking-tight truncate">
+                                    Phojaa Admin
                                 </h1>
                                 <div className="flex items-center gap-1.5 mt-0.5">
-                                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                                    <p className="text-white/60 text-sm font-bold uppercase tracking-[0.2em]">Active</p>
+                                    <span className="w-[6px] h-[6px] bg-emerald-500 rounded-full" />
+                                    <p className="text-[11px] text-ink-400 font-medium">Live</p>
                                 </div>
                             </div>
                         )}
                     </Link>
 
-                    {/* Collapse toggle – desktop only */}
-                    <button
-                        onClick={() => setCollapsed(!collapsed)}
-                        className="hidden lg:flex w-7 h-7 rounded-lg border border-white/10 items-center justify-center text-white/30 hover:text-bhutan-gold hover:border-bhutan-gold/20 transition-all shrink-0"
-                    >
-                        {collapsed
-                            ? <ChevronRight className="w-3.5 h-3.5" />
-                            : <ChevronLeft className="w-3.5 h-3.5" />
-                        }
-                    </button>
+                    <div className="flex items-center gap-1.5">
+                        <ThemeToggle />
+                        <button
+                            onClick={() => setCollapsed(!collapsed)}
+                            className="hidden lg:flex w-7 h-7 rounded-lg border border-ink-200/80 items-center justify-center text-ink-400 hover:text-sky hover:border-sky/25 transition-all shrink-0"
+                        >
+                            {collapsed
+                                ? <ChevronRight className="w-3.5 h-3.5" strokeWidth={2} />
+                                : <ChevronLeft className="w-3.5 h-3.5" strokeWidth={2} />
+                            }
+                        </button>
+                    </div>
                 </div>
 
                 {/* Navigation */}
-                <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto scrollbar-none">
+                <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto scrollbar-none">
                     {!collapsed && (
-                        <p className="text-white/40 text-sm font-bold uppercase tracking-[0.3em] px-3 mb-3">
+                        <p className="text-[10px] text-ink-300 font-semibold uppercase tracking-[0.18em] px-3 pb-2.5">
                             Navigation
                         </p>
                     )}
                     {sidebarItems.map((item) => {
                         const isActive = pathname === item.href || (item.href !== "/admin/dashboard" && pathname.startsWith(item.href) && item.href !== "/admin/properties/new");
-                        const isAddProperty = item.href === "/admin/properties/new";
 
                         return (
                             <Link
@@ -159,23 +168,20 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
                                 href={item.href}
                                 title={collapsed ? item.name : undefined}
                                 className={cn(
-                                    "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative overflow-hidden",
+                                    "flex items-center gap-3 px-3 py-2.5 rounded-[14px] transition-all duration-200 group relative",
                                     collapsed ? "justify-center" : "",
                                     isActive
-                                        ? "bg-bhutan-red/90 text-white shadow-lg shadow-bhutan-red/20"
-                                        : isAddProperty
-                                            ? "text-bhutan-gold/60 hover:bg-bhutan-gold/10 hover:text-bhutan-gold border border-bhutan-gold/10 hover:border-bhutan-gold/30"
-                                            : "text-white/50 hover:bg-white/5 hover:text-white"
+                                        ? "bg-sky/[0.08] text-sky font-medium"
+                                        : "text-ink-500 hover:text-foreground hover:bg-ink-50/60"
                                 )}
                             >
                                 <div className="relative shrink-0">
                                     <item.icon className={cn(
-                                        "w-4 h-4 transition-transform duration-300 group-hover:scale-110",
-                                        isActive ? "text-white" : isAddProperty ? "" : "text-bhutan-gold/40 group-hover:text-bhutan-gold/70"
-                                    )} />
-                                    {/* Badge */}
+                                        "w-[18px] h-[18px] transition-transform duration-200",
+                                        isActive ? "text-sky" : "text-ink-400 group-hover:text-ink-600"
+                                    )} strokeWidth={1.5} />
                                     {item.badgeKey === "unread" && unreadCount > 0 && (
-                                        <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-bhutan-gold text-bhutan-dark text-[10px] font-bold rounded-full flex items-center justify-center leading-none shadow-sm">
+                                        <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-sky text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none shadow-sm">
                                             {unreadCount > 9 ? "9+" : unreadCount}
                                         </span>
                                     )}
@@ -183,14 +189,14 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
 
                                 {!collapsed && (
                                     <>
-                                        <span className="text-base font-medium truncate flex-1">{item.name}</span>
+                                        <span className="text-[13px] truncate flex-1">{item.name}</span>
                                         {item.badgeKey === "unread" && unreadCount > 0 && !isActive && (
-                                            <span className="px-1.5 py-0.5 bg-bhutan-gold text-bhutan-dark text-[11px] font-bold rounded-full leading-none">
+                                            <span className="px-1.5 py-0.5 bg-sky/[0.08] text-sky text-[10px] font-bold rounded-full leading-none">
                                                 {unreadCount > 9 ? "9+" : unreadCount}
                                             </span>
                                         )}
                                         {isActive && (
-                                            <div className="w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_6px_white] shrink-0" />
+                                            <div className="w-1 h-1 bg-sky rounded-full shrink-0" />
                                         )}
                                     </>
                                 )}
@@ -199,23 +205,23 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
                     })}
                 </nav>
 
-                {/* Footer / Logout */}
-                <div className={cn("p-3 border-t border-white/5", collapsed ? "flex justify-center" : "")}>
+                {/* Footer */}
+                <div className={cn("p-3 border-t border-ink-100/60", collapsed ? "flex justify-center" : "")}>
                     <button
                         onClick={handleLogout}
                         title={collapsed ? "Logout" : undefined}
                         className={cn(
-                            "flex items-center gap-3 px-3 py-2.5 rounded-xl text-white/30 hover:bg-red-500/10 hover:text-red-400 transition-all duration-300 group border border-transparent hover:border-red-500/10 w-full",
+                            "flex items-center gap-3 px-3 py-2.5 rounded-[14px] text-ink-400 hover:text-red-500 hover:bg-red-50/60 transition-all duration-200 group w-full",
                             collapsed ? "justify-center" : ""
                         )}
                     >
-                        <LogOut className="w-4 h-4 group-hover:translate-x-0.5 transition-transform shrink-0" />
-                        {!collapsed && <span className="text-base font-medium">Logout</span>}
+                        <LogOut className="w-[18px] h-[18px] group-hover:translate-x-0.5 transition-transform shrink-0" strokeWidth={1.5} />
+                        {!collapsed && <span className="text-[13px] font-medium">Logout</span>}
                     </button>
 
                     {!collapsed && (
-                        <p className="text-white/20 text-sm font-bold uppercase tracking-[0.3em] text-center mt-3">
-                            Phojaa v2.0 Admin
+                        <p className="text-[10px] text-ink-300 font-medium uppercase tracking-[0.12em] text-center mt-2">
+                            Phojaa CMS v2.0
                         </p>
                     )}
                 </div>

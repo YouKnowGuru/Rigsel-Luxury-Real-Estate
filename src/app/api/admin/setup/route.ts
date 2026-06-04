@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Admin from "@/models/Admin";
+import { adminSetupSchema } from "@/lib/validation";
 
 // POST /api/admin/setup - Create initial admin user
 export async function POST(request: NextRequest) {
@@ -16,26 +17,36 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Optional: Secret key check for production
+    // Require setup secret - fail closed if not configured
     const setupSecret = process.env.SETUP_SECRET;
     const providedSecret = request.headers.get("x-setup-secret");
 
-    if (setupSecret && providedSecret !== setupSecret) {
+    if (!setupSecret) {
+      return NextResponse.json(
+        { success: false, error: "Setup is not configured. SETUP_SECRET environment variable is required." },
+        { status: 403 }
+      );
+    }
+
+    if (providedSecret !== setupSecret) {
       return NextResponse.json(
         { success: false, error: "Unauthorized: Invalid setup secret" },
         { status: 401 }
       );
     }
 
-    const { username, password } = await request.json();
+    const body = await request.json();
 
-    // Validate input
-    if (!username || !password) {
+    // Validate with Zod
+    const validationResult = adminSetupSchema.safeParse(body);
+    if (!validationResult.success) {
       return NextResponse.json(
-        { success: false, error: "Username and password are required" },
+        { success: false, error: "Validation failed", details: validationResult.error.format() },
         { status: 400 }
       );
     }
+
+    const { username, password } = validationResult.data;
 
     // Create admin
     const admin = await Admin.create({
@@ -56,10 +67,10 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
-    console.error("Setup error:", error);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "An error occurred";
     return NextResponse.json(
-      { success: false, error: error.message },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }

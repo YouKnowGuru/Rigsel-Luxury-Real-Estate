@@ -9,7 +9,7 @@ interface ThemeToggleProps {
   isScrolled?: boolean;
 }
 
-export function ThemeToggle({ className, isScrolled = true }: ThemeToggleProps) {
+export function ThemeToggle({ className }: ThemeToggleProps) {
   const { resolvedTheme, toggleTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
 
@@ -17,10 +17,7 @@ export function ThemeToggle({ className, isScrolled = true }: ThemeToggleProps) 
     <button
       onClick={toggleTheme}
       className={cn(
-        "relative w-9 h-9 xl:w-10 xl:h-10 rounded-full flex items-center justify-center transition-all duration-500 group/theme",
-        isScrolled
-          ? "bg-gray-100 hover:bg-bhutan-gold/20 text-bhutan-dark dark:bg-white/10 dark:hover:bg-bhutan-gold/20 dark:text-white"
-          : "bg-white/10 hover:bg-white/20 text-white backdrop-blur-md",
+        "relative inline-flex items-center justify-center w-9 h-9 rounded-full text-foreground/80 hover:text-foreground hover:bg-ink-100/60 dark:hover:bg-ink-800/40 transition-colors duration-fast no-tap",
         className
       )}
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
@@ -28,19 +25,17 @@ export function ThemeToggle({ className, isScrolled = true }: ThemeToggleProps) 
     >
       <Sun
         className={cn(
-          "w-4 h-4 absolute transition-all duration-500",
-          isDark
-            ? "opacity-0 rotate-90 scale-0"
-            : "opacity-100 rotate-0 scale-100"
+          "w-[18px] h-[18px] absolute transition-all duration-base ease-apple",
+          isDark ? "opacity-0 rotate-90 scale-50" : "opacity-100 rotate-0 scale-100"
         )}
+        strokeWidth={1.75}
       />
       <Moon
         className={cn(
-          "w-4 h-4 absolute transition-all duration-500",
-          isDark
-            ? "opacity-100 rotate-0 scale-100"
-            : "opacity-0 -rotate-90 scale-0"
+          "w-[18px] h-[18px] absolute transition-all duration-base ease-apple",
+          isDark ? "opacity-100 rotate-0 scale-100" : "opacity-0 -rotate-90 scale-50"
         )}
+        strokeWidth={1.75}
       />
     </button>
   );

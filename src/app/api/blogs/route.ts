@@ -2,19 +2,32 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import { verifyToken } from "@/lib/jwt";
+import { blogSchema } from "@/lib/validation";
+import { checkRateLimit, getClientIP } from "@/lib/rate-limit";
+import { getAdminToken } from "@/lib/auth";
 
 // GET /api/blogs - Get all blogs
 export async function GET(request: NextRequest) {
     try {
+        // Rate limit public reads
+        const clientIP = getClientIP(request);
+        const rateLimit = await checkRateLimit(`blogs_get_${clientIP}`, 60, 60 * 1000);
+        if (!rateLimit.success) {
+            return NextResponse.json(
+                { success: false, error: "Rate limit exceeded. Please try again later." },
+                { status: 429 }
+            );
+        }
+
         await connectDB();
 
         const { searchParams } = new URL(request.url);
         const publishedOnly = searchParams.get("published") === "true";
-        const limit = Number(searchParams.get("limit")) || 10;
+        const limit = Math.min(Number(searchParams.get("limit")) || 10, 100);
         const page = Number(searchParams.get("page")) || 1;
         const skip = (page - 1) * limit;
 
-        const query: any = {};
+        const query: Record<string, unknown> = {};
         if (publishedOnly) {
             query.published = true;
         }
@@ -37,10 +50,10 @@ export async function GET(request: NextRequest) {
                 pages: Math.ceil(total / limit),
             },
         });
-    } catch (error: any) {
-        console.error("Error fetching blogs:", error);
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
         return NextResponse.json(
-            { success: false, error: error.message },
+            { success: false, error: errorMessage },
             { status: 500 }
         );
     }
@@ -49,7 +62,7 @@ export async function GET(request: NextRequest) {
 // POST /api/blogs - Create new blog (Admin only)
 export async function POST(request: NextRequest) {
     try {
-        const token = request.headers.get("authorization")?.split(" ")[1];
+        const token = await getAdminToken(request);
         if (!token) {
             return NextResponse.json(
                 { success: false, error: "Unauthorized" },
@@ -57,7 +70,7 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        const decoded = verifyToken(token);
+        const decoded = await verifyToken(token);
         if (!decoded) {
             return NextResponse.json(
                 { success: false, error: "Invalid token" },
@@ -68,37 +81,41 @@ export async function POST(request: NextRequest) {
         await connectDB();
         const body = await request.json();
 
-        if (!body.title || !body.content || !body.coverImage) {
+        // Validate with Zod
+        const validationResult = blogSchema.safeParse(body);
+        if (!validationResult.success) {
             return NextResponse.json(
-                { success: false, error: "Missing required fields" },
+                { success: false, error: "Validation failed", details: validationResult.error.format() },
                 { status: 400 }
             );
         }
 
+        const data = validationResult.data;
+
         // Generate slug if not provided
-        if (!body.slug) {
-            body.slug = body.title
+        if (!data.slug) {
+            data.slug = data.title
                 .toLowerCase()
-                .replace(/[^a-z0-0]+/g, "-")
+                .replace(/[^a-z0-9]+/g, "-")
                 .replace(/(^-|-$)/g, "");
         }
 
-        const blog = await Blog.create(body);
+        const blog = await Blog.create(data);
 
         return NextResponse.json(
             { success: true, data: blog },
             { status: 201 }
         );
-    } catch (error: any) {
-        console.error("Error creating blog:", error);
-        if (error.code === 11000) {
+    } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "An error occurred";
+        if ((error as { code?: number }).code === 11000) {
             return NextResponse.json(
                 { success: false, error: "Blog with this slug already exists" },
                 { status: 400 }
             );
         }
         return NextResponse.json(
-            { success: false, error: error.message },
+            { success: false, error: errorMessage },
             { status: 500 }
         );
     }

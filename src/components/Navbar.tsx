@@ -1,204 +1,459 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, memo, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, Home, Building2, Calculator, Info, Mail, Settings, Newspaper, Image as ImageIcon, FileDown } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Menu, X, Search, Phone, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Logo } from "./Logo";
 import { useSettings } from "@/context/SettingsContext";
 import { ThemeToggle } from "./ThemeToggle";
+import { Logo } from "./Logo";
+import {
+  SolutionsNavDropdown,
+  SolutionsMobileNavSection,
+} from "@/components/nav/SolutionsNavMenu";
+
+/* ============================================================
+   NAVBAR — Apple.com-style luxury navigation
+   Principles:
+   • Glassmorphism that intensifies on scroll
+   • Centered nav links (Apple Store pattern)
+   • Pill-shaped active indicators
+   • Fullscreen mobile menu with staggered reveals
+   • Search overlay (Apple.com style)
+   • All touch targets ≥ 44px
+   ============================================================ */
 
 const navItems = [
-  { name: "Home", href: "/", icon: Home },
-  { name: "Properties", href: "/properties", icon: Building2 },
-  { name: "Downloads", href: "/downloads", icon: FileDown },
-  { name: "Land Calculator", href: "/land-calculator", icon: Calculator },
-  { name: "About", href: "/about", icon: Info },
-  { name: "Contact", href: "/contact", icon: Mail },
-  { name: "Blogs", href: "/blog", icon: Newspaper },
-  { name: "Gallery", href: "/gallery", icon: ImageIcon },
-  { name: "Admin", href: "/admin", icon: Settings },
+  { name: "Home", href: "/" },
+  { name: "Properties", href: "/properties" },
+  { name: "Calculator", href: "/land-calculator" },
+  { name: "About", href: "/about" },
+  { name: "Blog", href: "/blog" },
+  { name: "Gallery", href: "/gallery" },
+  { name: "Architecture", href: "/architecture-design" },
+  { name: "Announcements", href: "/announcements" },
+  { name: "Contact", href: "/contact" },
 ];
 
+// Memoized nav link to prevent unnecessary re-renders
+const NavLink = memo(function NavLink({
+  item,
+  isActive,
+  onClick,
+}: {
+  item: (typeof navItems)[0];
+  isActive: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <Link
+      href={item.href}
+      onClick={onClick}
+      className={cn(
+        "relative inline-flex items-center justify-center h-8 px-3 rounded-full text-[13px] font-medium transition-colors duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50 focus-visible:ring-offset-2",
+        isActive
+          ? "text-foreground"
+          : "text-ink-500 hover:text-foreground"
+      )}
+    >
+      {isActive && (
+        <motion.span
+          layoutId="nav-pill"
+          className="absolute inset-0 bg-ink-100/70 dark:bg-ink-800/60 rounded-full"
+          transition={{ type: "spring", stiffness: 350, damping: 30 }}
+        />
+      )}
+      <span className="relative z-10">{item.name}</span>
+    </Link>
+  );
+});
+
+// Mobile menu item with stagger animation
+const MobileNavItem = memo(function MobileNavItem({
+  item,
+  isActive,
+  index,
+  onClick,
+}: {
+  item: (typeof navItems)[0];
+  isActive: boolean;
+  index: number;
+  onClick: () => void;
+}) {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <motion.li
+      initial={shouldReduceMotion ? {} : { opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{
+        delay: index * 0.04 + 0.1,
+        duration: 0.35,
+        ease: [0.16, 1, 0.3, 1],
+      }}
+    >
+      <Link
+        href={item.href}
+        onClick={onClick}
+        className={cn(
+          "group flex items-center justify-between py-3.5 transition-colors no-tap",
+          isActive ? "text-foreground" : "text-ink-500 hover:text-foreground"
+        )}
+      >
+        <span className="flex items-center gap-3">
+          <span
+            className={cn(
+              "w-1.5 h-1.5 rounded-full transition-colors",
+              isActive ? "bg-sky" : "bg-ink-300"
+            )}
+          />
+          <span className="text-[17px] font-semibold tracking-tight">
+            {item.name}
+          </span>
+        </span>
+        <ChevronRight
+          className="w-4 h-4 text-ink-400 group-hover:translate-x-0.5 transition-transform"
+          strokeWidth={1.5}
+        />
+      </Link>
+    </motion.li>
+  );
+});
+
 export function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
   const { settings } = useSettings();
   const pathname = usePathname();
+  const router = useRouter();
   const isAdminPage = pathname.startsWith("/admin");
+  const shouldReduceMotion = useReducedMotion();
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
+  // Close mobile menu on route change
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    setIsMobileMenuOpen(false);
+    setIsSearchOpen(false);
+  }, [pathname]);
 
-    window.addEventListener("scroll", handleScroll);
+  // Lock body scroll when menu open
+  useEffect(() => {
+    const shouldLock = isMobileMenuOpen || isSearchOpen;
+    document.body.style.overflow = shouldLock ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen, isSearchOpen]);
+
+  // Scroll listener with passive flag
+  useEffect(() => {
+    function handleScroll() {
+      setScrolled(window.scrollY > 10);
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Keyboard shortcut: Cmd+K to open search
   useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setIsSearchOpen((s) => !s);
+      }
+      if (e.key === "Escape") {
+        setIsSearchOpen(false);
+        setIsMobileMenuOpen(false);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
+
+  // Execute search and navigate to properties page
+  const executeSearch = useCallback(() => {
+    const query = searchQuery.trim();
+    if (!query) return;
+    const params = new URLSearchParams();
+    params.append("search", query);
+    router.push(`/properties?${params.toString()}`);
+    setIsSearchOpen(false);
+    setSearchQuery("");
+  }, [searchQuery, router]);
 
   if (isAdminPage) return null;
 
   return (
     <>
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      {/* Skip to content link for accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:bg-sky focus:text-white focus:rounded-lg focus:text-sm focus:font-medium"
+      >
+        Skip to content
+      </a>
+
+      {/* Main navbar */}
+      <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-          isScrolled
-            ? "bg-white dark:bg-[#1A1C1E] shadow-md dark:shadow-xl dark:shadow-black/20 border-b-2 border-bhutan-gold/80 py-4"
-            : "bg-white/10 backdrop-blur-md border-b border-white/20 py-6"
+          "fixed top-0 inset-x-0 z-50 transition-all duration-300",
+          scrolled
+            ? "glass-nav shadow-soft"
+            : "bg-background/60 backdrop-blur-2xl border-b border-transparent"
         )}
       >
-        {/* Subtle Bhutan Pattern Overlay for the navbar background */}
-        <div className={cn("absolute inset-0 bg-thangka opacity-[0.03] pointer-events-none", isScrolled ? "block" : "hidden")} />
-
-        <div className="container-luxury mx-auto relative z-10 w-full px-6 lg:px-10">
-          <nav className="flex items-center justify-between w-full relative">
-
-            {/* Logo */}
-            <Link href="/" className="flex items-center group shrink-0 mr-2 md:mr-4 max-w-[50%] lg:max-w-none">
-              <Logo
-                size="md"
-                showText
-                dark={!isScrolled}
-                className="transition-all duration-500"
-              />
+        <div className="container-apple-wide">
+          <nav
+            className="flex items-center justify-between h-11 sm:h-12 text-[13px]"
+            aria-label="Primary"
+          >
+            {/* Brand — left */}
+            <Link
+              href="/"
+              className="no-tap shrink-0 -ml-1"
+              aria-label="PHOJAA95 Real Estate — Home"
+            >
+              <Logo size="sm" showText />
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex flex-1 justify-center relative z-20 px-2">
-              <div className={cn(
-                "flex items-center gap-1.5 xl:gap-5 px-3 xl:px-8 py-2.5 rounded-full transition-all duration-500",
-                isScrolled ? "" : "bg-bhutan-dark/20 backdrop-blur-md border border-white/10 shadow-lg"
-              )}>
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={cn(
-                      "group relative py-2",
-                      (item.name === "Admin" || item.name === "Gallery" || item.name === "Blogs") && "hidden xl:block"
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        "text-[9px] xl:text-[11px] font-bold uppercase tracking-[0.05em] xl:tracking-[0.15em] transition-colors duration-300 relative z-10",
-                        pathname === item.href
-                          ? (isScrolled ? "text-bhutan-red" : "text-white")
-                          : (isScrolled ? "text-bhutan-dark dark:text-white/80 hover:text-bhutan-red dark:hover:text-bhutan-red" : "text-white/70 hover:text-white")
+            {/* Desktop nav — centered pill cluster */}
+            <div className="hidden lg:flex items-center">
+              <div className="flex items-center gap-0.5 bg-ink-50/40 dark:bg-ink-800/30 rounded-full px-1.5 py-1">
+                {navItems.map((item) => {
+                  const isActive =
+                    item.href === "/"
+                      ? pathname === "/"
+                      : pathname.startsWith(item.href);
+                  return (
+                    <span key={item.name} className="contents">
+                      <NavLink item={item} isActive={isActive} />
+                      {item.href === "/architecture-design" && (
+                        <SolutionsNavDropdown />
                       )}
-                    >
-                      {item.name}
                     </span>
-
-                    {/* Hover Animated Underline */}
-                    <span className={cn(
-                      "absolute bottom-0 left-0 w-full h-[2px] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out",
-                      isScrolled ? "bg-bhutan-gold shadow-[0_0_8px_rgba(244,196,48,0.6)]" : "bg-white shadow-[0_0_8px_rgba(255,255,255,0.6)]"
-                    )} />
-
-                    {/* Active State Underline */}
-                    {pathname === item.href && (
-                      <motion.div
-                        layoutId="nav-underline"
-                        className={cn("absolute bottom-0 left-0 right-0 h-[2px]", isScrolled ? "bg-bhutan-red" : "bg-white")}
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      />
-                    )}
-                  </Link>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
-            {/* Right Section (Contact/Theme/Mobile) */}
-            <div className="flex items-center gap-2 xl:gap-6 relative z-10 flex-shrink-0">
-              <div className="hidden md:flex items-center gap-1.5 xl:gap-3 group cursor-pointer pr-1 xl:pr-4 border-r border-white/20 dark:border-white/10">
-                <div className={cn(
-                  "w-7 h-7 xl:w-10 xl:h-10 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm",
-                  isScrolled ? "bg-bhutan-red/10 text-bhutan-red group-hover:bg-bhutan-red group-hover:text-white" : "bg-white/10 text-white group-hover:bg-white group-hover:text-bhutan-red"
-                )}>
-                  <Phone className="w-3 h-3 xl:w-4 xl:h-4" />
-                </div>
-                <div className="text-left hidden lg:block">
-                  <p className={cn("text-[7px] uppercase font-bold tracking-widest mb-0.5", isScrolled ? "text-bhutan-dark/50 dark:text-white/40" : "text-white/60")}>Call Us</p>
-                  <p className={cn("text-[9px] xl:text-xs font-bold font-serif tracking-widest", isScrolled ? "text-bhutan-dark dark:text-white" : "text-white")}>{settings.phone}</p>
-                </div>
-              </div>
-
-              {/* Theme Toggle */}
-              <ThemeToggle isScrolled={isScrolled} />
-
-              {/* Mobile Toggle */}
+            {/* Right cluster */}
+            <div className="flex items-center gap-0.5">
+              {/* Search trigger */}
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={cn(
-                  "lg:hidden w-10 h-10 rounded-lg flex items-center justify-center border transition-colors shadow-sm relative z-50",
-                  isScrolled
-                    ? "bg-gray-50 dark:bg-white/10 text-bhutan-dark dark:text-white border-gray-200 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-white/20"
-                    : "bg-white/10 text-white border-white/20 hover:bg-white/20 backdrop-blur-md"
-                )}
-                aria-label="Toggle Menu"
+                onClick={() => setIsSearchOpen(true)}
+                className="inline-flex items-center justify-center w-9 h-9 rounded-full text-ink-400 hover:text-foreground hover:bg-ink-100/60 dark:hover:bg-ink-800/40 transition-colors no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50"
+                aria-label="Search (Cmd+K)"
+                title="Search (Cmd+K)"
               >
-                {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                <Search className="w-4 h-4" strokeWidth={1.5} />
+              </button>
+
+              <ThemeToggle />
+
+              {/* Mobile menu toggle */}
+              <button
+                onClick={() => setIsMobileMenuOpen((s) => !s)}
+                className="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-full text-foreground/85 hover:text-foreground hover:bg-ink-100/60 dark:hover:bg-ink-800/40 transition-colors no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50"
+                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={isMobileMenuOpen}
+                aria-controls="mobile-menu"
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {isMobileMenuOpen ? (
+                    <motion.span
+                      key="x"
+                      initial={shouldReduceMotion ? {} : { rotate: -90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: 90, opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                    >
+                      <X className="w-5 h-5" strokeWidth={1.5} />
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="m"
+                      initial={shouldReduceMotion ? {} : { rotate: 90, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      exit={{ rotate: -90, opacity: 0 }}
+                      transition={{ duration: 0.18 }}
+                    >
+                      <Menu className="w-5 h-5" strokeWidth={1.5} />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
               </button>
             </div>
-
           </nav>
         </div>
-      </motion.header>
+      </header>
 
-      {/* Mobile Menu */}
+      {/* Search overlay — Apple.com style */}
+      <AnimatePresence>
+        {isSearchOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[48] bg-foreground/20 backdrop-blur-sm"
+              onClick={() => setIsSearchOpen(false)}
+              aria-hidden="true"
+            />
+            <motion.div
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed inset-x-0 top-11 sm:top-12 z-[49] bg-background/95 backdrop-blur-2xl border-b border-ink-100 dark:border-ink-700/40"
+              role="search"
+              aria-label="Site search"
+            >
+              <div className="container-apple-wide py-4">
+                <div className="relative">
+                  <Search
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400"
+                    strokeWidth={1.5}
+                  />
+                  <input
+                    ref={searchInputRef}
+                    type="search"
+                    name="search"
+                    autoComplete="off"
+                    autoFocus
+                    placeholder="Search properties, locations…"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        executeSearch();
+                      }
+                    }}
+                    className="w-full h-11 pl-11 pr-4 rounded-2xl bg-fog dark:bg-ink-800/40 border border-transparent text-foreground placeholder:text-ink-400 text-[15px] outline-none focus:border-sky/30 focus:ring-[3px] focus:ring-sky/10 transition-all"
+                    aria-label="Search properties and locations"
+                  />
+                  <kbd className="hidden sm:inline-flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono text-ink-400 bg-ink-100/60 dark:bg-ink-700/40 border border-ink-200/60 dark:border-ink-600/40">
+                    ESC
+                  </kbd>
+                </div>
+                <div className="mt-3 flex items-center gap-2 text-[12px] text-ink-400">
+                  <span>Press</span>
+                  <kbd className="inline-flex items-center px-1 py-0.5 rounded text-[10px] font-mono bg-ink-100/60 dark:bg-ink-700/40 border border-ink-200/60">
+                    ↵
+                  </kbd>
+                  <span>to search</span>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Mobile menu — fullscreen sheet */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="fixed inset-x-0 top-16 md:top-20 z-[45] bg-white dark:bg-[#1A1C1E] border-b-4 border-bhutan-gold shadow-2xl lg:hidden overflow-hidden origin-top"
-          >
-            <div className="p-6 overflow-y-auto max-h-[calc(100vh-70px)] bg-thangka bg-[length:50px_50px]">
-              <div className="space-y-1 bg-white/95 dark:bg-white/5 backdrop-blur-md rounded-2xl p-4 shadow-soft border border-gray-100 dark:border-white/10">
-                {navItems.map((item, i) => (
-                  <motion.div
-                    key={item.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <Link
-                      href={item.href}
-                      className={cn(
-                        "flex items-center gap-4 p-4 rounded-xl text-sm uppercase tracking-widest font-bold transition-all duration-300",
-                        pathname === item.href
-                          ? "bg-bhutan-red/5 text-bhutan-red border border-bhutan-red/10 shadow-sm"
-                          : "text-bhutan-dark dark:text-white/80 hover:bg-gray-50 dark:hover:bg-white/5 hover:pl-6"
-                      )}
-                    >
-                      <item.icon className="w-5 h-5" />
-                      {item.name}
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[48] bg-foreground/20 backdrop-blur-sm lg:hidden"
+              onClick={closeMobileMenu}
+              aria-hidden="true"
+            />
 
-              <div className="mt-8 p-6 bg-bhutan-dark rounded-2xl text-center relative overflow-hidden">
-                <div className="absolute inset-0 bg-thangka opacity-20 pointer-events-none" />
-                <div className="w-12 h-12 rounded-full bg-bhutan-gold mx-auto flex items-center justify-center text-bhutan-dark mb-4 relative z-10">
-                  <Phone className="w-5 h-5" />
+            {/* Menu panel */}
+            <motion.aside
+              id="mobile-menu"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Mobile navigation menu"
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: -16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="fixed inset-x-0 top-11 sm:top-12 z-[49] bg-background lg:hidden flex flex-col safe-bottom border-t border-ink-100 dark:border-ink-700/40 max-h-[calc(100vh-48px)] overflow-y-auto overscroll-contain"
+            >
+              <nav className="px-5 sm:px-8 pt-3 pb-8">
+                {/* Quick actions */}
+                <div className="flex items-center gap-2 mb-4 pb-4 border-b border-ink-100 dark:border-ink-700/40">
+                  <Link
+                    href="/properties"
+                    onClick={closeMobileMenu}
+                    className="flex-1 inline-flex items-center justify-center gap-2 h-10 rounded-xl bg-sky text-white text-[13px] font-medium hover:bg-sky-hover active:scale-[0.97] transition-all no-tap"
+                  >
+                    <Search className="w-4 h-4" strokeWidth={1.5} />
+                    Browse Properties
+                  </Link>
+                  {settings.phone && (
+                    <a
+                      href={`tel:${settings.phone}`}
+                      className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-fog dark:bg-ink-800/40 text-foreground hover:bg-ink-100/60 transition-colors no-tap"
+                      aria-label="Call us"
+                    >
+                      <Phone className="w-4 h-4" strokeWidth={1.5} />
+                    </a>
+                  )}
                 </div>
-                <p className="text-[10px] text-bhutan-gold/80 font-bold uppercase tracking-widest relative z-10 mb-1">Call Us Immediately</p>
-                <p className="text-xl text-white font-serif font-bold tracking-widest relative z-10">{settings.phone}</p>
-              </div>
-            </div>
-          </motion.div>
+
+                {/* Nav links */}
+                <ul className="space-y-0.5">
+                  {navItems.map((item, i) => {
+                    const isActive =
+                      item.href === "/"
+                        ? pathname === "/"
+                        : pathname.startsWith(item.href);
+                    return (
+                      <span key={item.name} className="contents">
+                        <MobileNavItem
+                          item={item}
+                          isActive={isActive}
+                          index={i}
+                          onClick={closeMobileMenu}
+                        />
+                        {item.href === "/architecture-design" && (
+                          <SolutionsMobileNavSection
+                            onNavigate={closeMobileMenu}
+                            startIndex={i + 1}
+                          />
+                        )}
+                      </span>
+                    );
+                  })}
+                </ul>
+
+                {/* Contact card */}
+                {settings.phone && (
+                  <motion.a
+                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.35 }}
+                    href={`tel:${settings.phone}`}
+                    className="mt-6 flex items-center justify-between rounded-apple-xl bg-fog dark:bg-ink-800/40 px-5 py-4 text-foreground hover:bg-ink-100/40 transition-colors"
+                  >
+                    <div>
+                      <p className="text-[11px] uppercase tracking-eyebrow text-ink-400 mb-0.5">
+                        Talk to us
+                      </p>
+                      <p className="text-[17px] font-semibold tracking-tightest tabular-nums">
+                        {settings.phone}
+                      </p>
+                    </div>
+                    <span className="text-sky text-[13px]">Call ›</span>
+                  </motion.a>
+                )}
+              </nav>
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
     </>

@@ -4,163 +4,224 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, Calendar, User, Clock, Share2, Facebook, Twitter, Link as LinkIcon } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Clock,
+  Share2,
+  Facebook,
+  Twitter,
+  Link as LinkIcon,
+  Loader2,
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 interface Blog {
-    _id: string;
-    title: string;
-    slug: string;
-    content: string;
-    coverImage: string;
-    author: string;
-    tags: string[];
-    createdAt: string;
+  _id: string;
+  title: string;
+  slug: string;
+  content: string;
+  coverImage: string;
+  author: string;
+  tags: string[];
+  createdAt: string;
 }
 
 export default function BlogDetailPage() {
-    const { slug } = useParams();
-    const router = useRouter();
-    const [blog, setBlog] = useState<Blog | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+  const { slug } = useParams();
+  const router = useRouter();
+  const { toast } = useToast();
+  const [blog, setBlog] = useState<Blog | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchBlog = async () => {
-            try {
-                const res = await fetch(`/api/blogs/slug/${slug}`);
-                const data = await res.json();
-                if (data.success) {
-                    setBlog(data.data);
-                } else {
-                    router.push("/blog");
-                }
-            } catch (error) {
-                console.error("Error fetching blog:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchBlog();
-    }, [slug]);
+  useEffect(() => {
+    const fetchBlog = async () => {
+      try {
+        const res = await fetch(`/api/blogs/slug/${slug}`);
+        const data = await res.json();
+        if (data.success) {
+          setBlog(data.data);
+        } else {
+          router.push("/blog");
+        }
+      } catch (error) {
+        // Silently handle error
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchBlog();
+  }, [slug, router]);
 
-    if (isLoading) {
-        return (
-            <div className="min-h-screen bg-[#F9F7F2] dark:bg-background flex items-center justify-center">
-                <div className="w-10 h-10 border-4 border-bhutan-red border-t-transparent rounded-full animate-spin" />
-            </div>
-        );
-    }
+  const copyLink = () => {
+    if (typeof window === "undefined") return;
+    navigator.clipboard.writeText(window.location.href);
+    toast({ title: "Link copied", variant: "success" });
+  };
 
-    if (!blog) return null;
-
+  if (isLoading) {
     return (
-        <div className="min-h-screen bg-white dark:bg-background font-outfit pt-32 pb-20">
-            <div className="fixed inset-0 bg-thangka opacity-[0.01] pointer-events-none" />
-
-            {/* Hero Section */}
-            <div className="container-luxury mx-auto px-6 lg:px-10 relative z-10 mb-16">
-                <div className="max-w-4xl mx-auto">
-                    <Link
-                        href="/blog"
-                        className="inline-flex items-center gap-2 text-bhutan-dark/40 hover:text-bhutan-red transition-colors mb-8 group"
-                    >
-                        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-[10px] font-bold uppercase tracking-[0.3em]">Back to Stories</span>
-                    </Link>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex flex-wrap gap-4 items-center mb-6"
-                    >
-                        {blog.tags.map((tag) => (
-                            <span key={tag} className="px-4 py-1 bg-bhutan-red/5 text-bhutan-red text-[10px] font-bold uppercase tracking-widest rounded-full border border-bhutan-red/10">
-                                {tag}
-                            </span>
-                        ))}
-                        <div className="flex items-center gap-2 text-[10px] font-bold text-bhutan-dark/30 dark:text-muted-foreground/30 uppercase tracking-[0.2em] ml-2">
-                            <Clock className="w-3.5 h-3.5" />
-                            5 min read
-                        </div>
-                    </motion.div>
-
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-6xl font-bold text-bhutan-dark dark:text-foreground mb-10 leading-tight"
-                    >
-                        {blog.title}
-                    </motion.h1>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="flex items-center justify-between py-6 border-y border-bhutan-gold/10 dark:border-white/10"
-                    >
-                        <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-bhutan-gold/20 flex items-center justify-center text-bhutan-gold font-bold text-lg">
-                                {blog.author[0]}
-                            </div>
-                            <div>
-                                <p className="text-sm font-bold text-bhutan-dark dark:text-foreground uppercase tracking-widest">{blog.author}</p>
-                                <p className="text-xs text-bhutan-dark/40 font-medium">{new Date(blog.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                            <button className="w-10 h-10 rounded-full border border-bhutan-gold/10 dark:border-white/10 flex items-center justify-center text-bhutan-dark/30 dark:text-muted-foreground/30 hover:bg-bhutan-red hover:text-white hover:border-bhutan-red transition-all">
-                                <Share2 className="w-4 h-4" />
-                            </button>
-                        </div>
-                    </motion.div>
-                </div>
-            </div>
-
-            {/* Featured Image */}
-            <div className="container-luxury mx-auto px-6 lg:px-10 mb-16 relative z-10 w-full">
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="aspect-[21/9] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white dark:border-white/10"
-                >
-                    <img src={blog.coverImage} alt={blog.title} className="w-full h-full object-cover" />
-                </motion.div>
-            </div>
-
-            {/* Content Section */}
-            <div className="container-luxury mx-auto px-6 lg:px-10 relative z-10">
-                <div className="max-w-3xl mx-auto">
-                    <article
-                        className="prose prose-xl prose-bhutan dark:prose-invert max-w-none text-bhutan-dark/80 dark:text-muted-foreground font-medium leading-[1.8]
-              prose-headings:text-bhutan-dark dark:prose-headings:text-foreground prose-headings:font-bold
-              prose-p:mb-8 prose-img:rounded-3xl prose-img:shadow-xl prose-img:my-12
-              prose-strong:text-bhutan-dark dark:prose-strong:text-foreground prose-strong:font-bold
-              prose-blockquote:border-l-4 prose-blockquote:border-bhutan-red prose-blockquote:bg-[#F9F7F2] dark:prose-blockquote:bg-white/[0.02] prose-blockquote:p-8 prose-blockquote:rounded-3xl prose-blockquote:italic
-            "
-                        dangerouslySetInnerHTML={{ __html: blog.content }}
-                    />
-
-                    <div className="mt-20 pt-10 border-t border-bhutan-gold/10 dark:border-white/10 flex flex-wrap gap-4 items-center justify-between">
-                        <div className="flex flex-wrap gap-2">
-                            {blog.tags.map(tag => (
-                                <span key={tag} className="text-xs font-bold text-bhutan-gold bg-bhutan-gold/5 px-4 py-2 rounded-xl">#{tag}</span>
-                            ))}
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                            <span className="text-[10px] font-bold text-bhutan-dark/30 dark:text-muted-foreground/30 uppercase tracking-[0.2em]">Share post</span>
-                            <div className="flex gap-2">
-                                {[Facebook, Twitter, LinkIcon].map((Icon, i) => (
-                                    <button key={i} className="w-9 h-9 rounded-full bg-[#F9F7F2] dark:bg-card flex items-center justify-center text-bhutan-dark/40 dark:text-muted-foreground/40 hover:bg-bhutan-dark hover:text-white transition-all">
-                                        <Icon className="w-4 h-4" />
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-ink-400 animate-spin" />
+      </div>
     );
+  }
+
+  if (!blog) return null;
+
+  const readTime = Math.max(
+    1,
+    Math.ceil(blog.content.replace(/<[^>]*>/g, "").split(/\s+/).length / 200)
+  );
+  const shareUrl =
+    typeof window !== "undefined" ? window.location.href : "";
+
+  // Sanitize HTML content before rendering
+  const sanitizedContent = sanitizeHtml(blog.content);
+
+  return (
+    <main className="bg-background pt-16 sm:pt-20">
+      {/* Top action row */}
+      <div className="container-apple-wide py-4 flex items-center justify-between text-[13px]">
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-1.5 text-foreground/85 hover:text-foreground transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" strokeWidth={1.75} />
+          All stories
+        </Link>
+      </div>
+
+      {/* Header */}
+      <section className="container-apple text-center pt-8 pb-10">
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <p className="text-[12px] font-semibold uppercase tracking-eyebrow text-sky mb-3">
+            Story
+          </p>
+          <h1 className="font-semibold tracking-tighter3 leading-tighter text-balance text-[clamp(2rem,1.5rem+3vw,4.25rem)] text-foreground">
+            {blog.title}
+          </h1>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-[13px] text-ink-500">
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar className="w-3.5 h-3.5" strokeWidth={1.75} />
+              {new Date(blog.createdAt).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </span>
+            <span>·</span>
+            <span>{blog.author}</span>
+            <span>·</span>
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5" strokeWidth={1.75} />
+              {readTime} min read
+            </span>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Cover image */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10">
+        <div className="relative aspect-[16/9] rounded-apple-xl overflow-hidden bg-fog shadow-product">
+          <img
+            src={blog.coverImage}
+            alt={blog.title}
+            className="w-full h-full object-cover ken-burns"
+          />
+        </div>
+      </div>
+
+      {/* Article */}
+      <article className="container-narrow section-y-sm">
+        <div
+          className="prose prose-lg dark:prose-invert max-w-none text-ink-500 leading-snug2
+            prose-headings:font-semibold prose-headings:text-foreground prose-headings:tracking-tightest
+            prose-headings:mt-12 prose-headings:mb-5
+            prose-h2:text-[clamp(1.75rem,1.5rem+1.25vw,2.5rem)]
+            prose-h3:text-[clamp(1.5rem,1.25rem+1vw,2rem)]
+            prose-p:mb-6 prose-p:text-[17px] sm:prose-p:text-[18px]
+            prose-a:text-sky prose-a:no-underline hover:prose-a:underline
+            prose-strong:text-foreground prose-strong:font-semibold
+            prose-img:rounded-apple-lg prose-img:my-10
+            prose-blockquote:border-l-2 prose-blockquote:border-foreground prose-blockquote:not-italic prose-blockquote:font-normal prose-blockquote:text-foreground prose-blockquote:text-[clamp(1.25rem,1rem+0.75vw,1.5rem)] prose-blockquote:pl-6
+            prose-ul:my-6 prose-li:my-1.5"
+          dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+        />
+
+        {/* Tags */}
+        {blog.tags && blog.tags.length > 0 && (
+          <div className="mt-12 pt-8 border-t border-ink-100 dark:border-ink-700/40">
+            <div className="flex flex-wrap gap-2">
+              {blog.tags.map((t) => (
+                <span
+                  key={t}
+                  className="px-3 py-1.5 rounded-full bg-fog text-foreground text-[12px]"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Share */}
+        <div className="mt-10 pt-8 border-t border-ink-100 dark:border-ink-700/40 flex items-center justify-between gap-4 flex-wrap">
+          <p className="text-[13px] text-ink-500 inline-flex items-center gap-2">
+            <Share2 className="w-4 h-4" strokeWidth={1.75} />
+            Share this story
+          </p>
+          <div className="flex items-center gap-2">
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-fog hover:bg-foreground hover:text-background text-foreground transition-colors"
+              aria-label="Share on Facebook"
+            >
+              <Facebook className="w-4 h-4" strokeWidth={1.75} />
+            </a>
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(blog.title)}&url=${encodeURIComponent(shareUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-fog hover:bg-foreground hover:text-background text-foreground transition-colors"
+              aria-label="Share on Twitter"
+            >
+              <Twitter className="w-4 h-4" strokeWidth={1.75} />
+            </a>
+            <button
+              onClick={copyLink}
+              className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-fog hover:bg-foreground hover:text-background text-foreground transition-colors"
+              aria-label="Copy link"
+            >
+              <LinkIcon className="w-4 h-4" strokeWidth={1.75} />
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <section className="bg-fog">
+        <div className="container-apple-wide section-y-sm text-center">
+          <h2 className="font-semibold text-[clamp(1.75rem,1.5rem+1.5vw,2.5rem)] tracking-tighter2 leading-tight2 text-foreground">
+            Keep reading.
+          </h2>
+          <p className="mt-2 text-[15px] text-ink-500">
+            More stories, perspectives, and field notes.
+          </p>
+          <Link
+            href="/blog"
+            className="mt-6 inline-flex link-apple link-arrow text-[15px]"
+          >
+            Back to all stories
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
 }

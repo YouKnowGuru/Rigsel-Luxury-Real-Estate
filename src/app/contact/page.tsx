@@ -1,66 +1,249 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useCallback, memo } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   MapPin,
   Phone,
   Mail,
   Clock,
-  Send,
   CheckCircle,
   Facebook,
-  Instagram,
-  Linkedin,
-  Twitter,
-  MessageSquare,
+  ArrowRight,
+  Send,
+  MessageCircle,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { PageHero } from "@/components/layout/PageHero";
+import { cn } from "@/lib/utils";
 
+/* ============================================================
+   CONTACT PAGE — Apple-style luxury contact experience
+   Design Principles:
+   • Cinematic hero with massive typography
+   • Glassmorphic contact cards with staggered reveals
+   • Premium form with floating labels and validation
+   • Success state with celebration animation
+   • All touch targets ≥ 44px
+   ============================================================ */
+
+/* ── Animation variants ── */
+const fadeUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (delay: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] },
+  }),
+};
+
+/* ── Contact Info Data ── */
 const contactInfo = [
   {
     icon: MapPin,
-    title: "Visit Us",
+    title: "Visit us",
     content: "Paro, Bhutan",
-    subContent: "Below Revenue and Customs Office (RRCO), Taju",
+    subContent: "Below RRCO, Taju",
+    color: "bg-sky/10 text-sky",
   },
   {
     icon: Phone,
-    title: "Call Us",
-    content: "+975 16111999",
-    subContent: "Mon - Sat, 9AM - 6PM",
+    title: "Call us",
+    content: "+975 1611 1999",
+    subContent: "Mon – Sat, 9AM – 6PM",
+    href: "tel:+97516111999",
+    color: "bg-emerald/10 text-emerald",
   },
   {
     icon: Mail,
-    title: "Email Us",
+    title: "Email us",
     content: "phojaa95realestate@gmail.com",
     subContent: "We reply within 24 hours",
+    href: "mailto:phojaa95realestate@gmail.com",
+    color: "bg-amber/10 text-amber",
   },
   {
     icon: Clock,
-    title: "Open Hours",
-    content: "Mon - Fri: 9AM - 6PM",
-    subContent: "Saturday: 9AM - 1PM",
+    title: "Open hours",
+    content: "Mon – Fri 9AM – 6PM",
+    subContent: "Saturday 9AM – 1PM",
+    color: "bg-rose/10 text-rose",
   },
 ];
 
-const socialLinks = [
-  { icon: Facebook, href: "https://www.facebook.com/share/1b2Fk7oC9q/ 2", label: "Facebook" },
-  {
-    icon: () => (
-      <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path fillRule="evenodd" d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.12-3.44-3.17-3.8-5.46-.4-2.46.33-5.06 1.95-6.9 1.51-1.74 3.79-2.81 6.09-2.92v4.06c-1.05.08-2.07.6-2.73 1.39-.63.76-.94 1.83-.8 2.83.17 1.25.96 2.37 2.11 2.89 1.09.49 2.4.45 3.42-.1.97-.53 1.63-1.5 1.75-2.61.03-.31.02-.63.02-.94V.02zm-1.11 11.96c-.63-.09-1.27-.14-1.91-.14-1.84 0-3.6.8-4.8 2.31-1.36 1.72-1.9 4.07-1.35 6.2.47 1.86 1.66 3.48 3.32 4.41 1.01.56 2.17.85 3.35.84 1.53 0 3.01-.54 4.19-1.52.84-.71 1.47-1.7 1.77-2.76.22-.8.3-1.66.27-2.51V8.58c1.35 1.01 3.06 1.57 4.79 1.57V6.01c-.81 0-1.62-.16-2.39-.47-.79-.31-1.51-.78-2.09-1.38-.63-.64-1.11-1.43-1.42-2.3-.28-.8-.43-1.66-.46-2.52H12.56v11.97h-1.15z" clipRule="evenodd" />
-      </svg>
-    ),
-    href: "https://tiktok.com/@phojaa95realestate",
-    label: "TikTok"
-  },
-];
+/* ── Contact Card Component ── */
+interface ContactCardProps {
+  info: (typeof contactInfo)[0];
+  index: number;
+}
+const ContactCard = memo(function ContactCard({ info, index }: ContactCardProps) {
+  const shouldReduceMotion = useReducedMotion();
+  const Icon = info.icon;
 
+  const content = (
+    <motion.div
+      initial={shouldReduceMotion ? {} : { opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ delay: index * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="group bg-fog/80 dark:bg-ink-800/40 backdrop-blur-sm rounded-apple-xl p-5 sm:p-6 border border-ink-100/60 dark:border-ink-700/30 hover:border-ink-200 dark:hover:border-ink-600/50 hover:shadow-soft transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40"
+    >
+      <div className="flex items-start gap-4">
+        <span
+          className={cn(
+            "w-11 h-11 rounded-full flex items-center justify-center shrink-0 transition-transform group-hover:scale-105",
+            info.color
+          )}
+        >
+          <Icon className="w-5 h-5" strokeWidth={1.75} />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="text-[11px] font-semibold uppercase tracking-eyebrow text-ink-500 mb-1">
+            {info.title}
+          </p>
+          <p className="text-[15px] font-semibold tracking-tight text-foreground truncate">
+            {info.content}
+          </p>
+          <p className="text-[13px] text-ink-500 mt-0.5">{info.subContent}</p>
+        </div>
+        {info.href && (
+          <ArrowRight
+            className="w-4 h-4 text-ink-400 group-hover:text-foreground group-hover:translate-x-0.5 transition-all shrink-0 self-center"
+            strokeWidth={1.75}
+          />
+        )}
+      </div>
+    </motion.div>
+  );
+
+  if (info.href) {
+    return (
+      <a href={info.href} className="block">
+        {content}
+      </a>
+    );
+  }
+  return content;
+});
+
+/* ── Form Input Component ── */
+interface FormInputProps {
+  id: string;
+  label: string;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
+  autoComplete?: string;
+  inputMode?: "text" | "search" | "url" | "email" | "none" | "decimal" | "numeric" | "tel";
+}
+const FormInput = memo(function FormInput({
+  id,
+  label,
+  type = "text",
+  required,
+  placeholder,
+  value,
+  onChange,
+  autoComplete,
+  inputMode,
+}: FormInputProps) {
+  return (
+    <div className="space-y-1.5">
+      <label
+        htmlFor={id}
+        className="block text-[12px] font-medium text-ink-500 uppercase tracking-eyebrow"
+      >
+        {label}
+        {required && <span className="text-rose ml-0.5">*</span>}
+      </label>
+      <input
+        id={id}
+        name={id}
+        type={type}
+        required={required}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        autoComplete={autoComplete}
+        inputMode={inputMode}
+        className="w-full h-12 rounded-2xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-card px-4 text-[15px] text-foreground placeholder:text-ink-400 outline-none transition-all duration-fast focus:border-sky focus:ring-[3px] focus:ring-sky/10"
+      />
+    </div>
+  );
+});
+
+/* ── Form Textarea Component ── */
+interface FormTextareaProps {
+  id: string;
+  label: string;
+  required?: boolean;
+  placeholder?: string;
+  value: string;
+  onChange: (value: string) => void;
+  rows?: number;
+}
+const FormTextarea = memo(function FormTextarea({
+  id,
+  label,
+  required,
+  placeholder,
+  value,
+  onChange,
+  rows = 5,
+}: FormTextareaProps) {
+  return (
+    <div className="space-y-1.5">
+      <label
+        htmlFor={id}
+        className="block text-[12px] font-medium text-ink-500 uppercase tracking-eyebrow"
+      >
+        {label}
+        {required && <span className="text-rose ml-0.5">*</span>}
+      </label>
+      <textarea
+        id={id}
+        name={id}
+        required={required}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        rows={rows}
+        className="w-full rounded-2xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-card px-4 py-3 text-[15px] text-foreground placeholder:text-ink-400 outline-none transition-all duration-fast focus:border-sky focus:ring-[3px] focus:ring-sky/10 resize-none"
+      />
+    </div>
+  );
+});
+
+/* ── Social Link Component ── */
+const SocialLink = memo(function SocialLink({
+  href,
+  label,
+  children,
+}: {
+  href: string;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="w-11 h-11 rounded-full bg-fog dark:bg-ink-800/40 border border-ink-200/60 dark:border-ink-700/40 hover:bg-foreground hover:text-background hover:border-foreground flex items-center justify-center text-foreground transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40"
+    >
+      {children}
+    </a>
+  );
+});
+
+/* ── Main Contact Page ── */
 export default function ContactPage() {
   const { toast } = useToast();
+  const shouldReduceMotion = useReducedMotion();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
@@ -71,226 +254,277 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const updateField = useCallback((field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  }, []);
 
-    try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsSubmitting(true);
 
-      if (response.ok) {
-        setIsSubmitted(true);
-        toast({
-          title: "Message Sent",
-          description: "We will call you very soon.",
-          variant: "success",
+      try {
+        const response = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
         });
+
+        if (response.ok) {
+          setIsSubmitted(true);
+          toast({
+            title: "Message sent",
+            description: "We'll call you very soon.",
+            variant: "success",
+          });
+        }
+      } catch {
+        toast({
+          title: "Error",
+          description: "Please try again or call us directly.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Please try again or call us directly.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    },
+    [formData, toast]
+  );
+
+  const handleWhatsApp = useCallback(() => {
+    window.open("https://wa.me/97516111999", "_blank");
+  }, []);
 
   return (
-    <div className="min-h-screen bg-[#F9F7F2] dark:bg-background pb-32">
-      {/* Hero Section */}
-      <section className="relative pt-40 pb-24 md:pt-56 md:pb-40 overflow-hidden">
-        {/* Background Motifs */}
-        <div className="absolute inset-0 bg-thangka opacity-[0.03] pointer-events-none" />
-        <div className="absolute top-0 left-0 right-0 h-4 bg-thangka opacity-[0.08] mt-24" />
+    <main className="bg-background">
+      {/* Hero */}
+      <PageHero
+        eyebrow="Contact"
+        title="Let's talk about your home."
+        subtitle="Ask anything — about a listing, our process, or just to say hello. We respond fast."
+        breadcrumbs={[{ label: "Contact" }]}
+      />
 
-        <div className="container-luxury relative z-10 w-full max-w-7xl mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center max-w-4xl mx-auto"
-          >
-            <div className="inline-block px-6 py-2 rounded-full bg-bhutan-red/10 border border-bhutan-red/20 text-bhutan-red text-[10px] font-bold uppercase tracking-[0.4em] mb-10 shadow-sm">
-              Connect With Us
-            </div>
-            <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-bhutan-dark dark:text-foreground mb-6 md:mb-8 leading-[1.15]">
-              Talk to <br />
-              <span className="text-bhutan-red italic font-light">Our Family</span>
-            </h1>
-            <p className="text-bhutan-dark/70 dark:text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto font-light leading-relaxed italic">
-              "We are here to help you find your legacy. Ask us anything, we are ready to listen."
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Contact Information & Form Layout */}
-      <section className="px-6 -mt-12 relative z-10 mb-32">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-
-            {/* Sidebar: Icon Cards */}
-            <div className="lg:col-span-4 space-y-6">
-              {contactInfo.map((info, index) => (
-                <motion.div
-                  key={info.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="bg-white dark:bg-card rounded-[2.5rem] p-8 shadow-xl border border-bhutan-gold/10 group hover:border-bhutan-red/20 transition-all duration-500"
-                >
-                  <div className="flex items-center gap-6">
-                    <div className="w-16 h-16 bg-[#F9F7F2] dark:bg-background rounded-2xl flex items-center justify-center group-hover:bg-bhutan-red group-hover:text-white transition-all duration-500 border border-bhutan-gold/10">
-                      <info.icon className="w-7 h-7" />
-                    </div>
-                    <div>
-                      <h3 className="font-serif text-xl font-bold text-bhutan-dark dark:text-foreground mb-1">
-                        {info.title}
-                      </h3>
-                       <p className="text-bhutan-dark/80 dark:text-foreground/80 font-medium font-serif">{info.content}</p>
-                       <p className="text-bhutan-dark/40 dark:text-muted-foreground/40 text-[9px] font-bold uppercase tracking-widest">{info.subContent}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-
-              {/* Quick Call Card */}
-              <div className="bg-bhutan-dark rounded-[3rem] p-10 overflow-hidden relative group shadow-3xl border-4 border-white mt-12">
-                <div className="absolute inset-0 bg-thangka opacity-[0.05] pointer-events-none" />
-                <h3 className="font-serif text-2xl font-bold text-white mb-4 relative z-10 italic">
-                  Instant Support
-                </h3>
-                <p className="text-white/60 mb-10 font-light leading-relaxed relative z-10 text-sm">
-                  Need a quick answer? Our team is active on phone right now.
+      {/* Contact section */}
+      <section className="section-y">
+        <div className="container-apple-wide">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+            {/* Left: Contact info */}
+            <div className="lg:col-span-5 space-y-4">
+              <motion.div
+                initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="mb-6"
+              >
+                <p className="text-[13px] font-semibold text-sky tracking-wide uppercase mb-2">
+                  Get in touch
                 </p>
-                <a
-                  href="tel:+97516111999"
-                  className="inline-flex items-center gap-4 bg-bhutan-red text-white px-10 py-5 rounded-2xl font-bold text-[10px] uppercase tracking-[0.4em] hover:bg-white hover:text-bhutan-red transition-all duration-500 relative z-10 shadow-xl"
-                >
-                  <Phone className="w-4 h-4" />
-                  Call Us
-                </a>
+                <h2 className="text-[clamp(1.5rem,1.25rem+1.5vw,2.25rem)] font-semibold tracking-tighter2 leading-tight2 text-foreground">
+                  We&apos;d love to hear from you.
+                </h2>
+                <p className="mt-3 text-[15px] text-ink-500 leading-snug2">
+                  Choose the way that works best for you. Our team is ready to
+                  help with your property journey.
+                </p>
+              </motion.div>
+
+              {/* Contact cards */}
+              <div className="space-y-3">
+                {contactInfo.map((info, i) => (
+                  <ContactCard key={info.title} info={info} index={i} />
+                ))}
               </div>
+
+              {/* WhatsApp CTA */}
+              <motion.button
+                initial={shouldReduceMotion ? {} : { opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+                onClick={handleWhatsApp}
+                className="w-full flex items-center gap-3 p-4 rounded-apple-xl bg-emerald/5 border border-emerald/20 hover:bg-emerald/10 transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-emerald/40"
+              >
+                <span className="w-10 h-10 rounded-full bg-emerald/15 text-emerald flex items-center justify-center shrink-0">
+                  <MessageCircle className="w-5 h-5" strokeWidth={1.75} />
+                </span>
+                <div className="text-left">
+                  <p className="text-[13px] font-medium text-foreground">
+                    Chat on WhatsApp
+                  </p>
+                  <p className="text-[12px] text-ink-500">
+                    Usually replies instantly
+                  </p>
+                </div>
+                <ArrowRight
+                  className="w-4 h-4 text-ink-400 ml-auto"
+                  strokeWidth={1.75}
+                />
+              </motion.button>
+
+              {/* Social links */}
+              <motion.div
+                initial={shouldReduceMotion ? {} : { opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+                className="flex items-center gap-3 pt-2"
+              >
+                <span className="text-[12px] text-ink-500 mr-1">
+                  Follow us
+                </span>
+                <SocialLink
+                  href="https://www.facebook.com/share/1b2Fk7oC9q/"
+                  label="Facebook"
+                >
+                  <Facebook className="w-4 h-4" strokeWidth={1.75} />
+                </SocialLink>
+                <SocialLink
+                  href="https://tiktok.com/@phojaa95realestate"
+                  label="TikTok"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.12-3.44-3.17-3.8-5.46-.4-2.46.33-5.06 1.95-6.9 1.51-1.74 3.79-2.81 6.09-2.92v4.06c-1.05.08-2.07.6-2.73 1.39-.63.76-.94 1.83-.8 2.83.17 1.25.96 2.37 2.11 2.89 1.09.49 2.4.45 3.42-.1.97-.53 1.63-1.5 1.75-2.61.03-.31.02-.63.02-.94V.02z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </SocialLink>
+              </motion.div>
             </div>
 
-            {/* Main Content: Luxury Glass Form */}
+            {/* Right: Form */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={shouldReduceMotion ? {} : { opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-8 bg-white/40 dark:bg-card/40 backdrop-blur-3xl rounded-[2rem] md:rounded-[4rem] p-8 md:p-16 lg:p-20 shadow-3xl border-4 border-white dark:border-white/10 overflow-hidden relative"
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="lg:col-span-7"
             >
-              <div className="absolute inset-0 bg-thangka opacity-[0.02] pointer-events-none" />
-
-              <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-10 h-10 md:w-12 md:h-12 bg-bhutan-red/10 rounded-xl flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 md:w-6 md:h-6 text-bhutan-red" />
-                  </div>
-                  <div>
-                    <h2 className="font-serif text-3xl md:text-4xl font-bold text-bhutan-dark dark:text-foreground">
-                      Message Us
-                    </h2>
-                    <p className="text-bhutan-dark/50 dark:text-muted-foreground/50 text-[10px] font-bold uppercase tracking-[0.2em]">We respond very fast</p>
-                  </div>
-                </div>
-
+              <div className="bg-fog/60 dark:bg-ink-900/30 backdrop-blur-sm rounded-apple-xl p-6 sm:p-8 md:p-10 border border-ink-100/60 dark:border-ink-700/30">
                 {isSubmitted ? (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="bg-bhutan-red/5 rounded-[3rem] p-20 text-center border-2 border-bhutan-red/10"
-                  >
-                    <CheckCircle className="w-24 h-24 text-bhutan-red mx-auto mb-8" />
-                    <h3 className="text-4xl font-serif font-bold text-bhutan-dark dark:text-foreground mb-4 tracking-tight">
-                      Thank You
-                    </h3>
-                    <p className="text-bhutan-dark/60 dark:text-muted-foreground/60 text-xl font-light italic">
-                      "We have received your message. One of our experts will call you very soon."
-                    </p>
-                  </motion.div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-8 md:space-y-12">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-                      <div className="space-y-3">
-                        <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">Your Full Name</label>
-                        <Input
-                          placeholder="Karma Dorji"
-                          value={formData.name}
-                          onChange={(e) =>
-                            setFormData({ ...formData, name: e.target.value })
-                          }
-                          className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif"
-                          required
-                        />
-                      </div>
-                      <div className="space-y-3">
-                        <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">Phone Number</label>
-                        <Input
-                          type="tel"
-                          placeholder="17XXXXXX"
-                          value={formData.phone}
-                          onChange={(e) =>
-                            setFormData({ ...formData, phone: e.target.value })
-                          }
-                          className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif"
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">Email Address</label>
-                      <Input
-                        type="email"
-                        placeholder="yourname@email.bt"
-                        value={formData.email}
-                        onChange={(e) =>
-                          setFormData({ ...formData, email: e.target.value })
-                        }
-                        className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">How can we help you?</label>
-                      <Input
-                        placeholder="I want to buy a beautiful land..."
-                        value={formData.subject}
-                        onChange={(e) =>
-                          setFormData({ ...formData, subject: e.target.value })
-                        }
-                        className="h-16 md:h-20 rounded-[1rem] md:rounded-[1.5rem] px-6 md:px-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] font-bold text-bhutan-dark/60 dark:text-muted-foreground/60 uppercase tracking-[0.3em] ml-6">Message Details</label>
-                      <Textarea
-                        placeholder="Tell us more about what you are looking for..."
-                        rows={6}
-                        value={formData.message}
-                        onChange={(e) =>
-                          setFormData({ ...formData, message: e.target.value })
-                        }
-                        className="rounded-[1.5rem] md:rounded-[2rem] p-6 md:p-8 border-bhutan-gold/30 focus:ring-bhutan-red/20 focus:border-bhutan-red bg-white/80 dark:bg-card/80 shadow-lg text-base md:text-lg font-serif resize-none italic"
-                        required
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full h-20 md:h-24 bg-bhutan-red text-white text-[10px] font-bold uppercase tracking-[0.5em] rounded-[1.5rem] md:rounded-[2rem] hover:bg-bhutan-dark transition-all duration-700 shadow-3xl shadow-bhutan-red/20 disabled:opacity-50 group flex items-center justify-center gap-4"
+                  /* Success state */
+                  <div className="text-center py-12 sm:py-16">
+                    <motion.span
+                      initial={shouldReduceMotion ? {} : { scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 15,
+                      }}
+                      className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald/15 text-emerald mb-6"
                     >
-                      <Send className="w-5 h-5 md:w-6 md:h-6 group-hover:-translate-y-2 group-hover:translate-x-2 transition-transform duration-500" />
-                      {isSubmitting ? "Sending..." : "Send Now"}
+                      <CheckCircle className="w-8 h-8" strokeWidth={1.75} />
+                    </motion.span>
+                    <h3 className="font-semibold text-[clamp(1.5rem,1.25rem+1vw,2rem)] tracking-tighter2 text-foreground">
+                      Message sent.
+                    </h3>
+                    <p className="mt-3 text-[16px] text-ink-500 max-w-md mx-auto">
+                      We&apos;ll be in touch shortly. In the meantime, feel free
+                      to browse properties.
+                    </p>
+                    <button
+                      onClick={() => setIsSubmitted(false)}
+                      className="mt-8 inline-flex items-center gap-1 text-sky text-[15px] font-medium hover:underline underline-offset-4 no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40 rounded px-2 py-1"
+                    >
+                      Send another message
+                      <ArrowRight className="w-4 h-4" strokeWidth={1.75} />
                     </button>
+                  </div>
+                ) : (
+                  /* Form */
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div>
+                      <p className="text-[13px] font-semibold text-sky tracking-wide uppercase mb-2">
+                        Send a message
+                      </p>
+                      <h2 className="text-[clamp(1.5rem,1.25rem+1.5vw,2.25rem)] font-semibold tracking-tighter2 leading-tight2 text-foreground">
+                        Tell us what you need.
+                      </h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                      <FormInput
+                        id="name"
+                        label="Full name"
+                        required
+                        placeholder="e.g. Dorji Wangchuk"
+                        value={formData.name}
+                        onChange={(v) => updateField("name", v)}
+                        autoComplete="name"
+                      />
+                      <FormInput
+                        id="phone"
+                        label="Phone"
+                        type="tel"
+                        placeholder="e.g. +975 17123456"
+                        value={formData.phone}
+                        onChange={(v) => updateField("phone", v)}
+                        autoComplete="tel"
+                        inputMode="tel"
+                      />
+                    </div>
+
+                    <FormInput
+                      id="email"
+                      label="Email"
+                      type="email"
+                      required
+                      placeholder="e.g. name@example.com"
+                      value={formData.email}
+                      onChange={(v) => updateField("email", v)}
+                      autoComplete="email"
+                      inputMode="email"
+                    />
+
+                    <FormInput
+                      id="subject"
+                      label="Subject"
+                      placeholder="e.g. Inquiry about Paro property"
+                      value={formData.subject}
+                      onChange={(v) => updateField("subject", v)}
+                    />
+
+                    <FormTextarea
+                      id="message"
+                      label="Message"
+                      required
+                      placeholder="Tell us more about what you're looking for…"
+                      value={formData.message}
+                      onChange={(v) => updateField("message", v)}
+                      rows={5}
+                    />
+
+                    <div className="flex items-center justify-between pt-2">
+                      <p className="text-[12px] text-ink-500">
+                        We typically respond within 24 hours.
+                      </p>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="inline-flex items-center gap-2 h-12 px-7 rounded-full bg-sky text-white text-[15px] font-medium hover:bg-sky-hover active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            Sending…
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-4 h-4" strokeWidth={2} />
+                            Send message
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </form>
                 )}
               </div>
@@ -298,56 +532,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-
-      {/* Modern Interactive Map Section */}
-      <section className="py-24 px-6 md:py-32">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-white dark:bg-card rounded-[4rem] overflow-hidden border-8 border-white dark:border-white/10 shadow-3xl group relative h-[600px]">
-            <iframe
-              width="100%"
-              height="100%"
-              frameBorder="0"
-              scrolling="no"
-              marginHeight={0}
-              marginWidth={0}
-              src="https://maps.google.com/maps?q=Paro,Bhutan&z=15&output=embed"
-              className="grayscale-[0.6] group-hover:grayscale-0 transition-all duration-2000"
-            />
-            {/* Overlay Map Label */}
-            <div className="absolute top-12 left-12 bg-bhutan-dark/90 backdrop-blur-xl p-8 rounded-[2.5rem] border border-white/20 shadow-2xl text-white">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-bhutan-red rounded-xl flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h4 className="font-serif text-2xl font-bold italic">Our Home</h4>
-                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest">Paro, Bhutan</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Social Connection Footer CTA */}
-      <section className="py-24 text-center px-6">
-        <h3 className="font-serif text-4xl md:text-5xl font-bold text-bhutan-dark dark:text-foreground mb-12 italic">
-          Join our <span className="text-bhutan-red">Community</span>
-        </h3>
-        <div className="flex flex-wrap justify-center gap-8">
-          {socialLinks.map((social) => (
-            <motion.a
-              key={social.label}
-              href={social.href}
-              whileHover={{ y: -10, rotate: 5 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-20 h-20 bg-white border border-bhutan-gold/10 rounded-[1.5rem] flex items-center justify-center text-bhutan-dark hover:bg-bhutan-red hover:text-white hover:border-bhutan-red shadow-xl transition-all duration-500"
-            >
-              <social.icon className="w-8 h-8" />
-            </motion.a>
-          ))}
-        </div>
-      </section>
-    </div>
+    </main>
   );
 }

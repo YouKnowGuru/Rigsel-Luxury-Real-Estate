@@ -1,0 +1,31 @@
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+
+> Build error occurred
+Error: Turbopack build failed with 1 errors:
+./src/app/admin/documents/page.tsx:417:10
+Ecmascript file had an error
+[0m [90m 415 |[39m }
+ [90m 416 |[39m
+[31m[1m>[22m[39m[90m 417 |[39m [36mfunction[39m [33mX[39m({ className[33m,[39m strokeWidth [33m=[39m [35m1.5[39m }[33m:[39m { className[33m?[39m[33m:[39m string[33m;[39m strokeWidth[33m?[39m[33m:[39m number }) {
+ [90m     |[39m          [31m[1m^[22m[39m
+ [90m 418 |[39m     [36mreturn[39m (
+ [90m 419 |[39m         [33m<[39m[33msvg[39m xmlns[33m=[39m[32m"http://www.w3.org/2000/svg"[39m width[33m=[39m[32m"24"[39m height[33m=[39m[32m"24"[39m viewBox[33m=[39m[32m"0 0 24 24"[39m fill[33m=[39m[32m"none"[39m stroke[33m=[39m[32m"currentColor"[39m strokeWidth[33m=[39m{strokeWidth} strokeLinecap[33m=[39m[32m"round"[39m strokeLinejoin[33m=[39m[32m"round"[39m className[33m=[39m{className}[33m>[39m[33m<[39m[33mpath[39m d[33m=[39m[32m"M18 6 6 18"[39m [35m/><path d="m6 6 12 12" /[39m[33m>[39m[33m<[39m[33m/[39m[33msvg[39m[33m>[39m
+ [90m 420 |[39m     )[0m
+
+the name `X` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./src/app/admin/documents/page.tsx [Client Component Browser]
+    ./src/app/admin/documents/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/admin/documents/page.tsx [Client Component SSR]
+    ./src/app/admin/documents/page.tsx [Server Component]
+
+
+    at <unknown> (./src/app/admin/documents/page.tsx:417:10)
