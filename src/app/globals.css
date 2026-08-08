@@ -48,6 +48,22 @@
   --duration-base: 280ms;
   --duration-reveal: 700ms;
   --duration-slow: 1100ms;
+
+  /* Glassmorphism — frosted surface tokens (2026)
+     Lower alpha → "pure glass": the animated .glass-scene / aurora glows
+     through instead of reading as a solid white/black panel. Blur is bumped
+     so text contrast is preserved on the more translucent surface. */
+  /* Light mode: low alpha + a colourful scene behind = visible frosted glass.
+     (Higher white alpha here reads as a flat white panel, not glass.) */
+  --glass-bg: rgba(255, 255, 255, 0.42);
+  --glass-bg-strong: rgba(255, 255, 255, 0.55);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.22);
+  --glass-border: rgba(60, 60, 67, 0.18);
+  --glass-highlight: rgba(255, 255, 255, 0.65);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --glass-blur: 20px;
+  --glass-blur-strong: 32px;
+  --glass-saturate: 180%;
 }
 
 .dark {
@@ -70,6 +86,16 @@
   --border: 240 4% 22%;
   --input: 240 4% 18%;
   --ring: 211 100% 55%;
+
+  /* Glassmorphism — dark frosted surface tokens
+     Lower alpha → "pure glass": the dark aurora glow blurs through instead
+     of reading as a solid black panel. Stronger blur keeps light text crisp. */
+  --glass-bg: rgba(28, 28, 32, 0.45);
+  --glass-bg-strong: rgba(24, 24, 28, 0.58);
+  --glass-bg-subtle: rgba(28, 28, 32, 0.26);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-highlight: rgba(255, 255, 255, 0.10);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -92,6 +118,52 @@ body {
   font-family: var(--font-sans);
   font-feature-settings: "ss01", "cv11";
   overflow-x: hidden;
+}
+
+/* ---------------------------------------------------------------
+   Public-page transparency — let the fixed .glass-scene (z-index:-10)
+   show through on EVERY non-admin page. Page wrappers (<main>) and
+   full-bleed alternating bands (<section>) become transparent so the
+   animated frosted backdrop is visible site-wide. Inner cards/panels
+   keep their own surfaces. Admin is unaffected: its <main> uses no
+   bg-background and RouteAwareLayout skips mounting the scene for /admin.
+   These rules are UNLAYERED so they override the bg-* utilities
+   (which live in @layer utilities and would otherwise win).
+   --------------------------------------------------------------- */
+main.bg-background,
+section.bg-fog,
+section.bg-background,
+/* Dark-mode variants — the .dark .bg-fog auto-flip below has higher
+   specificity than section.bg-fog, so without these the fog bands turned
+   into solid #1A1A1C panels in dark mode. Keep the scene visible. */
+.dark main.bg-background,
+.dark section.bg-fog,
+.dark section.bg-background {
+  background-color: transparent;
+}
+
+/* Admin form controls inside frosted cards — a pure-white input
+   (bg-background / bg-card) vanishes into the white .admin-glass card
+   in light mode. Give text inputs / selects / textareas a soft recessed
+   fog fill so they read as fields. Unlayered so it beats the bg-* and
+   dark:bg-* utilities (same trick as main.bg-background above). */
+.admin-glass input[type="text"],
+.admin-glass input[type="email"],
+.admin-glass input[type="password"],
+.admin-glass input[type="number"],
+.admin-glass input[type="search"],
+.admin-glass input[type="tel"],
+.admin-glass input[type="url"],
+.admin-glass textarea,
+.admin-glass select {
+  background-color: rgba(245, 245, 247, 0.9);
+  border-color: rgba(0, 0, 0, 0.14);
+}
+.dark .admin-glass input,
+.dark .admin-glass textarea,
+.dark .admin-glass select {
+  background-color: rgba(30, 30, 34, 0.6);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 /* Apple-thin scrollbar (light mode) */
@@ -124,6 +196,14 @@ body {
 ::selection {
   background: rgba(0, 113, 227, 0.18);
   color: inherit;
+}
+
+/* Native <select> dropdown popups in dark mode — selects on glass surfaces
+   are translucent now, so give the popup list a solid dark surface with
+   light text to keep options readable. */
+.dark select option {
+  background-color: #1C1C1E;
+  color: #F5F5F7;
 }
 
 :focus-visible {
@@ -261,7 +341,7 @@ body {
 
   /* Apple-style frosted glass for sticky nav */
   .glass-nav {
-    background-color: rgba(255, 255, 255, 0.72);
+    background-color: rgba(255, 255, 255, 0.55);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
@@ -269,6 +349,113 @@ body {
   .dark .glass-nav {
     background-color: rgba(22, 22, 24, 0.72);
     border-bottom-color: rgba(255, 255, 255, 0.08);
+  }
+
+  /* -----------------------------------------------------------
+     GLASSMORPHISM — frosted glass surface system (2026)
+     The "scene" (.glass-scene) is a fixed animated mesh that lives
+     behind all content; the frosted surfaces below blur it to produce
+     the frosted-glass effect. Mounted once via <GlassBackground />.
+     ----------------------------------------------------------- */
+  .glass-scene {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    pointer-events: none;
+    overflow: hidden;
+    /* Light scene — vivid enough that frosted surfaces have colour to blur.
+       Faint blobs on a near-white base made glass panels read as solid white. */
+    background:
+      radial-gradient(at 18% 12%, rgba(0, 113, 227, 0.30) 0px, transparent 45%),
+      radial-gradient(at 82% 8%, rgba(197, 165, 114, 0.25) 0px, transparent 45%),
+      radial-gradient(at 75% 78%, rgba(178, 34, 34, 0.17) 0px, transparent 45%),
+      radial-gradient(at 12% 82%, rgba(52, 199, 89, 0.20) 0px, transparent 45%),
+      linear-gradient(180deg, #F6F9FC 0%, #EDF1F7 55%, #E1E8F1 100%);
+  }
+  .dark .glass-scene {
+    background:
+      radial-gradient(at 18% 12%, rgba(0, 113, 227, 0.24) 0px, transparent 45%),
+      radial-gradient(at 82% 8%, rgba(197, 165, 114, 0.16) 0px, transparent 45%),
+      radial-gradient(at 75% 78%, rgba(178, 34, 34, 0.13) 0px, transparent 45%),
+      radial-gradient(at 12% 82%, rgba(52, 199, 89, 0.13) 0px, transparent 45%),
+      linear-gradient(180deg, #0B0B0D 0%, #141417 55%, #0B0B0D 100%);
+  }
+
+  /* Core frosted panel */
+  .glass {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  }
+  .glass-strong {
+    background-color: var(--glass-bg-strong);
+    backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  }
+  .glass-subtle {
+    background-color: var(--glass-bg-subtle);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Admin frosted surfaces — intentionally MORE translucent than .glass.
+     Admin has little colorful content behind it, so a near-opaque surface
+     reads as a solid panel. Lower alpha (0.6 light / 0.55 dark) lets the
+     admin aurora layer blur through → real frosted glass in both modes. */
+  .admin-glass {
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  }
+  .dark .admin-glass {
+    /* More translucent than the strong token so the dark aurora glow blurs
+       through → real frosted glass in dark mode (light text still pops on
+       a dark surface, so readability is preserved). */
+    background-color: rgba(24, 24, 28, 0.55);
+  }
+  .admin-glass-subtle {
+    background-color: var(--glass-bg-subtle);
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Frosted card with hover lift */
+  .glass-card {
+    @apply rounded-apple-xl transition-all duration-300 ease-apple overflow-hidden;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  }
+  .glass-card:hover {
+    @apply -translate-y-1;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), inset 0 1px 0 var(--glass-highlight);
+  }
+
+  /* Frosted pill (chips, buttons, badges) */
+  .glass-pill {
+    @apply rounded-full;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Mesh gradient overlay — fixes the Section "mesh" variant */
+  .bg-mesh-luxury {
+    background-image:
+      radial-gradient(at 20% 20%, rgba(0, 113, 227, 0.06) 0px, transparent 50%),
+      radial-gradient(at 80% 30%, rgba(197, 165, 114, 0.06) 0px, transparent 50%),
+      radial-gradient(at 60% 80%, rgba(178, 34, 34, 0.05) 0px, transparent 50%);
   }
 
   /* -----------------------------------------------------------
@@ -326,11 +513,13 @@ body {
      Inputs / form elements
      ----------------------------------------------------------- */
   .input-apple {
-    @apply w-full rounded-2xl border border-ink-200 bg-white px-4 py-3.5
+    /* Translucent recessed "well" in both modes — a solid white/dark fill
+       reads as a flat block on glass, a subtle tint stays glassy. */
+    @apply w-full rounded-2xl border border-ink-200/80 bg-ink-900/5 px-4 py-3.5
            text-[15px] text-foreground placeholder:text-ink-400 outline-none
            transition-colors duration-fast
            focus:border-sky focus:ring-2 focus:ring-sky/20
-           dark:bg-ink-800/30 dark:border-ink-700 dark:placeholder:text-ink-500;
+           dark:bg-ink-900/40 dark:border-ink-700/60 dark:placeholder:text-ink-500;
   }
 
   /* -----------------------------------------------------------
@@ -451,9 +640,6 @@ body {
   .gradient-text-gold {
     @apply text-gradient-warm;
   }
-  .glass {
-    @apply glass-nav;
-  }
   .glass-dark {
     background-color: rgba(11, 11, 13, 0.72);
     backdrop-filter: saturate(180%) blur(20px);
@@ -539,7 +725,9 @@ body {
    so we don't need explicit `dark:` variants on every call site.
    ============================================================ */
 .dark .bg-fog {
-  background-color: #1A1A1C;
+  /* Translucent instead of solid #1A1A1C — chips/inputs/pills using bg-fog
+     stay frosted glass in dark mode (matches the .dark .bg-ink-50 flip). */
+  background-color: rgba(255, 255, 255, 0.06);
 }
 .dark .bg-fog-light {
   background-color: #161618;
@@ -693,7 +881,8 @@ body {
   color: #8E8E93;
 }
 .dark .text-ink-900 {
-  color: #000000;
+  /* Was #000000 — black text on dark surfaces (unreadable). Flip to light. */
+  color: #F5F5F7;
 }
 .dark .border-sky\/20,
 .dark .border-sky\/30 {
@@ -774,6 +963,12 @@ body {
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+
+/* ── Animated gradient sheen for headline accents ── */
+@keyframes gradient-text {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 @media (prefers-reduced-motion: reduce) {

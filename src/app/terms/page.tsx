@@ -71,7 +71,7 @@ export default function TermsPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-30px" }}
                 transition={{ duration: 0.5, delay: i * 0.04 }}
-                className="bg-fog rounded-apple-lg p-6 sm:p-8"
+                className="glass rounded-apple-lg p-6 sm:p-8"
               >
                 <div className="flex items-start gap-4">
                   <span className="w-11 h-11 rounded-full bg-white shadow-soft text-foreground flex items-center justify-center shrink-0">

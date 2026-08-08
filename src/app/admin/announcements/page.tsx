@@ -179,7 +179,7 @@ export default function AnnouncementsManagement() {
             </header>
 
             {/* Toolbar */}
-            <div className="bg-card p-2.5 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl border border-ink-100/60 shadow-soft flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center">
+            <div className="admin-glass p-2.5 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center">
                 <div className="relative flex-1 min-w-0">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-400 w-4 h-4" strokeWidth={1.5} />
                     <Input
@@ -234,7 +234,7 @@ export default function AnnouncementsManagement() {
 
             {/* Grid */}
             {loading ? (
-                <div className="flex flex-col items-center justify-center py-12 sm:py-16 md:py-20">
+                <div className="admin-glass rounded-[20px] py-12 sm:py-16 md:py-20 flex flex-col items-center justify-center">
                     <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 animate-spin text-sky mb-3 sm:mb-4" strokeWidth={1.5} />
                     <p className="text-ink-500 font-medium text-xs sm:text-sm">Loading announcements...</p>
                 </div>
@@ -253,7 +253,7 @@ export default function AnnouncementsManagement() {
                                 transition={{ duration: 0.35, delay: index * 0.04, ease: [0.16, 1, 0.3, 1] }}
                                 key={announcement._id}
                                 className={cn(
-                                    "bg-card rounded-xl sm:rounded-2xl border p-3.5 sm:p-4 md:p-5 shadow-soft hover:shadow-elevated transition-all group flex flex-col overflow-hidden min-w-0",
+                                    "admin-glass rounded-xl sm:rounded-2xl p-3.5 sm:p-4 md:p-5 hover:shadow-elevated transition-all group flex flex-col overflow-hidden min-w-0",
                                     announcement.isPinned
                                         ? "border-sky/30 bg-sky/[0.02]"
                                         : "border-ink-100/60"

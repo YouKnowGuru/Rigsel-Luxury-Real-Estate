@@ -1,12 +1,13 @@
 import { cn } from "@/lib/utils";
 
-type SectionVariant = "default" | "muted" | "dark" | "mesh";
+type SectionVariant = "default" | "muted" | "dark" | "mesh" | "glass";
 
 const variantClasses: Record<SectionVariant, string> = {
   default: "bg-background",
   muted: "bg-fog-light dark:bg-ink-900/40",
-  dark: "bg-ink-900 text-white",
+  dark: "bg-ink-900/70 backdrop-blur-2xl text-white",
   mesh: "bg-background bg-mesh-luxury",
+  glass: "bg-transparent",
 };
 
 interface SectionProps {

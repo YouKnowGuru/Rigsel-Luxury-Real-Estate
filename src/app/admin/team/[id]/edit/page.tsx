@@ -116,8 +116,11 @@ export default function EditTeamMemberPage() {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center py-20">
-                <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
+            <div className="p-4 md:p-8 max-w-4xl mx-auto min-h-screen flex items-center justify-center">
+                <div className="admin-glass rounded-[20px] p-10 flex flex-col items-center gap-3 w-full max-w-sm">
+                    <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
+                    <p className="text-ink-400 text-[13px] font-medium">Loading member...</p>
+                </div>
             </div>
         );
     }
@@ -137,7 +140,7 @@ export default function EditTeamMemberPage() {
             </header>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6">
+                <div className="admin-glass rounded-[20px] p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="md:col-span-2 space-y-2">
                             <label className="text-[13px] font-medium text-ink-600">Full Name *</label>

@@ -178,8 +178,8 @@ export function ArchitectureDesignForm({
     "bg-card border-ink-100/80 dark:border-ink-700/50 rounded-xl h-11";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-card border border-ink-100/60 dark:border-ink-700/40 rounded-2xl p-5 sm:p-6 space-y-4">
+    <form onSubmit={handleSubmit} className="admin-glass rounded-2xl p-5 sm:p-6 space-y-6">
+      <div className="space-y-4">
         <h2 className="font-semibold text-foreground flex items-center gap-2">
           <Box className="w-4 h-4 text-sky" />
           Project details

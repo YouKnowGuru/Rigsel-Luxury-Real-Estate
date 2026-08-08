@@ -311,7 +311,7 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-x-0 top-11 sm:top-12 z-[49] bg-background/95 backdrop-blur-2xl border-b border-ink-100 dark:border-ink-700/40"
+              className="fixed inset-x-0 top-11 sm:top-12 z-[49] glass-strong"
               role="search"
               aria-label="Site search"
             >
@@ -381,7 +381,7 @@ export function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed inset-x-0 top-11 sm:top-12 z-[49] bg-background lg:hidden flex flex-col safe-bottom border-t border-ink-100 dark:border-ink-700/40 max-h-[calc(100vh-48px)] overflow-y-auto overscroll-contain"
+              className="fixed inset-x-0 top-11 sm:top-12 z-[49] glass-strong lg:hidden flex flex-col safe-bottom max-h-[calc(100vh-48px)] overflow-y-auto overscroll-contain"
             >
               <nav className="px-5 sm:px-8 pt-3 pb-8">
                 {/* Quick actions */}

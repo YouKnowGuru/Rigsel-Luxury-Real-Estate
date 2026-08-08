@@ -107,11 +107,12 @@ export default function TeamAdminPage() {
             </header>
 
             {isLoading ? (
-                <div className="flex items-center justify-center py-20">
+                <div className="admin-glass rounded-[20px] py-20 flex flex-col items-center justify-center gap-3">
                     <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
+                    <p className="text-ink-400 text-[13px] font-medium">Loading team...</p>
                 </div>
             ) : members.length === 0 ? (
-                <div className="text-center py-20 bg-card rounded-[20px] border border-ink-100/60 shadow-soft">
+                <div className="text-center py-20 admin-glass rounded-[20px]">
                     <Users className="w-12 h-12 text-ink-300 mx-auto mb-4" strokeWidth={1.5} />
                     <p className="text-xl text-foreground mb-2">No team members</p>
                     <p className="text-ink-400 mb-6">Add someone to start building your leadership team.</p>
@@ -130,7 +131,7 @@ export default function TeamAdminPage() {
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.05 }}
-                            className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6 relative group hover:border-sky/30 transition-all"
+                            className="admin-glass rounded-[20px] p-6 relative group hover:border-sky/30 transition-all"
                         >
                             <div className="flex gap-3 sm:gap-4">
                                 <div className="w-16 h-16 sm:w-20 sm:h-20 shrink-0 rounded-xl overflow-hidden relative shadow-inner">

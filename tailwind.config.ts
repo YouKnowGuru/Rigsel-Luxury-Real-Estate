@@ -246,9 +246,22 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-8px)" },
         },
+        "float-slow": {
+          "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+          "33%": { transform: "translate(40px, -30px) scale(1.06)" },
+          "66%": { transform: "translate(-30px, 25px) scale(0.97)" },
+        },
         blink: {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.25" },
+        },
+        "caret-glow": {
+          "0%, 100%": { opacity: "1", transform: "scaleY(1)" },
+          "50%": { opacity: "0.35", transform: "scaleY(0.82)" },
+        },
+        "gradient-text": {
+          "0%, 100%": { "background-position": "0% 50%" },
+          "50%": { "background-position": "100% 50%" },
         },
       },
       animation: {
@@ -267,7 +280,10 @@ const config: Config = {
         shimmer: "shimmer 3.5s linear infinite",
         "ken-burns": "ken-burns 14s ease-in-out infinite alternate",
         float: "float 5s ease-in-out infinite",
+        "float-slow": "float-slow 18s ease-in-out infinite",
         blink: "blink 1s step-start infinite",
+        "caret-glow": "caret-glow 1.1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "gradient-text": "gradient-text 7s ease infinite",
       },
       backgroundImage: {
         "gradient-radial":

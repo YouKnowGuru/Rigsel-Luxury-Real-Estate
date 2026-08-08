@@ -168,7 +168,7 @@ export default function SolutionProjectDetailPage() {
         </div>
       </section>
 
-      <section className="section-y border-t border-ink-100 dark:border-ink-700/40 bg-fog/30">
+      <section className="section-y border-t border-ink-100 dark:border-ink-700/40">
         <div className="container-apple max-w-3xl mx-auto">
           <p className="text-center text-[15px] text-ink-500 mb-6">
             Want something similar? Tell us about your project.

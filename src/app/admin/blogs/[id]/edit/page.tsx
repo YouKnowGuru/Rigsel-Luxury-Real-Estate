@@ -120,8 +120,11 @@ export default function EditBlogPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-card flex items-center justify-center">
-                <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
+            <div className="p-4 md:p-6 lg:p-8 max-w-[1200px] mx-auto min-h-screen flex items-center justify-center">
+                <div className="admin-glass rounded-[20px] p-10 flex flex-col items-center gap-3 w-full max-w-sm">
+                    <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
+                    <p className="text-ink-400 text-[13px] font-medium">Loading blog...</p>
+                </div>
             </div>
         );
     }
@@ -147,7 +150,7 @@ export default function EditBlogPage() {
             <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6">
+                        <div className="admin-glass rounded-[20px] p-6">
                             <h2 className="font-semibold text-foreground text-base mb-5 flex items-center gap-2">
                                 <span className="w-1 h-4 bg-sky rounded-full" /> Blog Details
                             </h2>
@@ -175,7 +178,7 @@ export default function EditBlogPage() {
                     </div>
 
                     <div className="space-y-6">
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-5">
+                        <div className="admin-glass rounded-[20px] p-5">
                             <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
                                 <ImageIcon className="w-4 h-4 text-sky" strokeWidth={1.5} /> Cover Image *
                             </h2>
@@ -207,7 +210,7 @@ export default function EditBlogPage() {
                             </label>
                         </div>
 
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-5">
+                        <div className="admin-glass rounded-[20px] p-5">
                             <h2 className="font-semibold text-foreground text-base mb-4">Settings</h2>
                             <div className="space-y-4">
                                 <div>

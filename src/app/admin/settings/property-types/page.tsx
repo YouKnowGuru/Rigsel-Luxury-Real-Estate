@@ -139,8 +139,11 @@ export default function PropertyTypesPage() {
 
     if (isLoading) {
         return (
-            <div className="flex h-[60vh] items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin border-sky/20 border-t-sky" strokeWidth={1.5} />
+            <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-4xl mx-auto min-h-screen flex items-center justify-center">
+                <div className="admin-glass rounded-[20px] p-10 flex flex-col items-center gap-3 w-full max-w-sm">
+                    <Loader2 className="w-8 h-8 animate-spin border-sky/20 border-t-sky" strokeWidth={1.5} />
+                    <p className="text-ink-400 text-[13px] font-medium">Loading property types...</p>
+                </div>
             </div>
         );
     }
@@ -162,7 +165,7 @@ export default function PropertyTypesPage() {
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6"
+                    className="admin-glass rounded-[20px] p-6"
                 >
                     <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
                         <Plus className="w-4 h-4 text-emerald-500" strokeWidth={1.5} /> Add New Type
@@ -216,7 +219,7 @@ export default function PropertyTypesPage() {
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
-                                className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-4 flex items-center justify-between hover:shadow-md transition-shadow"
+                                className="admin-glass rounded-[20px] p-4 flex items-center justify-between hover:shadow-md transition-shadow"
                             >
                                 {editingId === type._id ? (
                                     <div className="flex-1 flex flex-col md:flex-row gap-3 items-center">

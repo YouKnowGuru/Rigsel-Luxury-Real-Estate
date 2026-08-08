@@ -156,7 +156,7 @@ function DesignCard({
       <Link
         href={`/architecture-design/${item.slug}`}
         className={cn(
-          "group block rounded-apple-xl overflow-hidden bg-fog border border-ink-100 dark:border-ink-700/40 hover:shadow-product transition-shadow",
+          "group block rounded-apple-xl overflow-hidden glass border border-ink-100 dark:border-ink-700/40 hover:shadow-product transition-shadow",
           large && "md:flex md:min-h-[220px]"
         )}
       >

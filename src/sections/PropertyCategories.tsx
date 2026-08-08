@@ -297,7 +297,7 @@ export function PropertyCategories() {
                 <Link
                   key={t.slug}
                   href={`/properties?type=${t.slug}`}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-medium bg-card border border-ink-100/80 dark:border-ink-700/50 text-ink-600 hover:text-foreground hover:border-sky/30 hover:bg-sky/[0.04] transition-all no-tap"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-medium glass-pill text-ink-600 hover:text-foreground hover:border-sky/30 hover:bg-sky/[0.04] transition-all no-tap"
                 >
                   <Icon className="w-3.5 h-3.5 text-sky" strokeWidth={2} />
                   {meta.label}

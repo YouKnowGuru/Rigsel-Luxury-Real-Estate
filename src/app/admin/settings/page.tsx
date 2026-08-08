@@ -144,7 +144,16 @@ export default function SettingsPage() {
         }
     };
 
-    if (!mounted) return null;
+    if (!mounted) {
+        return (
+            <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-[1200px] mx-auto min-h-screen flex items-center justify-center">
+                <div className="admin-glass rounded-[20px] p-10 flex flex-col items-center gap-3 w-full max-w-sm">
+                    <Loader2 className="w-8 h-8 text-sky animate-spin" strokeWidth={1.5} />
+                    <p className="text-ink-400 text-[13px] font-medium">Loading settings...</p>
+                </div>
+            </div>
+        );
+    }
 
     const inputCls = "h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15 text-foreground text-base font-medium";
     const labelCls = "block text-[13px] font-medium text-ink-600 mb-1.5";
@@ -175,7 +184,7 @@ export default function SettingsPage() {
                 <div className="lg:col-span-2 space-y-5">
                     <form onSubmit={handleSaveSettings}>
                         {/* Site Info */}
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6 mb-5 relative overflow-hidden">
+                        <div className="admin-glass rounded-[20px] p-6 mb-5 relative overflow-hidden">
                             {!settings.siteName && (
                                 <div className="absolute inset-0 bg-background/50 backdrop-blur-[2px] z-10 flex items-center justify-center">
                                     <div className="flex items-center gap-2 text-ink-600 font-medium text-sm">
@@ -224,7 +233,7 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Hero Slider Images */}
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6 mb-5">
+                        <div className="admin-glass rounded-[20px] p-6 mb-5">
                             <h2 className="font-semibold text-foreground text-base mb-2 flex items-center gap-2">
                                 <ImageIcon className="w-4 h-4 text-ink-400" strokeWidth={1.5} /> Hero Slider Gallery
                             </h2>
@@ -267,7 +276,7 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Single Hero Image (Fallback/Alternative) */}
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6 mb-5 opacity-60 hover:opacity-100 transition-opacity">
+                        <div className="admin-glass rounded-[20px] p-6 mb-5 opacity-60 hover:opacity-100 transition-opacity">
                             <h2 className="font-semibold text-foreground text-base mb-1 flex items-center gap-2">
                                 <ImageIcon className="w-4 h-4 text-ink-400" strokeWidth={1.5} /> Default Hero Image
                             </h2>
@@ -302,7 +311,7 @@ export default function SettingsPage() {
                         </div>
 
                         {/* Social Links */}
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6 mb-5">
+                        <div className="admin-glass rounded-[20px] p-6 mb-5">
                             <h2 className="font-semibold text-foreground text-base mb-5 flex items-center gap-2">
                                 <MessageCircle className="w-4 h-4 text-ink-400" strokeWidth={1.5} /> Social Media Links
                             </h2>
@@ -336,7 +345,7 @@ export default function SettingsPage() {
                 {/* Change Password */}
                 <div>
                     <form onSubmit={handleChangePassword}>
-                        <div className="bg-card dark:bg-card rounded-[20px] p-4 sm:p-6 shadow-soft border border-ink-100/60">
+                        <div className="admin-glass rounded-[20px] p-4 sm:p-6">
                             <h2 className="font-semibold text-foreground text-base mb-5 flex items-center gap-2">
                                 <Lock className="w-4 h-4 text-ink-400" strokeWidth={1.5} /> Change Password
                             </h2>
@@ -373,7 +382,7 @@ export default function SettingsPage() {
                     </form>
 
                     {/* Quick Info Card */}
-                    <div className="mt-5 bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-5">
+                    <div className="mt-5 admin-glass rounded-[20px] p-5">
                         <h3 className="font-semibold text-foreground text-sm mb-3">System Info</h3>
                         <div className="space-y-2 text-xs">
                             <div className="flex justify-between">

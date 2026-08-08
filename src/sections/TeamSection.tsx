@@ -42,7 +42,7 @@ export function TeamSection() {
   const teamMembers = data?.data?.length ? data.data : !data && !error ? fallbackTeam : [];
 
   return (
-    <section className="section-y bg-background content-visibility-auto">
+    <section className="section-y content-visibility-auto">
       <div className="container-apple-wide">
         <SectionHeader
           eyebrow="The team"
@@ -63,7 +63,7 @@ export function TeamSection() {
                 delay: idx * 0.06,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="bg-fog rounded-apple-xl overflow-hidden group hover:shadow-product transition-shadow duration-500"
+              className="glass rounded-apple-xl overflow-hidden group hover:shadow-product transition-shadow duration-500"
             >
               <div className="relative aspect-[4/3] sm:aspect-[5/4] overflow-hidden bg-ink-100">
                 <NextImage

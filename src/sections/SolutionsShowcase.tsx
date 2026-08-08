@@ -37,7 +37,7 @@ export function SolutionsShowcase() {
   }, []);
 
   return (
-    <section className="section-y bg-background content-visibility-auto border-t border-ink-100 dark:border-ink-700/40">
+    <section className="section-y content-visibility-auto border-t border-ink-100/60 dark:border-ink-700/40">
       <div className="container-apple-wide">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 sm:mb-10">
           <SectionHeader
@@ -72,7 +72,7 @@ export function SolutionsShowcase() {
                 >
                   <Link
                     href={`/phojaa95-solutions/${item.slug}`}
-                    className="group block rounded-apple-xl overflow-hidden bg-fog/50 dark:bg-ink-800/30 border border-ink-100 dark:border-ink-700/40 hover:shadow-product transition-all duration-300"
+                    className="group block rounded-apple-xl overflow-hidden glass hover:shadow-product transition-all duration-300"
                   >
                     <div className="relative aspect-[4/3] bg-ink-900 overflow-hidden">
                       {item.coverImage ? (

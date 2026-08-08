@@ -270,7 +270,7 @@ export default function AnnouncementDetailPage() {
                                     >
                                         <Link
                                             href={`/announcements/${item._id}`}
-                                            className="group block bg-fog rounded-apple-lg p-5 hover:shadow-elevated transition-shadow"
+                                            className="group block glass rounded-apple-lg p-5 hover:shadow-elevated transition-shadow"
                                         >
                                             <span className={cn("inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider border mb-2", categoryBadgeColors[item.category] || "bg-ink-100 text-ink-500 border-ink-200")}>
                                                 {item.category}

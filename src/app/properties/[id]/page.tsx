@@ -142,7 +142,7 @@ export default function PropertyDetailPage() {
   return (
     <main className="bg-background pt-12 sm:pt-14">
       {/* Top action bar */}
-      <div className="sticky top-11 sm:top-12 z-30 bg-background/85 backdrop-blur-md border-b border-ink-100 dark:border-ink-700/40">
+      <div className="sticky top-11 sm:top-12 z-30 glass-strong">
         <div className="container-apple-wide h-12 flex items-center justify-between text-[13px]">
           <Link
             href="/properties"
@@ -194,7 +194,7 @@ export default function PropertyDetailPage() {
         </div>
 
         <div className="mt-8 sm:mt-10 max-w-[1400px] mx-auto px-4 sm:px-6 md:px-10">
-          <div className="relative aspect-[16/9] rounded-apple-xl overflow-hidden bg-fog shadow-product">
+          <div className="relative aspect-[16/9] rounded-apple-xl overflow-hidden bg-fog/60 dark:bg-ink-800/40 shadow-product">
             <Swiper
               modules={[Navigation, Pagination, Autoplay, EffectFade]}
               navigation
@@ -296,7 +296,7 @@ export default function PropertyDetailPage() {
                       transition={{ delay: i * 0.03 }}
                       className="flex items-center gap-3 text-[15px] sm:text-[16px] text-foreground"
                     >
-                      <span className="w-6 h-6 rounded-full bg-fog flex items-center justify-center shrink-0">
+                      <span className="w-6 h-6 rounded-full bg-fog/70 dark:bg-white/10 flex items-center justify-center shrink-0">
                         <Check
                           className="w-3.5 h-3.5 text-foreground"
                           strokeWidth={2}
@@ -347,7 +347,7 @@ export default function PropertyDetailPage() {
           <aside className="lg:col-span-5">
             <div className="lg:sticky lg:top-28 space-y-4">
               {/* Price block */}
-              <div className="bg-fog rounded-apple-xl p-6 sm:p-8">
+              <div className="glass rounded-apple-xl p-6 sm:p-8">
                 <p className="text-[12px] uppercase tracking-eyebrow text-ink-500">
                   From
                 </p>
@@ -392,7 +392,7 @@ export default function PropertyDetailPage() {
               </div>
 
               {/* Inquiry */}
-              <div className="bg-fog rounded-apple-xl p-6 sm:p-8">
+              <div className="glass rounded-apple-xl p-6 sm:p-8">
                 {submitted ? (
                   <div className="text-center py-6">
                     <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-emerald/20 text-emerald mb-4">
@@ -463,7 +463,7 @@ export default function PropertyDetailPage() {
       </section>
 
       {/* Mobile sticky CTA */}
-      <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-background/95 backdrop-blur-md border-t border-ink-100 dark:border-ink-700/40 safe-bottom">
+      <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 glass-strong safe-bottom">
         <div className="container-apple-wide flex items-center justify-between gap-3 py-3">
           <div className="min-w-0">
             <p className="text-[11px] uppercase tracking-eyebrow text-ink-500 leading-none">

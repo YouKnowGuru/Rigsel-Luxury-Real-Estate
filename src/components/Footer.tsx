@@ -55,7 +55,7 @@ export function Footer() {
   if (isAdminPage) return null;
 
   return (
-    <footer className="bg-fog text-ink-500 dark:bg-ink-900 dark:text-ink-300">
+    <footer className="glass-strong text-ink-500 dark:text-ink-300">
       <div className="container-apple-wide py-10 sm:py-14">
         {/* Logo */}
         <div className="flex items-center gap-3 pb-6 border-b border-ink-200/70 dark:border-ink-700/40">

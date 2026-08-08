@@ -61,7 +61,16 @@ export default function LandCalculatorPage() {
         }
     };
 
-    if (!mounted) return null;
+    if (!mounted) {
+        return (
+            <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-[900px] mx-auto min-h-screen flex items-center justify-center">
+                <div className="admin-glass rounded-[20px] p-10 flex flex-col items-center gap-3 w-full max-w-sm">
+                    <Loader2 className="w-8 h-8 text-sky animate-spin" strokeWidth={1.5} />
+                    <p className="text-ink-400 text-[13px] font-medium">Loading calculator...</p>
+                </div>
+            </div>
+        );
+    }
 
     const inputCls = "h-11 rounded-2xl border-ink-200 focus:border-sky focus:ring-[3px] focus:ring-sky/15 text-foreground text-base";
     const labelCls = "block text-[13px] font-medium text-ink-600 mb-1.5";
@@ -87,7 +96,7 @@ export default function LandCalculatorPage() {
                 {/* Settings Form */}
                 <div className="lg:col-span-3">
                     <form onSubmit={handleSave}>
-                        <div className="bg-card rounded-[20px] p-6 border border-ink-100/60 shadow-soft mb-5">
+                        <div className="admin-glass rounded-[20px] p-6 mb-5">
                             <h2 className="font-semibold text-foreground text-base mb-5 flex items-center gap-2">
                                 <Calculator className="w-4 h-4 text-sky" strokeWidth={1.5} /> Default Values
                             </h2>
@@ -164,7 +173,7 @@ export default function LandCalculatorPage() {
 
                 {/* Live Preview */}
                 <div className="lg:col-span-2">
-                    <div className="bg-ink-800 rounded-[20px] p-4 sm:p-6 border border-ink-700 shadow-soft lg:sticky lg:top-24">
+                    <div className="bg-ink-900/60 backdrop-blur-2xl rounded-[20px] p-4 sm:p-6 border border-ink-700/60 shadow-soft lg:sticky lg:top-24">
                         <h3 className="font-semibold text-white text-base mb-5 flex items-center gap-2">
                             <Calculator className="w-4 h-4 text-sky" strokeWidth={1.5} /> Live Preview
                         </h3>

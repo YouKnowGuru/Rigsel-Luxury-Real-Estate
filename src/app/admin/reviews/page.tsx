@@ -143,12 +143,12 @@ export default function AdminReviewsPage() {
 
             {/* Content */}
             {isLoading ? (
-                <div className="flex flex-col items-center justify-center py-12 sm:py-20 bg-card rounded-2xl sm:rounded-[20px] border border-ink-100/60 shadow-soft">
+                <div className="flex flex-col items-center justify-center py-12 sm:py-20 admin-glass rounded-2xl sm:rounded-[20px]">
                     <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 text-sky animate-spin mb-3 sm:mb-4" strokeWidth={1.5} />
                     <p className="text-ink-400 text-sm sm:text-base font-medium">Loading reviews...</p>
                 </div>
             ) : reviews.length === 0 ? (
-                <div className="text-center py-12 sm:py-20 bg-card rounded-2xl sm:rounded-[20px] border border-ink-100/60 shadow-soft">
+                <div className="text-center py-12 sm:py-20 admin-glass rounded-2xl sm:rounded-[20px]">
                     <MessageSquare className="w-12 h-12 sm:w-16 sm:h-16 text-ink-200 mx-auto mb-3 sm:mb-4" strokeWidth={1.5} />
                     <h3 className="text-lg sm:text-xl font-semibold text-ink-400">No reviews found</h3>
                 </div>
@@ -159,7 +159,7 @@ export default function AdminReviewsPage() {
                             key={review._id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className={`bg-card rounded-2xl sm:rounded-[20px] p-4 sm:p-5 lg:p-6 border border-ink-100/60 transition-all duration-300 shadow-soft hover:shadow-elevated ${review.isApproved ? "border-green-100" : ""
+                            className={`admin-glass rounded-2xl sm:rounded-[20px] p-4 sm:p-5 lg:p-6 transition-all duration-300 hover:shadow-elevated ${review.isApproved ? "border-green-100" : ""
                                 }`}
                         >
                             <div className="flex flex-col lg:flex-row gap-4 sm:gap-5 lg:gap-6">

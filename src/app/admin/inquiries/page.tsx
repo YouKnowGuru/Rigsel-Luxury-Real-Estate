@@ -172,7 +172,7 @@ export default function InquiriesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
             key={stat.label}
-            className="bg-card p-4 sm:p-6 rounded-[20px] shadow-soft border border-ink-100/60 flex items-center justify-between"
+            className="admin-glass p-4 sm:p-6 rounded-[20px] flex items-center justify-between"
           >
             <div>
               <p className="text-[11px] sm:text-[13px] font-semibold text-ink-400 uppercase tracking-wider mb-1">{stat.label}</p>
@@ -186,7 +186,7 @@ export default function InquiriesPage() {
       </div>
 
       {/* Search and Table */}
-      <div className="bg-card rounded-[20px] shadow-soft border border-ink-100/60 overflow-hidden">
+      <div className="admin-glass rounded-[20px] overflow-hidden">
         <div className="p-6 border-b border-ink-100/60 bg-card/50 backdrop-blur-sm flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="relative w-full md:w-96">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-300" strokeWidth={1.5} />

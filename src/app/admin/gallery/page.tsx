@@ -145,8 +145,9 @@ export default function GalleryPage() {
 
             {/* Gallery Grid */}
             {isLoading ? (
-                <div className="flex items-center justify-center py-12 sm:py-20">
+                <div className="admin-glass rounded-[20px] py-12 sm:py-20 flex flex-col items-center justify-center gap-3">
                     <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 text-sky animate-spin" strokeWidth={1.5} />
+                    <p className="text-ink-400 text-[13px] font-medium">Loading gallery...</p>
                 </div>
             ) : (
                 <motion.div
@@ -161,7 +162,7 @@ export default function GalleryPage() {
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
-                                className="group relative aspect-square bg-card rounded-xl sm:rounded-[20px] overflow-hidden shadow-soft border border-ink-100/60"
+                                className="group relative aspect-square admin-glass rounded-xl sm:rounded-[20px] overflow-hidden"
                             >
                                 <img src={item.image} alt={item.title || "Gallery"} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-ink-900/80 via-ink-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-3 sm:p-6">

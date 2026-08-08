@@ -220,7 +220,7 @@ export default function NewPropertyPage() {
           {/* Main Fields */}
           <div className="lg:col-span-2 space-y-5">
             {/* Basic Info */}
-            <div className="bg-card rounded-[20px] p-6 border border-ink-100/60 shadow-soft">
+            <div className="admin-glass rounded-[20px] p-6">
               <h2 className="font-semibold text-foreground text-base mb-5 flex items-center gap-2">
                 <span className="w-1 h-4 bg-sky rounded-full" /> Basic Information
               </h2>
@@ -284,7 +284,7 @@ export default function NewPropertyPage() {
             </div>
 
             {/* Specifications */}
-            <div className="bg-card rounded-[20px] p-6 border border-ink-100/60 shadow-soft">
+            <div className="admin-glass rounded-[20px] p-6">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-semibold text-foreground text-base flex items-center gap-2">
                   <span className="w-1 h-4 bg-sky rounded-full" /> Property Specifications
@@ -340,7 +340,7 @@ export default function NewPropertyPage() {
             </div>
 
             {/* Description – Rich Text Editor */}
-            <div className="bg-card rounded-[20px] p-6 border border-ink-100/60 shadow-soft">
+            <div className="admin-glass rounded-[20px] p-6">
               <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
                 <span className="w-1 h-4 bg-sky rounded-full" /> Description *
               </h2>
@@ -352,7 +352,7 @@ export default function NewPropertyPage() {
             </div>
 
             {/* Features */}
-            <div className="bg-card rounded-[20px] p-6 border border-ink-100/60 shadow-soft">
+            <div className="admin-glass rounded-[20px] p-6">
               <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
                 <span className="w-1 h-4 bg-emerald-500 rounded-full" /> Features & Amenities
               </h2>
@@ -395,7 +395,7 @@ export default function NewPropertyPage() {
           {/* Sidebar */}
           <div className="space-y-5">
             {/* Image Upload */}
-            <div className="bg-card rounded-[20px] p-5 border border-ink-100/60 shadow-soft">
+            <div className="admin-glass rounded-[20px] p-5">
               <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
                 <ImageIcon className="w-4 h-4 text-sky" strokeWidth={1.5} /> Property Images *
               </h2>
@@ -433,7 +433,7 @@ export default function NewPropertyPage() {
             </div>
 
             {/* Coordinates & Meta */}
-            <div className="bg-card rounded-[20px] p-5 border border-ink-100/60 shadow-soft">
+            <div className="admin-glass rounded-[20px] p-5">
               <h2 className="font-semibold text-foreground text-base mb-4">Location & Meta</h2>
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-2">

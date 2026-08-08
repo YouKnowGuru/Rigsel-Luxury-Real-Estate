@@ -42,7 +42,7 @@ export const ListCard = memo(function ListCard({
     <Link
       href={href}
       className={cn(
-        "group grid grid-cols-1 md:grid-cols-[minmax(0,420px)_1fr] bg-white dark:bg-card rounded-apple-lg overflow-hidden border border-ink-100 dark:border-ink-700/40 hover:shadow-elevated transition-shadow duration-500 ease-apple",
+        "group grid grid-cols-1 md:grid-cols-[minmax(0,420px)_1fr] glass rounded-apple-lg overflow-hidden hover:shadow-elevated transition-shadow duration-500 ease-apple",
         className
       )}
     >

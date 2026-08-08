@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, memo, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Search, MapPin, Home, ChevronDown, ArrowRight, Code2 } from "lucide-react";
+import { Search, MapPin, Home, ChevronDown, ArrowRight, Code2, ShieldCheck, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -58,6 +58,13 @@ const priceRanges = [
   { label: "Above Nu. 20M", min: 20000000, max: 0 },
 ];
 
+/* ── Floating glassmorphic stat pills ── */
+const heroStats = [
+  { icon: Building2, value: "500+", label: "Verified Listings" },
+  { icon: MapPin, value: "20+", label: "Districts Covered" },
+  { icon: ShieldCheck, value: "100%", label: "Trusted Nationwide" },
+];
+
 /* ── Animation variants ── */
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -68,52 +75,87 @@ const fadeUp = {
   }),
 };
 
-/* ── Compound Components for Search Panel ── */
+/* ── Typewriter headline ──
+    A set of real-estate headlines rotate through the typewriter on mount — each
+    one types itself out, holds, deletes, then the next headline takes over.
+    - An invisible full-text placeholder (the longest headline) reserves the exact
+      layout so nothing shifts while characters appear (works with responsive wrapping too).
+    - The `hlStart`→`hlEnd` substring of the active headline stays inside the
+      animated gradient span as it types.
+    - Honors prefers-reduced-motion (renders the first headline instantly, no cursor). */
+/* Rotating real-estate headlines — each one cycles through the typewriter.
+   `hlStart`/`hlEnd` mark the substring shown inside the animated gradient span. */
+const HEADLINES = [
+  { text: "Find Your Dream Property in Bhutan", hlStart: 10, hlEnd: 24 },
+  { text: "Discover Luxury Homes in Bhutan", hlStart: 9, hlEnd: 21 },
+  { text: "Own Prime Real Estate in Bhutan", hlStart: 4, hlEnd: 21 },
+  { text: "Explore Stunning Land in Bhutan", hlStart: 8, hlEnd: 21 },
+  { text: "Build Your Future Home in Bhutan", hlStart: 11, hlEnd: 22 },
+  { text: "Secure Smart Investments in Bhutan", hlStart: 7, hlEnd: 24 },
+];
+// Reserve layout space using the longest headline so nothing shifts while typing.
+const LONGEST_HEADLINE = HEADLINES.reduce(
+  (max, h) => (h.text.length > max.length ? h.text : max),
+  HEADLINES[0].text,
+);
 
-// Search Panel Root
-interface SearchPanelProps {
-  children: React.ReactNode;
-}
-const SearchPanel = memo(function SearchPanel({ children }: SearchPanelProps) {
-  const shouldReduceMotion = useReducedMotion();
-  return (
-    <motion.div
-      initial={shouldReduceMotion ? {} : { opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="rounded-apple-xl bg-fog/80 dark:bg-ink-900/40 backdrop-blur-xl p-6 sm:p-8 md:p-10 border border-ink-100/60 dark:border-ink-700/30 shadow-product"
-    >
-      {children}
-    </motion.div>
-  );
-});
+function useHeadlineTyper() {
+  const reduce = useReducedMotion();
+  const [idx, setIdx] = useState(0);
+  const [count, setCount] = useState(reduce ? HEADLINES[0].text.length : 0);
 
-// Search Panel Header
-interface SearchPanelHeaderProps {
-  eyebrow: string;
-  title: string;
-  subtitle: string;
+  useEffect(() => {
+    if (reduce) return;
+    let i = 0;
+    let curIdx = 0;
+    let phase: "typing" | "holdFull" | "deleting" | "holdEmpty" = "typing";
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let alive = true;
+
+    const tick = () => {
+      if (!alive) return;
+      const curLen = HEADLINES[curIdx].text.length;
+      if (phase === "typing") {
+        i += 1;
+        setCount(i);
+        if (i >= curLen) {
+          phase = "holdFull";
+          timer = setTimeout(tick, 1800);
+          return;
+        }
+        timer = setTimeout(tick, 45);
+      } else if (phase === "holdFull") {
+        phase = "deleting";
+        timer = setTimeout(tick, 60);
+      } else if (phase === "deleting") {
+        i -= 1;
+        setCount(i);
+        if (i <= 0) {
+          phase = "holdEmpty";
+          timer = setTimeout(tick, 500);
+          return;
+        }
+        timer = setTimeout(tick, 28);
+      } else {
+        // holdEmpty — advance to the next real-estate headline and retype it
+        curIdx = (curIdx + 1) % HEADLINES.length;
+        setIdx(curIdx);
+        phase = "typing";
+        timer = setTimeout(tick, 250);
+      }
+    };
+
+    timer = setTimeout(tick, 600);
+    return () => {
+      alive = false;
+      if (timer) clearTimeout(timer);
+    };
+  }, [reduce]);
+
+  return { idx, count, reduce };
 }
-const SearchPanelHeader = memo(function SearchPanelHeader({
-  eyebrow,
-  title,
-  subtitle,
-}: SearchPanelHeaderProps) {
-  return (
-    <div className="mb-6 md:mb-0">
-      <p className="text-[13px] font-semibold text-sky mb-2 tracking-wide">
-        {eyebrow}
-      </p>
-      <h2 className="text-[clamp(1.5rem,1.25rem+1.5vw,2.5rem)] font-semibold tracking-tighter2 leading-tight2 text-foreground text-balance">
-        {title}
-      </h2>
-      <p className="mt-3 text-[15px] text-ink-500 leading-snug2 max-w-md">
-        {subtitle}
-      </p>
-    </div>
-  );
-});
+
+/* ── Search dropdown components ── */
 
 // Dropdown Field
 interface DropdownFieldProps {
@@ -154,27 +196,27 @@ const DropdownField = memo(function DropdownField({
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={`dropdown-${fieldId}`}
-        className="w-full flex items-center justify-between gap-3 bg-white dark:bg-card border border-ink-200/80 dark:border-ink-700/60 rounded-2xl px-4 py-3.5 text-left transition-all duration-fast hover:border-ink-400 hover:shadow-soft no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40 focus-visible:ring-offset-2"
+        className="w-full flex items-center justify-between gap-3 bg-white/10 backdrop-blur-xl border border-white/15 rounded-2xl px-4 py-3.5 text-left transition-all duration-fast hover:bg-white/15 hover:border-white/25 no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
       >
         <span className="flex items-center gap-2.5 min-w-0">
           {Icon && (
             <Icon
-              className="w-4 h-4 text-ink-400 shrink-0"
+              className="w-4 h-4 text-white/70 shrink-0"
               strokeWidth={1.75}
             />
           )}
           <span className="min-w-0">
-            <span className="block text-[11px] text-ink-400 leading-none mb-1">
+            <span className="block text-[11px] text-white/60 leading-none mb-1">
               {label}
             </span>
-            <span className="block text-[14px] text-foreground font-medium truncate">
+            <span className="block text-[14px] text-white font-medium truncate">
               {value}
             </span>
           </span>
         </span>
         <ChevronDown
           className={cn(
-            "w-4 h-4 text-ink-400 transition-transform duration-200 shrink-0",
+            "w-4 h-4 text-white/70 transition-transform duration-200 shrink-0",
             isOpen && "rotate-180"
           )}
           strokeWidth={1.75}
@@ -189,7 +231,7 @@ const DropdownField = memo(function DropdownField({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute z-30 left-0 right-0 mt-2 max-h-72 overflow-y-auto bg-white dark:bg-card rounded-2xl border border-ink-100 dark:border-ink-700 shadow-elevated p-1.5 overscroll-contain"
+            className="absolute z-50 left-0 right-0 mt-2 max-h-72 overflow-y-auto bg-ink-900/85 backdrop-blur-2xl border border-white/15 rounded-2xl shadow-lifted p-1.5 overscroll-contain"
             role="listbox"
             aria-label={`${label} options`}
           >
@@ -221,32 +263,11 @@ const DropdownOption = memo(function DropdownOption({
         "w-full text-left px-3 py-2.5 rounded-xl text-[14px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-sky/40",
         isActive
           ? "bg-sky text-white"
-          : "text-foreground hover:bg-fog dark:hover:bg-ink-800/40"
+          : "text-white hover:bg-white/10"
       )}
     >
       {label}
     </button>
-  );
-});
-
-// Stat Pill
-interface StatPillProps {
-  label: string;
-  color: string;
-  delay: number;
-}
-const StatPill = memo(function StatPill({ label, color, delay }: StatPillProps) {
-  const shouldReduceMotion = useReducedMotion();
-  return (
-    <motion.span
-      initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.85 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-xl text-white text-[11px] sm:text-[12px] font-semibold border border-white/10 shadow-lg"
-    >
-      <span className={cn("w-1.5 h-1.5 rounded-full", color)} />
-      {label}
-    </motion.span>
   );
 });
 
@@ -309,153 +330,160 @@ export function Hero() {
     setOpenDropdown((prev) => (prev === key ? null : key));
   }, []);
 
+  // ── Typewriter headline ──
+  const { idx: phraseIdx, count: typerCount, reduce: reduceMotion } = useHeadlineTyper();
+  const phrase = HEADLINES[phraseIdx];
+  const typedHeadline = phrase.text.slice(0, typerCount);
+  const headBefore = typedHeadline.slice(0, Math.min(typerCount, phrase.hlStart));
+  const headHL = typerCount > phrase.hlStart ? typedHeadline.slice(phrase.hlStart, Math.min(typerCount, phrase.hlEnd)) : "";
+  const headAfter = typerCount > phrase.hlEnd ? typedHeadline.slice(phrase.hlEnd) : "";
+
   return (
-    <section className="relative pt-12 sm:pt-14 md:pt-16 overflow-hidden">
-      {/* Background gradient ambient glow */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-sky/5 rounded-full blur-[120px]" />
+    <section className="relative z-10 min-h-[100svh] flex flex-col bg-ink-900">
+      {/* ── Full-bleed background image ── */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Image
+          src={heroImage}
+          alt="Luxury Bhutanese property with Himalayan mountain views"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover ken-burns"
+        />
+        {/* Aurora glow accents — add depth & richness over the photo */}
+        <div className="absolute -top-1/4 -left-1/4 w-[60rem] h-[60rem] rounded-full bg-sky/30 blur-4xl mix-blend-screen animate-float-slow" />
+        <div className="absolute -bottom-1/4 -right-1/4 w-[55rem] h-[55rem] rounded-full bg-bhutan-gold/25 blur-4xl mix-blend-screen animate-float-slow [animation-delay:-7s]" />
+        {/* Cinematic gradient scrims for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/45 to-black/95" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />
+        {/* Vignette for cinematic focus */}
+        <div className="absolute inset-0 [box-shadow:inset_0_0_220px_60px_rgba(0,0,0,0.55)]" />
       </div>
 
-      {/* ── TEXT BLOCK ── */}
-      <div className="container-apple-wide text-center py-16 sm:py-20 md:py-28">
-        <motion.p
+      {/* ── Centered content ── */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center text-white px-5 pt-28 sm:pt-32 pb-12">
+        {/* Eyebrow badge */}
+        <motion.div
           custom={0}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="text-[13px] sm:text-[14px] font-semibold text-sky tracking-wide uppercase"
+          className="inline-flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 backdrop-blur-md px-4 py-1.5 shadow-sky"
         >
-          PHOJAA95 Real Estate
-        </motion.p>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-sky" />
+          </span>
+          <span className="text-[11px] sm:text-[12px] font-semibold tracking-eyebrow text-white/90">
+            PHOJAA95 REAL ESTATE
+          </span>
+        </motion.div>
 
+        {/* Headline — typewriter */}
         <motion.h1
           custom={0.08}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="mt-4 font-semibold tracking-tighter3 leading-tighter text-balance text-foreground"
-          style={{ fontSize: "clamp(2.75rem, 2rem + 4.5vw, 6.5rem)" }}
+          className="relative mt-6 font-serif font-medium tracking-tight leading-[1.05] text-white"
+          style={{ fontSize: "clamp(2.5rem, 1.8rem + 4vw, 6rem)", textShadow: "0 10px 50px rgba(0,0,0,0.5)" }}
         >
-          Find Your Dream Property in Bhutan
+          {/* invisible full-text placeholder — reserves space so nothing shifts while typing */}
+          <span className="invisible" aria-hidden="true">
+            {LONGEST_HEADLINE}
+          </span>
+          {/* typed overlay */}
+          <span className="absolute inset-0">
+            <span>{headBefore}</span>
+            {headHL && (
+              <span className="bg-gradient-to-r from-sky via-bhutan-gold to-sky bg-[length:200%_auto] bg-clip-text text-transparent animate-gradient-text">
+                {headHL}
+              </span>
+            )}
+            {headAfter && <span>{headAfter}</span>}
+            {!reduceMotion && (
+              <span aria-hidden="true" className="inline-block align-middle w-[0.05em] h-[0.85em] ml-[0.08em] rounded-full bg-gradient-to-b from-bhutan-gold to-sky shadow-[0_0_14px_2px_rgba(197,165,114,0.65)] origin-center animate-caret-glow" />
+            )}
+          </span>
         </motion.h1>
 
+        {/* Subheadline */}
         <motion.p
           custom={0.16}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="mt-6 mx-auto max-w-xl text-[17px] sm:text-[19px] md:text-[21px] text-ink-500 leading-snug2 text-pretty"
+          className="mt-6 mx-auto max-w-2xl text-[16px] sm:text-[18px] md:text-[20px] text-white/80 leading-snug2 text-pretty"
         >
           Browse verified land, homes, and commercial properties — or build your next website, app, or software with Phojaa95 Solutions.
         </motion.p>
 
+        {/* Primary CTAs */}
         <motion.div
           custom={0.24}
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
+          className="mt-9 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
         >
           <Link
             href="/properties"
-            className="inline-flex items-center gap-2 h-12 px-7 rounded-full bg-sky text-white text-[15px] font-medium hover:bg-sky-hover active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50 focus-visible:ring-offset-2"
+            className="inline-flex items-center gap-2 h-12 px-7 rounded-full bg-white text-ink-900 text-[15px] font-medium hover:bg-white/90 hover:shadow-[0_10px_40px_-8px_rgba(255,255,255,0.55)] active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40 shadow-[0_8px_30px_-10px_rgba(255,255,255,0.4)]"
           >
             Browse properties
             <ArrowRight className="w-4 h-4" strokeWidth={2} />
           </Link>
           <Link
             href="/phojaa95-solutions"
-            className="inline-flex items-center gap-2 h-12 px-7 rounded-full bg-foreground text-background text-[15px] font-medium hover:opacity-90 active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 focus-visible:ring-offset-2"
+            className="inline-flex items-center gap-2 h-12 px-7 rounded-full bg-sky text-white text-[15px] font-medium hover:bg-sky-hover hover:shadow-[0_12px_44px_-8px_rgba(0,113,227,0.6)] active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40 shadow-sky"
           >
             <Code2 className="w-4 h-4" strokeWidth={2} />
             Phojaa95 Solutions
           </Link>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-1 h-12 px-7 rounded-full border border-ink-200 dark:border-ink-700 text-foreground text-[15px] font-medium hover:bg-ink-50/60 dark:hover:bg-ink-800/40 active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40"
+            className="inline-flex items-center gap-1 h-12 px-7 rounded-full border border-white/30 text-white text-[15px] font-medium hover:bg-white/10 hover:border-white/50 active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-white/40 focus-visible:ring-offset-2 focus-visible:ring-offset-black/40"
           >
             Talk to a specialist
           </Link>
         </motion.div>
+
+        {/* Floating glassmorphic stat pills */}
+        <motion.div
+          custom={0.32}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          className="mt-10 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3"
+        >
+          {heroStats.map((s) => (
+            <div
+              key={s.label}
+              className="inline-flex items-center gap-2.5 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-xl px-4 py-2.5 shadow-soft"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky/40 to-bhutan-gold/40 text-white">
+                <s.icon className="w-4 h-4" strokeWidth={2} />
+              </span>
+              <span className="text-left leading-none">
+                <span className="block text-[15px] font-semibold text-white">{s.value}</span>
+                <span className="block text-[11px] text-white/60 mt-1">{s.label}</span>
+              </span>
+            </div>
+          ))}
+        </motion.div>
       </div>
 
-      {/* ── HERO IMAGE ── */}
+      {/* ── Floating glass search bar ── */}
       <motion.div
-        initial={shouldReduceMotion ? {} : { opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        className="relative max-w-[1320px] mx-auto px-4 sm:px-6 lg:px-8"
+        initial={shouldReduceMotion ? {} : { opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
+        transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 mx-auto max-w-[1100px] w-full px-4 sm:px-6 pb-8 sm:pb-10"
       >
-        <div className="relative aspect-[16/9] sm:aspect-[2.2/1] overflow-hidden rounded-apple-xl bg-fog shadow-product">
-          <Image
-            src={heroImage}
-            alt="Luxury Bhutanese property with Himalayan mountain views"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover ken-burns"
-          />
-
-          {/* Gradient overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/5 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
-
-          {/* Bottom-left content */}
-          <div className="absolute left-5 sm:left-8 bottom-5 sm:bottom-8 text-white max-w-[75%]">
-            <motion.p
-              initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="text-[11px] sm:text-[12px] font-semibold uppercase tracking-eyebrow text-white/70"
-            >
-              Featured Property
-            </motion.p>
-            <motion.p
-              initial={shouldReduceMotion ? {} : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.5 }}
-              className="mt-1.5 text-[16px] sm:text-[22px] md:text-[28px] font-semibold tracking-tighter2 leading-tight2"
-            >
-              Where Himalayan craft meets modern living.
-            </motion.p>
-          </div>
-
-          {/* Floating stat pills — top right */}
-          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex flex-col gap-2 items-end">
-            <StatPill label="500+ Verified" color="bg-emerald" delay={0.8} />
-            <StatPill label="Nationwide" color="bg-sky" delay={0.95} />
-            <StatPill label="20+ Districts" color="bg-amber" delay={1.1} />
-            <Link
-              href="/phojaa95-solutions"
-              className="no-tap"
-              aria-label="Phojaa95 Solutions — web, app and software development"
-            >
-              <motion.span
-                initial={shouldReduceMotion ? {} : { opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 1.25, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/15 backdrop-blur-xl text-white text-[11px] sm:text-[12px] font-semibold border border-white/10 shadow-lg hover:bg-white/25 transition-colors"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-violet-300" />
-                Web &amp; App Dev
-              </motion.span>
-            </Link>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* ── SEARCH PANEL ── */}
-      <div className="container-apple-wide py-14 sm:py-20">
-        <SearchPanel>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <SearchPanelHeader
-              eyebrow="Find your match"
-              title="Tell us what you're looking for."
-              subtitle="Choose a district, property type, and budget. We'll surface only what fits your needs."
-            />
-
-            <div className="space-y-3">
-              {/* District dropdown */}
+        <div className="bg-white/10 backdrop-blur-2xl rounded-[22px] border border-white/15 shadow-product p-3 sm:p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-3">
+            <div className="sm:flex-1 min-w-0">
               <DropdownField
                 fieldId="loc"
                 label="Where"
@@ -476,8 +504,8 @@ export function Hero() {
                   />
                 ))}
               </DropdownField>
-
-              {/* Type dropdown */}
+            </div>
+            <div className="sm:flex-1 min-w-0">
               <DropdownField
                 fieldId="type"
                 label="What"
@@ -498,8 +526,8 @@ export function Hero() {
                   />
                 ))}
               </DropdownField>
-
-              {/* Price dropdown */}
+            </div>
+            <div className="sm:flex-1 min-w-0">
               <DropdownField
                 fieldId="price"
                 label="Budget"
@@ -519,19 +547,17 @@ export function Hero() {
                   />
                 ))}
               </DropdownField>
-
-              {/* Search button */}
-              <button
-                onClick={handleSearch}
-                className="w-full inline-flex items-center justify-center gap-2 h-12 rounded-2xl bg-sky text-white text-[15px] font-medium hover:bg-sky-hover active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50 focus-visible:ring-offset-2 mt-2"
-              >
-                <Search className="w-4 h-4" strokeWidth={2} />
-                Search properties
-              </button>
             </div>
+            <button
+              onClick={handleSearch}
+              className="w-full sm:w-auto sm:self-stretch inline-flex items-center justify-center gap-2 px-7 rounded-2xl bg-sky text-white text-[15px] font-medium hover:bg-sky-hover active:scale-[0.97] transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/50 focus-visible:ring-offset-2"
+            >
+              <Search className="w-4 h-4" strokeWidth={2} />
+              Search properties
+            </button>
           </div>
-        </SearchPanel>
-      </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

@@ -53,7 +53,7 @@ export function Testimonials() {
 
   if (isLoading) {
     return (
-      <section className="section-y bg-fog content-visibility-auto">
+      <section className="section-y content-visibility-auto">
         <div className="container-apple flex flex-col items-center justify-center min-h-[260px]">
           <Loader2 className="w-8 h-8 text-ink-400 animate-spin mb-3" />
           <p className="text-ink-500 text-[14px]">Loading stories…</p>
@@ -65,7 +65,7 @@ export function Testimonials() {
   if (error) return null;
 
   return (
-    <section className="section-y bg-fog content-visibility-auto">
+    <section className="section-y content-visibility-auto">
       <div className="container-apple">
         <SectionHeader
           eyebrow="Customer stories"
@@ -75,7 +75,7 @@ export function Testimonials() {
 
         {testimonials.length > 0 ? (
           <div className="relative">
-            <div className="bg-white dark:bg-card rounded-apple-xl border border-ink-100 dark:border-ink-700/40 px-6 py-12 sm:p-14 md:p-16 text-center">
+            <div className="glass rounded-apple-xl px-6 py-12 sm:p-14 md:p-16 text-center">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentIndex}
@@ -131,14 +131,14 @@ export function Testimonials() {
               <div className="flex gap-2">
                 <button
                   onClick={prev}
-                  className="w-10 h-10 rounded-full bg-white dark:bg-card border border-ink-200 dark:border-ink-700 flex items-center justify-center text-foreground hover:bg-fog transition-colors no-tap"
+                  className="w-10 h-10 rounded-full glass-pill flex items-center justify-center text-foreground hover:bg-white/10 transition-colors no-tap"
                   aria-label="Previous testimonial"
                 >
                   <ChevronLeft className="w-4 h-4" strokeWidth={1.75} />
                 </button>
                 <button
                   onClick={next}
-                  className="w-10 h-10 rounded-full bg-white dark:bg-card border border-ink-200 dark:border-ink-700 flex items-center justify-center text-foreground hover:bg-fog transition-colors no-tap"
+                  className="w-10 h-10 rounded-full glass-pill flex items-center justify-center text-foreground hover:bg-white/10 transition-colors no-tap"
                   aria-label="Next testimonial"
                 >
                   <ChevronRight className="w-4 h-4" strokeWidth={1.75} />

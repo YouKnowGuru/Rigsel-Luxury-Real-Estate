@@ -86,7 +86,7 @@ const ContactCard = memo(function ContactCard({ info, index }: ContactCardProps)
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ delay: index * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="group bg-fog/80 dark:bg-ink-800/40 backdrop-blur-sm rounded-apple-xl p-5 sm:p-6 border border-ink-100/60 dark:border-ink-700/30 hover:border-ink-200 dark:hover:border-ink-600/50 hover:shadow-soft transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40"
+      className="group glass rounded-apple-xl p-5 sm:p-6 border border-ink-100/60 dark:border-ink-700/30 hover:border-ink-200 dark:hover:border-ink-600/50 hover:shadow-soft transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40"
     >
       <div className="flex items-start gap-4">
         <span
@@ -168,7 +168,7 @@ const FormInput = memo(function FormInput({
         onChange={(e) => onChange(e.target.value)}
         autoComplete={autoComplete}
         inputMode={inputMode}
-        className="w-full h-12 rounded-2xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-card px-4 text-[15px] text-foreground placeholder:text-ink-400 outline-none transition-all duration-fast focus:border-sky focus:ring-[3px] focus:ring-sky/10"
+        className="input-apple h-12"
       />
     </div>
   );
@@ -210,7 +210,7 @@ const FormTextarea = memo(function FormTextarea({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
-        className="w-full rounded-2xl border border-ink-200 dark:border-ink-700 bg-white dark:bg-card px-4 py-3 text-[15px] text-foreground placeholder:text-ink-400 outline-none transition-all duration-fast focus:border-sky focus:ring-[3px] focus:ring-sky/10 resize-none"
+        className="input-apple resize-none"
       />
     </div>
   );
@@ -232,7 +232,7 @@ const SocialLink = memo(function SocialLink({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="w-11 h-11 rounded-full bg-fog dark:bg-ink-800/40 border border-ink-200/60 dark:border-ink-700/40 hover:bg-foreground hover:text-background hover:border-foreground flex items-center justify-center text-foreground transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40"
+      className="w-11 h-11 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-ink-200/60 dark:border-ink-700/40 hover:bg-foreground hover:text-background hover:border-foreground flex items-center justify-center text-foreground transition-all duration-fast no-tap outline-none focus-visible:ring-2 focus-visible:ring-sky/40"
     >
       {children}
     </a>
@@ -408,7 +408,7 @@ export default function ContactPage() {
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
               className="lg:col-span-7"
             >
-              <div className="bg-fog/60 dark:bg-ink-900/30 backdrop-blur-sm rounded-apple-xl p-6 sm:p-8 md:p-10 border border-ink-100/60 dark:border-ink-700/30">
+              <div className="glass-strong rounded-apple-xl p-6 sm:p-8 md:p-10 border border-ink-100/60 dark:border-ink-700/30">
                 {isSubmitted ? (
                   /* Success state */
                   <div className="text-center py-12 sm:py-16">

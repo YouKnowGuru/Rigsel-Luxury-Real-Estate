@@ -32,7 +32,7 @@ export function ArchitectureDesignShowcase() {
   if (items.length === 0) return null;
 
   return (
-    <section className="section-y bg-fog content-visibility-auto">
+    <section className="section-y content-visibility-auto">
       <div className="container-apple-wide">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 sm:mb-10">
           <SectionHeader
@@ -59,7 +59,7 @@ export function ArchitectureDesignShowcase() {
             >
               <Link
                 href={`/architecture-design/${item.slug}`}
-                className="group block rounded-apple-xl overflow-hidden bg-background border border-ink-100 dark:border-ink-700/40 hover:shadow-product transition-all duration-300"
+                className="group block rounded-apple-xl overflow-hidden glass hover:shadow-product transition-all duration-300"
               >
                 <div className="relative aspect-[4/3] bg-ink-900 overflow-hidden">
                   {item.coverImage ? (

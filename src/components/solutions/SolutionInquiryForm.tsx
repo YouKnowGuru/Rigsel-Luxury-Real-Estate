@@ -97,7 +97,7 @@ export function SolutionInquiryForm({
     <form
       onSubmit={handleSubmit}
       className={cn(
-        "rounded-apple-xl p-6 sm:p-8 bg-fog/80 dark:bg-ink-800/40 border border-ink-100/60 dark:border-ink-700/30 space-y-5",
+        "rounded-apple-xl p-6 sm:p-8 bg-fog/60 dark:bg-ink-800/40 border border-ink-100/60 dark:border-ink-700/30 space-y-5",
         className
       )}
     >

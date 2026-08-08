@@ -281,7 +281,7 @@ function AnnouncementCard({
             <Link
                 href={`/announcements/${announcement._id}`}
                 className={cn(
-                    "group block bg-fog rounded-apple-lg overflow-hidden hover:shadow-elevated transition-shadow",
+                    "group block glass rounded-apple-lg overflow-hidden hover:shadow-elevated transition-shadow",
                     highlighted && "ring-1 ring-sky/20"
                 )}
             >

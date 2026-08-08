@@ -112,7 +112,7 @@ export default function NewBlogPage() {
             <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6">
+                        <div className="admin-glass rounded-[20px] p-6">
                             <h2 className="font-semibold text-foreground text-base mb-5 flex items-center gap-2">
                                 <span className="w-1 h-4 bg-sky rounded-full" /> Blog Details
                             </h2>
@@ -140,7 +140,7 @@ export default function NewBlogPage() {
                     </div>
 
                     <div className="space-y-6">
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-5">
+                        <div className="admin-glass rounded-[20px] p-5">
                             <h2 className="font-semibold text-foreground text-base mb-4 flex items-center gap-2">
                                 <ImageIcon className="w-4 h-4 text-sky" strokeWidth={1.5} /> Cover Image *
                             </h2>
@@ -172,7 +172,7 @@ export default function NewBlogPage() {
                             </label>
                         </div>
 
-                        <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-5">
+                        <div className="admin-glass rounded-[20px] p-5">
                             <h2 className="font-semibold text-foreground text-base mb-4">Settings</h2>
                             <div className="space-y-4">
                                 <div>

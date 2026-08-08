@@ -44,7 +44,7 @@ export function PageHero({
     <section
       className={cn(
         "relative overflow-hidden",
-        dark ? "bg-ink-900 text-white" : "bg-white text-foreground",
+        dark ? "bg-ink-900/70 backdrop-blur-2xl text-white" : "bg-transparent text-foreground",
         className
       )}
     >

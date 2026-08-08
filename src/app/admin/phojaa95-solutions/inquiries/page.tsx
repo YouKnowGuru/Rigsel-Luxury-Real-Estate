@@ -154,8 +154,9 @@ export default function SolutionInquiriesAdminPage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-sky" />
+        <div className="admin-glass rounded-[20px] py-20 flex flex-col items-center justify-center gap-3">
+          <Loader2 className="w-8 h-8 animate-spin text-sky" strokeWidth={1.5} />
+          <p className="text-ink-400 text-[13px] font-medium">Loading requests...</p>
         </div>
       ) : filtered.length === 0 ? (
         <p className="text-center text-ink-500 py-16">No client requests yet.</p>
@@ -165,7 +166,7 @@ export default function SolutionInquiriesAdminPage() {
             <div
               key={q._id}
               className={cn(
-                "p-4 rounded-2xl border bg-card transition-colors",
+                "admin-glass-subtle p-4 rounded-2xl transition-colors",
                 !q.isRead
                   ? "border-sky/30 bg-sky/[0.03]"
                   : "border-ink-100/60 dark:border-ink-700/40"

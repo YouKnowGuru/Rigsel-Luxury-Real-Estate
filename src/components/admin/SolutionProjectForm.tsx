@@ -121,7 +121,7 @@ export function SolutionProjectForm({
   const inputCls = "rounded-xl";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
+    <form onSubmit={handleSubmit} className="admin-glass rounded-2xl p-5 sm:p-6 space-y-6 max-w-2xl">
       <div>
         <label className="text-[13px] font-medium text-ink-600">Service type</label>
         <select

@@ -254,8 +254,11 @@ export default function EditPropertyPage() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-card flex items-center justify-center">
-                <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
+            <div className="p-4 md:p-8 lg:p-10 max-w-[1200px] mx-auto min-h-screen flex items-center justify-center">
+                <div className="admin-glass rounded-[20px] p-10 flex flex-col items-center gap-3 w-full max-w-sm">
+                    <div className="animate-spin w-8 h-8 border-4 border-sky/20 border-t-sky rounded-full" />
+                    <p className="text-ink-400 text-[13px] font-medium">Loading property...</p>
+                </div>
             </div>
         );
     }
@@ -454,7 +457,7 @@ export default function EditPropertyPage() {
                                  </div>
 
                                 {/* Custom Specifications */}
-                                <div className="md:col-span-2 bg-card rounded-[20px] p-5 border border-ink-100/60 shadow-soft">
+                                <div className="md:col-span-2 admin-glass rounded-[20px] p-5">
                                     <div className="flex items-center justify-between mb-4">
                                         <h3 className="font-semibold text-foreground text-base flex items-center gap-2">
                                             <span className="w-1 h-4 bg-sky rounded-full" /> Property Specifications

@@ -119,8 +119,11 @@ export default function AdminProperties() {
 
 if (isLoading) {
       return (
-        <div className="min-h-screen bg-fog-light flex items-center justify-center">
-          <div className="animate-spin w-10 h-10 border-4 border-sky/20 border-t-sky rounded-full" />
+        <div className="p-3 md:p-6 lg:p-8 max-w-[1600px] mx-auto min-h-screen flex items-center justify-center">
+          <div className="admin-glass rounded-[20px] p-10 flex flex-col items-center gap-3 w-full max-w-sm">
+            <div className="animate-spin w-10 h-10 border-4 border-sky/20 border-t-sky rounded-full" />
+            <p className="text-ink-400 text-[13px] font-medium">Loading properties...</p>
+          </div>
         </div>
       );
     }
@@ -198,7 +201,7 @@ if (isLoading) {
       {/* Property Cards */}
       <div className="space-y-3 relative z-10">
         {filteredProperties.length === 0 && (
-          <div className="text-center py-16 bg-card rounded-xl border border-ink-100/60 shadow-soft">
+          <div className="text-center py-16 admin-glass rounded-xl">
             <div className="w-14 h-14 bg-card rounded-full flex items-center justify-center mx-auto mb-3">
               <Building2 className="w-6 h-6 text-ink-300" strokeWidth={1.5} />
             </div>
@@ -215,7 +218,7 @@ if (isLoading) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 * idx }}
-            className="bg-card rounded-2xl border border-ink-100/60 shadow-soft overflow-hidden hover:shadow-elevated transition-all duration-300 group"
+            className="admin-glass rounded-2xl overflow-hidden hover:shadow-elevated transition-all duration-300 group"
           >
             <div className="flex flex-col sm:flex-row">
               {/* Image */}

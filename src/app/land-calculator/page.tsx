@@ -104,7 +104,7 @@ export default function LandCalculatorPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="lg:col-span-7 bg-fog rounded-apple-xl p-6 sm:p-8 md:p-10"
+            className="lg:col-span-7 glass rounded-apple-xl p-6 sm:p-8 md:p-10"
           >
             <p className="text-[14px] font-semibold text-sky mb-2 inline-flex items-center gap-2">
               <Ruler className="w-4 h-4" strokeWidth={1.75} />
@@ -166,18 +166,18 @@ export default function LandCalculatorPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.08 }}
-            className="lg:col-span-5 bg-ink-900 text-white rounded-apple-xl p-6 sm:p-8 md:p-10"
+            className="lg:col-span-5 glass text-foreground rounded-apple-xl p-6 sm:p-8 md:p-10"
           >
-            <p className="text-[14px] font-semibold text-sky-dim mb-2 inline-flex items-center gap-2">
+            <p className="text-[14px] font-semibold text-sky mb-2 inline-flex items-center gap-2">
               <TrendingUp className="w-4 h-4" strokeWidth={1.75} />
               Pricing
             </p>
-            <h2 className="font-semibold text-[clamp(1.5rem,1.25rem+1.25vw,2.25rem)] tracking-tighter2 leading-tight2 text-white">
+            <h2 className="font-semibold text-[clamp(1.5rem,1.25rem+1.25vw,2.25rem)] tracking-tighter2 leading-tight2 text-foreground">
               Estimate the total.
             </h2>
 
             <label className="block mt-6">
-              <span className="text-[12px] text-white/60 uppercase tracking-eyebrow">
+              <span className="text-[12px] text-ink-500 uppercase tracking-eyebrow">
                 Price per decimal (Nu.)
               </span>
               <input
@@ -185,19 +185,19 @@ export default function LandCalculatorPage() {
                 value={pricePerDecimal}
                 onChange={(e) => handlePriceChange(e.target.value)}
                 placeholder="0"
-                className="mt-1.5 w-full rounded-2xl bg-white/10 border border-white/15 px-4 py-3.5 text-white placeholder:text-white/40 text-[18px] font-semibold tracking-tightest tabular-nums focus:bg-white/15 outline-none transition-colors"
+                className="input-apple mt-1.5 text-[18px] font-semibold tracking-tightest tabular-nums"
               />
             </label>
 
-            <div className="mt-8 pt-6 border-t border-white/10">
-              <p className="text-[12px] text-white/60 uppercase tracking-eyebrow">
+            <div className="mt-8 pt-6 border-t border-ink-100 dark:border-ink-700/40">
+              <p className="text-[12px] text-ink-500 uppercase tracking-eyebrow">
                 Total estimate
               </p>
-              <p className="mt-2 text-[clamp(2rem,1.5rem+2vw,3.5rem)] font-semibold tracking-tighter3 leading-tighter tabular-nums text-white">
+              <p className="mt-2 text-[clamp(2rem,1.5rem+2vw,3.5rem)] font-semibold tracking-tighter3 leading-tighter tabular-nums text-foreground">
                 {totalPrice > 0 ? formatPrice(totalPrice) : "—"}
               </p>
               {decimals && parseFloat(decimals) > 0 && (
-                <p className="mt-2 text-[13px] text-white/55">
+                <p className="mt-2 text-[13px] text-ink-500">
                   Based on {parseFloat(decimals).toFixed(2)} decimals
                 </p>
               )}
@@ -205,7 +205,7 @@ export default function LandCalculatorPage() {
 
             <Link
               href="/contact"
-              className="mt-8 inline-flex link-apple link-arrow text-sky-dim text-[14px]"
+              className="mt-8 inline-flex link-apple link-arrow text-[14px]"
             >
               Get an expert valuation
             </Link>
@@ -219,8 +219,8 @@ export default function LandCalculatorPage() {
           <h2 className="font-semibold text-[clamp(1.5rem,1.25rem+1vw,2rem)] tracking-tighter2 leading-tight2 text-foreground text-center">
             Common conversions.
           </h2>
-          <div className="mt-8 bg-white dark:bg-card rounded-apple-lg border border-ink-100 dark:border-ink-700/40 overflow-hidden">
-            <div className="grid grid-cols-3 text-[13px] font-semibold uppercase tracking-eyebrow text-ink-500 bg-fog px-5 py-3">
+          <div className="mt-8 glass rounded-apple-lg border border-ink-100 dark:border-ink-700/40 overflow-hidden">
+            <div className="grid grid-cols-3 text-[13px] font-semibold uppercase tracking-eyebrow text-ink-500 bg-ink-50/50 px-5 py-3">
               <span>From</span>
               <span>To</span>
               <span className="text-right">Value</span>
@@ -235,7 +235,7 @@ export default function LandCalculatorPage() {
               <div
                 key={row.from + row.to}
                 className={`grid grid-cols-3 px-5 py-4 text-[14px] ${
-                  i % 2 ? "bg-fog/50" : ""
+                  i % 2 ? "bg-ink-50/50" : ""
                 }`}
               >
                 <span className="text-foreground font-medium">{row.from}</span>

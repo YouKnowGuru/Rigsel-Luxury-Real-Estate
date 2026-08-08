@@ -57,7 +57,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
       {/* Ambient background orbs */}
       <div className="absolute -top-48 -right-48 w-[700px] h-[700px] bg-sky/[0.04] rounded-full blur-[140px]" />
       <div className="absolute -bottom-48 -left-48 w-[700px] h-[700px] bg-sky/[0.03] rounded-full blur-[140px]" />
@@ -108,7 +108,7 @@ export default function AdminLoginPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-card rounded-[24px] shadow-elevated border border-ink-100/60 p-8"
+          className="admin-glass rounded-[24px] p-8"
         >
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">

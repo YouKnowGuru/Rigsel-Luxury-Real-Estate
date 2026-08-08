@@ -57,7 +57,7 @@ export function InteractiveMap() {
   }, []);
 
   return (
-    <section className="section-y bg-fog content-visibility-auto">
+    <section className="section-y content-visibility-auto">
       <div className="container-apple-wide">
         <SectionHeader
           eyebrow="Locations"
@@ -77,8 +77,8 @@ export function InteractiveMap() {
                 onClick={() => setSelectedLocation(location)}
                 className={`w-full text-left p-4 sm:p-5 rounded-apple-lg transition-all duration-fast border ${
                   selectedLocation.id === location.id
-                    ? "bg-white border-foreground/15 shadow-soft"
-                    : "bg-white/60 dark:bg-card border-transparent hover:bg-white"
+                    ? "glass border-sky/40 shadow-soft"
+                    : "glass-subtle border-transparent hover:border-ink-200/60"
                 }`}
               >
                 <div className="flex items-center gap-3">

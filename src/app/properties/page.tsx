@@ -205,7 +205,7 @@ const EmptyState = memo(function EmptyState({
       transition={{ duration: 0.5 }}
       className="text-center py-20 max-w-md mx-auto"
     >
-      <div className="w-16 h-16 rounded-full bg-fog flex items-center justify-center mx-auto mb-5">
+      <div className="w-16 h-16 rounded-full bg-fog/70 dark:bg-white/10 flex items-center justify-center mx-auto mb-5">
         <Search className="w-7 h-7 text-ink-400" strokeWidth={1.5} />
       </div>
       <h3 className="font-semibold text-[22px] tracking-tighter2 text-foreground">
@@ -387,7 +387,7 @@ function PropertiesContent() {
       </section>
 
       {/* ── FILTER BAR ── */}
-      <div className="sticky top-11 sm:top-12 z-30 bg-background/80 backdrop-blur-xl border-b border-ink-100 dark:border-ink-700/40">
+      <div className="sticky top-11 sm:top-12 z-30 glass-strong">
         <div className="container-apple-wide py-3">
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Search */}

@@ -48,7 +48,7 @@ export function LandCalculator() {
   };
 
   return (
-    <section className="section-y bg-background content-visibility-auto">
+    <section className="section-y content-visibility-auto">
       <div className="container-apple-wide">
         <SectionHeader
           eyebrow="Precision tools"
@@ -61,7 +61,7 @@ export function LandCalculator() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mx-auto max-w-4xl bg-fog rounded-apple-xl p-6 sm:p-10"
+          className="mx-auto max-w-4xl glass rounded-apple-xl p-6 sm:p-10"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
             <div>
@@ -72,7 +72,7 @@ export function LandCalculator() {
                 </p>
               </div>
 
-              <div className="flex bg-white dark:bg-card rounded-2xl border border-ink-200 dark:border-ink-700 p-1 mb-4">
+              <div className="flex glass-subtle rounded-2xl p-1 mb-4">
                 {units.map((u) => (
                   <button
                     key={u.value}
@@ -118,7 +118,7 @@ export function LandCalculator() {
                 ].map((r) => (
                   <div
                     key={r.label}
-                    className="bg-white dark:bg-card rounded-2xl p-4 border border-ink-100 dark:border-ink-700/40"
+                    className="glass-subtle rounded-2xl p-4"
                   >
                     <p className="text-[11px] uppercase tracking-eyebrow text-ink-500 mb-1">
                       {r.label}

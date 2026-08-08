@@ -89,7 +89,7 @@ function AnimatedStat({ value, label, delay }: { value: string; label: string; d
 
 export function WhyChooseUs() {
   return (
-    <section className="section-y bg-background content-visibility-auto">
+    <section className="section-y content-visibility-auto">
       <div className="container-apple-wide">
         <SectionHeader
           eyebrow="Why PHOJAA95"
@@ -105,9 +105,9 @@ export function WhyChooseUs() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.6, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-fog dark:bg-ink-800/40 rounded-apple-xl p-7 sm:p-8 transition-shadow hover:shadow-elevated"
+              className="glass rounded-apple-xl p-7 sm:p-8 transition-shadow hover:shadow-elevated"
             >
-              <span className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white dark:bg-ink-900 text-foreground mb-5 shadow-soft">
+              <span className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md text-foreground mb-5 shadow-soft">
                 <feature.icon className="w-5 h-5" strokeWidth={1.75} />
               </span>
               <h3 className="font-semibold text-[20px] sm:text-[22px] tracking-tighter2 leading-tight2 text-foreground">

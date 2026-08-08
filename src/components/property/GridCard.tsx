@@ -42,7 +42,7 @@ export const GridCard = memo(function GridCard({
     <Link
       href={href}
       className={cn(
-        "group block bg-fog rounded-apple-xl overflow-hidden transition-all duration-base ease-apple hover:shadow-product hover:-translate-y-1",
+        "group block glass-card hover:shadow-product",
         className
       )}
     >

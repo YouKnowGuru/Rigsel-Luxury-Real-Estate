@@ -20,7 +20,7 @@ const categories = [
 
 export function CategoryPills() {
   return (
-    <section className="py-6 sm:py-8 bg-background border-b border-ink-100 dark:border-ink-700/40">
+    <section className="py-6 sm:py-8 border-b border-ink-100/60 dark:border-ink-700/40">
       <div className="container-apple-wide">
         <motion.div
           initial={{ opacity: 0 }}
@@ -46,9 +46,9 @@ export function CategoryPills() {
               <Link
                 href={cat.href}
                 className={cn(
-                  "inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-[13px] font-medium transition-all duration-fast",
-                  "bg-white dark:bg-card border-ink-200 dark:border-ink-700 text-foreground",
-                  "hover:border-sky/40 hover:bg-sky/[0.04] hover:text-sky"
+                  "inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-medium transition-all duration-fast",
+                  "glass-pill text-foreground",
+                  "hover:border-sky/40 hover:text-sky"
                 )}
               >
                 <cat.icon className="w-4 h-4" strokeWidth={1.75} />

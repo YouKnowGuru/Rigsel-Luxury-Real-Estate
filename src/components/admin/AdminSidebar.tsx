@@ -109,7 +109,7 @@ export function AdminSidebar({ unreadCount = 0 }: AdminSidebarProps) {
                 animate={{ width: collapsed ? 72 : 256 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
-                    "fixed left-0 top-0 h-full bg-card z-[65] shadow-elevated border-r border-ink-100/60 flex flex-col overflow-hidden w-[256px] lg:w-auto",
+                    "fixed left-0 top-0 h-full admin-glass z-[65] flex flex-col overflow-hidden w-[256px] lg:w-auto",
                     !mobileOpen && "-translate-x-full lg:translate-x-0",
                     "transition-transform duration-300"
                 )}

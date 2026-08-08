@@ -35,7 +35,7 @@ export function FeaturedProperties() {
   const properties = featuredData?.data.length ? featuredData.data : latestData?.data || [];
 
   return (
-    <section className="section-y bg-background">
+    <section className="section-y">
       <div className="container-apple-wide">
         <SectionHeader
           eyebrow="Featured"

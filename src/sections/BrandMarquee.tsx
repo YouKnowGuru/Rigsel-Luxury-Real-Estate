@@ -17,7 +17,7 @@ const phrases = [
  */
 export function BrandMarquee() {
   return (
-    <section className="py-10 sm:py-14 bg-background border-y border-ink-100 dark:border-ink-700/40">
+    <section className="py-10 sm:py-14 border-y border-ink-100/60 dark:border-ink-700/40">
       <MarqueeStrip
         speed="slow"
         pauseOnHover

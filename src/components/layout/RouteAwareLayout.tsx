@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FloatingActions } from "@/components/ui/FloatingActions";
+import { GlassBackground } from "@/components/ui/GlassBackground";
 
 export function RouteAwareLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -21,8 +22,12 @@ export function RouteAwareLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      {/* Animated frosted-glass scene behind every page (public + admin) */}
+      <GlassBackground />
       {!isAdmin && <Navbar />}
-      <div className="relative">{children}</div>
+      <div id="main-content" className="relative">
+        {children}
+      </div>
       {!isAdmin && <Footer />}
       {!isAdmin && <FloatingActions />}
     </>

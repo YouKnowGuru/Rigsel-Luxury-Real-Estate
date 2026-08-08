@@ -111,7 +111,7 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
         "sticky top-0 z-40 flex flex-col transition-all duration-300",
         scrolled
           ? "glass-nav shadow-soft"
-          : "bg-background/80 backdrop-blur-xl border-b border-transparent"
+          : "glass-nav"
       )}
     >
       {/* Main Nav Bar */}
@@ -154,7 +154,7 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setShowSearch(true)}
                 placeholder="Search..."
-                className="w-full h-9 pl-9 pr-4 rounded-xl bg-ink-50/60 dark:bg-ink-800/30 border border-transparent focus:border-sky/25 focus:bg-background focus:outline-none text-[13px] text-foreground placeholder:text-ink-400 transition-all duration-200"
+                className="w-full h-9 pl-9 pr-4 rounded-xl bg-ink-100/70 dark:bg-ink-800/40 border border-ink-200/70 dark:border-ink-700/50 focus:border-sky/40 focus:bg-background focus:outline-none text-[13px] text-foreground placeholder:text-ink-400 transition-all duration-200"
               />
               <kbd className="hidden md:inline-flex absolute right-2.5 top-1/2 -translate-y-1/2 h-5 px-1.5 items-center rounded text-[10px] font-medium text-ink-400 bg-ink-100/60 border border-ink-200/40">
                 <Command className="w-2.5 h-2.5 mr-0.5" strokeWidth={2} />
@@ -171,11 +171,11 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 6, scale: 0.98 }}
                 transition={{ duration: 0.18 }}
-                className="absolute top-full left-0 right-0 mt-2 bg-card rounded-2xl shadow-lifted border border-ink-100/80 p-2 z-50"
+                className="absolute top-full left-0 right-0 mt-2 glass-strong rounded-2xl shadow-lifted p-2 z-50"
               >
                 <button
                   onClick={handleSearch}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-muted transition-colors text-left"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-ink-100/70 dark:hover:bg-white/10 transition-colors text-left"
                 >
                   <Search className="w-4 h-4 text-ink-400" strokeWidth={1.5} />
                   <span className="text-[13px] text-foreground">
@@ -244,9 +244,9 @@ export function AdminTopNav({ unreadCount = 0, recentInquiries = [] }: AdminTopN
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.96 }}
                     transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute right-0 mt-2.5 w-[320px] sm:w-[360px] bg-card rounded-2xl shadow-lifted border border-ink-100/80 overflow-hidden z-20"
+                    className="absolute right-0 mt-2.5 w-[320px] sm:w-[360px] glass-strong rounded-2xl shadow-lifted overflow-hidden z-20"
                   >
-                    <div className="p-3.5 sm:p-4 border-b border-ink-100/60 bg-card">
+                    <div className="p-3.5 sm:p-4 border-b border-ink-100/60">
                       <div className="flex items-center justify-between">
                         <h3 className="text-[15px] font-semibold text-foreground">
                           Notifications

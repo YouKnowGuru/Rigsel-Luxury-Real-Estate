@@ -135,7 +135,7 @@ export default function AdminChatsPage() {
       {/* Chat Grid */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[320px_1fr] gap-3 sm:gap-4 lg:gap-5 min-h-0">
         {/* Sidebar: Chat List */}
-        <div className={`bg-card rounded-2xl sm:rounded-[20px] border border-ink-100/60 shadow-soft flex flex-col overflow-hidden ${activeChatId ? 'hidden lg:flex' : 'flex'}`}>
+        <div className={`admin-glass rounded-2xl sm:rounded-[20px] flex flex-col overflow-hidden ${activeChatId ? 'hidden lg:flex' : 'flex'}`}>
           <div className="p-3 sm:p-4 border-b border-ink-100/60">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-400" strokeWidth={1.5} />
@@ -150,7 +150,7 @@ export default function AdminChatsPage() {
 
           <div className="flex-1 overflow-y-auto p-1.5 sm:p-2 scrollbar-none">
             {isLoading ? (
-              <div className="flex justify-center p-4 sm:p-8">
+              <div className="admin-glass rounded-xl py-12 flex justify-center p-4 sm:p-8">
                 <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-sky/20 border-t-sky rounded-full animate-spin" />
               </div>
             ) : filteredChats.length === 0 ? (
@@ -193,7 +193,7 @@ export default function AdminChatsPage() {
         </div>
 
         {/* Main Chat Area */}
-        <div className={`bg-card rounded-2xl sm:rounded-[20px] border border-ink-100/60 shadow-soft flex flex-col overflow-hidden min-h-0 ${activeChatId ? 'flex' : 'hidden lg:flex'}`}>
+        <div className={`admin-glass rounded-2xl sm:rounded-[20px] flex flex-col overflow-hidden min-h-0 ${activeChatId ? 'flex' : 'hidden lg:flex'}`}>
           {activeChat ? (
             <>
               {/* Chat Header */}

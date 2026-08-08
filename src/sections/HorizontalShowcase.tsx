@@ -37,7 +37,7 @@ const HorizontalCard = memo(function HorizontalCard({ property }: { property: Pr
   return (
     <Link
       href={`/properties/${property._id}`}
-      className="group block bg-white dark:bg-card rounded-apple-xl overflow-hidden border border-ink-100 dark:border-ink-700/40 shadow-soft hover:shadow-elevated transition-all duration-base ease-apple h-full"
+      className="group block glass-card hover:shadow-elevated h-full"
     >
       {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden bg-ink-100">
@@ -142,14 +142,14 @@ export function HorizontalShowcase({ title, subtitle, endpoint = "/api/propertie
           <div className="hidden sm:flex items-center gap-2">
             <button
               onClick={() => scroll("left")}
-              className="w-9 h-9 rounded-full bg-white dark:bg-card border border-ink-200 dark:border-ink-700 flex items-center justify-center text-foreground hover:bg-fog transition-colors no-tap"
+              className="w-9 h-9 rounded-full glass-pill flex items-center justify-center text-foreground hover:border-sky/40 transition-colors no-tap"
               aria-label="Scroll left"
             >
               <ChevronLeft className="w-4 h-4" strokeWidth={1.75} />
             </button>
             <button
               onClick={() => scroll("right")}
-              className="w-9 h-9 rounded-full bg-white dark:bg-card border border-ink-200 dark:border-ink-700 flex items-center justify-center text-foreground hover:bg-fog transition-colors no-tap"
+              className="w-9 h-9 rounded-full glass-pill flex items-center justify-center text-foreground hover:border-sky/40 transition-colors no-tap"
               aria-label="Scroll right"
             >
               <ChevronRight className="w-4 h-4" strokeWidth={1.75} />

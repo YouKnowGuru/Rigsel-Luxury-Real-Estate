@@ -80,7 +80,7 @@ function StatCard({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-5 hover:shadow-elevated transition-shadow duration-300 group"
+      className="admin-glass rounded-[20px] p-5 hover:shadow-elevated transition-shadow duration-300 group"
     >
       <div className="flex items-start justify-between mb-4">
         <div className={cn("w-10 h-10 rounded-[14px] flex items-center justify-center transition-transform duration-300 group-hover:scale-105", accentMap[accent])}>
@@ -149,8 +149,8 @@ export default function AdminDashboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
+      <div className="p-5 md:p-8 lg:p-10 max-w-[1440px] mx-auto min-h-screen flex items-center justify-center">
+        <div className="admin-glass rounded-[20px] p-10 flex flex-col items-center gap-3 w-full max-w-sm">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
@@ -235,7 +235,7 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6"
+          className="admin-glass rounded-[20px] p-6"
         >
           <div className="mb-5">
             <h3 className="font-semibold text-foreground text-[16px]">Properties Added</h3>
@@ -262,7 +262,7 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45 }}
-          className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6"
+          className="admin-glass rounded-[20px] p-6"
         >
           <div className="mb-5">
             <h3 className="font-semibold text-foreground text-[16px]">Inquiries Received</h3>
@@ -293,7 +293,7 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="xl:col-span-3 bg-card rounded-[20px] border border-ink-100/60 shadow-soft overflow-hidden"
+          className="xl:col-span-3 admin-glass rounded-[20px] overflow-hidden"
         >
           <div className="p-5 border-b border-ink-100/60 flex items-center justify-between">
             <div>
@@ -353,7 +353,7 @@ export default function AdminDashboard() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="xl:col-span-2 bg-card rounded-[20px] border border-ink-100/60 shadow-soft overflow-hidden"
+          className="xl:col-span-2 admin-glass rounded-[20px] overflow-hidden"
         >
           <div className="p-5 border-b border-ink-100/60">
             <h3 className="font-semibold text-foreground text-[16px]">Recent Properties</h3>

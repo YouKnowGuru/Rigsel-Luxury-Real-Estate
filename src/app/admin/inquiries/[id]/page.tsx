@@ -166,7 +166,7 @@ export default function InquiryDetailPage() {
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-card rounded-[20px] p-5 sm:p-8 md:p-12 shadow-soft border border-ink-100/60 relative overflow-hidden"
+                        className="admin-glass rounded-[20px] p-5 sm:p-8 md:p-12 relative overflow-hidden"
                     >
                         <div className="relative z-10 space-y-4 sm:space-y-6">
                             <div className="flex items-center gap-3 sm:gap-4 mb-4">
@@ -179,7 +179,7 @@ export default function InquiryDetailPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-card rounded-2xl p-4 sm:p-8 border border-ink-100/40 min-h-[150px] sm:min-h-[200px]">
+                            <div className="admin-glass rounded-2xl p-4 sm:p-8 min-h-[150px] sm:min-h-[200px]">
                                 <p className="text-ink-700 text-base sm:text-lg md:text-xl leading-relaxed whitespace-pre-wrap">
                                     {inquiry.message}
                                 </p>
@@ -203,7 +203,7 @@ export default function InquiryDetailPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="bg-card rounded-[20px] p-5 sm:p-8 md:p-10 shadow-elevated border border-ink-100/60 relative overflow-hidden"
+                        className="admin-glass rounded-[20px] p-5 sm:p-8 md:p-10 relative overflow-hidden"
                     >
                         <div className="relative z-10 space-y-4 sm:space-y-6">
                             <div className="flex items-center gap-3 mb-2">
@@ -245,7 +245,7 @@ export default function InquiryDetailPage() {
                     <motion.div
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="bg-card rounded-[20px] p-5 sm:p-8 shadow-soft border border-ink-100/60 space-y-6 sm:space-y-8"
+                        className="admin-glass rounded-[20px] p-5 sm:p-8 space-y-6 sm:space-y-8"
                     >
                         <div>
                             <h4 className="text-[11px] sm:text-[13px] font-semibold text-ink-400 uppercase tracking-wider mb-4 sm:mb-6">Contact Details</h4>

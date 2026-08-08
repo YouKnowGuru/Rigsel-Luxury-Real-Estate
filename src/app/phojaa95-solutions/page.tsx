@@ -116,7 +116,7 @@ function Phojaa95SolutionsContent() {
               return (
                 <div
                   key={type}
-                  className="p-5 rounded-apple-xl bg-fog/60 dark:bg-ink-800/30 border border-ink-100/60 dark:border-ink-700/30"
+                  className="p-5 rounded-apple-xl glass border border-ink-100/60 dark:border-ink-700/30"
                 >
                   <Icon className="w-6 h-6 text-sky mb-3" strokeWidth={1.5} />
                   <h2 className="text-[15px] font-semibold text-foreground">
@@ -222,7 +222,7 @@ function ProjectCard({
       <Link
         href={`/phojaa95-solutions/${item.slug}`}
         className={cn(
-          "group block rounded-apple-xl overflow-hidden border border-ink-100/60 dark:border-ink-700/40 hover:shadow-soft transition-all no-tap",
+          "group block rounded-apple-xl overflow-hidden glass border border-ink-100/60 dark:border-ink-700/40 hover:shadow-soft transition-all no-tap",
           featured && "ring-1 ring-sky/20"
         )}
       >

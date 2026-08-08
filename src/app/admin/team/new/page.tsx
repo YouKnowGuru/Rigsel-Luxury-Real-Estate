@@ -99,7 +99,7 @@ export default function NewTeamMemberPage() {
             </header>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="bg-card rounded-[20px] border border-ink-100/60 shadow-soft p-6">
+                <div className="admin-glass rounded-[20px] p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="md:col-span-2 space-y-2">
                             <label className="text-[13px] font-medium text-ink-600">Full Name *</label>

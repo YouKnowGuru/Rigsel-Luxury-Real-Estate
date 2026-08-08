@@ -121,8 +121,9 @@ export default function AdminArchitectureDesignPage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center py-20">
-          <Loader2 className="w-8 h-8 animate-spin text-sky" />
+        <div className="admin-glass rounded-[20px] py-20 flex flex-col items-center justify-center gap-3">
+          <Loader2 className="w-8 h-8 animate-spin text-sky" strokeWidth={1.5} />
+          <p className="text-ink-400 text-[13px] font-medium">Loading designs...</p>
         </div>
       ) : filtered.length === 0 ? (
         <p className="text-center text-ink-500 py-16">No architecture designs yet.</p>
@@ -134,7 +135,7 @@ export default function AdminArchitectureDesignPage() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.03 }}
-              className="flex gap-3 sm:gap-4 p-3 sm:p-4 bg-card border border-ink-100/60 dark:border-ink-700/40 rounded-2xl"
+              className="flex gap-3 sm:gap-4 p-3 sm:p-4 admin-glass-subtle rounded-2xl"
             >
               <div className="relative w-20 h-14 sm:w-32 sm:h-20 rounded-xl overflow-hidden bg-fog shrink-0">
                 {item.coverImage ? (

@@ -197,7 +197,7 @@ const ArticleCard = memo(function ArticleCard({
         delay: Math.min(index * 0.06, 0.3),
         ease: [0.16, 1, 0.3, 1],
       }}
-      className="group bg-fog/60 dark:bg-ink-800/30 rounded-apple-xl overflow-hidden border border-ink-100/40 dark:border-ink-700/20 hover:shadow-product hover:border-ink-200/60 dark:hover:border-ink-600/30 transition-all duration-fast"
+      className="group glass rounded-apple-xl overflow-hidden border border-ink-100/40 dark:border-ink-700/20 hover:shadow-product hover:border-ink-200/60 dark:hover:border-ink-600/30 transition-all duration-fast"
     >
       <Link href={`/blog/${blog.slug}`} className="block">
         {/* Image */}

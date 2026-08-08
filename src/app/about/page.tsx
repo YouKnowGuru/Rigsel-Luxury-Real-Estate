@@ -77,7 +77,7 @@ export default function AboutPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, delay: i * 0.06 }}
-              className="bg-fog rounded-apple-xl p-8 sm:p-10"
+              className="glass rounded-apple-xl p-8 sm:p-10"
             >
               <p className="text-[14px] font-semibold text-sky mb-2">
                 {card.eyebrow}
@@ -130,9 +130,9 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05, duration: 0.6 }}
-                className="bg-fog rounded-apple-xl p-7"
+                className="glass rounded-apple-xl p-7"
               >
-                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-soft text-foreground mb-5">
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md shadow-soft text-foreground mb-5">
                   <v.icon className="w-4 h-4" strokeWidth={1.75} />
                 </span>
                 <h3 className="font-semibold text-[18px] sm:text-[20px] tracking-tighter2 leading-tight2 text-foreground">
@@ -163,7 +163,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06, duration: 0.5 }}
-                className="bg-white dark:bg-card rounded-apple-lg p-5 sm:p-6 flex items-baseline gap-5 sm:gap-8 border border-ink-100 dark:border-ink-700/40"
+                className="glass rounded-apple-lg p-5 sm:p-6 flex items-baseline gap-5 sm:gap-8"
               >
                 <span className="text-[clamp(1.5rem,1.25rem+0.75vw,2rem)] font-semibold tabular-nums tracking-tighter3 text-foreground">
                   {m.year}
@@ -180,17 +180,17 @@ export default function AboutPage() {
       <TeamSection />
 
       {/* CTA */}
-      <section className="bg-ink-900 text-white">
+      <section className="glass border-t border-ink-100/60 dark:border-ink-700/40 text-foreground">
         <div className="container-apple-wide section-y text-center">
           <h2 className="font-semibold text-[clamp(2rem,1.5rem+2.5vw,4rem)] tracking-tighter3 leading-tighter text-balance max-w-3xl mx-auto">
             Ready to find your{" "}
-            <span className="text-white/55">perfect place?</span>
+            <span className="text-ink-500">perfect place?</span>
           </h2>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <Link href="/properties" className="btn-light btn-apple-lg">
+            <Link href="/properties" className="btn-primary-lg">
               Browse properties
             </Link>
-            <Link href="/contact" className="link-apple link-arrow text-sky-dim text-[15px]">
+            <Link href="/contact" className="link-apple link-arrow text-[15px]">
               Talk to a specialist
             </Link>
           </div>
