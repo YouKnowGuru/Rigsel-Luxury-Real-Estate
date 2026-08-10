@@ -39,9 +39,11 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
                     src="/image/logo.png"
                     alt="Phojaa Logo"
                     fill
+                    sizes="(max-width: 768px) 48px, 80px"
                     className="object-cover"
                     priority
                 />
+
                 <motion.div
                     animate={{
                         left: ["-100%", "200%"],

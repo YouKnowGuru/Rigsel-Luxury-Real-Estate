@@ -8,7 +8,7 @@ export interface Property {
   bedrooms: number;
   bathrooms: number;
   area: number;
-  propertyType: "house" | "apartment" | "land" | "commercial" | "villa";
+  propertyType: string; // DB stores arbitrary slugs e.g. "apartmentflat", "land", "villa"
   description: string;
   features: string[];
   specifications?: { label: string; value: string }[];
@@ -31,7 +31,7 @@ export interface PropertyFormData {
   bedrooms: number;
   bathrooms: number;
   area: number;
-  propertyType: "house" | "apartment" | "land" | "commercial" | "villa";
+  propertyType: string; // DB stores arbitrary slugs
   description: string;
   features: string[];
   specifications?: { label: string; value: string }[];

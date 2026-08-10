@@ -19,7 +19,7 @@ import type { PanoramaScene } from "@/components/architecture/Panorama360Viewer"
 const Panorama360Viewer = dynamic(
   () =>
     import("@/components/architecture/Panorama360Viewer").then(
-      (m) => m.Panorama360Viewer
+      (m) => ({ default: m.Panorama360Viewer })
     ),
   {
     ssr: false,

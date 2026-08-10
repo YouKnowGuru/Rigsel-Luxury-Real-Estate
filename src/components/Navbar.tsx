@@ -394,7 +394,7 @@ export function Navbar() {
                     <Search className="w-4 h-4" strokeWidth={1.5} />
                     Browse Properties
                   </Link>
-                  {settings.phone && (
+                  {settings?.phone && (
                     <a
                       href={`tel:${settings.phone}`}
                       className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-fog dark:bg-ink-800/40 text-foreground hover:bg-ink-100/60 transition-colors no-tap"

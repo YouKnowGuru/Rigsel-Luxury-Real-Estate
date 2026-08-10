@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -9,6 +10,11 @@ import { cn } from "@/lib/utils";
 export function FloatingActions() {
   const pathname = usePathname();
   const { settings } = useSettings();
+  const [currentUrl, setCurrentUrl] = useState("");
+
+  useEffect(() => {
+    setCurrentUrl(window.location.href);
+  }, []);
 
   if (pathname?.startsWith("/admin")) return null;
 
@@ -30,17 +36,18 @@ export function FloatingActions() {
     whatsappUrl = `https://wa.me/${digits}`;
   }
 
-  if (isPropertyDetail && typeof window !== "undefined") {
+  const siteName = settings?.siteName || "PHOJAA95 Real Estate";
+  const defaultText = encodeURIComponent(
+    `Hi, I'm interested in ${siteName} services.`
+  );
+
+  if (isPropertyDetail && currentUrl) {
     const text = encodeURIComponent(
-      `Hi, I'm inquiring about this property: ${window.location.href}`
+      `Hi, I'm inquiring about this property: ${currentUrl}`
     );
     whatsappUrl += whatsappUrl.includes("?") ? `&text=${text}` : `?text=${text}`;
   } else {
-    const siteName = settings?.siteName || "PHOJAA95 Real Estate";
-    const text = encodeURIComponent(
-      `Hi, I'm interested in ${siteName} services.`
-    );
-    whatsappUrl += whatsappUrl.includes("?") ? `&text=${text}` : `?text=${text}`;
+    whatsappUrl += whatsappUrl.includes("?") ? `&text=${defaultText}` : `?text=${defaultText}`;
   }
 
   return (
@@ -73,3 +80,4 @@ export function FloatingActions() {
     </div>
   );
 }
+

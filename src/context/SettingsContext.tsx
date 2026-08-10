@@ -37,18 +37,36 @@ interface SettingsContextType {
 
 const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
 
+/**
+ * Module-level cache so the settings API is only fetched once every 5 minutes
+ * across the entire browser session — regardless of how many times SettingsProvider
+ * mounts/unmounts (e.g. on navigation). Previously every mount hit the API with a
+ * Date.now() cache-buster, bypassing the browser's HTTP cache entirely.
+ */
+let cachedSettings: SiteSettings | null = null;
+let cacheExpiresAt = 0;
+const STALE_MS = 5 * 60 * 1000; // 5 minutes
+
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
-    const [settings, setSettings] = useState<SiteSettings>(DEFAULT_SETTINGS);
-    const [isLoading, setIsLoading] = useState(true);
+    const [settings, setSettings] = useState<SiteSettings>(cachedSettings ?? DEFAULT_SETTINGS);
+    const [isLoading, setIsLoading] = useState(!cachedSettings);
 
     useEffect(() => {
+        // Skip fetch if the module-level cache is still fresh
+        if (cachedSettings && Date.now() < cacheExpiresAt) {
+            setSettings(cachedSettings);
+            setIsLoading(false);
+            return;
+        }
+
         const fetchSettings = async () => {
             try {
-                const response = await fetch(`/api/settings?t=${Date.now()}`, {
-                    cache: "no-store"
-                });
+                // No cache-buster — allow the browser HTTP cache to work normally
+                const response = await fetch("/api/settings");
                 const data = await response.json();
                 if (data.success) {
+                    cachedSettings = data.data;
+                    cacheExpiresAt = Date.now() + STALE_MS;
                     setSettings(data.data);
                 }
             } catch (error) {

@@ -97,7 +97,9 @@ const nextConfig = {
               "font-src 'self'",
               "connect-src 'self' https://res.cloudinary.com https://cdn.jsdelivr.net",
               "media-src 'self' https://res.cloudinary.com",
+              "frame-src 'self' https://www.google.com https://maps.google.com",
               "object-src 'none'",
+
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",

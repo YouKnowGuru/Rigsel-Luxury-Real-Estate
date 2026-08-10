@@ -84,14 +84,15 @@ export default function RootLayout({
     <html
       lang="en"
       className="scroll-smooth"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
+
       <head>
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/icon.svg" />
         <link rel="manifest" href="/site.webmanifest" />
-        {/* Preload critical hero image for faster LCP */}
-        <link rel="preload" as="image" href="/image/about-hero.png" type="image/png" />
+
 
         {/* Inline script to prevent flash of unstyled theme */}
         <script

@@ -1,16 +1,22 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { MessageCircle } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 export function WhatsAppButton() {
     const pathname = usePathname();
-    
+    const [currentUrl, setCurrentUrl] = useState("");
+
+    useEffect(() => {
+        setCurrentUrl(window.location.href);
+    }, []);
+
     // Construct pre-filled message if on a property page
     let whatsappUrl = "https://wa.me/message/PKJFHGFCVTYPH1";
-    if (pathname?.startsWith("/properties/")) {
-        const text = encodeURIComponent(`Hi, I'm inquiring about this property: ${typeof window !== "undefined" ? window.location.href : ""}`);
+    if (pathname?.startsWith("/properties/") && currentUrl) {
+        const text = encodeURIComponent(`Hi, I'm inquiring about this property: ${currentUrl}`);
         whatsappUrl += `?text=${text}`;
     } else {
         // Default message

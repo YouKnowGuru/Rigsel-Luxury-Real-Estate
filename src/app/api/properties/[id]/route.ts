@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import mongoose from "mongoose";
 import connectDB from "@/lib/mongodb";
 import Property from "@/models/Property";
 import { verifyToken } from "@/lib/jwt";
@@ -14,7 +15,17 @@ export async function GET(
     const { id } = await params;
     await connectDB();
 
-    const property = await Property.findById(id).lean();
+    let property = null;
+    if (id && id !== "undefined") {
+      if (mongoose.isValidObjectId(id)) {
+        property = await Property.findById(id).lean();
+      } else {
+        // Fallback for slug or custom string lookup
+        property = await Property.findOne({
+          $or: [{ slug: id }, { title: new RegExp(`^${id}$`, "i") }],
+        }).lean();
+      }
+    }
 
     if (!property) {
       return NextResponse.json(

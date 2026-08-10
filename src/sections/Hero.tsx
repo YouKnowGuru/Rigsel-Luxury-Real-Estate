@@ -123,10 +123,10 @@ function useHeadlineTyper() {
           timer = setTimeout(tick, 1800);
           return;
         }
-        timer = setTimeout(tick, 45);
+        timer = setTimeout(tick, 70);
       } else if (phase === "holdFull") {
         phase = "deleting";
-        timer = setTimeout(tick, 60);
+        timer = setTimeout(tick, 80);
       } else if (phase === "deleting") {
         i -= 1;
         setCount(i);
@@ -135,7 +135,7 @@ function useHeadlineTyper() {
           timer = setTimeout(tick, 500);
           return;
         }
-        timer = setTimeout(tick, 28);
+        timer = setTimeout(tick, 45);
       } else {
         // holdEmpty — advance to the next real-estate headline and retype it
         curIdx = (curIdx + 1) % HEADLINES.length;
@@ -348,11 +348,8 @@ export function Hero() {
           fill
           priority
           sizes="100vw"
-          className="object-cover ken-burns"
+          className="object-cover"
         />
-        {/* Aurora glow accents — add depth & richness over the photo */}
-        <div className="absolute -top-1/4 -left-1/4 w-[60rem] h-[60rem] rounded-full bg-sky/30 blur-4xl mix-blend-screen animate-float-slow" />
-        <div className="absolute -bottom-1/4 -right-1/4 w-[55rem] h-[55rem] rounded-full bg-bhutan-gold/25 blur-4xl mix-blend-screen animate-float-slow [animation-delay:-7s]" />
         {/* Cinematic gradient scrims for text legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/45 to-black/95" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30" />

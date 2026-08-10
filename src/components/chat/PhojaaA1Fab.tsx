@@ -50,19 +50,12 @@ export function PhojaaA1Fab({ onClick, className, hidden }: PhojaaA1FabProps) {
           "focus-visible:ring-2 focus-visible:ring-sky focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         )}
       >
-        {/* Soft pulse rings */}
+        {/* Soft pulse glow on hover */}
         {!reduceMotion && (
-          <>
-            <span
-              className="absolute inset-0 rounded-full bg-sky/25 animate-ping"
-              style={{ animationDuration: "2.8s" }}
-              aria-hidden
-            />
-            <span
-              className="absolute -inset-1 rounded-full bg-bhutan-gold/20 blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500"
-              aria-hidden
-            />
-          </>
+          <span
+            className="absolute -inset-1 rounded-full bg-bhutan-gold/20 blur-md opacity-70 group-hover:opacity-100 transition-opacity duration-500"
+            aria-hidden
+          />
         )}
 
         {/* Main disc */}

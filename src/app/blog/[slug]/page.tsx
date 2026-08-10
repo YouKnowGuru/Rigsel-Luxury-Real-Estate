@@ -32,8 +32,11 @@ export default function BlogDetailPage() {
   const { slug } = useParams();
   const router = useRouter();
   const { toast } = useToast();
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [shareUrl, setShareUrl] = useState("");
+
+  useEffect(() => {
+    setShareUrl(window.location.href);
+  }, []);
 
   useEffect(() => {
     const fetchBlog = async () => {
@@ -74,11 +77,10 @@ export default function BlogDetailPage() {
     1,
     Math.ceil(blog.content.replace(/<[^>]*>/g, "").split(/\s+/).length / 200)
   );
-  const shareUrl =
-    typeof window !== "undefined" ? window.location.href : "";
 
   // Sanitize HTML content before rendering
   const sanitizedContent = sanitizeHtml(blog.content);
+
 
   return (
     <main className="bg-background pt-16 sm:pt-20">
