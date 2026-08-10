@@ -6,6 +6,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { FloatingActions } from "@/components/ui/FloatingActions";
 import { GlassBackground } from "@/components/ui/GlassBackground";
+import { PageTransition } from "@/components/motion/PageTransition";
 
 export function RouteAwareLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,9 +16,6 @@ export function RouteAwareLayout({ children }: { children: React.ReactNode }) {
     setMounted(true);
   }, []);
 
-  // During SSR and initial hydration, pathname is null on the server but
-  // the client must match the server output. We default to false (show nav)
-  // on both server and first client paint, then hide it after mount.
   const isAdmin = mounted && pathname?.startsWith("/admin");
 
   return (
@@ -26,10 +24,11 @@ export function RouteAwareLayout({ children }: { children: React.ReactNode }) {
       <GlassBackground />
       {!isAdmin && <Navbar />}
       <div id="main-content" className="relative">
-        {children}
+        <PageTransition>{children}</PageTransition>
       </div>
       {!isAdmin && <Footer />}
       {!isAdmin && <FloatingActions />}
     </>
   );
 }
+

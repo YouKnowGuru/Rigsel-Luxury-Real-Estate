@@ -301,7 +301,7 @@ export function Hero() {
           ]);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
     return () => controller.abort();
   }, []);
 
@@ -385,15 +385,15 @@ export function Hero() {
           variants={fadeUp}
           initial="hidden"
           animate="visible"
-          className="relative mt-6 font-serif font-medium tracking-tight leading-[1.05] text-white"
-          style={{ fontSize: "clamp(2.5rem, 1.8rem + 4vw, 6rem)", textShadow: "0 10px 50px rgba(0,0,0,0.5)" }}
+          className="relative mt-6 font-serif font-medium tracking-tight leading-[1.05] text-white max-w-5xl mx-auto"
+          style={{ fontSize: "clamp(2.5rem, 1.8rem + 4vw, 5.5rem)", textShadow: "0 10px 50px rgba(0,0,0,0.5)" }}
         >
           {/* invisible full-text placeholder — reserves space so nothing shifts while typing */}
-          <span className="invisible" aria-hidden="true">
+          <span className="invisible block" aria-hidden="true">
             {LONGEST_HEADLINE}
           </span>
           {/* typed overlay */}
-          <span className="absolute inset-0">
+          <span className="absolute inset-0 flex items-center justify-center text-center flex-wrap px-2">
             <span>{headBefore}</span>
             {headHL && (
               <span className="bg-gradient-to-r from-sky via-bhutan-gold to-sky bg-[length:200%_auto] bg-clip-text text-transparent animate-gradient-text">
@@ -402,7 +402,7 @@ export function Hero() {
             )}
             {headAfter && <span>{headAfter}</span>}
             {!reduceMotion && (
-              <span aria-hidden="true" className="inline-block align-middle w-[0.05em] h-[0.85em] ml-[0.08em] rounded-full bg-gradient-to-b from-bhutan-gold to-sky shadow-[0_0_14px_2px_rgba(197,165,114,0.65)] origin-center animate-caret-glow" />
+              <span aria-hidden="true" className="inline-block align-middle w-[0.05em] h-[0.85em] ml-[0.08em] rounded-full bg-gradient-to-b from-bhutan-gold to-sky shadow-[0_0_14px_2px_rgba(197,165,114,0.65)] origin-center animate-caret-glow shrink-0" />
             )}
           </span>
         </motion.h1>

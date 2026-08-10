@@ -254,18 +254,18 @@ export function ContactCTA() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.6, duration: 0.5 }}
-            className="mt-12 flex flex-wrap items-center justify-center gap-6 text-[12px] text-white/40"
+            className="mt-12 flex flex-wrap items-center justify-center gap-6 text-[13px] font-medium text-white/80"
           >
-            <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald" />
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald shadow-[0_0_8px_rgba(52,199,89,0.8)]" />
               Verified listings
             </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-sky" />
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-sky shadow-[0_0_8px_rgba(0,113,227,0.8)]" />
               24h response
             </span>
-            <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber" />
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-amber shadow-[0_0_8px_rgba(255,159,10,0.8)]" />
               Local expertise
             </span>
           </motion.div>

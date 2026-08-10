@@ -41,14 +41,16 @@ export function SectionHeader({
     >
       {eyebrow && (
         <Reveal>
-          <p
+          <div
             className={cn(
-              "text-[13px] sm:text-[14px] font-semibold mb-2.5",
-              invert ? "text-sky-dim" : "text-sky"
+              "inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.14em] mb-3 border",
+              invert
+                ? "bg-white/10 border-white/15 text-sky-dim"
+                : "bg-sky/10 border-sky/20 text-sky"
             )}
           >
             {eyebrow}
-          </p>
+          </div>
         </Reveal>
       )}
       <Reveal delay={0.06}>

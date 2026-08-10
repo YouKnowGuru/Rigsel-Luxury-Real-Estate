@@ -1,6 +1,0 @@
-
-> rigsel-realestate@1.0.0 build
-> next build
-
-⨯ Unable to acquire lock at F:\Rigsel Luxury Real Estate\rigsel-realestate\.next\lock, is another instance of next build running?
-  Suggestion: If you intended to restart next build, terminate the other process, and then try again.

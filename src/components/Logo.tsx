@@ -57,10 +57,10 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
             </motion.div>
 
             {showText && (
-                <div className="flex flex-col min-w-0">
+                <div className="flex flex-col shrink-0">
                     <h1 className={cn(
-                        "font-serif font-bold leading-[1.1] md:leading-[1.1] tracking-tight text-foreground",
-                        size === "sm" ? "text-[11px] md:text-sm" :
+                        "font-serif font-bold leading-[1.1] md:leading-[1.1] tracking-tight text-foreground whitespace-nowrap",
+                        size === "sm" ? "text-[13px] md:text-sm" :
                             size === "md" ? "text-base md:text-xl" :
                                 "text-lg sm:text-2xl md:text-4xl lg:text-5xl"
                     )}>
@@ -73,7 +73,7 @@ export function Logo({ className, size = "md", showText = false, dark = false }:
                     </h1>
                     <p className={cn(
                         "font-bold uppercase tracking-[0.05em] sm:tracking-[0.1em] md:tracking-[0.2em] whitespace-nowrap text-ink-400",
-                        size === "sm" ? "text-[6px] md:text-[7px]" : "text-[7px] sm:text-[8px] md:text-[10px]"
+                        size === "sm" ? "text-[7px] md:text-[8px]" : "text-[7px] sm:text-[8px] md:text-[10px]"
                     )}>
                         Bhutan Property
                     </p>

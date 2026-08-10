@@ -288,7 +288,7 @@ export function PropertyCategories() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.08 }}
-            className="flex flex-wrap gap-2 lg:justify-end"
+            className="flex flex-wrap items-center gap-2 max-w-full lg:max-w-md lg:justify-end"
           >
             {types.map((t) => {
               const meta = categoryMeta[t.slug] ?? defaultMeta;
@@ -297,7 +297,7 @@ export function PropertyCategories() {
                 <Link
                   key={t.slug}
                   href={`/properties?type=${t.slug}`}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[13px] font-medium glass-pill text-ink-600 hover:text-foreground hover:border-sky/30 hover:bg-sky/[0.04] transition-all no-tap"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 sm:py-2 rounded-full text-[13px] font-medium glass-pill text-foreground/80 hover:text-foreground hover:border-sky/30 hover:bg-sky/10 transition-all no-tap shrink-0"
                 >
                   <Icon className="w-3.5 h-3.5 text-sky" strokeWidth={2} />
                   {meta.label}
@@ -309,7 +309,7 @@ export function PropertyCategories() {
                 </Link>
               );
             })}
-            <Link href="/properties" className="btn-secondary text-[13px] !py-2 !px-4">
+            <Link href="/properties" className="btn-secondary text-[13px] !py-1.5 sm:!py-2 !px-4 shrink-0">
               All listings
               <ArrowRight className="w-3.5 h-3.5 ml-1 inline" />
             </Link>

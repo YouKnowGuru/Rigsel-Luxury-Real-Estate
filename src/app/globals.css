@@ -105,6 +105,12 @@
   text-rendering: optimizeLegibility;
 }
 
+/* Promote blur-heavy animating elements to GPU layer for compositing */
+.glass-scene > div {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 html {
   font-feature-settings: "ss01", "cv11", "cv02", "cv03", "cv04";
   font-variant-ligatures: common-ligatures;
@@ -963,6 +969,11 @@ section.bg-background,
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
+}
+/* Skeleton shimmer slide — used by PropertyCardSkeleton via animate-shimmer */
+@keyframes shimmer-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
 }
 
 /* ── Animated gradient sheen for headline accents ── */

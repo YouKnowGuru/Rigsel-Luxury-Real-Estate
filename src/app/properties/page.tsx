@@ -616,7 +616,28 @@ function PropertiesContent() {
 
 export default function PropertiesPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <main className="bg-background">
+          <section className="bg-fog pt-28 sm:pt-32 pb-12 sm:pb-16">
+            <div className="container-apple-wide text-center">
+              <div className="h-4 w-16 bg-ink-200/60 rounded mx-auto mb-4" />
+              <div className="h-12 w-2/3 max-w-lg bg-ink-200/60 rounded-2xl mx-auto mb-4" />
+              <div className="h-5 w-1/2 max-w-md bg-ink-100/60 rounded mx-auto" />
+            </div>
+          </section>
+          <section className="section-y-sm">
+            <div className="container-apple-wide">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <PropertyCardSkeleton key={i} />
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
+      }
+    >
       <PropertiesContent />
     </Suspense>
   );

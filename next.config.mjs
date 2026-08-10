@@ -2,7 +2,15 @@
 const nextConfig = {
   // Allow local network access for development
   allowedDevOrigins: ["192.168.8.34", "localhost", "127.0.0.1"],
+
+  // Compress gzip/brotli for smaller payloads
+  compress: true,
+
   images: {
+    // Serve AVIF first (smallest), fallback WebP then JPEG
+    formats: ["image/avif", "image/webp"],
+    // Cache optimised images for 1 week
+    minimumCacheTTL: 604800,
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com", pathname: "/**" },
       { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
@@ -10,11 +18,13 @@ const nextConfig = {
       { protocol: "https", hostname: "maps.googleapis.com", pathname: "/**" },
     ],
   },
+
   // Only expose non-sensitive variables that need to be available client-side
   // SECURITY: Never expose API keys, secrets, or credentials here
   env: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
+
   // Optimize barrel file imports for faster dev/build performance
   experimental: {
     optimizePackageImports: [
@@ -28,7 +38,10 @@ const nextConfig = {
       "@radix-ui/react-tabs",
       "@radix-ui/react-toast",
     ],
+    // Restore scroll position on browser back/forward
+    scrollRestoration: true,
   },
+
   async rewrites() {
     return {
       beforeFiles: [

@@ -83,6 +83,21 @@ const config: Config = {
         emerald: {
           DEFAULT: "#34C759",
         },
+        amber: {
+          DEFAULT: "#FF9F0A",
+          light: "#FFB340",
+          dark: "#CF7A00",
+        },
+        rose: {
+          DEFAULT: "#FF375F",
+          light: "#FF6584",
+          dark: "#C90035",
+        },
+        violet: {
+          DEFAULT: "#BF5AF2",
+          light: "#DA8FFF",
+          dark: "#9B35CC",
+        },
         // Brand accents — used sparingly, mostly for pricing/tags.
         bhutan: {
           red: {
@@ -263,6 +278,10 @@ const config: Config = {
           "0%, 100%": { "background-position": "0% 50%" },
           "50%": { "background-position": "100% 50%" },
         },
+        "shimmer-slide": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(300%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -278,6 +297,7 @@ const config: Config = {
         "marquee-fast": "marquee 22s linear infinite",
         "marquee-reverse": "marquee-reverse 40s linear infinite",
         shimmer: "shimmer 3.5s linear infinite",
+        "shimmer-slide": "shimmer-slide 1.5s ease-in-out infinite",
         "ken-burns": "ken-burns 14s ease-in-out infinite alternate",
         float: "float 5s ease-in-out infinite",
         "float-slow": "float-slow 18s ease-in-out infinite",
