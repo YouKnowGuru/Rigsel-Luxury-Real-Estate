@@ -33,6 +33,8 @@ export default function BlogDetailPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [shareUrl, setShareUrl] = useState("");
+  const [blog, setBlog] = useState<Blog | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setShareUrl(window.location.href);
