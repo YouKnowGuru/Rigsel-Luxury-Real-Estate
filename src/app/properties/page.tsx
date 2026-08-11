@@ -233,9 +233,14 @@ function PropertiesContent() {
   const [properties, setProperties] = useState<Property[]>([]);
   const [propertyTypes, setPropertyTypes] = useState<IPropertyType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [filters, setFilters] = useState<PropertyFilters>({
     location: searchParams.get("location") || "",
     district: searchParams.get("district") || "",
@@ -246,31 +251,76 @@ function PropertiesContent() {
     bathrooms: Number(searchParams.get("bathrooms")) || 0,
   });
 
-  const fetchProperties = useCallback(async () => {
-    setIsLoading(true);
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  const fetchProperties = useCallback(async (pageNum: number, isLoadMore = false) => {
+    if (isLoadMore) {
+      setIsLoadingMore(true);
+    } else {
+      setIsLoading(true);
+    }
+
     try {
       const params = new URLSearchParams();
+      params.append("page", pageNum.toString());
+      params.append("limit", "12");
+
       if (filters.district && filters.district !== "All districts") {
         params.append("district", filters.district);
       }
-      if (filters.propertyType)
+      if (filters.propertyType) {
         params.append("propertyType", filters.propertyType);
-      if (filters.minPrice)
+      }
+      if (filters.minPrice) {
         params.append("minPrice", filters.minPrice.toString());
-      if (filters.maxPrice)
+      }
+      if (filters.maxPrice) {
         params.append("maxPrice", filters.maxPrice.toString());
-      if (filters.bedrooms)
+      }
+      if (filters.bedrooms) {
         params.append("bedrooms", filters.bedrooms.toString());
+      }
+      if (debouncedSearch) {
+        params.append("search", debouncedSearch);
+      }
 
       const response = await fetch(`/api/properties?${params.toString()}`);
       const data = await response.json();
-      if (data.success) setProperties(data.data);
+
+      if (data.success) {
+        const newProperties: Property[] = data.data || [];
+        const pagination = data.pagination;
+
+        if (isLoadMore) {
+          setProperties((prev) => {
+            const existingIds = new Set(prev.map((p) => p._id));
+            const filteredNew = newProperties.filter((p) => !existingIds.has(p._id));
+            return [...prev, ...filteredNew];
+          });
+        } else {
+          setProperties(newProperties);
+        }
+
+        if (pagination) {
+          setTotalCount(pagination.total);
+          setHasMore(pageNum < pagination.pages);
+        } else {
+          setHasMore(false);
+        }
+      }
     } catch (error) {
       console.error("Error fetching properties:", error);
     } finally {
       setIsLoading(false);
+      setIsLoadingMore(false);
     }
-  }, [filters]);
+  }, [filters, debouncedSearch]);
 
   const fetchPropertyTypes = useCallback(async () => {
     try {
@@ -283,18 +333,19 @@ function PropertiesContent() {
   }, []);
 
   useEffect(() => {
-    Promise.all([fetchProperties(), fetchPropertyTypes()]);
-  }, [fetchProperties, fetchPropertyTypes]);
+    fetchPropertyTypes();
+  }, [fetchPropertyTypes]);
 
-  const filtered = useMemo(() => {
-    if (!searchTerm) return properties;
-    const t = searchTerm.toLowerCase();
-    return properties.filter(
-      (p) =>
-        p.title.toLowerCase().includes(t) ||
-        p.location?.toLowerCase().includes(t)
-    );
-  }, [properties, searchTerm]);
+  useEffect(() => {
+    setPage(1);
+    fetchProperties(1, false);
+  }, [fetchProperties]);
+
+  const handleLoadMore = useCallback(() => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchProperties(nextPage, true);
+  }, [page, fetchProperties]);
 
   const resetFilters = useCallback(() => {
     setFilters({
@@ -558,10 +609,15 @@ function PropertiesContent() {
                 </span>
               ) : (
                 <>
+                  Showing{" "}
                   <span className="font-medium text-foreground tabular-nums">
-                    {filtered.length}
+                    {properties.length}
                   </span>{" "}
-                  {filtered.length === 1 ? "property" : "properties"} found
+                  of{" "}
+                  <span className="font-medium text-foreground tabular-nums">
+                    {totalCount}
+                  </span>{" "}
+                  {totalCount === 1 ? "property" : "properties"}
                 </>
               )}
             </p>
@@ -574,39 +630,64 @@ function PropertiesContent() {
                 <PropertyCardSkeleton key={i} />
               ))}
             </div>
-          ) : filtered.length === 0 ? (
+          ) : properties.length === 0 ? (
             <EmptyState onReset={resetFilters} />
           ) : (
-            <motion.div
-              layout
-              className={cn(
-                viewMode === "grid"
-                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
-                  : "space-y-5"
-              )}
-            >
-              <AnimatePresence mode="popLayout">
-                {filtered.map((property, i) => (
-                  <motion.div
-                    key={property._id}
-                    layout
-                    initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{
-                      duration: 0.4,
-                      delay: Math.min(i * 0.04, 0.3),
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
+            <>
+              <motion.div
+                layout
+                className={cn(
+                  viewMode === "grid"
+                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
+                    : "space-y-5"
+                )}
+              >
+                <AnimatePresence mode="popLayout">
+                  {properties.map((property, i) => (
+                    <motion.div
+                      key={property._id}
+                      layout
+                      initial={shouldReduceMotion ? {} : { opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{
+                        duration: 0.4,
+                        delay: Math.min(i * 0.04, 0.3),
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      <SharedPropertyCard
+                        property={property}
+                        variant={viewMode}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+
+              {/* Load More Button */}
+              {hasMore && (
+                <div className="mt-12 text-center">
+                  <button
+                    onClick={handleLoadMore}
+                    disabled={isLoadingMore}
+                    className="inline-flex items-center gap-2.5 h-12 px-8 rounded-full bg-foreground text-background font-medium text-[14px] hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-soft"
                   >
-                    <SharedPropertyCard
-                      property={property}
-                      variant={viewMode}
-                    />
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+                    {isLoadingMore ? (
+                      <>
+                        <span className="w-4 h-4 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                        Loading properties…
+                      </>
+                    ) : (
+                      <>
+                        Load More Properties ({properties.length} of {totalCount})
+                        <ChevronDown className="w-4 h-4" strokeWidth={2} />
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

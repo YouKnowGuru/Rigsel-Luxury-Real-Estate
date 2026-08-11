@@ -103,7 +103,7 @@ export const ListCard = memo(function ListCard({
         <div className="grid grid-cols-3 gap-4 mt-auto pt-5 border-t border-ink-100 dark:border-ink-700/40">
           <StatItem icon={Bed} value={property.bedrooms} label="Beds" />
           <StatItem icon={Bath} value={property.bathrooms} label="Baths" />
-          <StatItem icon={Maximize} value={property.area} label="Sqft" />
+          <StatItem icon={Maximize} value={property.area} label="Decimal" />
         </div>
 
         <div className="mt-6 flex items-center justify-between">

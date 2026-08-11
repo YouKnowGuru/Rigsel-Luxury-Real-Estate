@@ -210,7 +210,7 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
           {[
             { label: "Beds", value: property.bedrooms, Icon: Bed },
             { label: "Baths", value: property.bathrooms, Icon: Bath },
-            { label: "Area", value: `${property.area} sqft`, Icon: Maximize },
+            { label: "Area", value: `${property.area} Decimal`, Icon: Maximize },
           ].map(({ label, value, Icon }) => (
             <div key={label}>
               <p className="text-[11px] uppercase tracking-eyebrow text-ink-500">

@@ -118,7 +118,7 @@ export const GridCard = memo(function GridCard({
         <ul className="mt-4 grid grid-cols-3 gap-2 text-[12px] text-ink-500">
           <GridStatItem icon={Bed} value={property.bedrooms} label="Beds" />
           <GridStatItem icon={Bath} value={property.bathrooms} label="Baths" />
-          <GridStatItem icon={Maximize} value={property.area} label="Sqft" />
+          <GridStatItem icon={Maximize} value={property.area} label="Decimal" />
         </ul>
 
         <div className="mt-5 flex items-center justify-between">

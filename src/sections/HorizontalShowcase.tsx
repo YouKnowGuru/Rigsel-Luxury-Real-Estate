@@ -79,7 +79,7 @@ const HorizontalCard = memo(function HorizontalCard({ property }: { property: Pr
         <div className="mt-3 flex items-center gap-3 text-[11px] text-ink-500">
           <StatItem icon={Bed} value={property.bedrooms} />
           <StatItem icon={Bath} value={property.bathrooms} />
-          <StatItem icon={Maximize} value={`${property.area} sqft`} />
+          <StatItem icon={Maximize} value={`${property.area} Decimal`} />
         </div>
 
         {/* App Store style "Get" button row */}

@@ -69,7 +69,11 @@ export async function GET(request: NextRequest) {
     // Search by text
     const search = searchParams.get("search");
     if (search) {
-      query.$text = { $search: search };
+      query.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+        { district: { $regex: search, $options: "i" } },
+      ];
     }
 
     // Pagination
