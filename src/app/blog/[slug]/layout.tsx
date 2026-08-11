@@ -51,7 +51,7 @@ export async function generateMetadata({
         title,
         description,
         type: "article",
-        url: `https://phojaa95realestate.com/blog/${slug}`,
+        url: `https://phojaarealestate.com/blog/${slug}`,
         publishedTime: blog.createdAt ? new Date(blog.createdAt).toISOString() : undefined,
         authors: [blog.author || "PHOJAA95 Real Estate"],
         tags: blog.tags || [],
@@ -73,7 +73,7 @@ export async function generateMetadata({
         images: blog.coverImage ? [blog.coverImage] : undefined,
       },
       alternates: {
-        canonical: `https://phojaa95realestate.com/blog/${slug}`,
+        canonical: `https://phojaarealestate.com/blog/${slug}`,
       },
     };
   } catch (error) {
@@ -118,7 +118,7 @@ export default async function BlogDetailLayout({
           description={
             blog.content?.replace(/<[^>]*>/g, "").slice(0, 160) || blog.title
           }
-          url={`https://phojaa95realestate.com/blog/${slug}`}
+          url={`https://phojaarealestate.com/blog/${slug}`}
           image={blog.coverImage}
           datePublished={blog.createdAt ? new Date(blog.createdAt).toISOString() : undefined}
           dateModified={blog.updatedAt ? new Date(blog.updatedAt).toISOString() : undefined}

@@ -68,10 +68,10 @@ export const metadata: Metadata = {
     description:
       "Browse verified land, houses & commercial properties across Bhutan. Trusted by 500+ happy families. PHOJAA95 — Bhutan's best real estate agency.",
     type: "website",
-    url: "https://phojaa95realestate.com",
+    url: "https://phojaarealestate.com",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com",
+    canonical: "https://phojaarealestate.com",
   },
 };
 

@@ -8,7 +8,7 @@ import { RouteAwareLayout } from "@/components/layout/RouteAwareLayout";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import "@/lib/fonts";
 export const metadata: Metadata = {
-  metadataBase: new URL("https://phojaa95realestate.com"),
+  metadataBase: new URL("https://phojaarealestate.com"),
   title: {
     default: "PHOJAA95 Real Estate | Best Real Estate in Bhutan | Buy Property, Land & Homes",
     template: "%s | PHOJAA95 Real Estate",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     "Bumthang real estate",
     "property registration Bhutan",
   ],
-  authors: [{ name: "PHOJAA95 Real Estate", url: "https://phojaa95realestate.com" }],
+  authors: [{ name: "PHOJAA95 Real Estate", url: "https://phojaarealestate.com" }],
   creator: "PHOJAA95 Real Estate",
   publisher: "PHOJAA95 Real Estate",
   robots: {
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://phojaa95realestate.com",
+    url: "https://phojaarealestate.com",
     siteName: "PHOJAA95 Real Estate",
     title: "PHOJAA95 Real Estate | Best Real Estate in Bhutan",
     description:
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
     creator: "@phojaa95realestate",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com",
+    canonical: "https://phojaarealestate.com",
   },
   category: "real estate",
   classification: "Business",
@@ -136,19 +136,19 @@ export default function RootLayout({
               "@graph": [
                 {
                   "@type": ["RealEstateAgent", "LocalBusiness"],
-                  "@id": "https://phojaa95realestate.com/#business",
+                  "@id": "https://phojaarealestate.com/#business",
                   name: "PHOJAA95 Real Estate",
                   alternateName: "Phojaa95 Real Estate Bhutan",
                   description:
                     "Bhutan's most trusted real estate agency. We connect genuine buyers and sellers of land, houses, and commercial properties across all 20 dzongkhags with transparent, reliable service.",
-                  url: "https://phojaa95realestate.com",
+                  url: "https://phojaarealestate.com",
                   logo: {
                     "@type": "ImageObject",
-                    url: "https://phojaa95realestate.com/image/logo.png",
+                    url: "https://phojaarealestate.com/image/logo.png",
                     width: 512,
                     height: 512,
                   },
-                  image: "https://phojaa95realestate.com/opengraph-image",
+                  image: "https://phojaarealestate.com/opengraph-image",
                   address: {
                     "@type": "PostalAddress",
                     streetAddress: "Below RRCO, Taju",
@@ -212,17 +212,17 @@ export default function RootLayout({
                 },
                 {
                   "@type": "WebSite",
-                  "@id": "https://phojaa95realestate.com/#website",
-                  url: "https://phojaa95realestate.com",
+                  "@id": "https://phojaarealestate.com/#website",
+                  url: "https://phojaarealestate.com",
                   name: "PHOJAA95 Real Estate",
                   description: "Best real estate in Bhutan — buy property, land & homes",
-                  publisher: { "@id": "https://phojaa95realestate.com/#business" },
+                  publisher: { "@id": "https://phojaarealestate.com/#business" },
                   inLanguage: "en-US",
                   potentialAction: {
                     "@type": "SearchAction",
                     target: {
                       "@type": "EntryPoint",
-                      urlTemplate: "https://phojaa95realestate.com/properties?search={search_term_string}",
+                      urlTemplate: "https://phojaarealestate.com/properties?search={search_term_string}",
                     },
                     "query-input": "required name=search_term_string",
                   },

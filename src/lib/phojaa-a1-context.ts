@@ -68,7 +68,7 @@ function siteBaseUrl(): string {
   const url =
     process.env.OPENROUTER_SITE_URL ||
     process.env.NEXTAUTH_URL ||
-    "https://phojaa95realestate.com";
+    "https://phojaarealestate.com";
   return url.replace(/\/$/, "");
 }
 

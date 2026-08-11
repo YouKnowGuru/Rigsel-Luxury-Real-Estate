@@ -18,10 +18,10 @@ export const metadata: Metadata = {
     description:
       "Get in touch with Bhutan's trusted real estate agency. Call +975-16111999, email us, or visit our office in Paro.",
     type: "website",
-    url: "https://phojaa95realestate.com/contact",
+    url: "https://phojaarealestate.com/contact",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com/contact",
+    canonical: "https://phojaarealestate.com/contact",
   },
 };
 

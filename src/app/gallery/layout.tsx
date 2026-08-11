@@ -19,10 +19,10 @@ export const metadata: Metadata = {
     description:
       "A curated collection of property photography — luxury homes, architecture & landscapes across the Himalayan kingdom.",
     type: "website",
-    url: "https://phojaa95realestate.com/gallery",
+    url: "https://phojaarealestate.com/gallery",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com/gallery",
+    canonical: "https://phojaarealestate.com/gallery",
   },
 };
 

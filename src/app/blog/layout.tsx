@@ -21,10 +21,10 @@ export const metadata: Metadata = {
     description:
       "Expert insights, guides, and news about Bhutan's property market from PHOJAA95 Real Estate.",
     type: "website",
-    url: "https://phojaa95realestate.com/blog",
+    url: "https://phojaarealestate.com/blog",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com/blog",
+    canonical: "https://phojaarealestate.com/blog",
   },
 };
 

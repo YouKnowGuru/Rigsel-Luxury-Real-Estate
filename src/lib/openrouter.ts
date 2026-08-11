@@ -28,7 +28,7 @@ export async function completeWithOpenRouter(
   const siteUrl =
     process.env.OPENROUTER_SITE_URL ||
     process.env.NEXTAUTH_URL ||
-    "https://phojaa95realestate.com";
+    "https://phojaarealestate.com";
   const siteName = process.env.OPENROUTER_SITE_NAME || "PHOJAA95 Real Estate";
 
   let lastError: Error | null = null;

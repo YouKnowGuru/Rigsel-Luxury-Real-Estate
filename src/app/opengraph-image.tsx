@@ -116,7 +116,7 @@ export default async function Image() {
             padding: "12px 28px",
           }}
         >
-          phojaa95realestate.com
+          phojaarealestate.com
         </div>
       </div>
     ),

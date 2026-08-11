@@ -26,10 +26,10 @@ export const metadata: Metadata = {
     description:
       "Browse verified land, houses & commercial properties across all 20 dzongkhags of Bhutan. Filter by location, type & budget.",
     type: "website",
-    url: "https://phojaa95realestate.com/properties",
+    url: "https://phojaarealestate.com/properties",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com/properties",
+    canonical: "https://phojaarealestate.com/properties",
   },
 };
 

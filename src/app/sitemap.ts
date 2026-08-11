@@ -6,7 +6,7 @@ import PropertyModel from "@/models/Property";
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://phojaa95realestate.com";
+  const baseUrl = "https://phojaarealestate.com";
 
   const staticPages: MetadataRoute.Sitemap = [
     {

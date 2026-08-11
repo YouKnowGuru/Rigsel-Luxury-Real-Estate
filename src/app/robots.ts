@@ -20,7 +20,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/", "/api/admin/"],
       },
     ],
-    sitemap: "https://phojaa95realestate.com/sitemap.xml",
-    host: "https://phojaa95realestate.com",
+    sitemap: "https://phojaarealestate.com/sitemap.xml",
+    host: "https://phojaarealestate.com",
   };
 }

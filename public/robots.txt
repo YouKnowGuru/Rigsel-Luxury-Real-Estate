@@ -11,5 +11,5 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/admin/
 
-Sitemap: https://phojaa95realestate.com/sitemap.xml
-Host: https://phojaa95realestate.com
+Sitemap: https://phojaarealestate.com/sitemap.xml
+Host: https://phojaarealestate.com

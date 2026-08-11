@@ -19,10 +19,10 @@ export const metadata: Metadata = {
     description:
       "Explore stunning architectural projects in Bhutan with interactive 360° virtual tours.",
     type: "website",
-    url: "https://phojaa95realestate.com/architecture-design",
+    url: "https://phojaarealestate.com/architecture-design",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com/architecture-design",
+    canonical: "https://phojaarealestate.com/architecture-design",
   },
 };
 

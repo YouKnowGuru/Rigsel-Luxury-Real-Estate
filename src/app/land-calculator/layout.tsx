@@ -19,10 +19,10 @@ export const metadata: Metadata = {
     description:
       "Free land area calculator. Convert between decimal, square feet, acres & more. Perfect for Bhutan property transactions.",
     type: "website",
-    url: "https://phojaa95realestate.com/land-calculator",
+    url: "https://phojaarealestate.com/land-calculator",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com/land-calculator",
+    canonical: "https://phojaarealestate.com/land-calculator",
   },
 };
 

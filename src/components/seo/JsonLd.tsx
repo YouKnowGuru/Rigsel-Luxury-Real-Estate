@@ -15,7 +15,7 @@ export function BreadcrumbJsonLd({ items }: { items: BreadcrumbItem[] }) {
       name: item.name,
       item: item.url.startsWith("http")
         ? item.url
-        : `https://phojaa95realestate.com${item.url}`,
+        : `https://phojaarealestate.com${item.url}`,
     })),
   };
 
@@ -89,14 +89,14 @@ export function ArticleJsonLd({
     author: {
       "@type": "Organization",
       name: authorName,
-      url: "https://phojaa95realestate.com",
+      url: "https://phojaarealestate.com",
     },
     publisher: {
       "@type": "Organization",
       name: "PHOJAA95 Real Estate",
       logo: {
         "@type": "ImageObject",
-        url: "https://phojaa95realestate.com/image/logo.png",
+        url: "https://phojaarealestate.com/image/logo.png",
       },
     },
   };

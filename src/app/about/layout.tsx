@@ -18,10 +18,10 @@ export const metadata: Metadata = {
     description:
       "Bhutan's most trusted property agency since 2015. 500+ families served across 20+ districts with care, honesty, and professionalism.",
     type: "website",
-    url: "https://phojaa95realestate.com/about",
+    url: "https://phojaarealestate.com/about",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com/about",
+    canonical: "https://phojaarealestate.com/about",
   },
 };
 

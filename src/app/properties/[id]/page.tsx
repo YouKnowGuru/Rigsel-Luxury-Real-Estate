@@ -53,11 +53,11 @@ export async function generateMetadata({
     .slice(0, 160);
 
   const title = `${property.title} in ${property.district || property.location || 'Bhutan'} | PHOJAA95 Real Estate`;
-  const canonicalUrl = `https://phojaa95realestate.com/properties/${id}`;
+  const canonicalUrl = `https://phojaarealestate.com/properties/${id}`;
   const firstImage = property.images?.[0];
 
   return {
-    metadataBase: new URL("https://phojaa95realestate.com"),
+    metadataBase: new URL("https://phojaarealestate.com"),
     title,
     description:
       plainDesc ||
@@ -113,7 +113,7 @@ export default async function PropertyDetailPage({
       <RealEstateListingJsonLd
         title={property.title}
         description={property.description?.replace(/<[^>]*>/g, "").slice(0, 160) || property.title}
-        url={`https://phojaa95realestate.com/properties/${id}`}
+        url={`https://phojaarealestate.com/properties/${id}`}
         image={property.images?.[0]}
         price={property.price}
         addressLocality={property.district || property.location || "Bhutan"}

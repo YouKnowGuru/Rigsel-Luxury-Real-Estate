@@ -19,10 +19,10 @@ export const metadata: Metadata = {
     description:
       "Custom website design, app development & software solutions. Bhutan's trusted tech team.",
     type: "website",
-    url: "https://phojaa95realestate.com/phojaa95-solutions",
+    url: "https://phojaarealestate.com/phojaa95-solutions",
   },
   alternates: {
-    canonical: "https://phojaa95realestate.com/phojaa95-solutions",
+    canonical: "https://phojaarealestate.com/phojaa95-solutions",
   },
 };
 
