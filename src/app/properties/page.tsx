@@ -611,7 +611,7 @@ function PropertiesContent() {
                 <>
                   Showing{" "}
                   <span className="font-medium text-foreground tabular-nums">
-                    {properties.length}
+                    {properties.length === 1 ? "1" : `1–${properties.length}`}
                   </span>{" "}
                   of{" "}
                   <span className="font-medium text-foreground tabular-nums">
