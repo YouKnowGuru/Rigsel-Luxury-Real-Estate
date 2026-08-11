@@ -1,0 +1,25 @@
+# Hostinger Node.js hosting - Apache reverse proxy config
+# This ensures correct MIME types and proxies all traffic to the Next.js app
+
+<IfModule mod_mime.c>
+  AddType text/css                  .css
+  AddType application/javascript    .js
+  AddType application/json          .json
+  AddType image/svg+xml             .svg
+  AddType image/avif                .avif
+  AddType image/webp                .webp
+  AddType font/woff                 .woff
+  AddType font/woff2                .woff2
+  AddType application/manifest+json .webmanifest
+</IfModule>
+
+# Enable mod_rewrite
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Proxy all requests to Next.js (running on port 3000)
+  # Hostinger typically handles this via their panel, but this is a fallback
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ http://localhost:3000/$1 [P,L]
+</IfModule>
