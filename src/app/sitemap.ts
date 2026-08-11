@@ -3,6 +3,8 @@ import connectDB from "@/lib/mongodb";
 import Blog from "@/models/Blog";
 import PropertyModel from "@/models/Property";
 
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://phojaa95realestate.com";
 
