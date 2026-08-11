@@ -7,6 +7,7 @@ import connectDB from "@/lib/mongodb";
 import PropertyModel from "@/models/Property";
 import { Property } from "@/types";
 import { PropertyDetailClient } from "./PropertyDetailClient";
+import { BreadcrumbJsonLd, RealEstateListingJsonLd } from "@/components/seo/JsonLd";
 
 /**
  * React's cache() deduplicates this across generateMetadata + the page render
@@ -51,15 +52,39 @@ export async function generateMetadata({
     .replace(/<[^>]*>/g, "")
     .slice(0, 160);
 
+  const title = `${property.title} in ${property.district || property.location || 'Bhutan'} | PHOJAA95 Real Estate`;
+  const canonicalUrl = `https://phojaa95realestate.com/properties/${id}`;
+  const firstImage = property.images?.[0];
+
   return {
-    title: `${property.title} | PHOJAA95 Real Estate`,
+    metadataBase: new URL("https://phojaa95realestate.com"),
+    title,
     description:
       plainDesc ||
-      "Discover land and properties across Bhutan with PHOJAA95 Real Estate.",
+      `View ${property.title} for sale in ${property.district || 'Bhutan'}. Verified listing by PHOJAA95 Real Estate.`,
+    keywords: [
+      property.title,
+      `${property.district} real estate`,
+      `property for sale in ${property.district || 'Bhutan'}`,
+      property.propertyType ? `${property.propertyType} for sale Bhutan` : "real estate Bhutan",
+      "buy property Bhutan",
+      "PHOJAA95 Real Estate",
+    ],
     openGraph: {
-      title: `${property.title} | PHOJAA95 Real Estate`,
+      title,
       description: plainDesc,
-      images: property.images?.[0] ? [{ url: property.images[0] }] : [],
+      url: canonicalUrl,
+      type: "website",
+      images: firstImage ? [{ url: firstImage, width: 1200, height: 630, alt: property.title }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: plainDesc,
+      images: firstImage ? [firstImage] : [],
+    },
+    alternates: {
+      canonical: canonicalUrl,
     },
   };
 }
@@ -76,5 +101,25 @@ export default async function PropertyDetailPage({
     notFound();
   }
 
-  return <PropertyDetailClient property={property} />;
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Properties", url: "/properties" },
+    { name: property.title, url: `/properties/${id}` },
+  ];
+
+  return (
+    <>
+      <BreadcrumbJsonLd items={breadcrumbs} />
+      <RealEstateListingJsonLd
+        title={property.title}
+        description={property.description?.replace(/<[^>]*>/g, "").slice(0, 160) || property.title}
+        url={`https://phojaa95realestate.com/properties/${id}`}
+        image={property.images?.[0]}
+        price={property.price}
+        addressLocality={property.district || property.location || "Bhutan"}
+        addressRegion={property.district || "Bhutan"}
+      />
+      <PropertyDetailClient property={property} />
+    </>
+  );
 }

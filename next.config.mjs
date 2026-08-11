@@ -6,6 +6,9 @@ const nextConfig = {
   // Compress gzip/brotli for smaller payloads
   compress: true,
 
+  // Hide X-Powered-By header
+  poweredByHeader: false,
+
   images: {
     // Serve AVIF first (smallest), fallback WebP then JPEG
     formats: ["image/avif", "image/webp"],

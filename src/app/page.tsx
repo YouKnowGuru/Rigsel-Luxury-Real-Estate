@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { ClientOnlySections } from "@/components/ClientOnlySections";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { homeFaqs } from "@/data/faqs";
 
 // ── Above-fold sections — static imports (needed for initial paint) ──────────
 import { Hero } from "@/sections/Hero";
@@ -32,33 +34,51 @@ const TeamSection = dynamic(() =>
 const Testimonials = dynamic(() =>
   import("@/sections/Testimonials").then((m) => ({ default: m.Testimonials }))
 );
+const FAQSection = dynamic(() =>
+  import("@/sections/FAQSection").then((m) => ({ default: m.FAQSection }))
+);
 const ContactCTA = dynamic(() =>
   import("@/sections/ContactCTA").then((m) => ({ default: m.ContactCTA }))
 );
 
 
 export const metadata: Metadata = {
-  title: "PHOJAA95 Real Estate | Trusted Properties in Bhutan",
+  title: "Best Real Estate in Bhutan | Buy Property, Land & Homes — PHOJAA95",
   description:
-    "Discover land and properties across Bhutan. PHOJAA95 Real Estate offers transparent and reliable services to connect buyers and sellers.",
+    "Find the best real estate in Bhutan. PHOJAA95 offers verified land, houses & commercial properties for sale in Thimphu, Paro, Punakha & all 20 dzongkhags. Trusted by 500+ families.",
   keywords: [
+    "best real estate in Bhutan",
+    "real estate in Bhutan",
     "Bhutan real estate",
-    "property Bhutan",
-    "luxury homes Bhutan",
+    "property for sale Bhutan",
+    "buy land Bhutan",
+    "houses for sale Bhutan",
     "Thimphu property",
     "Paro real estate",
+    "Punakha property",
+    "luxury homes Bhutan",
+    "commercial property Bhutan",
+    "PHOJAA95 Real Estate",
+    "property dealer Bhutan",
+    "affordable land Bhutan",
+    "property investment Bhutan",
   ],
   openGraph: {
-    title: "PHOJAA95 Real Estate | Trusted Properties in Bhutan",
+    title: "Best Real Estate in Bhutan | PHOJAA95 Real Estate",
     description:
-      "Discover land and properties across Bhutan. Connect with genuine buyers and sellers through PHOJAA95 Real Estate.",
+      "Browse verified land, houses & commercial properties across Bhutan. Trusted by 500+ happy families. PHOJAA95 — Bhutan's best real estate agency.",
     type: "website",
+    url: "https://phojaa95realestate.com",
+  },
+  alternates: {
+    canonical: "https://phojaa95realestate.com",
   },
 };
 
 export default function Home() {
   return (
     <>
+      <FAQJsonLd faqs={homeFaqs} />
       <Hero />
       <CategoryPills />
       <BrandMarquee />
@@ -70,6 +90,7 @@ export default function Home() {
       <WhyChooseUs />
       <TeamSection />
       <Testimonials />
+      <FAQSection />
       <ContactCTA />
       {/* InteractiveMapWrapper (Leaflet) + PhojaaA1Chat (AI chat) use ssr:false
           and must live inside a Client Component boundary. */}

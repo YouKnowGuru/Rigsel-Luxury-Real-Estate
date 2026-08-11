@@ -56,7 +56,7 @@ AdminSchema.methods.comparePassword = async function (
 };
 
 // Indexes
-AdminSchema.index({ username: 1 });
+// (username index automatically created by unique: true)
 
 export default mongoose.models.Admin ||
   mongoose.model<IAdmin>("Admin", AdminSchema);

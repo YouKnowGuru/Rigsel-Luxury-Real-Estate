@@ -992,3 +992,43 @@ section.bg-background,
     scroll-behavior: auto !important;
   }
 }
+
+/* ── Rich Text Prose Text Contrast & Visibility Fix (Light & Dark Mode) ── */
+.prose p,
+.prose span,
+.prose div,
+.prose li {
+  color: inherit;
+}
+
+.dark .prose {
+  color: #D2D2D7 !important;
+}
+
+.dark .prose p,
+.dark .prose span,
+.dark .prose div,
+.dark .prose li,
+.dark .prose td,
+.dark .prose th {
+  color: #D2D2D7 !important;
+}
+
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose h5,
+.dark .prose h6 {
+  color: #F5F5F7 !important;
+}
+
+.dark .prose strong,
+.dark .prose b {
+  color: #FFFFFF !important;
+}
+
+.dark .prose a {
+  color: #5AC8FA !important;
+}
+

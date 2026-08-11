@@ -146,8 +146,8 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
           <h1 className="mt-2 font-semibold tracking-tighter3 leading-tighter text-balance text-[clamp(2rem,1.5rem+2.5vw,4rem)] text-foreground">
             {property.title}
           </h1>
-          <p className="mt-3 inline-flex items-center gap-1.5 text-[15px] sm:text-[16px] text-ink-500">
-            <MapPin className="w-4 h-4 text-ink-400" strokeWidth={1.75} />
+          <p className="mt-3 inline-flex items-center gap-1.5 text-[15px] sm:text-[16px] text-ink-500 dark:text-ink-300">
+            <MapPin className="w-4 h-4 text-ink-400 dark:text-ink-300" strokeWidth={1.75} />
             {property.location}
           </p>
         </div>
@@ -200,7 +200,7 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
       <section className="border-t border-b border-ink-100 dark:border-ink-700/40 mt-12 sm:mt-16">
         <div className="container-apple-wide py-6 sm:py-8 grid grid-cols-2 md:grid-cols-4 gap-6">
           <div>
-            <p className="text-[11px] uppercase tracking-eyebrow text-ink-500">
+            <p className="text-[11px] uppercase tracking-eyebrow text-ink-500 dark:text-ink-300 font-semibold">
               Price
             </p>
             <p className="mt-1 text-[clamp(1.5rem,1.25rem+1vw,2rem)] font-semibold tracking-tightest tabular-nums text-foreground">
@@ -213,11 +213,11 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
             { label: "Area", value: `${property.area} Decimal`, Icon: Maximize },
           ].map(({ label, value, Icon }) => (
             <div key={label}>
-              <p className="text-[11px] uppercase tracking-eyebrow text-ink-500">
+              <p className="text-[11px] uppercase tracking-eyebrow text-ink-500 dark:text-ink-300 font-semibold">
                 {label}
               </p>
               <p className="mt-1 text-[clamp(1.25rem,1rem+0.75vw,1.75rem)] font-semibold tracking-tightest tabular-nums text-foreground inline-flex items-center gap-2">
-                <Icon className="w-5 h-5 text-ink-400" strokeWidth={1.5} />
+                <Icon className="w-5 h-5 text-ink-400 dark:text-ink-300" strokeWidth={1.5} />
                 {value}
               </p>
             </div>
@@ -234,12 +234,12 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
                 About this property.
               </h2>
               <article
-                className="prose prose-lg dark:prose-invert mt-5 max-w-none text-ink-500 leading-snug2
-                  prose-headings:font-semibold prose-headings:text-foreground prose-headings:tracking-tightest
-                  prose-p:mb-5
+                className="prose prose-lg dark:prose-invert mt-5 max-w-none text-foreground/90 dark:text-ink-200 leading-snug2
+                  prose-headings:font-semibold prose-headings:text-foreground dark:prose-headings:text-white prose-headings:tracking-tightest
+                  prose-p:mb-5 prose-p:text-foreground/90 dark:prose-p:text-ink-200
                   prose-a:text-sky prose-a:no-underline hover:prose-a:underline
                   prose-img:rounded-apple-lg prose-img:my-8
-                  prose-strong:text-foreground"
+                  prose-strong:text-foreground dark:prose-strong:text-white"
                 dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
               />
             </div>
@@ -277,9 +277,9 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
                 <h2 className="font-semibold text-[clamp(1.75rem,1.5rem+1.25vw,2.5rem)] tracking-tighter2 leading-tight2 text-foreground">
                   Location.
                 </h2>
-                <p className="mt-3 text-[15px] sm:text-[16px] text-ink-500 inline-flex items-center gap-1.5">
+                <p className="mt-3 text-[15px] sm:text-[16px] text-ink-500 dark:text-ink-300 inline-flex items-center gap-1.5">
                   <MapPin
-                    className="w-4 h-4 text-ink-400"
+                    className="w-4 h-4 text-ink-400 dark:text-ink-300"
                     strokeWidth={1.75}
                   />
                   {property.location}
@@ -311,14 +311,14 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
             <div className="lg:sticky lg:top-28 space-y-4">
               {/* Price block */}
               <div className="glass rounded-apple-xl p-6 sm:p-8">
-                <p className="text-[12px] uppercase tracking-eyebrow text-ink-500">
+                <p className="text-[12px] uppercase tracking-eyebrow text-ink-500 dark:text-ink-300 font-semibold">
                   From
                 </p>
                 <p className="text-[clamp(2rem,1.5rem+1.5vw,3rem)] font-semibold tracking-tighter3 leading-tighter tabular-nums text-foreground">
                   {formatPrice(property.price)}
                 </p>
                 {property.loanAvailable && property.loanAmount != null && (
-                  <p className="mt-2 text-[14px] text-ink-500">
+                  <p className="mt-2 text-[14px] text-ink-500 dark:text-ink-300">
                     or about{" "}
                     <span className="text-foreground font-semibold tabular-nums">
                       Nu.{" "}
@@ -364,7 +364,7 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
                     <p className="font-semibold text-[18px] tracking-tighter2 text-foreground">
                       Inquiry sent.
                     </p>
-                    <p className="mt-2 text-[14px] text-ink-500">
+                    <p className="mt-2 text-[14px] text-ink-500 dark:text-ink-300">
                       We&apos;ll get back to you shortly.
                     </p>
                   </div>
@@ -429,7 +429,7 @@ export function PropertyDetailClient({ property }: PropertyDetailClientProps) {
       <div className="lg:hidden fixed inset-x-0 bottom-0 z-40 glass-strong safe-bottom">
         <div className="container-apple-wide flex items-center justify-between gap-3 py-3">
           <div className="min-w-0">
-            <p className="text-[11px] uppercase tracking-eyebrow text-ink-500 leading-none">
+            <p className="text-[11px] uppercase tracking-eyebrow text-ink-500 dark:text-ink-300 font-semibold leading-none">
               From
             </p>
             <p className="text-[18px] font-semibold tracking-tightest tabular-nums text-foreground leading-tight">

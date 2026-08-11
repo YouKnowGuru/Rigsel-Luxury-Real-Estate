@@ -55,7 +55,6 @@ const BlogSchema: Schema = new Schema(
 
 // Indexes for better search performance
 BlogSchema.index({ title: "text", content: "text" });
-BlogSchema.index({ slug: 1 });
 BlogSchema.index({ published: 1 });
 BlogSchema.index({ createdAt: -1 });
 
