@@ -52,7 +52,7 @@ export default function AdminProperties() {
 
   const fetchProperties = async () => {
     try {
-      const response = await fetch("/api/properties");
+      const response = await fetch("/api/properties?limit=1000");
       const data = await response.json();
       if (data.success) {
         setProperties(data.data);

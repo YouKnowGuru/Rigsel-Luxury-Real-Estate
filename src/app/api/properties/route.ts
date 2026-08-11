@@ -78,7 +78,7 @@ export async function GET(request: NextRequest) {
 
     // Pagination
     const page = Number(searchParams.get("page")) || 1;
-    const limit = Math.min(Number(searchParams.get("limit")) || 20, 100); // Max 100
+    const limit = Math.min(Number(searchParams.get("limit")) || 20, 1000); // Max 1000
     const skip = (page - 1) * limit;
 
     // Sort
