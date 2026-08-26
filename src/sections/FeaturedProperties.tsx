@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { Building2, ArrowRight, MapPin, Star, TrendingUp } from "lucide-react";
+import { Building2, ArrowRight, MapPin, Star, TrendingUp, Sparkles } from "lucide-react";
 import useSWR from "swr";
 import { useRef } from "react";
 import { Property } from "@/types";
@@ -138,11 +139,11 @@ function Bhutan3DShowcase() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [8, -8]), {
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), {
     stiffness: 150,
     damping: 25,
   });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), {
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), {
     stiffness: 150,
     damping: 25,
   });
@@ -160,38 +161,22 @@ function Bhutan3DShowcase() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="mt-20 mb-4"
-    >
+    <div className="mt-14 mb-8">
       {/* Section label */}
-      <div className="text-center mb-10">
-        <motion.span
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[13px] font-semibold tracking-wide uppercase"
+      <div className="text-center mb-8">
+        <div
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[13px] font-semibold tracking-wide uppercase shadow-sm"
           style={{
             background: "linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(14,165,233,0.12) 100%)",
-            border: "1px solid rgba(212,175,55,0.3)",
+            border: "1px solid rgba(212,175,55,0.35)",
             color: "#d4af37",
             letterSpacing: "0.08em",
           }}
         >
-          <Star className="w-3.5 h-3.5 fill-current" />
+          <Sparkles className="w-3.5 h-3.5 fill-current" />
           Life in Bhutan
-        </motion.span>
-        <motion.h3
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-4 text-[28px] sm:text-[36px] font-bold tracking-tighter text-foreground leading-tight"
-        >
+        </div>
+        <h3 className="mt-4 text-[26px] sm:text-[34px] font-bold tracking-tight text-foreground leading-tight">
           Where mountains meet{" "}
           <span
             style={{
@@ -203,27 +188,21 @@ function Bhutan3DShowcase() {
           >
             luxury living
           </span>
-        </motion.h3>
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-3 text-ink-500 text-[15px] max-w-xl mx-auto leading-relaxed"
-        >
-          Experience architectural excellence nestled within Bhutan&apos;s breathtaking Himalayan landscape — where every home is a masterpiece.
-        </motion.p>
+        </h3>
+        <p className="mt-2.5 text-ink-500 text-[15px] max-w-xl mx-auto leading-relaxed">
+          Experience architectural excellence nestled within Bhutan&apos;s breathtaking Himalayan landscape.
+        </p>
       </div>
 
       {/* 3D Card Container */}
-      <div className="relative max-w-5xl mx-auto">
+      <div className="relative max-w-5xl mx-auto px-1 sm:px-0">
         {/* Ambient glow behind the card */}
         <div
-          className="absolute inset-0 rounded-3xl blur-3xl opacity-30 pointer-events-none"
+          className="absolute inset-0 rounded-3xl blur-2xl opacity-40 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.45) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(14,165,233,0.35) 0%, transparent 60%)",
-            transform: "scale(1.1) translateY(8%)",
+              "radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.4) 0%, transparent 65%), radial-gradient(ellipse at 70% 50%, rgba(14,165,233,0.3) 0%, transparent 65%)",
+            transform: "scale(1.05) translateY(4%)",
           }}
         />
 
@@ -233,33 +212,36 @@ function Bhutan3DShowcase() {
           style={{ rotateX, rotateY, transformStyle: "preserve-3d", perspective: 1200 }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative rounded-3xl overflow-hidden cursor-pointer"
-          whileHover={{ scale: 1.012 }}
+          className="relative rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer shadow-2xl border border-black/10 dark:border-white/15 bg-neutral-900"
+          whileHover={{ scale: 1.01 }}
           transition={{ type: "spring", stiffness: 200, damping: 30 }}
         >
-          {/* Image — plain img avoids next/image fill height constraint */}
-          <div className="relative w-full overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+          {/* Main Image */}
+          <div className="relative w-full overflow-hidden min-h-[260px] sm:min-h-[380px] md:min-h-[440px] flex items-center justify-center bg-black/40">
+            <Image
               src="/image/hh.png"
               alt="Luxury living in Bhutan — 3D architectural showcase"
-              className="w-full h-auto block"
-              style={{ display: "block", maxHeight: "520px", objectFit: "cover", objectPosition: "center" }}
+              width={1400}
+              height={700}
+              priority
+              unoptimized
+              className="w-full h-auto object-cover block"
+              style={{ minHeight: "260px" }}
             />
 
-            {/* Gradient overlays */}
+            {/* Gradient overlays for contrast */}
             <div
-              className="absolute inset-0"
+              className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.15) 40%, transparent 70%)",
+                  "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 45%, transparent 75%)",
               }}
             />
             <div
-              className="absolute inset-0"
+              className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(to right, rgba(0,0,0,0.35) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.2) 100%)",
+                  "linear-gradient(to right, rgba(0,0,0,0.4) 0%, transparent 35%, transparent 65%, rgba(0,0,0,0.3) 100%)",
               }}
             />
 
@@ -388,6 +370,6 @@ function Bhutan3DShowcase() {
           />
         </motion.div>
       </div>
-    </motion.div>
+    </div>
   );
 }
