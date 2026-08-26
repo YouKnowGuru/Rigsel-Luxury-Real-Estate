@@ -44,6 +44,9 @@ export function FeaturedProperties() {
           subtitle="Handpicked listings from across Bhutan — vetted, verified, and beautifully presented."
         />
 
+        {/* ── 3D Image Showcase directly below Property title ── */}
+        <Bhutan3DShowcase />
+
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
             {[1, 2, 3].map((i) => (
@@ -56,7 +59,7 @@ export function FeaturedProperties() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center py-20"
+            className="text-center py-16"
           >
             <div className="mx-auto mb-6 w-20 h-20 rounded-3xl bg-gradient-to-br from-sky/20 to-bhutan-gold/20 flex items-center justify-center shadow-soft border border-sky/10">
               <Building2 className="w-9 h-9 text-sky/70" strokeWidth={1.5} />
@@ -114,15 +117,12 @@ export function FeaturedProperties() {
           </>
         )}
 
-        {/* ── 3D Image Showcase ── */}
-        <Bhutan3DShowcase />
-
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-10 text-center"
+          className="mt-12 text-center"
         >
           <Link href="/properties" className="link-apple link-arrow text-[16px]">
             See all properties
@@ -139,11 +139,11 @@ function Bhutan3DShowcase() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [6, -6]), {
+  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [5, -5]), {
     stiffness: 150,
     damping: 25,
   });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-8, 8]), {
+  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-7, 7]), {
     stiffness: 150,
     damping: 25,
   });
@@ -161,48 +161,15 @@ function Bhutan3DShowcase() {
   }
 
   return (
-    <div className="mt-14 mb-8">
-      {/* Section label */}
-      <div className="text-center mb-8">
-        <div
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[13px] font-semibold tracking-wide uppercase shadow-sm"
-          style={{
-            background: "linear-gradient(135deg, rgba(212,175,55,0.15) 0%, rgba(14,165,233,0.12) 100%)",
-            border: "1px solid rgba(212,175,55,0.35)",
-            color: "#d4af37",
-            letterSpacing: "0.08em",
-          }}
-        >
-          <Sparkles className="w-3.5 h-3.5 fill-current" />
-          Life in Bhutan
-        </div>
-        <h3 className="mt-4 text-[26px] sm:text-[34px] font-bold tracking-tight text-foreground leading-tight">
-          Where mountains meet{" "}
-          <span
-            style={{
-              background: "linear-gradient(135deg, #d4af37 0%, #f4d57a 50%, #b8972e 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
-          >
-            luxury living
-          </span>
-        </h3>
-        <p className="mt-2.5 text-ink-500 text-[15px] max-w-xl mx-auto leading-relaxed">
-          Experience architectural excellence nestled within Bhutan&apos;s breathtaking Himalayan landscape.
-        </p>
-      </div>
-
-      {/* 3D Card Container */}
-      <div className="relative max-w-5xl mx-auto px-1 sm:px-0">
+    <div className="mt-8 mb-14">
+      {/* 3D Showcase Card */}
+      <div className="relative max-w-5xl mx-auto">
         {/* Ambient glow behind the card */}
         <div
-          className="absolute inset-0 rounded-3xl blur-2xl opacity-40 pointer-events-none"
+          className="absolute -inset-2 rounded-3xl blur-2xl opacity-50 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.4) 0%, transparent 65%), radial-gradient(ellipse at 70% 50%, rgba(14,165,233,0.3) 0%, transparent 65%)",
-            transform: "scale(1.05) translateY(4%)",
+              "radial-gradient(ellipse at 25% 40%, rgba(212,175,55,0.45) 0%, transparent 65%), radial-gradient(ellipse at 75% 60%, rgba(14,165,233,0.35) 0%, transparent 65%)",
           }}
         />
 
@@ -212,162 +179,102 @@ function Bhutan3DShowcase() {
           style={{ rotateX, rotateY, transformStyle: "preserve-3d", perspective: 1200 }}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer shadow-2xl border border-black/10 dark:border-white/15 bg-neutral-900"
-          whileHover={{ scale: 1.01 }}
+          className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-black/10 dark:border-white/15 bg-neutral-950"
+          whileHover={{ scale: 1.008 }}
           transition={{ type: "spring", stiffness: 200, damping: 30 }}
         >
-          {/* Main Image */}
-          <div className="relative w-full overflow-hidden min-h-[260px] sm:min-h-[380px] md:min-h-[440px] flex items-center justify-center bg-black/40">
-            <Image
+          {/* Main Showcase Image */}
+          <div className="relative w-full aspect-[16/9] sm:aspect-[16/8] md:aspect-[16/7.5] max-h-[560px] overflow-hidden bg-neutral-900 flex items-center justify-center">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/image/hh.png"
-              alt="Luxury living in Bhutan — 3D architectural showcase"
-              width={1400}
-              height={700}
-              priority
-              unoptimized
-              className="w-full h-auto object-cover block"
-              style={{ minHeight: "260px" }}
+              alt="Luxury Architecture in Bhutan"
+              className="w-full h-full object-cover object-center block"
+              loading="eager"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.endsWith("/hh.png")) {
+                  target.src = "/hh.png";
+                }
+              }}
             />
 
-            {/* Gradient overlays for contrast */}
+            {/* Gradient overlays for readability */}
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 45%, transparent 75%)",
+                  "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 40%, transparent 70%)",
               }}
             />
             <div
               className="absolute inset-0 pointer-events-none"
               style={{
                 background:
-                  "linear-gradient(to right, rgba(0,0,0,0.4) 0%, transparent 35%, transparent 65%, rgba(0,0,0,0.3) 100%)",
+                  "linear-gradient(to right, rgba(0,0,0,0.45) 0%, transparent 35%, transparent 65%, rgba(0,0,0,0.25) 100%)",
               }}
             />
 
-            {/* Top-left badge */}
-            <motion.div
-              style={{ translateZ: 40 }}
-              className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 rounded-2xl backdrop-blur-md"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              >
-              <div
-                className="w-2.5 h-2.5 rounded-full animate-pulse"
-                style={{ background: "#22c55e" }}
-              />
-              <span
-                className="text-white text-[12px] font-semibold tracking-wide"
-                style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
-              >
-                Now Available
+            {/* Top-left Badge */}
+            <div className="absolute top-4 sm:top-6 left-4 sm:left-6 flex items-center gap-2 px-3.5 py-1.5 rounded-full backdrop-blur-md bg-black/40 border border-white/20 shadow-lg">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-sm" />
+              <span className="text-white text-[12px] font-semibold tracking-wide">
+                Signature Bhutan Living
               </span>
-              <div
-                className="absolute inset-0 rounded-2xl"
-                style={{
-                  background: "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.18)",
-                  borderRadius: "inherit",
-                }}
-              />
-            </motion.div>
+            </div>
 
-            {/* Top-right stat pill */}
-            <motion.div
-              style={{ translateZ: 40 }}
-              className="absolute top-6 right-6 flex items-center gap-1.5 px-4 py-2 rounded-2xl backdrop-blur-md"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-            >
-              <TrendingUp className="w-3.5 h-3.5" style={{ color: "#d4af37" }} />
-              <span className="text-white text-[12px] font-semibold">Premium Properties</span>
-              <div
-                className="absolute inset-0 rounded-2xl"
-                style={{
-                  background: "rgba(0,0,0,0.35)",
-                  border: "1px solid rgba(212,175,55,0.3)",
-                  borderRadius: "inherit",
-                }}
-              />
-            </motion.div>
+            {/* Top-right Pill */}
+            <div className="absolute top-4 sm:top-6 right-4 sm:right-6 hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-full backdrop-blur-md bg-black/40 border border-amber-400/40 shadow-lg">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span className="text-amber-200 text-[12px] font-medium">
+                Exclusive Architecture
+              </span>
+            </div>
 
-            {/* Bottom info bar */}
-            <motion.div
-              style={{ translateZ: 50 }}
-              className="absolute bottom-0 left-0 right-0 p-6 sm:p-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.35, duration: 0.7 }}
-            >
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            {/* Bottom Content Overlay */}
+            <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-8">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
                 <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <MapPin className="w-4 h-4" style={{ color: "#d4af37" }} />
-                    <span className="text-[13px] font-medium" style={{ color: "rgba(212,175,55,0.9)" }}>
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <MapPin className="w-4 h-4 text-amber-400" />
+                    <span className="text-amber-300 text-[13px] font-semibold tracking-wide uppercase">
                       Kingdom of Bhutan
                     </span>
                   </div>
-                  <h4
-                    className="text-white text-[22px] sm:text-[28px] font-bold tracking-tight leading-tight"
-                    style={{ textShadow: "0 2px 12px rgba(0,0,0,0.6)" }}
-                  >
-                    Architectural Excellence
-                  </h4>
-                  <p className="text-white/70 text-[14px] mt-1 max-w-xs">
-                    Timeless design rooted in Bhutanese heritage
+                  <h3 className="text-white text-[20px] sm:text-[28px] md:text-[32px] font-bold tracking-tight leading-tight drop-shadow-md">
+                    Where Mountains Meet{" "}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-300 to-yellow-100">
+                      Luxury Living
+                    </span>
+                  </h3>
+                  <p className="text-white/80 text-[13px] sm:text-[15px] mt-1 max-w-md line-clamp-2">
+                    Timeless architectural marvels crafted in harmony with Bhutan&apos;s sacred valleys.
                   </p>
                 </div>
 
-                {/* Stats row */}
-                <div className="flex items-center gap-3">
+                {/* Key Highlights */}
+                <div className="flex items-center gap-2 sm:gap-3">
                   {[
-                    { label: "Properties", value: "120+" },
-                    { label: "Districts", value: "20" },
-                    { label: "Happy Clients", value: "98%" },
+                    { label: "Dzongkhags", value: "20" },
+                    { label: "Verified Homes", value: "100%" },
+                    { label: "Premium Build", value: "3D" },
                   ].map((stat) => (
                     <div
                       key={stat.label}
-                      className="px-4 py-2.5 rounded-2xl text-center backdrop-blur-md"
-                      style={{
-                        background: "rgba(255,255,255,0.08)",
-                        border: "1px solid rgba(255,255,255,0.15)",
-                      }}
+                      className="px-3.5 py-2 rounded-xl text-center backdrop-blur-md bg-white/10 border border-white/20 shadow-md"
                     >
-                      <div
-                        className="text-[18px] font-bold"
-                        style={{
-                          background: "linear-gradient(135deg, #d4af37, #f4d57a)",
-                          WebkitBackgroundClip: "text",
-                          WebkitTextFillColor: "transparent",
-                          backgroundClip: "text",
-                        }}
-                      >
+                      <div className="text-[16px] sm:text-[18px] font-bold text-amber-300 leading-none">
                         {stat.value}
                       </div>
-                      <div className="text-white/60 text-[11px] font-medium mt-0.5 whitespace-nowrap">
+                      <div className="text-white/70 text-[10px] sm:text-[11px] font-medium mt-1 whitespace-nowrap">
                         {stat.label}
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
-
-          {/* Subtle inner border */}
-          <div
-            className="absolute inset-0 rounded-3xl pointer-events-none"
-            style={{
-              border: "1px solid rgba(255,255,255,0.12)",
-              boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.15), 0 32px 80px rgba(0,0,0,0.35), 0 0 0 1px rgba(212,175,55,0.08)",
-            }}
-          />
         </motion.div>
       </div>
     </div>
