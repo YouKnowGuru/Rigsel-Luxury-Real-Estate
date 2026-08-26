@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Building2, ArrowRight, MapPin, Star, TrendingUp } from "lucide-react";
 import useSWR from "swr";
@@ -238,15 +237,14 @@ function Bhutan3DShowcase() {
           whileHover={{ scale: 1.012 }}
           transition={{ type: "spring", stiffness: 200, damping: 30 }}
         >
-          {/* Image */}
-          <div className="relative w-full" style={{ aspectRatio: "16/7" }}>
-            <Image
+          {/* Image — plain img avoids next/image fill height constraint */}
+          <div className="relative w-full overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/image/hh.png"
               alt="Luxury living in Bhutan — 3D architectural showcase"
-              fill
-              className="object-cover object-center"
-              priority
-              sizes="(max-width: 768px) 100vw, 90vw"
+              className="w-full h-auto block"
+              style={{ display: "block", maxHeight: "520px", objectFit: "cover", objectPosition: "center" }}
             />
 
             {/* Gradient overlays */}
