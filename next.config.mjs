@@ -94,11 +94,11 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://quge5.com https://5gvci.com https://*.quge5.com https://*.5gvci.com https:",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://quge5.com https://5gvci.com https://nap5k.com https://n6wxm.com https://*.quge5.com https://*.5gvci.com https://*.nap5k.com https://*.n6wxm.com https:",
               "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https:",
               "img-src 'self' https: data: blob:",
               "font-src 'self' https: data:",
-              "connect-src 'self' https: wss: blob:",
+              "connect-src 'self' https://quge5.com https://5gvci.com https://nap5k.com https://n6wxm.com https: wss: blob:",
               "media-src 'self' https:",
               "frame-src 'self' https: data:",
               "object-src 'none'",

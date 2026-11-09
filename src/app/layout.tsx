@@ -119,10 +119,28 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon.svg" />
         <link rel="manifest" href="/site.webmanifest" />
 
+        {/* Monetag Push Notifications Tag */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src="https://5gvci.com/act/files/tag.min.js?z=12223623" data-cfasync="false" async />
+
         {/* Monetag Push Notifications Service Worker Registration */}
         <script
           dangerouslySetInnerHTML={{
             __html: `if(typeof window!=="undefined"&&"serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(e){console.warn("SW reg failed",e);});});}`,
+          }}
+        />
+
+        {/* Monetag In-Page Push (Zone 12223632) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(s){s.dataset.zone='12223632',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));`,
+          }}
+        />
+
+        {/* Monetag Vignette Banner (Zone 12223633) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(s){s.dataset.zone='12223633',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')));`,
           }}
         />
 
