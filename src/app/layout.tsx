@@ -120,6 +120,14 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icon.svg" />
         <link rel="manifest" href="/site.webmanifest" />
 
+        {/* Monetag Multitag — in <head> for verification & full ad coverage */}
+        <Script
+          src="https://quge5.com/88/tag.min.js"
+          data-zone="307808"
+          data-cfasync="false"
+          strategy="beforeInteractive"
+        />
+
 
         {/* Inline script to prevent flash of unstyled theme */}
         <script
@@ -237,13 +245,6 @@ export default function RootLayout({
         className="min-h-screen bg-background font-sans antialiased"
         suppressHydrationWarning
       >
-        {/* Monetag Multitag — loads after page is interactive, non-blocking */}
-        <Script
-          src="https://quge5.com/88/tag.min.js"
-          data-zone="307808"
-          data-cfasync="false"
-          strategy="afterInteractive"
-        />
         <ThemeProvider>
           <SettingsProvider>
             <MotionProvider>
