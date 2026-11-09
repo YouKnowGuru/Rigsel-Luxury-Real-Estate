@@ -123,6 +123,13 @@ export default function RootLayout({
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="https://quge5.com/88/tag.min.js" data-zone="307808" async data-cfasync="false" />
 
+        {/* Monetag Push Notifications Service Worker Registration */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if(typeof window!=="undefined"&&"serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(e){console.warn("SW reg failed",e);});});}`,
+          }}
+        />
+
 
         {/* Inline script to prevent flash of unstyled theme */}
         <script

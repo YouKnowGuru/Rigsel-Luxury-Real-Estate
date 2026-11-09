@@ -16,6 +16,12 @@ import { PropertyCategories } from "@/sections/PropertyCategories";
 // reducing the initial JS bundle and improving Time-to-Interactive.
 // Note: components that need ssr:false live in <ClientOnlySections> because
 // ssr:false is not allowed in Server Components.
+const EditorialToday = dynamic(() =>
+  import("@/sections/EditorialToday").then((m) => ({ default: m.EditorialToday }))
+);
+const HorizontalShowcase = dynamic(() =>
+  import("@/sections/HorizontalShowcase").then((m) => ({ default: m.HorizontalShowcase }))
+);
 const ArchitectureDesignShowcase = dynamic(() =>
   import("@/sections/ArchitectureDesignShowcase").then((m) => ({ default: m.ArchitectureDesignShowcase }))
 );
@@ -83,7 +89,13 @@ export default function Home() {
       <CategoryPills />
       <BrandMarquee />
       <FeaturedProperties />
+      <HorizontalShowcase
+        title="Latest Listings."
+        subtitle="Freshly added properties from across Bhutan."
+        endpoint="/api/properties?limit=10&sortBy=createdAt&sortOrder=desc"
+      />
       <PropertyCategories />
+      <EditorialToday />
       <ArchitectureDesignShowcase />
       <SolutionsShowcase />
       <LandCalculator />
