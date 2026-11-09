@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/context/ThemeProvider";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import { RouteAwareLayout } from "@/components/layout/RouteAwareLayout";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import Script from "next/script";
 import "@/lib/fonts";
 export const metadata: Metadata = {
   metadataBase: new URL("https://phojaarealestate.com"),
@@ -236,6 +237,13 @@ export default function RootLayout({
         className="min-h-screen bg-background font-sans antialiased"
         suppressHydrationWarning
       >
+        {/* Monetag Multitag — loads after page is interactive, non-blocking */}
+        <Script
+          src="https://quge5.com/88/tag.min.js"
+          data-zone="307808"
+          data-cfasync="false"
+          strategy="afterInteractive"
+        />
         <ThemeProvider>
           <SettingsProvider>
             <MotionProvider>
