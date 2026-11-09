@@ -6,7 +6,6 @@ import { ThemeProvider } from "@/context/ThemeProvider";
 import { MotionProvider } from "@/components/providers/MotionProvider";
 import { RouteAwareLayout } from "@/components/layout/RouteAwareLayout";
 import { ScrollToTop } from "@/components/ScrollToTop";
-import Script from "next/script";
 import "@/lib/fonts";
 export const metadata: Metadata = {
   metadataBase: new URL("https://phojaarealestate.com"),
@@ -121,12 +120,8 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
 
         {/* Monetag Multitag — in <head> for verification & full ad coverage */}
-        <Script
-          src="https://quge5.com/88/tag.min.js"
-          data-zone="307808"
-          data-cfasync="false"
-          strategy="beforeInteractive"
-        />
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src="https://quge5.com/88/tag.min.js" data-zone="307808" async data-cfasync="false" />
 
 
         {/* Inline script to prevent flash of unstyled theme */}
