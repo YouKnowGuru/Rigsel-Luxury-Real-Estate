@@ -94,15 +94,15 @@ const nextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net",
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://quge5.com https://5gvci.com",
               "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
               "img-src 'self' https://res.cloudinary.com https://images.unsplash.com https://lh3.googleusercontent.com https://*.basemaps.cartocdn.com data: blob:",
               "font-src 'self'",
-              "connect-src 'self' https://res.cloudinary.com https://cdn.jsdelivr.net",
+              "connect-src 'self' https://res.cloudinary.com https://cdn.jsdelivr.net https://quge5.com https://5gvci.com",
               "media-src 'self' https://res.cloudinary.com",
               "frame-src 'self' https://www.google.com https://maps.google.com",
               "object-src 'none'",
-
+              "worker-src 'self' blob: https://5gvci.com",
               "frame-ancestors 'none'",
               "base-uri 'self'",
               "form-action 'self'",
